@@ -1,0 +1,1237 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="../assets/site/batman-favicon.png">
+  <title>Hush Saga Expanded - Visual Viewer</title>
+  <style>
+    :root { color-scheme: light; --ink:#172026; --muted:#5c6670; --line:#d9dee4; --paper:#f6f7f8; --panel:#ffffff; --owned:#0f7b4f; --fac:#6b4bb8; --ordered:#2166ad; --readable:#a46a00; --missing:#b42318; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); }
+    header { padding: 28px 32px 18px; background: #111820; color: white; }
+    .header-top { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .back-link { color: white; border: 1px solid rgba(255,255,255,.32); border-radius: 999px; padding: 7px 11px; text-decoration: none; font-size: 13px; background: rgba(255,255,255,.08); }
+    .back-link:hover { background: rgba(255,255,255,.16); }
+    h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; }
+    header p { margin: 0; color: #c8d0d8; max-width: 900px; }
+    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; padding: 18px 32px; background: #e9edf1; border-bottom: 1px solid var(--line); }
+    .metric { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+    .metric strong { display: block; font-size: 24px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    .controls { padding: 18px 32px; display: grid; gap: 12px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
+    .control-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .control-row b { margin-right: 4px; font-size: 13px; color: var(--muted); min-width: 70px; }
+    .chip { border: 1px solid var(--line); background: #f8fafb; color: var(--ink); border-radius: 999px; padding: 7px 11px; cursor: pointer; text-transform: capitalize; }
+    .chip.active { background: #172026; border-color: #172026; color: white; }
+    main { padding: 24px 32px 40px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 16px; align-items: start; }
+    .comic-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05); min-width: 0; display: flex; flex-direction: column; position: relative; }
+    .comic-card.owned { background: #f2fbf6; }
+    .comic-card.facsimile { background: #f6f2ff; }
+    .comic-card.ordered { background: #f1f7ff; }
+    .comic-card.readable { background: #fff8ec; }
+    .status-strip { background: var(--missing); color: white; min-height: 30px; display: grid; place-items: center; padding: 7px 8px; font-size: 12px; line-height: 1; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; }
+    .comic-card.owned .status-strip { background: var(--owned); }
+    .comic-card.facsimile .status-strip { background: var(--fac); }
+    .comic-card.ordered .status-strip { background: var(--ordered); }
+    .comic-card.readable .status-strip { background: var(--readable); }
+    .cover-wrap { aspect-ratio: 2 / 3; background: #242a31; display: grid; place-items: center; overflow: hidden; position: relative; }
+    .cover-button { appearance: none; border: 0; background: #111820; padding: 0; margin: 0; width: 100%; height: 100%; display: block; cursor: zoom-in; }
+    .cover-button:focus-visible { outline: 3px solid #f4c430; outline-offset: -3px; }
+    .cover-wrap img { width: 100%; height: 100%; object-fit: contain; background: #111820; display: block; }
+    .cover-placeholder { width: 100%; height: 100%; padding: 14px; color: white; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(145deg, #18212a, #39424c); }
+    .cover-placeholder span { font-weight: 700; line-height: 1.1; overflow-wrap: anywhere; }
+    .cover-placeholder strong { font-size: 42px; align-self: flex-end; }
+    .cover-review-badge { position: absolute; left: 8px; right: 8px; top: 8px; border-radius: 6px; padding: 6px 7px; color: white; font-size: 11px; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.22); pointer-events: none; }
+    .cover-review-badge.warning { background: rgba(164,106,0,.92); }
+    .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
+    .comic-card.cover-needs_review { border-color: #a46a00; }
+    .comic-card.cover-rejected_auto { border-color: #b42318; }
+    .card-body { padding: 10px 11px 12px; height: 205px; display: flex; flex-direction: column; overflow: hidden; }
+    .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
+    .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
+    .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
+    h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id { -webkit-line-clamp: 1; }
+    .meta, .continuity { -webkit-line-clamp: 2; }
+    .notes { -webkit-line-clamp: 2; position: relative; }
+    .notes::after { content: ""; position: absolute; inset: auto 0 0 0; height: 1.2em; background: linear-gradient(to bottom, rgba(255,255,255,0), var(--panel)); pointer-events: none; }
+    .comic-card.owned .notes::after { background: linear-gradient(to bottom, rgba(242,251,246,0), #f2fbf6); }
+    .comic-card.facsimile .notes::after { background: linear-gradient(to bottom, rgba(246,242,255,0), #f6f2ff); }
+    .comic-card.ordered .notes::after { background: linear-gradient(to bottom, rgba(241,247,255,0), #f1f7ff); }
+    .comic-card.readable .notes::after { background: linear-gradient(to bottom, rgba(255,248,236,0), #fff8ec); }
+    .hidden { display: none; }
+    .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
+    .lightbox.open { display: flex; }
+    .lightbox-panel { max-width: min(92vw, 980px); max-height: 94vh; display: grid; gap: 10px; }
+    .lightbox img { max-width: 100%; max-height: calc(94vh - 56px); object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
+    .lightbox-title { font-weight: 750; }
+    .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
+    .lightbox-close { border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: white; border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+    @media (max-width: 700px) { header, .summary, .controls, main { padding-left: 14px; padding-right: 14px; } .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; } }
+    </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <h1>Hush Saga Expanded</h1>
+      <a class="back-link" href="visual_collection_viewer.html">All visual views</a>
+    </div>
+    <p>Original Hush Hush Returns Heart of Hush Hush Money House of Hush and H2SH Part One.</p>
+  </header>
+  <section class="summary">
+    <div class="metric"><strong>60</strong><span>unique publications</span></div>
+    <div class="metric"><strong>0</strong><span>owned/readable</span></div>
+    <div class="metric"><strong>0</strong><span>facsimiles</span></div>
+    <div class="metric"><strong>60</strong><span>missing</span></div>
+  </section>
+  <section class="controls">
+    <div class="control-row"><b>Order</b><button class="chip" data-filter="order" data-value="all">All orders</button>
+<button class="chip active" data-filter="order" data-value="reading">reading</button></div>
+    <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button>
+<button class="chip" data-filter="scope" data-value="Hush">Hush</button>
+<button class="chip" data-filter="scope" data-value="Hush Returns">Hush Returns</button>
+<button class="chip" data-filter="scope" data-value="Hush Returns / Payback">Hush Returns / Payback</button>
+<button class="chip" data-filter="scope" data-value="Heart of Hush">Heart of Hush</button>
+<button class="chip" data-filter="scope" data-value="Heart of Hush epilogue">Heart of Hush epilogue</button>
+<button class="chip" data-filter="scope" data-value="Hush Money">Hush Money</button>
+<button class="chip" data-filter="scope" data-value="House of Hush">House of Hush</button>
+<button class="chip" data-filter="scope" data-value="H2SH Prelude">H2SH Prelude</button>
+<button class="chip" data-filter="scope" data-value="H2SH Part One">H2SH Part One</button></div>
+    <div class="control-row"><b>Status</b><button class="chip active" data-filter="status" data-value="all">All statuses</button>
+<button class="chip" data-filter="status" data-value="owned">owned</button>
+<button class="chip" data-filter="status" data-value="facsimile">facsimile</button>
+<button class="chip" data-filter="status" data-value="ordered">ordered</button>
+<button class="chip" data-filter="status" data-value="readable">readable</button>
+<button class="chip" data-filter="status" data-value="missing">missing</button></div>
+    <div class="control-row"><b>Work</b><button class="chip active" data-filter="project" data-value="all">All works</button>
+<button class="chip" data-filter="project" data-value="hush_extended">hush extended</button></div>
+  </section>
+  <main>
+    <section class="grid">
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001000" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0608.jpg" data-full-title="Batman #608" data-full-detail="PUB-BAT-0608 | Seq 001000 | core | Original twelve-part Hush story. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0608.jpg" alt="Batman #608 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #608">Batman #608</h3>
+          <p class="pub-id" title="PUB-BAT-0608">PUB-BAT-0608</p>
+          <p class="meta" title="Seq 001000 | core">Seq 001000 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original twelve-part Hush story.">Original twelve-part Hush story.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001001">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0609.jpg" data-full-title="Batman #609" data-full-detail="PUB-BAT-0609 | Seq 001001 | core | Original twelve-part Hush story. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0609.jpg" alt="Batman #609 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #609">Batman #609</h3>
+          <p class="pub-id" title="PUB-BAT-0609">PUB-BAT-0609</p>
+          <p class="meta" title="Seq 001001 | core">Seq 001001 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original twelve-part Hush story.">Original twelve-part Hush story.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001002">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0610.jpg" data-full-title="Batman #610" data-full-detail="PUB-BAT-0610 | Seq 001002 | core | Original twelve-part Hush story. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0610.jpg" alt="Batman #610 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #610">Batman #610</h3>
+          <p class="pub-id" title="PUB-BAT-0610">PUB-BAT-0610</p>
+          <p class="meta" title="Seq 001002 | core">Seq 001002 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original twelve-part Hush story.">Original twelve-part Hush story.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001003">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0611.jpg" data-full-title="Batman #611" data-full-detail="PUB-BAT-0611 | Seq 001003 | core | Original twelve-part Hush story. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0611.jpg" alt="Batman #611 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #611">Batman #611</h3>
+          <p class="pub-id" title="PUB-BAT-0611">PUB-BAT-0611</p>
+          <p class="meta" title="Seq 001003 | core">Seq 001003 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original twelve-part Hush story.">Original twelve-part Hush story.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001004">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0612.jpg" data-full-title="Batman #612" data-full-detail="PUB-BAT-0612 | Seq 001004 | core | Original twelve-part Hush story. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0612.jpg" alt="Batman #612 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #612">Batman #612</h3>
+          <p class="pub-id" title="PUB-BAT-0612">PUB-BAT-0612</p>
+          <p class="meta" title="Seq 001004 | core">Seq 001004 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original twelve-part Hush story.">Original twelve-part Hush story.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001005">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0613.jpg" data-full-title="Batman #613" data-full-detail="PUB-BAT-0613 | Seq 001005 | core | Original twelve-part Hush story. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0613.jpg" alt="Batman #613 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #613">Batman #613</h3>
+          <p class="pub-id" title="PUB-BAT-0613">PUB-BAT-0613</p>
+          <p class="meta" title="Seq 001005 | core">Seq 001005 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original twelve-part Hush story.">Original twelve-part Hush story.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001006">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0614.jpg" data-full-title="Batman #614" data-full-detail="PUB-BAT-0614 | Seq 001006 | core | Original twelve-part Hush story. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0614.jpg" alt="Batman #614 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #614">Batman #614</h3>
+          <p class="pub-id" title="PUB-BAT-0614">PUB-BAT-0614</p>
+          <p class="meta" title="Seq 001006 | core">Seq 001006 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original twelve-part Hush story.">Original twelve-part Hush story.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001007">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0615.jpg" data-full-title="Batman #615" data-full-detail="PUB-BAT-0615 | Seq 001007 | core | Original twelve-part Hush story. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0615.jpg" alt="Batman #615 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #615">Batman #615</h3>
+          <p class="pub-id" title="PUB-BAT-0615">PUB-BAT-0615</p>
+          <p class="meta" title="Seq 001007 | core">Seq 001007 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original twelve-part Hush story.">Original twelve-part Hush story.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001008">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0616.jpg" data-full-title="Batman #616" data-full-detail="PUB-BAT-0616 | Seq 001008 | core | Original twelve-part Hush story. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0616.jpg" alt="Batman #616 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #616">Batman #616</h3>
+          <p class="pub-id" title="PUB-BAT-0616">PUB-BAT-0616</p>
+          <p class="meta" title="Seq 001008 | core">Seq 001008 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original twelve-part Hush story.">Original twelve-part Hush story.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001009">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0617.jpg" data-full-title="Batman #617" data-full-detail="PUB-BAT-0617 | Seq 001009 | core | Original twelve-part Hush story. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0617.jpg" alt="Batman #617 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #617">Batman #617</h3>
+          <p class="pub-id" title="PUB-BAT-0617">PUB-BAT-0617</p>
+          <p class="meta" title="Seq 001009 | core">Seq 001009 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original twelve-part Hush story.">Original twelve-part Hush story.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001010">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0618.jpg" data-full-title="Batman #618" data-full-detail="PUB-BAT-0618 | Seq 001010 | core | Original twelve-part Hush story. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0618.jpg" alt="Batman #618 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #618">Batman #618</h3>
+          <p class="pub-id" title="PUB-BAT-0618">PUB-BAT-0618</p>
+          <p class="meta" title="Seq 001010 | core">Seq 001010 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original twelve-part Hush story.">Original twelve-part Hush story.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001011">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0619.jpg" data-full-title="Batman #619" data-full-detail="PUB-BAT-0619 | Seq 001011 | core | Original twelve-part Hush story. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0619.jpg" alt="Batman #619 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #619">Batman #619</h3>
+          <p class="pub-id" title="PUB-BAT-0619">PUB-BAT-0619</p>
+          <p class="meta" title="Seq 001011 | core">Seq 001011 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original twelve-part Hush story.">Original twelve-part Hush story.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001999" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001999">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-wizard-0.jpg" data-full-title="Wizard #0" data-full-detail="VIEW-wizard-0 | Seq 001999 | core | Six-page Hush interlude positioned after Batman #616 in collected editions. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-wizard-0.jpg" alt="Wizard #0 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Wizard #0">Wizard #0</h3>
+          <p class="pub-id" title="VIEW-wizard-0">VIEW-wizard-0</p>
+          <p class="meta" title="Seq 001999 | core">Seq 001999 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Six-page Hush interlude positioned after Batman #616 in collected editions.">Six-page Hush interlude positioned after Batman #616 in collected editions.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Returns" data-project="hush_extended" data-status="missing" data-sequence="002000" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002000">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-50.jpg" data-full-title="Batman: Gotham Knights #50" data-full-detail="VIEW-batman-gotham-knights-50 | Seq 002000 | core | Hush Returns opening sequence. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-gotham-knights-50.jpg" alt="Batman: Gotham Knights #50 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #50">Batman: Gotham Knights #50</h3>
+          <p class="pub-id" title="VIEW-batman-gotham-knights-50">VIEW-batman-gotham-knights-50</p>
+          <p class="meta" title="Seq 002000 | core">Seq 002000 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Hush Returns opening sequence.">Hush Returns opening sequence.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Returns" data-project="hush_extended" data-status="missing" data-sequence="002001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002001">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-51.jpg" data-full-title="Batman: Gotham Knights #51" data-full-detail="VIEW-batman-gotham-knights-51 | Seq 002001 | core | Hush Returns opening sequence. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-gotham-knights-51.jpg" alt="Batman: Gotham Knights #51 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #51">Batman: Gotham Knights #51</h3>
+          <p class="pub-id" title="VIEW-batman-gotham-knights-51">VIEW-batman-gotham-knights-51</p>
+          <p class="meta" title="Seq 002001 | core">Seq 002001 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Hush Returns opening sequence.">Hush Returns opening sequence.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Returns" data-project="hush_extended" data-status="missing" data-sequence="002002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002002">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-52.jpg" data-full-title="Batman: Gotham Knights #52" data-full-detail="VIEW-batman-gotham-knights-52 | Seq 002002 | core | Hush Returns opening sequence. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-gotham-knights-52.jpg" alt="Batman: Gotham Knights #52 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #52">Batman: Gotham Knights #52</h3>
+          <p class="pub-id" title="VIEW-batman-gotham-knights-52">VIEW-batman-gotham-knights-52</p>
+          <p class="meta" title="Seq 002002 | core">Seq 002002 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Hush Returns opening sequence.">Hush Returns opening sequence.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Returns" data-project="hush_extended" data-status="missing" data-sequence="002003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002003">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-53.jpg" data-full-title="Batman: Gotham Knights #53" data-full-detail="VIEW-batman-gotham-knights-53 | Seq 002003 | core | Hush Returns opening sequence. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-gotham-knights-53.jpg" alt="Batman: Gotham Knights #53 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #53">Batman: Gotham Knights #53</h3>
+          <p class="pub-id" title="VIEW-batman-gotham-knights-53">VIEW-batman-gotham-knights-53</p>
+          <p class="meta" title="Seq 002003 | core">Seq 002003 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Hush Returns opening sequence.">Hush Returns opening sequence.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Returns" data-project="hush_extended" data-status="missing" data-sequence="002004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002004">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-54.jpg" data-full-title="Batman: Gotham Knights #54" data-full-detail="VIEW-batman-gotham-knights-54 | Seq 002004 | core | Hush Returns opening sequence. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-gotham-knights-54.jpg" alt="Batman: Gotham Knights #54 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #54">Batman: Gotham Knights #54</h3>
+          <p class="pub-id" title="VIEW-batman-gotham-knights-54">VIEW-batman-gotham-knights-54</p>
+          <p class="meta" title="Seq 002004 | core">Seq 002004 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Hush Returns opening sequence.">Hush Returns opening sequence.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Returns" data-project="hush_extended" data-status="missing" data-sequence="002005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002005">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-55.jpg" data-full-title="Batman: Gotham Knights #55" data-full-detail="VIEW-batman-gotham-knights-55 | Seq 002005 | core | Hush Returns opening sequence. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-gotham-knights-55.jpg" alt="Batman: Gotham Knights #55 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #55">Batman: Gotham Knights #55</h3>
+          <p class="pub-id" title="VIEW-batman-gotham-knights-55">VIEW-batman-gotham-knights-55</p>
+          <p class="meta" title="Seq 002005 | core">Seq 002005 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Hush Returns opening sequence.">Hush Returns opening sequence.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002100" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002100">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-60.jpg" data-full-title="Batman: Gotham Knights #60" data-full-detail="VIEW-batman-gotham-knights-60 | Seq 002100 | core | Extended Hush material in omnibus scope. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-gotham-knights-60.jpg" alt="Batman: Gotham Knights #60 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #60">Batman: Gotham Knights #60</h3>
+          <p class="pub-id" title="VIEW-batman-gotham-knights-60">VIEW-batman-gotham-knights-60</p>
+          <p class="meta" title="Seq 002100 | core">Seq 002100 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Extended Hush material in omnibus scope.">Extended Hush material in omnibus scope.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002101" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002101">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-61.jpg" data-full-title="Batman: Gotham Knights #61" data-full-detail="VIEW-batman-gotham-knights-61 | Seq 002101 | core | Extended Hush material in omnibus scope. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-gotham-knights-61.jpg" alt="Batman: Gotham Knights #61 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #61">Batman: Gotham Knights #61</h3>
+          <p class="pub-id" title="VIEW-batman-gotham-knights-61">VIEW-batman-gotham-knights-61</p>
+          <p class="meta" title="Seq 002101 | core">Seq 002101 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Extended Hush material in omnibus scope.">Extended Hush material in omnibus scope.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002102" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002102">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-62.jpg" data-full-title="Batman: Gotham Knights #62" data-full-detail="VIEW-batman-gotham-knights-62 | Seq 002102 | core | Extended Hush material in omnibus scope. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-gotham-knights-62.jpg" alt="Batman: Gotham Knights #62 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #62">Batman: Gotham Knights #62</h3>
+          <p class="pub-id" title="VIEW-batman-gotham-knights-62">VIEW-batman-gotham-knights-62</p>
+          <p class="meta" title="Seq 002102 | core">Seq 002102 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Extended Hush material in omnibus scope.">Extended Hush material in omnibus scope.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002103" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002103">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-63.jpg" data-full-title="Batman: Gotham Knights #63" data-full-detail="VIEW-batman-gotham-knights-63 | Seq 002103 | core | Extended Hush material in omnibus scope. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-gotham-knights-63.jpg" alt="Batman: Gotham Knights #63 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #63">Batman: Gotham Knights #63</h3>
+          <p class="pub-id" title="VIEW-batman-gotham-knights-63">VIEW-batman-gotham-knights-63</p>
+          <p class="meta" title="Seq 002103 | core">Seq 002103 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Extended Hush material in omnibus scope.">Extended Hush material in omnibus scope.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002104" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002104">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-64.jpg" data-full-title="Batman: Gotham Knights #64" data-full-detail="VIEW-batman-gotham-knights-64 | Seq 002104 | core | Extended Hush material in omnibus scope. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-gotham-knights-64.jpg" alt="Batman: Gotham Knights #64 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #64">Batman: Gotham Knights #64</h3>
+          <p class="pub-id" title="VIEW-batman-gotham-knights-64">VIEW-batman-gotham-knights-64</p>
+          <p class="meta" title="Seq 002104 | core">Seq 002104 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Extended Hush material in omnibus scope.">Extended Hush material in omnibus scope.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002105" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002105">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-65.jpg" data-full-title="Batman: Gotham Knights #65" data-full-detail="VIEW-batman-gotham-knights-65 | Seq 002105 | core | Extended Hush material in omnibus scope. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-gotham-knights-65.jpg" alt="Batman: Gotham Knights #65 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #65">Batman: Gotham Knights #65</h3>
+          <p class="pub-id" title="VIEW-batman-gotham-knights-65">VIEW-batman-gotham-knights-65</p>
+          <p class="meta" title="Seq 002105 | core">Seq 002105 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Extended Hush material in omnibus scope.">Extended Hush material in omnibus scope.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002106" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002106">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-66.jpg" data-full-title="Batman: Gotham Knights #66" data-full-detail="VIEW-batman-gotham-knights-66 | Seq 002106 | core | Extended Hush material in omnibus scope. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-gotham-knights-66.jpg" alt="Batman: Gotham Knights #66 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #66">Batman: Gotham Knights #66</h3>
+          <p class="pub-id" title="VIEW-batman-gotham-knights-66">VIEW-batman-gotham-knights-66</p>
+          <p class="meta" title="Seq 002106 | core">Seq 002106 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Extended Hush material in omnibus scope.">Extended Hush material in omnibus scope.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002107" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002107">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-67.jpg" data-full-title="Batman: Gotham Knights #67" data-full-detail="VIEW-batman-gotham-knights-67 | Seq 002107 | core | Extended Hush material in omnibus scope. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-gotham-knights-67.jpg" alt="Batman: Gotham Knights #67 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #67">Batman: Gotham Knights #67</h3>
+          <p class="pub-id" title="VIEW-batman-gotham-knights-67">VIEW-batman-gotham-knights-67</p>
+          <p class="meta" title="Seq 002107 | core">Seq 002107 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Extended Hush material in omnibus scope.">Extended Hush material in omnibus scope.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002108" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002108">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-68.jpg" data-full-title="Batman: Gotham Knights #68" data-full-detail="VIEW-batman-gotham-knights-68 | Seq 002108 | core | Extended Hush material in omnibus scope. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-gotham-knights-68.jpg" alt="Batman: Gotham Knights #68 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #68">Batman: Gotham Knights #68</h3>
+          <p class="pub-id" title="VIEW-batman-gotham-knights-68">VIEW-batman-gotham-knights-68</p>
+          <p class="meta" title="Seq 002108 | core">Seq 002108 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Extended Hush material in omnibus scope.">Extended Hush material in omnibus scope.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002109" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002109">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-69.jpg" data-full-title="Batman: Gotham Knights #69" data-full-detail="VIEW-batman-gotham-knights-69 | Seq 002109 | core | Extended Hush material in omnibus scope. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-gotham-knights-69.jpg" alt="Batman: Gotham Knights #69 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #69">Batman: Gotham Knights #69</h3>
+          <p class="pub-id" title="VIEW-batman-gotham-knights-69">VIEW-batman-gotham-knights-69</p>
+          <p class="meta" title="Seq 002109 | core">Seq 002109 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Extended Hush material in omnibus scope.">Extended Hush material in omnibus scope.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002110" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002110">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-70.jpg" data-full-title="Batman: Gotham Knights #70" data-full-detail="VIEW-batman-gotham-knights-70 | Seq 002110 | core | Extended Hush material in omnibus scope. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-gotham-knights-70.jpg" alt="Batman: Gotham Knights #70 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #70">Batman: Gotham Knights #70</h3>
+          <p class="pub-id" title="VIEW-batman-gotham-knights-70">VIEW-batman-gotham-knights-70</p>
+          <p class="meta" title="Seq 002110 | core">Seq 002110 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Extended Hush material in omnibus scope.">Extended Hush material in omnibus scope.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002111" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002111">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-71.jpg" data-full-title="Batman: Gotham Knights #71" data-full-detail="VIEW-batman-gotham-knights-71 | Seq 002111 | core | Extended Hush material in omnibus scope. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-gotham-knights-71.jpg" alt="Batman: Gotham Knights #71 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #71">Batman: Gotham Knights #71</h3>
+          <p class="pub-id" title="VIEW-batman-gotham-knights-71">VIEW-batman-gotham-knights-71</p>
+          <p class="meta" title="Seq 002111 | core">Seq 002111 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Extended Hush material in omnibus scope.">Extended Hush material in omnibus scope.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002200" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002200">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-73.jpg" data-full-title="Batman: Gotham Knights #73" data-full-detail="VIEW-batman-gotham-knights-73 | Seq 002200 | core | Extended Hush material in omnibus scope. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-gotham-knights-73.jpg" alt="Batman: Gotham Knights #73 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #73">Batman: Gotham Knights #73</h3>
+          <p class="pub-id" title="VIEW-batman-gotham-knights-73">VIEW-batman-gotham-knights-73</p>
+          <p class="meta" title="Seq 002200 | core">Seq 002200 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Extended Hush material in omnibus scope.">Extended Hush material in omnibus scope.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002201" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002201">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-74.jpg" data-full-title="Batman: Gotham Knights #74" data-full-detail="VIEW-batman-gotham-knights-74 | Seq 002201 | core | Extended Hush material in omnibus scope. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-gotham-knights-74.jpg" alt="Batman: Gotham Knights #74 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #74">Batman: Gotham Knights #74</h3>
+          <p class="pub-id" title="VIEW-batman-gotham-knights-74">VIEW-batman-gotham-knights-74</p>
+          <p class="meta" title="Seq 002201 | core">Seq 002201 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Extended Hush material in omnibus scope.">Extended Hush material in omnibus scope.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Heart of Hush" data-project="hush_extended" data-status="missing" data-sequence="003000" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003000">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-846.jpg" data-full-title="Detective Comics #846" data-full-detail="VIEW-detective-comics-846 | Seq 003000 | core | Heart of Hush core chapters. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-846.jpg" alt="Detective Comics #846 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Heart of Hush</span>
+            
+          </div>
+          <h3 title="Detective Comics #846">Detective Comics #846</h3>
+          <p class="pub-id" title="VIEW-detective-comics-846">VIEW-detective-comics-846</p>
+          <p class="meta" title="Seq 003000 | core">Seq 003000 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Heart of Hush core chapters.">Heart of Hush core chapters.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Heart of Hush" data-project="hush_extended" data-status="missing" data-sequence="003001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003001">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-847.jpg" data-full-title="Detective Comics #847" data-full-detail="VIEW-detective-comics-847 | Seq 003001 | core | Heart of Hush core chapters. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-847.jpg" alt="Detective Comics #847 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Heart of Hush</span>
+            
+          </div>
+          <h3 title="Detective Comics #847">Detective Comics #847</h3>
+          <p class="pub-id" title="VIEW-detective-comics-847">VIEW-detective-comics-847</p>
+          <p class="meta" title="Seq 003001 | core">Seq 003001 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Heart of Hush core chapters.">Heart of Hush core chapters.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Heart of Hush" data-project="hush_extended" data-status="missing" data-sequence="003002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003002">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-848.jpg" data-full-title="Detective Comics #848" data-full-detail="VIEW-detective-comics-848 | Seq 003002 | core | Heart of Hush core chapters. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-848.jpg" alt="Detective Comics #848 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Heart of Hush</span>
+            
+          </div>
+          <h3 title="Detective Comics #848">Detective Comics #848</h3>
+          <p class="pub-id" title="VIEW-detective-comics-848">VIEW-detective-comics-848</p>
+          <p class="meta" title="Seq 003002 | core">Seq 003002 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Heart of Hush core chapters.">Heart of Hush core chapters.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Heart of Hush" data-project="hush_extended" data-status="missing" data-sequence="003003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003003">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-849.jpg" data-full-title="Detective Comics #849" data-full-detail="VIEW-detective-comics-849 | Seq 003003 | core | Heart of Hush core chapters. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-849.jpg" alt="Detective Comics #849 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Heart of Hush</span>
+            
+          </div>
+          <h3 title="Detective Comics #849">Detective Comics #849</h3>
+          <p class="pub-id" title="VIEW-detective-comics-849">VIEW-detective-comics-849</p>
+          <p class="meta" title="Seq 003003 | core">Seq 003003 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Heart of Hush core chapters.">Heart of Hush core chapters.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Heart of Hush" data-project="hush_extended" data-status="missing" data-sequence="003004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003004">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-850.jpg" data-full-title="Detective Comics #850" data-full-detail="VIEW-detective-comics-850 | Seq 003004 | core | Heart of Hush core chapters. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-850.jpg" alt="Detective Comics #850 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Heart of Hush</span>
+            
+          </div>
+          <h3 title="Detective Comics #850">Detective Comics #850</h3>
+          <p class="pub-id" title="VIEW-detective-comics-850">VIEW-detective-comics-850</p>
+          <p class="meta" title="Seq 003004 | core">Seq 003004 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Heart of Hush core chapters.">Heart of Hush core chapters.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Heart of Hush epilogue" data-project="hush_extended" data-status="missing" data-sequence="003006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003006">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-852.jpg" data-full-title="Detective Comics #852" data-full-detail="VIEW-detective-comics-852 | Seq 003006 | core | Omnibus Hush scope. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-852.jpg" alt="Detective Comics #852 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Heart of Hush epilogue</span>
+            
+          </div>
+          <h3 title="Detective Comics #852">Detective Comics #852</h3>
+          <p class="pub-id" title="VIEW-detective-comics-852">VIEW-detective-comics-852</p>
+          <p class="meta" title="Seq 003006 | core">Seq 003006 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Omnibus Hush scope.">Omnibus Hush scope.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Money" data-project="hush_extended" data-status="missing" data-sequence="003007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003007">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0685.jpg" data-full-title="Batman #685" data-full-detail="PUB-BAT-0685 | Seq 003007 | core | Hush Money lead-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0685.jpg" alt="Batman #685 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Money</span>
+            
+          </div>
+          <h3 title="Batman #685">Batman #685</h3>
+          <p class="pub-id" title="PUB-BAT-0685">PUB-BAT-0685</p>
+          <p class="meta" title="Seq 003007 | core">Seq 003007 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Hush Money lead-in.">Hush Money lead-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Money" data-project="hush_extended" data-status="missing" data-sequence="004000" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004000">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-1.jpg" data-full-title="Batman: Streets of Gotham #1" data-full-detail="VIEW-batman-streets-of-gotham-1 | Seq 004000 | core | Hush Money chapters. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-streets-of-gotham-1.jpg" alt="Batman: Streets of Gotham #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Money</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #1">Batman: Streets of Gotham #1</h3>
+          <p class="pub-id" title="VIEW-batman-streets-of-gotham-1">VIEW-batman-streets-of-gotham-1</p>
+          <p class="meta" title="Seq 004000 | core">Seq 004000 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Hush Money chapters.">Hush Money chapters.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Money" data-project="hush_extended" data-status="missing" data-sequence="004001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004001">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-2.jpg" data-full-title="Batman: Streets of Gotham #2" data-full-detail="VIEW-batman-streets-of-gotham-2 | Seq 004001 | core | Hush Money chapters. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-streets-of-gotham-2.jpg" alt="Batman: Streets of Gotham #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Money</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #2">Batman: Streets of Gotham #2</h3>
+          <p class="pub-id" title="VIEW-batman-streets-of-gotham-2">VIEW-batman-streets-of-gotham-2</p>
+          <p class="meta" title="Seq 004001 | core">Seq 004001 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Hush Money chapters.">Hush Money chapters.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Money" data-project="hush_extended" data-status="missing" data-sequence="004002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004002">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-3.jpg" data-full-title="Batman: Streets of Gotham #3" data-full-detail="VIEW-batman-streets-of-gotham-3 | Seq 004002 | core | Hush Money chapters. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-streets-of-gotham-3.jpg" alt="Batman: Streets of Gotham #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Money</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #3">Batman: Streets of Gotham #3</h3>
+          <p class="pub-id" title="VIEW-batman-streets-of-gotham-3">VIEW-batman-streets-of-gotham-3</p>
+          <p class="meta" title="Seq 004002 | core">Seq 004002 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Hush Money chapters.">Hush Money chapters.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Hush Money" data-project="hush_extended" data-status="missing" data-sequence="004003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004003">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-4.jpg" data-full-title="Batman: Streets of Gotham #4" data-full-detail="VIEW-batman-streets-of-gotham-4 | Seq 004003 | core | Hush Money chapters. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-streets-of-gotham-4.jpg" alt="Batman: Streets of Gotham #4 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Money</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #4">Batman: Streets of Gotham #4</h3>
+          <p class="pub-id" title="VIEW-batman-streets-of-gotham-4">VIEW-batman-streets-of-gotham-4</p>
+          <p class="meta" title="Seq 004003 | core">Seq 004003 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Hush Money chapters.">Hush Money chapters.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="House of Hush" data-project="hush_extended" data-status="missing" data-sequence="004100" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004100">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-12.jpg" data-full-title="Batman: Streets of Gotham #12" data-full-detail="VIEW-batman-streets-of-gotham-12 | Seq 004100 | core | House of Hush opening chapters. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-streets-of-gotham-12.jpg" alt="Batman: Streets of Gotham #12 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">House of Hush</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #12">Batman: Streets of Gotham #12</h3>
+          <p class="pub-id" title="VIEW-batman-streets-of-gotham-12">VIEW-batman-streets-of-gotham-12</p>
+          <p class="meta" title="Seq 004100 | core">Seq 004100 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="House of Hush opening chapters.">House of Hush opening chapters.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="House of Hush" data-project="hush_extended" data-status="missing" data-sequence="004101" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004101">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-13.jpg" data-full-title="Batman: Streets of Gotham #13" data-full-detail="VIEW-batman-streets-of-gotham-13 | Seq 004101 | core | House of Hush opening chapters. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-streets-of-gotham-13.jpg" alt="Batman: Streets of Gotham #13 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">House of Hush</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #13">Batman: Streets of Gotham #13</h3>
+          <p class="pub-id" title="VIEW-batman-streets-of-gotham-13">VIEW-batman-streets-of-gotham-13</p>
+          <p class="meta" title="Seq 004101 | core">Seq 004101 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="House of Hush opening chapters.">House of Hush opening chapters.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="House of Hush" data-project="hush_extended" data-status="missing" data-sequence="004102" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004102">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-14.jpg" data-full-title="Batman: Streets of Gotham #14" data-full-detail="VIEW-batman-streets-of-gotham-14 | Seq 004102 | core | House of Hush opening chapters. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-streets-of-gotham-14.jpg" alt="Batman: Streets of Gotham #14 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">House of Hush</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #14">Batman: Streets of Gotham #14</h3>
+          <p class="pub-id" title="VIEW-batman-streets-of-gotham-14">VIEW-batman-streets-of-gotham-14</p>
+          <p class="meta" title="Seq 004102 | core">Seq 004102 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="House of Hush opening chapters.">House of Hush opening chapters.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="House of Hush" data-project="hush_extended" data-status="missing" data-sequence="004200" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004200">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-16.jpg" data-full-title="Batman: Streets of Gotham #16" data-full-detail="VIEW-batman-streets-of-gotham-16 | Seq 004200 | core | Complete omnibus House of Hush scope through issue 21. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-streets-of-gotham-16.jpg" alt="Batman: Streets of Gotham #16 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">House of Hush</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #16">Batman: Streets of Gotham #16</h3>
+          <p class="pub-id" title="VIEW-batman-streets-of-gotham-16">VIEW-batman-streets-of-gotham-16</p>
+          <p class="meta" title="Seq 004200 | core">Seq 004200 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete omnibus House of Hush scope through issue 21.">Complete omnibus House of Hush scope through issue 21.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="House of Hush" data-project="hush_extended" data-status="missing" data-sequence="004201" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004201">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-17.jpg" data-full-title="Batman: Streets of Gotham #17" data-full-detail="VIEW-batman-streets-of-gotham-17 | Seq 004201 | core | Complete omnibus House of Hush scope through issue 21. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-streets-of-gotham-17.jpg" alt="Batman: Streets of Gotham #17 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">House of Hush</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #17">Batman: Streets of Gotham #17</h3>
+          <p class="pub-id" title="VIEW-batman-streets-of-gotham-17">VIEW-batman-streets-of-gotham-17</p>
+          <p class="meta" title="Seq 004201 | core">Seq 004201 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete omnibus House of Hush scope through issue 21.">Complete omnibus House of Hush scope through issue 21.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="House of Hush" data-project="hush_extended" data-status="missing" data-sequence="004202" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004202">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-18.jpg" data-full-title="Batman: Streets of Gotham #18" data-full-detail="VIEW-batman-streets-of-gotham-18 | Seq 004202 | core | Complete omnibus House of Hush scope through issue 21. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-streets-of-gotham-18.jpg" alt="Batman: Streets of Gotham #18 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">House of Hush</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #18">Batman: Streets of Gotham #18</h3>
+          <p class="pub-id" title="VIEW-batman-streets-of-gotham-18">VIEW-batman-streets-of-gotham-18</p>
+          <p class="meta" title="Seq 004202 | core">Seq 004202 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete omnibus House of Hush scope through issue 21.">Complete omnibus House of Hush scope through issue 21.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="House of Hush" data-project="hush_extended" data-status="missing" data-sequence="004203" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004203">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-19.jpg" data-full-title="Batman: Streets of Gotham #19" data-full-detail="VIEW-batman-streets-of-gotham-19 | Seq 004203 | core | Complete omnibus House of Hush scope through issue 21. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-streets-of-gotham-19.jpg" alt="Batman: Streets of Gotham #19 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">House of Hush</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #19">Batman: Streets of Gotham #19</h3>
+          <p class="pub-id" title="VIEW-batman-streets-of-gotham-19">VIEW-batman-streets-of-gotham-19</p>
+          <p class="meta" title="Seq 004203 | core">Seq 004203 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete omnibus House of Hush scope through issue 21.">Complete omnibus House of Hush scope through issue 21.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="House of Hush" data-project="hush_extended" data-status="missing" data-sequence="004204" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004204">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-20.jpg" data-full-title="Batman: Streets of Gotham #20" data-full-detail="VIEW-batman-streets-of-gotham-20 | Seq 004204 | core | Complete omnibus House of Hush scope through issue 21. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-streets-of-gotham-20.jpg" alt="Batman: Streets of Gotham #20 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">House of Hush</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #20">Batman: Streets of Gotham #20</h3>
+          <p class="pub-id" title="VIEW-batman-streets-of-gotham-20">VIEW-batman-streets-of-gotham-20</p>
+          <p class="meta" title="Seq 004204 | core">Seq 004204 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete omnibus House of Hush scope through issue 21.">Complete omnibus House of Hush scope through issue 21.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="House of Hush" data-project="hush_extended" data-status="missing" data-sequence="004205" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004205">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-21.jpg" data-full-title="Batman: Streets of Gotham #21" data-full-detail="VIEW-batman-streets-of-gotham-21 | Seq 004205 | core | Complete omnibus House of Hush scope through issue 21. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-streets-of-gotham-21.jpg" alt="Batman: Streets of Gotham #21 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">House of Hush</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #21">Batman: Streets of Gotham #21</h3>
+          <p class="pub-id" title="VIEW-batman-streets-of-gotham-21">VIEW-batman-streets-of-gotham-21</p>
+          <p class="meta" title="Seq 004205 | core">Seq 004205 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete omnibus House of Hush scope through issue 21.">Complete omnibus House of Hush scope through issue 21.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="H2SH Prelude" data-project="hush_extended" data-status="missing" data-sequence="004999" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004999">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-justice-league-unlimited-1.jpg" data-full-title="Justice League Unlimited #1" data-full-detail="VIEW-justice-league-unlimited-1 | Seq 004999 | core | Optional H2SH prelude backup story. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-justice-league-unlimited-1.jpg" alt="Justice League Unlimited #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">H2SH Prelude</span>
+            
+          </div>
+          <h3 title="Justice League Unlimited #1">Justice League Unlimited #1</h3>
+          <p class="pub-id" title="VIEW-justice-league-unlimited-1">VIEW-justice-league-unlimited-1</p>
+          <p class="meta" title="Seq 004999 | core">Seq 004999 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Optional H2SH prelude backup story.">Optional H2SH prelude backup story.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="H2SH Part One" data-project="hush_extended" data-status="missing" data-sequence="005000" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:005000">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-vol-3-158.jpg" data-full-title="Batman (Vol. 3) #158" data-full-detail="VIEW-batman-vol-3-158 | Seq 005000 | core | Official six-part H2SH Part One. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-vol-3-158.jpg" alt="Batman (Vol. 3) #158 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">H2SH Part One</span>
+            
+          </div>
+          <h3 title="Batman (Vol. 3) #158">Batman (Vol. 3) #158</h3>
+          <p class="pub-id" title="VIEW-batman-vol-3-158">VIEW-batman-vol-3-158</p>
+          <p class="meta" title="Seq 005000 | core">Seq 005000 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Official six-part H2SH Part One.">Official six-part H2SH Part One.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="H2SH Part One" data-project="hush_extended" data-status="missing" data-sequence="005001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:005001">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-vol-3-159.jpg" data-full-title="Batman (Vol. 3) #159" data-full-detail="VIEW-batman-vol-3-159 | Seq 005001 | core | Official six-part H2SH Part One. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-vol-3-159.jpg" alt="Batman (Vol. 3) #159 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">H2SH Part One</span>
+            
+          </div>
+          <h3 title="Batman (Vol. 3) #159">Batman (Vol. 3) #159</h3>
+          <p class="pub-id" title="VIEW-batman-vol-3-159">VIEW-batman-vol-3-159</p>
+          <p class="meta" title="Seq 005001 | core">Seq 005001 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Official six-part H2SH Part One.">Official six-part H2SH Part One.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="H2SH Part One" data-project="hush_extended" data-status="missing" data-sequence="005002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:005002">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-vol-3-160.jpg" data-full-title="Batman (Vol. 3) #160" data-full-detail="VIEW-batman-vol-3-160 | Seq 005002 | core | Official six-part H2SH Part One. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-vol-3-160.jpg" alt="Batman (Vol. 3) #160 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">H2SH Part One</span>
+            
+          </div>
+          <h3 title="Batman (Vol. 3) #160">Batman (Vol. 3) #160</h3>
+          <p class="pub-id" title="VIEW-batman-vol-3-160">VIEW-batman-vol-3-160</p>
+          <p class="meta" title="Seq 005002 | core">Seq 005002 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Official six-part H2SH Part One.">Official six-part H2SH Part One.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="H2SH Part One" data-project="hush_extended" data-status="missing" data-sequence="005003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:005003">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-vol-3-161.jpg" data-full-title="Batman (Vol. 3) #161" data-full-detail="VIEW-batman-vol-3-161 | Seq 005003 | core | Official six-part H2SH Part One. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-vol-3-161.jpg" alt="Batman (Vol. 3) #161 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">H2SH Part One</span>
+            
+          </div>
+          <h3 title="Batman (Vol. 3) #161">Batman (Vol. 3) #161</h3>
+          <p class="pub-id" title="VIEW-batman-vol-3-161">VIEW-batman-vol-3-161</p>
+          <p class="meta" title="Seq 005003 | core">Seq 005003 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Official six-part H2SH Part One.">Official six-part H2SH Part One.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="H2SH Part One" data-project="hush_extended" data-status="missing" data-sequence="005004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:005004">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-vol-3-162.jpg" data-full-title="Batman (Vol. 3) #162" data-full-detail="VIEW-batman-vol-3-162 | Seq 005004 | core | Official six-part H2SH Part One. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-vol-3-162.jpg" alt="Batman (Vol. 3) #162 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">H2SH Part One</span>
+            
+          </div>
+          <h3 title="Batman (Vol. 3) #162">Batman (Vol. 3) #162</h3>
+          <p class="pub-id" title="VIEW-batman-vol-3-162">VIEW-batman-vol-3-162</p>
+          <p class="meta" title="Seq 005004 | core">Seq 005004 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Official six-part H2SH Part One.">Official six-part H2SH Part One.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="H2SH Part One" data-project="hush_extended" data-status="missing" data-sequence="005005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:005005">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-vol-3-163.jpg" data-full-title="Batman (Vol. 3) #163" data-full-detail="VIEW-batman-vol-3-163 | Seq 005005 | core | Official six-part H2SH Part One. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-vol-3-163.jpg" alt="Batman (Vol. 3) #163 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">H2SH Part One</span>
+            
+          </div>
+          <h3 title="Batman (Vol. 3) #163">Batman (Vol. 3) #163</h3>
+          <p class="pub-id" title="VIEW-batman-vol-3-163">VIEW-batman-vol-3-163</p>
+          <p class="meta" title="Seq 005005 | core">Seq 005005 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Official six-part H2SH Part One.">Official six-part H2SH Part One.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+  <div class="lightbox" aria-modal="true" role="dialog" aria-label="Cover preview">
+    <div class="lightbox-panel">
+      <img src="" alt="">
+      <div class="lightbox-caption">
+        <div>
+          <div class="lightbox-title"></div>
+          <div class="lightbox-detail"></div>
+        </div>
+        <button class="lightbox-close" type="button" data-lightbox-close>Close</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const state = { order: 'reading', scope: 'all', project: 'all', status: 'all' };
+    const grid = document.querySelector('.grid');
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImage = document.querySelector('.lightbox img');
+    const lightboxTitle = document.querySelector('.lightbox-title');
+    const lightboxDetail = document.querySelector('.lightbox-detail');
+    document.querySelectorAll('.chip').forEach(button => {
+      button.addEventListener('click', () => {
+        const group = button.dataset.filter;
+        state[group] = button.dataset.value;
+        document.querySelectorAll(`.chip[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item === button));
+        applyFilters();
+      });
+    });
+    function applyFilters() {
+      document.querySelectorAll('.comic-card').forEach(card => {
+        const visible = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]));
+        card.classList.toggle('hidden', !visible);
+      });
+      sortCards();
+    }
+    function sortCards() {
+      [...document.querySelectorAll('.comic-card')]
+        .sort((left, right) => sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent))
+        .forEach(card => grid.appendChild(card));
+    }
+    function sequenceForCard(card) {
+      const order = state.order === 'all' ? 'reading' : state.order;
+      if (order === 'publication') {
+        return scopedSequence(card, 'publicationSequence');
+      }
+      if (order === 'chronological') {
+        return scopedSequence(card, 'chronologicalSequence');
+      }
+      const byOrder = sequenceMap(card.dataset.orderSequences);
+      if (byOrder[order]) {
+        return sortValue(byOrder[order]);
+      }
+      const chronological = scopedSequence(card, 'chronologicalSequence');
+      return chronological < 999999 ? chronological : sortValue(card.dataset.sequence);
+    }
+    function scopedSequence(card, orderKey) {
+      const scoped = sequenceMap(card.dataset[`${orderKey}s`]);
+      if (state.scope !== 'all' && scoped[state.scope]) {
+        return sortValue(scoped[state.scope]);
+      }
+      return sortValue(card.dataset[orderKey]);
+    }
+    function sequenceMap(value) {
+      return Object.fromEntries((value || '').split('|').filter(Boolean).map(item => {
+        const [scope, sequence] = item.split(':');
+        return [scope, sequence];
+      }));
+    }
+    function sortValue(value) {
+      const parsed = Number.parseFloat(value || '999999');
+      if (Number.isFinite(parsed)) {
+        return parsed;
+      }
+        const embedded = String(value || '').match(/\d+(\.\d+)?/);
+      return embedded ? Number.parseFloat(embedded[0]) : 999999;
+    }
+    document.querySelectorAll('.cover-button').forEach(button => {
+      button.addEventListener('click', () => {
+        lightboxImage.src = button.dataset.fullSrc;
+        lightboxImage.alt = `${button.dataset.fullTitle} cover`;
+        lightboxTitle.textContent = button.dataset.fullTitle;
+        lightboxDetail.textContent = button.dataset.fullDetail || '';
+        lightbox.classList.add('open');
+      });
+    });
+    document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
+    lightbox.addEventListener('click', event => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeLightbox();
+    });
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightboxImage.removeAttribute('src');
+      lightboxImage.removeAttribute('alt');
+      lightboxTitle.textContent = '';
+      lightboxDetail.textContent = '';
+    }
+    applyFilters();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1417 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="../assets/site/batman-favicon.png">
+  <title>Gotham City - Visual Viewer</title>
+  <style>
+    :root { color-scheme: light; --ink:#172026; --muted:#5c6670; --line:#d9dee4; --paper:#f6f7f8; --panel:#ffffff; --owned:#0f7b4f; --fac:#6b4bb8; --ordered:#2166ad; --readable:#a46a00; --missing:#b42318; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); }
+    header { padding: 28px 32px 18px; background: #111820; color: white; }
+    .header-top { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .back-link { color: white; border: 1px solid rgba(255,255,255,.32); border-radius: 999px; padding: 7px 11px; text-decoration: none; font-size: 13px; background: rgba(255,255,255,.08); }
+    .back-link:hover { background: rgba(255,255,255,.16); }
+    h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; }
+    header p { margin: 0; color: #c8d0d8; max-width: 900px; }
+    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; padding: 18px 32px; background: #e9edf1; border-bottom: 1px solid var(--line); }
+    .metric { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+    .metric strong { display: block; font-size: 24px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    .controls { padding: 18px 32px; display: grid; gap: 12px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
+    .control-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .control-row b { margin-right: 4px; font-size: 13px; color: var(--muted); min-width: 70px; }
+    .chip { border: 1px solid var(--line); background: #f8fafb; color: var(--ink); border-radius: 999px; padding: 7px 11px; cursor: pointer; text-transform: capitalize; }
+    .chip.active { background: #172026; border-color: #172026; color: white; }
+    main { padding: 24px 32px 40px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 16px; align-items: start; }
+    .comic-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05); min-width: 0; display: flex; flex-direction: column; position: relative; }
+    .comic-card.owned { background: #f2fbf6; }
+    .comic-card.facsimile { background: #f6f2ff; }
+    .comic-card.ordered { background: #f1f7ff; }
+    .comic-card.readable { background: #fff8ec; }
+    .status-strip { background: var(--missing); color: white; min-height: 30px; display: grid; place-items: center; padding: 7px 8px; font-size: 12px; line-height: 1; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; }
+    .comic-card.owned .status-strip { background: var(--owned); }
+    .comic-card.facsimile .status-strip { background: var(--fac); }
+    .comic-card.ordered .status-strip { background: var(--ordered); }
+    .comic-card.readable .status-strip { background: var(--readable); }
+    .cover-wrap { aspect-ratio: 2 / 3; background: #242a31; display: grid; place-items: center; overflow: hidden; position: relative; }
+    .cover-button { appearance: none; border: 0; background: #111820; padding: 0; margin: 0; width: 100%; height: 100%; display: block; cursor: zoom-in; }
+    .cover-button:focus-visible { outline: 3px solid #f4c430; outline-offset: -3px; }
+    .cover-wrap img { width: 100%; height: 100%; object-fit: contain; background: #111820; display: block; }
+    .cover-placeholder { width: 100%; height: 100%; padding: 14px; color: white; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(145deg, #18212a, #39424c); }
+    .cover-placeholder span { font-weight: 700; line-height: 1.1; overflow-wrap: anywhere; }
+    .cover-placeholder strong { font-size: 42px; align-self: flex-end; }
+    .cover-review-badge { position: absolute; left: 8px; right: 8px; top: 8px; border-radius: 6px; padding: 6px 7px; color: white; font-size: 11px; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.22); pointer-events: none; }
+    .cover-review-badge.warning { background: rgba(164,106,0,.92); }
+    .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
+    .comic-card.cover-needs_review { border-color: #a46a00; }
+    .comic-card.cover-rejected_auto { border-color: #b42318; }
+    .card-body { padding: 10px 11px 12px; height: 205px; display: flex; flex-direction: column; overflow: hidden; }
+    .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
+    .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
+    .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
+    h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id { -webkit-line-clamp: 1; }
+    .meta, .continuity { -webkit-line-clamp: 2; }
+    .notes { -webkit-line-clamp: 2; position: relative; }
+    .notes::after { content: ""; position: absolute; inset: auto 0 0 0; height: 1.2em; background: linear-gradient(to bottom, rgba(255,255,255,0), var(--panel)); pointer-events: none; }
+    .comic-card.owned .notes::after { background: linear-gradient(to bottom, rgba(242,251,246,0), #f2fbf6); }
+    .comic-card.facsimile .notes::after { background: linear-gradient(to bottom, rgba(246,242,255,0), #f6f2ff); }
+    .comic-card.ordered .notes::after { background: linear-gradient(to bottom, rgba(241,247,255,0), #f1f7ff); }
+    .comic-card.readable .notes::after { background: linear-gradient(to bottom, rgba(255,248,236,0), #fff8ec); }
+    .hidden { display: none; }
+    .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
+    .lightbox.open { display: flex; }
+    .lightbox-panel { max-width: min(92vw, 980px); max-height: 94vh; display: grid; gap: 10px; }
+    .lightbox img { max-width: 100%; max-height: calc(94vh - 56px); object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
+    .lightbox-title { font-weight: 750; }
+    .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
+    .lightbox-close { border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: white; border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+    @media (max-width: 700px) { header, .summary, .controls, main { padding-left: 14px; padding-right: 14px; } .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; } }
+    </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <h1>Gotham City</h1>
+      <a class="back-link" href="visual_collection_viewer.html">All visual views</a>
+    </div>
+    <p>Gordon stories, GCPD, Gotham Nights I-II, Turning Points, Gotham Central and Gotham City: Year One in curated order.</p>
+  </header>
+  <section class="summary">
+    <div class="metric"><strong>71</strong><span>unique publications</span></div>
+    <div class="metric"><strong>25</strong><span>owned/readable</span></div>
+    <div class="metric"><strong>0</strong><span>facsimiles</span></div>
+    <div class="metric"><strong>46</strong><span>missing</span></div>
+  </section>
+  <section class="controls">
+    <div class="control-row"><b>Order</b><button class="chip" data-filter="order" data-value="all">All orders</button>
+<button class="chip active" data-filter="order" data-value="reading">reading</button></div>
+    <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button>
+<button class="chip" data-filter="scope" data-value="Gotham Central">Gotham Central</button>
+<button class="chip" data-filter="scope" data-value="Gotham City: Year One">Gotham City: Year One</button></div>
+    <div class="control-row"><b>Status</b><button class="chip active" data-filter="status" data-value="all">All statuses</button>
+<button class="chip" data-filter="status" data-value="owned">owned</button>
+<button class="chip" data-filter="status" data-value="facsimile">facsimile</button>
+<button class="chip" data-filter="status" data-value="ordered">ordered</button>
+<button class="chip" data-filter="status" data-value="readable">readable</button>
+<button class="chip" data-filter="status" data-value="missing">missing</button></div>
+    <div class="control-row"><b>Work</b><button class="chip active" data-filter="project" data-value="all">All works</button>
+<button class="chip" data-filter="project" data-value="gotham_city">gotham city</button></div>
+  </section>
+  <main>
+    <section class="grid">
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000001">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-GORDONS-LAW-0001.jpg" data-full-title="Batman: Gordon&#x27;s Law #1" data-full-detail="PUB-BAT-GORDONS-LAW-0001 | Seq 000001 | Publication alias: PUB-BAT-GORDONS-LAW-0001; Collection sheet: Batman row 345 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-GORDONS-LAW-0001.jpg" alt="Batman: Gordon&#x27;s Law #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Gordon&#x27;s Law #1">Batman: Gordon&#x27;s Law #1</h3>
+          <p class="pub-id" title="PUB-BAT-GORDONS-LAW-0001">PUB-BAT-GORDONS-LAW-0001</p>
+          <p class="meta" title="Seq 000001">Seq 000001</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BAT-GORDONS-LAW-0001; Collection sheet: Batman row 345">Publication alias: PUB-BAT-GORDONS-LAW-0001; Collection sheet: Batman row 345</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000002">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-GORDONS-LAW-0002.jpg" data-full-title="Batman: Gordon&#x27;s Law #2" data-full-detail="PUB-BAT-GORDONS-LAW-0002 | Seq 000002 | Publication alias: PUB-BAT-GORDONS-LAW-0002; Collection sheet: Batman row 346 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-GORDONS-LAW-0002.jpg" alt="Batman: Gordon&#x27;s Law #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Gordon&#x27;s Law #2">Batman: Gordon&#x27;s Law #2</h3>
+          <p class="pub-id" title="PUB-BAT-GORDONS-LAW-0002">PUB-BAT-GORDONS-LAW-0002</p>
+          <p class="meta" title="Seq 000002">Seq 000002</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BAT-GORDONS-LAW-0002; Collection sheet: Batman row 346">Publication alias: PUB-BAT-GORDONS-LAW-0002; Collection sheet: Batman row 346</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000003">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-GORDONS-LAW-0003.jpg" data-full-title="Batman: Gordon&#x27;s Law #3" data-full-detail="PUB-BAT-GORDONS-LAW-0003 | Seq 000003 | Publication alias: PUB-BAT-GORDONS-LAW-0003; Collection sheet: Batman row 347 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-GORDONS-LAW-0003.jpg" alt="Batman: Gordon&#x27;s Law #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Gordon&#x27;s Law #3">Batman: Gordon&#x27;s Law #3</h3>
+          <p class="pub-id" title="PUB-BAT-GORDONS-LAW-0003">PUB-BAT-GORDONS-LAW-0003</p>
+          <p class="meta" title="Seq 000003">Seq 000003</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BAT-GORDONS-LAW-0003; Collection sheet: Batman row 347">Publication alias: PUB-BAT-GORDONS-LAW-0003; Collection sheet: Batman row 347</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000004">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-GORDONS-LAW-0004.jpg" data-full-title="Batman: Gordon&#x27;s Law #4" data-full-detail="PUB-BAT-GORDONS-LAW-0004 | Seq 000004 | Publication alias: PUB-BAT-GORDONS-LAW-0004; Collection sheet: Batman row 348 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-GORDONS-LAW-0004.jpg" alt="Batman: Gordon&#x27;s Law #4 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Gordon&#x27;s Law #4">Batman: Gordon&#x27;s Law #4</h3>
+          <p class="pub-id" title="PUB-BAT-GORDONS-LAW-0004">PUB-BAT-GORDONS-LAW-0004</p>
+          <p class="meta" title="Seq 000004">Seq 000004</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BAT-GORDONS-LAW-0004; Collection sheet: Batman row 348">Publication alias: PUB-BAT-GORDONS-LAW-0004; Collection sheet: Batman row 348</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000005">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-GORDON-GOTHAM-0001.jpg" data-full-title="Batman: Gordon of Gotham #1" data-full-detail="PUB-BAT-GORDON-GOTHAM-0001 | Seq 000005 | Publication alias: PUB-BAT-GORDON-GOTHAM-0001; Collection sheet: Batman row 341 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-GORDON-GOTHAM-0001.jpg" alt="Batman: Gordon of Gotham #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Gordon of Gotham #1">Batman: Gordon of Gotham #1</h3>
+          <p class="pub-id" title="PUB-BAT-GORDON-GOTHAM-0001">PUB-BAT-GORDON-GOTHAM-0001</p>
+          <p class="meta" title="Seq 000005">Seq 000005</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BAT-GORDON-GOTHAM-0001; Collection sheet: Batman row 341">Publication alias: PUB-BAT-GORDON-GOTHAM-0001; Collection sheet: Batman row 341</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000006">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-GORDON-GOTHAM-0002.jpg" data-full-title="Batman: Gordon of Gotham #2" data-full-detail="PUB-BAT-GORDON-GOTHAM-0002 | Seq 000006 | Publication alias: PUB-BAT-GORDON-GOTHAM-0002; Collection sheet: Batman row 342 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-GORDON-GOTHAM-0002.jpg" alt="Batman: Gordon of Gotham #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Gordon of Gotham #2">Batman: Gordon of Gotham #2</h3>
+          <p class="pub-id" title="PUB-BAT-GORDON-GOTHAM-0002">PUB-BAT-GORDON-GOTHAM-0002</p>
+          <p class="meta" title="Seq 000006">Seq 000006</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BAT-GORDON-GOTHAM-0002; Collection sheet: Batman row 342">Publication alias: PUB-BAT-GORDON-GOTHAM-0002; Collection sheet: Batman row 342</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000007">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-GORDON-GOTHAM-0003.jpg" data-full-title="Batman: Gordon of Gotham #3" data-full-detail="PUB-BAT-GORDON-GOTHAM-0003 | Seq 000007 | Publication alias: PUB-BAT-GORDON-GOTHAM-0003; Collection sheet: Batman row 343 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-GORDON-GOTHAM-0003.jpg" alt="Batman: Gordon of Gotham #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Gordon of Gotham #3">Batman: Gordon of Gotham #3</h3>
+          <p class="pub-id" title="PUB-BAT-GORDON-GOTHAM-0003">PUB-BAT-GORDON-GOTHAM-0003</p>
+          <p class="meta" title="Seq 000007">Seq 000007</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BAT-GORDON-GOTHAM-0003; Collection sheet: Batman row 343">Publication alias: PUB-BAT-GORDON-GOTHAM-0003; Collection sheet: Batman row 343</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000008">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-GORDON-GOTHAM-0004.jpg" data-full-title="Batman: Gordon of Gotham #4" data-full-detail="PUB-BAT-GORDON-GOTHAM-0004 | Seq 000008 | Publication alias: PUB-BAT-GORDON-GOTHAM-0004; Collection sheet: Batman row 344 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-GORDON-GOTHAM-0004.jpg" alt="Batman: Gordon of Gotham #4 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Gordon of Gotham #4">Batman: Gordon of Gotham #4</h3>
+          <p class="pub-id" title="PUB-BAT-GORDON-GOTHAM-0004">PUB-BAT-GORDON-GOTHAM-0004</p>
+          <p class="meta" title="Seq 000008">Seq 000008</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BAT-GORDON-GOTHAM-0004; Collection sheet: Batman row 344">Publication alias: PUB-BAT-GORDON-GOTHAM-0004; Collection sheet: Batman row 344</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000009">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gcpd-1.jpg" data-full-title="Batman: GCPD #1" data-full-detail="PUB-BAT-GCPD-0001 | Seq 000009 | Publication alias: PUB-BAT-GCPD-0001; Collection sheet: Batman row 337 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gcpd-1.jpg" alt="Batman: GCPD #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: GCPD #1">Batman: GCPD #1</h3>
+          <p class="pub-id" title="PUB-BAT-GCPD-0001">PUB-BAT-GCPD-0001</p>
+          <p class="meta" title="Seq 000009">Seq 000009</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BAT-GCPD-0001; Collection sheet: Batman row 337">Publication alias: PUB-BAT-GCPD-0001; Collection sheet: Batman row 337</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000010">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gcpd-2.jpg" data-full-title="Batman: GCPD #2" data-full-detail="PUB-BAT-GCPD-0002 | Seq 000010 | Publication alias: PUB-BAT-GCPD-0002; Collection sheet: Batman row 338 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gcpd-2.jpg" alt="Batman: GCPD #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: GCPD #2">Batman: GCPD #2</h3>
+          <p class="pub-id" title="PUB-BAT-GCPD-0002">PUB-BAT-GCPD-0002</p>
+          <p class="meta" title="Seq 000010">Seq 000010</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BAT-GCPD-0002; Collection sheet: Batman row 338">Publication alias: PUB-BAT-GCPD-0002; Collection sheet: Batman row 338</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000011">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gcpd-3.jpg" data-full-title="Batman: GCPD #3" data-full-detail="PUB-BAT-GCPD-0003 | Seq 000011 | Publication alias: PUB-BAT-GCPD-0003; Collection sheet: Batman row 339 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gcpd-3.jpg" alt="Batman: GCPD #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: GCPD #3">Batman: GCPD #3</h3>
+          <p class="pub-id" title="PUB-BAT-GCPD-0003">PUB-BAT-GCPD-0003</p>
+          <p class="meta" title="Seq 000011">Seq 000011</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BAT-GCPD-0003; Collection sheet: Batman row 339">Publication alias: PUB-BAT-GCPD-0003; Collection sheet: Batman row 339</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000012">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gcpd-4.jpg" data-full-title="Batman: GCPD #4" data-full-detail="PUB-BAT-GCPD-0004 | Seq 000012 | Publication alias: PUB-BAT-GCPD-0004; Collection sheet: Batman row 340 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gcpd-4.jpg" alt="Batman: GCPD #4 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: GCPD #4">Batman: GCPD #4</h3>
+          <p class="pub-id" title="PUB-BAT-GCPD-0004">PUB-BAT-GCPD-0004</p>
+          <p class="meta" title="Seq 000012">Seq 000012</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BAT-GCPD-0004; Collection sheet: Batman row 340">Publication alias: PUB-BAT-GCPD-0004; Collection sheet: Batman row 340</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000013" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000013">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-GOTHAM-NIGHTS-0001.jpg" data-full-title="Batman: Gotham Nights #1" data-full-detail="PUB-BATMAN-GOTHAM-NIGHTS-0001 | Seq 000013 | Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-0001; Collection sheet: Batman row 607 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATMAN-GOTHAM-NIGHTS-0001.jpg" alt="Batman: Gotham Nights #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Gotham Nights #1">Batman: Gotham Nights #1</h3>
+          <p class="pub-id" title="PUB-BATMAN-GOTHAM-NIGHTS-0001">PUB-BATMAN-GOTHAM-NIGHTS-0001</p>
+          <p class="meta" title="Seq 000013">Seq 000013</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-0001; Collection sheet: Batman row 607">Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-0001; Collection sheet: Batman row 607</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000014" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000014">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-GOTHAM-NIGHTS-0002.jpg" data-full-title="Batman: Gotham Nights #2" data-full-detail="PUB-BATMAN-GOTHAM-NIGHTS-0002 | Seq 000014 | Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-0002; Collection sheet: Batman row 608 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATMAN-GOTHAM-NIGHTS-0002.jpg" alt="Batman: Gotham Nights #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Gotham Nights #2">Batman: Gotham Nights #2</h3>
+          <p class="pub-id" title="PUB-BATMAN-GOTHAM-NIGHTS-0002">PUB-BATMAN-GOTHAM-NIGHTS-0002</p>
+          <p class="meta" title="Seq 000014">Seq 000014</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-0002; Collection sheet: Batman row 608">Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-0002; Collection sheet: Batman row 608</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000015" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000015">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-GOTHAM-NIGHTS-0003.jpg" data-full-title="Batman: Gotham Nights #3" data-full-detail="PUB-BATMAN-GOTHAM-NIGHTS-0003 | Seq 000015 | Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-0003; Collection sheet: Batman row 609 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATMAN-GOTHAM-NIGHTS-0003.jpg" alt="Batman: Gotham Nights #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Gotham Nights #3">Batman: Gotham Nights #3</h3>
+          <p class="pub-id" title="PUB-BATMAN-GOTHAM-NIGHTS-0003">PUB-BATMAN-GOTHAM-NIGHTS-0003</p>
+          <p class="meta" title="Seq 000015">Seq 000015</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-0003; Collection sheet: Batman row 609">Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-0003; Collection sheet: Batman row 609</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000016" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000016">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-GOTHAM-NIGHTS-0004.jpg" data-full-title="Batman: Gotham Nights #4" data-full-detail="PUB-BATMAN-GOTHAM-NIGHTS-0004 | Seq 000016 | Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-0004; Collection sheet: Batman row 610 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATMAN-GOTHAM-NIGHTS-0004.jpg" alt="Batman: Gotham Nights #4 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Gotham Nights #4">Batman: Gotham Nights #4</h3>
+          <p class="pub-id" title="PUB-BATMAN-GOTHAM-NIGHTS-0004">PUB-BATMAN-GOTHAM-NIGHTS-0004</p>
+          <p class="meta" title="Seq 000016">Seq 000016</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-0004; Collection sheet: Batman row 610">Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-0004; Collection sheet: Batman row 610</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000017" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000017">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-GOTHAM-NIGHTS-II-0001.jpg" data-full-title="Batman: Gotham Nights II #1" data-full-detail="PUB-BATMAN-GOTHAM-NIGHTS-II-0001 | Seq 000017 | Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-II-0001; Collection sheet: Batman row 611 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATMAN-GOTHAM-NIGHTS-II-0001.jpg" alt="Batman: Gotham Nights II #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Gotham Nights II #1">Batman: Gotham Nights II #1</h3>
+          <p class="pub-id" title="PUB-BATMAN-GOTHAM-NIGHTS-II-0001">PUB-BATMAN-GOTHAM-NIGHTS-II-0001</p>
+          <p class="meta" title="Seq 000017">Seq 000017</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-II-0001; Collection sheet: Batman row 611">Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-II-0001; Collection sheet: Batman row 611</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000018" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000018">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-GOTHAM-NIGHTS-II-0002.jpg" data-full-title="Batman: Gotham Nights II #2" data-full-detail="PUB-BATMAN-GOTHAM-NIGHTS-II-0002 | Seq 000018 | Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-II-0002; Collection sheet: Batman row 612 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATMAN-GOTHAM-NIGHTS-II-0002.jpg" alt="Batman: Gotham Nights II #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Gotham Nights II #2">Batman: Gotham Nights II #2</h3>
+          <p class="pub-id" title="PUB-BATMAN-GOTHAM-NIGHTS-II-0002">PUB-BATMAN-GOTHAM-NIGHTS-II-0002</p>
+          <p class="meta" title="Seq 000018">Seq 000018</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-II-0002; Collection sheet: Batman row 612">Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-II-0002; Collection sheet: Batman row 612</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000019" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000019">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-GOTHAM-NIGHTS-II-0003.jpg" data-full-title="Batman: Gotham Nights II #3" data-full-detail="PUB-BATMAN-GOTHAM-NIGHTS-II-0003 | Seq 000019 | Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-II-0003; Collection sheet: Batman row 613 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATMAN-GOTHAM-NIGHTS-II-0003.jpg" alt="Batman: Gotham Nights II #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Gotham Nights II #3">Batman: Gotham Nights II #3</h3>
+          <p class="pub-id" title="PUB-BATMAN-GOTHAM-NIGHTS-II-0003">PUB-BATMAN-GOTHAM-NIGHTS-II-0003</p>
+          <p class="meta" title="Seq 000019">Seq 000019</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-II-0003; Collection sheet: Batman row 613">Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-II-0003; Collection sheet: Batman row 613</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000020">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-GOTHAM-NIGHTS-II-0004.jpg" data-full-title="Batman: Gotham Nights II #4" data-full-detail="PUB-BATMAN-GOTHAM-NIGHTS-II-0004 | Seq 000020 | Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-II-0004; Collection sheet: Batman row 614 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATMAN-GOTHAM-NIGHTS-II-0004.jpg" alt="Batman: Gotham Nights II #4 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Gotham Nights II #4">Batman: Gotham Nights II #4</h3>
+          <p class="pub-id" title="PUB-BATMAN-GOTHAM-NIGHTS-II-0004">PUB-BATMAN-GOTHAM-NIGHTS-II-0004</p>
+          <p class="meta" title="Seq 000020">Seq 000020</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-II-0004; Collection sheet: Batman row 614">Publication alias: PUB-BATMAN-GOTHAM-NIGHTS-II-0004; Collection sheet: Batman row 614</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000021">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-TURNING-POINTS-0001.jpg" data-full-title="Batman: Turning Points #1" data-full-detail="PUB-BAT-TURNING-POINTS-0001 | Seq 000021 | Publication alias: PUB-BAT-TURNING-POINTS-0001; Collection sheet: Batman row 193 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-TURNING-POINTS-0001.jpg" alt="Batman: Turning Points #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Turning Points #1">Batman: Turning Points #1</h3>
+          <p class="pub-id" title="PUB-BAT-TURNING-POINTS-0001">PUB-BAT-TURNING-POINTS-0001</p>
+          <p class="meta" title="Seq 000021">Seq 000021</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BAT-TURNING-POINTS-0001; Collection sheet: Batman row 193">Publication alias: PUB-BAT-TURNING-POINTS-0001; Collection sheet: Batman row 193</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000022" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000022">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-TURNING-POINTS-0002.jpg" data-full-title="Batman: Turning Points #2" data-full-detail="PUB-BAT-TURNING-POINTS-0002 | Seq 000022 | Publication alias: PUB-BAT-TURNING-POINTS-0002; Collection sheet: Batman row 194 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-TURNING-POINTS-0002.jpg" alt="Batman: Turning Points #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Turning Points #2">Batman: Turning Points #2</h3>
+          <p class="pub-id" title="PUB-BAT-TURNING-POINTS-0002">PUB-BAT-TURNING-POINTS-0002</p>
+          <p class="meta" title="Seq 000022">Seq 000022</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BAT-TURNING-POINTS-0002; Collection sheet: Batman row 194">Publication alias: PUB-BAT-TURNING-POINTS-0002; Collection sheet: Batman row 194</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000023" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000023">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-TURNING-POINTS-0003.jpg" data-full-title="Batman: Turning Points #3" data-full-detail="PUB-BAT-TURNING-POINTS-0003 | Seq 000023 | Publication alias: PUB-BAT-TURNING-POINTS-0003; Collection sheet: Batman row 195 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-TURNING-POINTS-0003.jpg" alt="Batman: Turning Points #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Turning Points #3">Batman: Turning Points #3</h3>
+          <p class="pub-id" title="PUB-BAT-TURNING-POINTS-0003">PUB-BAT-TURNING-POINTS-0003</p>
+          <p class="meta" title="Seq 000023">Seq 000023</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BAT-TURNING-POINTS-0003; Collection sheet: Batman row 195">Publication alias: PUB-BAT-TURNING-POINTS-0003; Collection sheet: Batman row 195</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000024" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000024">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-TURNING-POINTS-0004.jpg" data-full-title="Batman: Turning Points #4" data-full-detail="PUB-BAT-TURNING-POINTS-0004 | Seq 000024 | Publication alias: PUB-BAT-TURNING-POINTS-0004; Collection sheet: Batman row 196 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-TURNING-POINTS-0004.jpg" alt="Batman: Turning Points #4 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Turning Points #4">Batman: Turning Points #4</h3>
+          <p class="pub-id" title="PUB-BAT-TURNING-POINTS-0004">PUB-BAT-TURNING-POINTS-0004</p>
+          <p class="meta" title="Seq 000024">Seq 000024</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BAT-TURNING-POINTS-0004; Collection sheet: Batman row 196">Publication alias: PUB-BAT-TURNING-POINTS-0004; Collection sheet: Batman row 196</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000025" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000025">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-TURNING-POINTS-0005.jpg" data-full-title="Batman: Turning Points #5" data-full-detail="PUB-BAT-TURNING-POINTS-0005 | Seq 000025 | Publication alias: PUB-BAT-TURNING-POINTS-0005; Collection sheet: Batman row 197 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-TURNING-POINTS-0005.jpg" alt="Batman: Turning Points #5 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Turning Points #5">Batman: Turning Points #5</h3>
+          <p class="pub-id" title="PUB-BAT-TURNING-POINTS-0005">PUB-BAT-TURNING-POINTS-0005</p>
+          <p class="meta" title="Seq 000025">Seq 000025</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BAT-TURNING-POINTS-0005; Collection sheet: Batman row 197">Publication alias: PUB-BAT-TURNING-POINTS-0005; Collection sheet: Batman row 197</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000700" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000700">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-1.jpg" data-full-title="Gotham Central #1" data-full-detail="VIEW-gotham-central-1 | Seq 000700 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-1.jpg" alt="Gotham Central #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #1">Gotham Central #1</h3>
+          <p class="pub-id" title="VIEW-gotham-central-1">VIEW-gotham-central-1</p>
+          <p class="meta" title="Seq 000700 | core">Seq 000700 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000701" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000701">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-2.jpg" data-full-title="Gotham Central #2" data-full-detail="VIEW-gotham-central-2 | Seq 000701 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-2.jpg" alt="Gotham Central #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #2">Gotham Central #2</h3>
+          <p class="pub-id" title="VIEW-gotham-central-2">VIEW-gotham-central-2</p>
+          <p class="meta" title="Seq 000701 | core">Seq 000701 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000702" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000702">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-3.jpg" data-full-title="Gotham Central #3" data-full-detail="VIEW-gotham-central-3 | Seq 000702 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-3.jpg" alt="Gotham Central #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #3">Gotham Central #3</h3>
+          <p class="pub-id" title="VIEW-gotham-central-3">VIEW-gotham-central-3</p>
+          <p class="meta" title="Seq 000702 | core">Seq 000702 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000703" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000703">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-4.jpg" data-full-title="Gotham Central #4" data-full-detail="VIEW-gotham-central-4 | Seq 000703 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-4.jpg" alt="Gotham Central #4 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #4">Gotham Central #4</h3>
+          <p class="pub-id" title="VIEW-gotham-central-4">VIEW-gotham-central-4</p>
+          <p class="meta" title="Seq 000703 | core">Seq 000703 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000704" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000704">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-5.jpg" data-full-title="Gotham Central #5" data-full-detail="VIEW-gotham-central-5 | Seq 000704 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-5.jpg" alt="Gotham Central #5 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #5">Gotham Central #5</h3>
+          <p class="pub-id" title="VIEW-gotham-central-5">VIEW-gotham-central-5</p>
+          <p class="meta" title="Seq 000704 | core">Seq 000704 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000705" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000705">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-6.jpg" data-full-title="Gotham Central #6" data-full-detail="VIEW-gotham-central-6 | Seq 000705 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-6.jpg" alt="Gotham Central #6 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #6">Gotham Central #6</h3>
+          <p class="pub-id" title="VIEW-gotham-central-6">VIEW-gotham-central-6</p>
+          <p class="meta" title="Seq 000705 | core">Seq 000705 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000706" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000706">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-7.jpg" data-full-title="Gotham Central #7" data-full-detail="VIEW-gotham-central-7 | Seq 000706 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-7.jpg" alt="Gotham Central #7 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #7">Gotham Central #7</h3>
+          <p class="pub-id" title="VIEW-gotham-central-7">VIEW-gotham-central-7</p>
+          <p class="meta" title="Seq 000706 | core">Seq 000706 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000707" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000707">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-8.jpg" data-full-title="Gotham Central #8" data-full-detail="VIEW-gotham-central-8 | Seq 000707 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-8.jpg" alt="Gotham Central #8 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #8">Gotham Central #8</h3>
+          <p class="pub-id" title="VIEW-gotham-central-8">VIEW-gotham-central-8</p>
+          <p class="meta" title="Seq 000707 | core">Seq 000707 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000708" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000708">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-9.jpg" data-full-title="Gotham Central #9" data-full-detail="VIEW-gotham-central-9 | Seq 000708 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-9.jpg" alt="Gotham Central #9 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #9">Gotham Central #9</h3>
+          <p class="pub-id" title="VIEW-gotham-central-9">VIEW-gotham-central-9</p>
+          <p class="meta" title="Seq 000708 | core">Seq 000708 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000709" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000709">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-10.jpg" data-full-title="Gotham Central #10" data-full-detail="VIEW-gotham-central-10 | Seq 000709 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-10.jpg" alt="Gotham Central #10 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #10">Gotham Central #10</h3>
+          <p class="pub-id" title="VIEW-gotham-central-10">VIEW-gotham-central-10</p>
+          <p class="meta" title="Seq 000709 | core">Seq 000709 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000710" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000710">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-11.jpg" data-full-title="Gotham Central #11" data-full-detail="VIEW-gotham-central-11 | Seq 000710 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-11.jpg" alt="Gotham Central #11 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #11">Gotham Central #11</h3>
+          <p class="pub-id" title="VIEW-gotham-central-11">VIEW-gotham-central-11</p>
+          <p class="meta" title="Seq 000710 | core">Seq 000710 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000711" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000711">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-12.jpg" data-full-title="Gotham Central #12" data-full-detail="VIEW-gotham-central-12 | Seq 000711 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-12.jpg" alt="Gotham Central #12 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #12">Gotham Central #12</h3>
+          <p class="pub-id" title="VIEW-gotham-central-12">VIEW-gotham-central-12</p>
+          <p class="meta" title="Seq 000711 | core">Seq 000711 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000712" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000712">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-13.jpg" data-full-title="Gotham Central #13" data-full-detail="VIEW-gotham-central-13 | Seq 000712 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-13.jpg" alt="Gotham Central #13 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #13">Gotham Central #13</h3>
+          <p class="pub-id" title="VIEW-gotham-central-13">VIEW-gotham-central-13</p>
+          <p class="meta" title="Seq 000712 | core">Seq 000712 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000713" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000713">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-14.jpg" data-full-title="Gotham Central #14" data-full-detail="VIEW-gotham-central-14 | Seq 000713 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-14.jpg" alt="Gotham Central #14 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #14">Gotham Central #14</h3>
+          <p class="pub-id" title="VIEW-gotham-central-14">VIEW-gotham-central-14</p>
+          <p class="meta" title="Seq 000713 | core">Seq 000713 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000714" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000714">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-15.jpg" data-full-title="Gotham Central #15" data-full-detail="VIEW-gotham-central-15 | Seq 000714 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-15.jpg" alt="Gotham Central #15 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #15">Gotham Central #15</h3>
+          <p class="pub-id" title="VIEW-gotham-central-15">VIEW-gotham-central-15</p>
+          <p class="meta" title="Seq 000714 | core">Seq 000714 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000715" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000715">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-16.jpg" data-full-title="Gotham Central #16" data-full-detail="VIEW-gotham-central-16 | Seq 000715 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-16.jpg" alt="Gotham Central #16 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #16">Gotham Central #16</h3>
+          <p class="pub-id" title="VIEW-gotham-central-16">VIEW-gotham-central-16</p>
+          <p class="meta" title="Seq 000715 | core">Seq 000715 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000716" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000716">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-17.jpg" data-full-title="Gotham Central #17" data-full-detail="VIEW-gotham-central-17 | Seq 000716 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-17.jpg" alt="Gotham Central #17 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #17">Gotham Central #17</h3>
+          <p class="pub-id" title="VIEW-gotham-central-17">VIEW-gotham-central-17</p>
+          <p class="meta" title="Seq 000716 | core">Seq 000716 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000717" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000717">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-18.jpg" data-full-title="Gotham Central #18" data-full-detail="VIEW-gotham-central-18 | Seq 000717 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-18.jpg" alt="Gotham Central #18 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #18">Gotham Central #18</h3>
+          <p class="pub-id" title="VIEW-gotham-central-18">VIEW-gotham-central-18</p>
+          <p class="meta" title="Seq 000717 | core">Seq 000717 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000718" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000718">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-19.jpg" data-full-title="Gotham Central #19" data-full-detail="VIEW-gotham-central-19 | Seq 000718 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-19.jpg" alt="Gotham Central #19 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #19">Gotham Central #19</h3>
+          <p class="pub-id" title="VIEW-gotham-central-19">VIEW-gotham-central-19</p>
+          <p class="meta" title="Seq 000718 | core">Seq 000718 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000719" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000719">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-20.jpg" data-full-title="Gotham Central #20" data-full-detail="VIEW-gotham-central-20 | Seq 000719 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-20.jpg" alt="Gotham Central #20 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #20">Gotham Central #20</h3>
+          <p class="pub-id" title="VIEW-gotham-central-20">VIEW-gotham-central-20</p>
+          <p class="meta" title="Seq 000719 | core">Seq 000719 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000720" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000720">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-21.jpg" data-full-title="Gotham Central #21" data-full-detail="VIEW-gotham-central-21 | Seq 000720 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-21.jpg" alt="Gotham Central #21 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #21">Gotham Central #21</h3>
+          <p class="pub-id" title="VIEW-gotham-central-21">VIEW-gotham-central-21</p>
+          <p class="meta" title="Seq 000720 | core">Seq 000720 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000721" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000721">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-22.jpg" data-full-title="Gotham Central #22" data-full-detail="VIEW-gotham-central-22 | Seq 000721 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-22.jpg" alt="Gotham Central #22 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #22">Gotham Central #22</h3>
+          <p class="pub-id" title="VIEW-gotham-central-22">VIEW-gotham-central-22</p>
+          <p class="meta" title="Seq 000721 | core">Seq 000721 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000722" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000722">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-23.jpg" data-full-title="Gotham Central #23" data-full-detail="VIEW-gotham-central-23 | Seq 000722 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-23.jpg" alt="Gotham Central #23 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #23">Gotham Central #23</h3>
+          <p class="pub-id" title="VIEW-gotham-central-23">VIEW-gotham-central-23</p>
+          <p class="meta" title="Seq 000722 | core">Seq 000722 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000723" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000723">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-24.jpg" data-full-title="Gotham Central #24" data-full-detail="VIEW-gotham-central-24 | Seq 000723 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-24.jpg" alt="Gotham Central #24 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #24">Gotham Central #24</h3>
+          <p class="pub-id" title="VIEW-gotham-central-24">VIEW-gotham-central-24</p>
+          <p class="meta" title="Seq 000723 | core">Seq 000723 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000724" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000724">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-25.jpg" data-full-title="Gotham Central #25" data-full-detail="VIEW-gotham-central-25 | Seq 000724 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-25.jpg" alt="Gotham Central #25 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #25">Gotham Central #25</h3>
+          <p class="pub-id" title="VIEW-gotham-central-25">VIEW-gotham-central-25</p>
+          <p class="meta" title="Seq 000724 | core">Seq 000724 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000725" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000725">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-26.jpg" data-full-title="Gotham Central #26" data-full-detail="VIEW-gotham-central-26 | Seq 000725 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-26.jpg" alt="Gotham Central #26 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #26">Gotham Central #26</h3>
+          <p class="pub-id" title="VIEW-gotham-central-26">VIEW-gotham-central-26</p>
+          <p class="meta" title="Seq 000725 | core">Seq 000725 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000726" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000726">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-27.jpg" data-full-title="Gotham Central #27" data-full-detail="VIEW-gotham-central-27 | Seq 000726 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-27.jpg" alt="Gotham Central #27 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #27">Gotham Central #27</h3>
+          <p class="pub-id" title="VIEW-gotham-central-27">VIEW-gotham-central-27</p>
+          <p class="meta" title="Seq 000726 | core">Seq 000726 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000727" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000727">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-28.jpg" data-full-title="Gotham Central #28" data-full-detail="VIEW-gotham-central-28 | Seq 000727 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-28.jpg" alt="Gotham Central #28 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #28">Gotham Central #28</h3>
+          <p class="pub-id" title="VIEW-gotham-central-28">VIEW-gotham-central-28</p>
+          <p class="meta" title="Seq 000727 | core">Seq 000727 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000728" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000728">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-29.jpg" data-full-title="Gotham Central #29" data-full-detail="VIEW-gotham-central-29 | Seq 000728 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-29.jpg" alt="Gotham Central #29 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #29">Gotham Central #29</h3>
+          <p class="pub-id" title="VIEW-gotham-central-29">VIEW-gotham-central-29</p>
+          <p class="meta" title="Seq 000728 | core">Seq 000728 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000729" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000729">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-30.jpg" data-full-title="Gotham Central #30" data-full-detail="VIEW-gotham-central-30 | Seq 000729 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-30.jpg" alt="Gotham Central #30 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #30">Gotham Central #30</h3>
+          <p class="pub-id" title="VIEW-gotham-central-30">VIEW-gotham-central-30</p>
+          <p class="meta" title="Seq 000729 | core">Seq 000729 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000730" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000730">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-31.jpg" data-full-title="Gotham Central #31" data-full-detail="VIEW-gotham-central-31 | Seq 000730 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-31.jpg" alt="Gotham Central #31 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #31">Gotham Central #31</h3>
+          <p class="pub-id" title="VIEW-gotham-central-31">VIEW-gotham-central-31</p>
+          <p class="meta" title="Seq 000730 | core">Seq 000730 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000731" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000731">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-32.jpg" data-full-title="Gotham Central #32" data-full-detail="VIEW-gotham-central-32 | Seq 000731 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-32.jpg" alt="Gotham Central #32 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #32">Gotham Central #32</h3>
+          <p class="pub-id" title="VIEW-gotham-central-32">VIEW-gotham-central-32</p>
+          <p class="meta" title="Seq 000731 | core">Seq 000731 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000732" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000732">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-33.jpg" data-full-title="Gotham Central #33" data-full-detail="VIEW-gotham-central-33 | Seq 000732 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-33.jpg" alt="Gotham Central #33 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #33">Gotham Central #33</h3>
+          <p class="pub-id" title="VIEW-gotham-central-33">VIEW-gotham-central-33</p>
+          <p class="meta" title="Seq 000732 | core">Seq 000732 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000733" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000733">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-34.jpg" data-full-title="Gotham Central #34" data-full-detail="VIEW-gotham-central-34 | Seq 000733 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-34.jpg" alt="Gotham Central #34 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #34">Gotham Central #34</h3>
+          <p class="pub-id" title="VIEW-gotham-central-34">VIEW-gotham-central-34</p>
+          <p class="meta" title="Seq 000733 | core">Seq 000733 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000734" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000734">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-35.jpg" data-full-title="Gotham Central #35" data-full-detail="VIEW-gotham-central-35 | Seq 000734 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-35.jpg" alt="Gotham Central #35 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #35">Gotham Central #35</h3>
+          <p class="pub-id" title="VIEW-gotham-central-35">VIEW-gotham-central-35</p>
+          <p class="meta" title="Seq 000734 | core">Seq 000734 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000735" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000735">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-36.jpg" data-full-title="Gotham Central #36" data-full-detail="VIEW-gotham-central-36 | Seq 000735 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-36.jpg" alt="Gotham Central #36 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #36">Gotham Central #36</h3>
+          <p class="pub-id" title="VIEW-gotham-central-36">VIEW-gotham-central-36</p>
+          <p class="meta" title="Seq 000735 | core">Seq 000735 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000736" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000736">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-37.jpg" data-full-title="Gotham Central #37" data-full-detail="VIEW-gotham-central-37 | Seq 000736 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-37.jpg" alt="Gotham Central #37 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #37">Gotham Central #37</h3>
+          <p class="pub-id" title="VIEW-gotham-central-37">VIEW-gotham-central-37</p>
+          <p class="meta" title="Seq 000736 | core">Seq 000736 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000737" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000737">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-38.jpg" data-full-title="Gotham Central #38" data-full-detail="VIEW-gotham-central-38 | Seq 000737 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-38.jpg" alt="Gotham Central #38 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #38">Gotham Central #38</h3>
+          <p class="pub-id" title="VIEW-gotham-central-38">VIEW-gotham-central-38</p>
+          <p class="meta" title="Seq 000737 | core">Seq 000737 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000738" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000738">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-39.jpg" data-full-title="Gotham Central #39" data-full-detail="VIEW-gotham-central-39 | Seq 000738 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-39.jpg" alt="Gotham Central #39 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #39">Gotham Central #39</h3>
+          <p class="pub-id" title="VIEW-gotham-central-39">VIEW-gotham-central-39</p>
+          <p class="meta" title="Seq 000738 | core">Seq 000738 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham Central" data-project="gotham_city" data-status="missing" data-sequence="000739" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000739">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-central-40.jpg" data-full-title="Gotham Central #40" data-full-detail="VIEW-gotham-central-40 | Seq 000739 | core | Complete forty-issue series. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-central-40.jpg" alt="Gotham Central #40 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham Central</span>
+            
+          </div>
+          <h3 title="Gotham Central #40">Gotham Central #40</h3>
+          <p class="pub-id" title="VIEW-gotham-central-40">VIEW-gotham-central-40</p>
+          <p class="meta" title="Seq 000739 | core">Seq 000739 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete forty-issue series.">Complete forty-issue series.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham City: Year One" data-project="gotham_city" data-status="missing" data-sequence="000800" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000800">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-city-year-one-1.jpg" data-full-title="Gotham City: Year One #1" data-full-detail="VIEW-gotham-city-year-one-1 | Seq 000800 | core | Gotham-focused six-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-city-year-one-1.jpg" alt="Gotham City: Year One #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham City: Year One</span>
+            
+          </div>
+          <h3 title="Gotham City: Year One #1">Gotham City: Year One #1</h3>
+          <p class="pub-id" title="VIEW-gotham-city-year-one-1">VIEW-gotham-city-year-one-1</p>
+          <p class="meta" title="Seq 000800 | core">Seq 000800 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Gotham-focused six-issue miniseries.">Gotham-focused six-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham City: Year One" data-project="gotham_city" data-status="missing" data-sequence="000801" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000801">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-city-year-one-2.jpg" data-full-title="Gotham City: Year One #2" data-full-detail="VIEW-gotham-city-year-one-2 | Seq 000801 | core | Gotham-focused six-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-city-year-one-2.jpg" alt="Gotham City: Year One #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham City: Year One</span>
+            
+          </div>
+          <h3 title="Gotham City: Year One #2">Gotham City: Year One #2</h3>
+          <p class="pub-id" title="VIEW-gotham-city-year-one-2">VIEW-gotham-city-year-one-2</p>
+          <p class="meta" title="Seq 000801 | core">Seq 000801 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Gotham-focused six-issue miniseries.">Gotham-focused six-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham City: Year One" data-project="gotham_city" data-status="missing" data-sequence="000802" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000802">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-city-year-one-3.jpg" data-full-title="Gotham City: Year One #3" data-full-detail="VIEW-gotham-city-year-one-3 | Seq 000802 | core | Gotham-focused six-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-city-year-one-3.jpg" alt="Gotham City: Year One #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham City: Year One</span>
+            
+          </div>
+          <h3 title="Gotham City: Year One #3">Gotham City: Year One #3</h3>
+          <p class="pub-id" title="VIEW-gotham-city-year-one-3">VIEW-gotham-city-year-one-3</p>
+          <p class="meta" title="Seq 000802 | core">Seq 000802 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Gotham-focused six-issue miniseries.">Gotham-focused six-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham City: Year One" data-project="gotham_city" data-status="missing" data-sequence="000803" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000803">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-city-year-one-4.jpg" data-full-title="Gotham City: Year One #4" data-full-detail="VIEW-gotham-city-year-one-4 | Seq 000803 | core | Gotham-focused six-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-city-year-one-4.jpg" alt="Gotham City: Year One #4 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham City: Year One</span>
+            
+          </div>
+          <h3 title="Gotham City: Year One #4">Gotham City: Year One #4</h3>
+          <p class="pub-id" title="VIEW-gotham-city-year-one-4">VIEW-gotham-city-year-one-4</p>
+          <p class="meta" title="Seq 000803 | core">Seq 000803 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Gotham-focused six-issue miniseries.">Gotham-focused six-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham City: Year One" data-project="gotham_city" data-status="missing" data-sequence="000804" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000804">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-city-year-one-5.jpg" data-full-title="Gotham City: Year One #5" data-full-detail="VIEW-gotham-city-year-one-5 | Seq 000804 | core | Gotham-focused six-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-city-year-one-5.jpg" alt="Gotham City: Year One #5 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham City: Year One</span>
+            
+          </div>
+          <h3 title="Gotham City: Year One #5">Gotham City: Year One #5</h3>
+          <p class="pub-id" title="VIEW-gotham-city-year-one-5">VIEW-gotham-city-year-one-5</p>
+          <p class="meta" title="Seq 000804 | core">Seq 000804 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Gotham-focused six-issue miniseries.">Gotham-focused six-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Gotham City: Year One" data-project="gotham_city" data-status="missing" data-sequence="000805" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000805">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-gotham-city-year-one-6.jpg" data-full-title="Gotham City: Year One #6" data-full-detail="VIEW-gotham-city-year-one-6 | Seq 000805 | core | Gotham-focused six-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-gotham-city-year-one-6.jpg" alt="Gotham City: Year One #6 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Gotham City: Year One</span>
+            
+          </div>
+          <h3 title="Gotham City: Year One #6">Gotham City: Year One #6</h3>
+          <p class="pub-id" title="VIEW-gotham-city-year-one-6">VIEW-gotham-city-year-one-6</p>
+          <p class="meta" title="Seq 000805 | core">Seq 000805 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Gotham-focused six-issue miniseries.">Gotham-focused six-issue miniseries.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+  <div class="lightbox" aria-modal="true" role="dialog" aria-label="Cover preview">
+    <div class="lightbox-panel">
+      <img src="" alt="">
+      <div class="lightbox-caption">
+        <div>
+          <div class="lightbox-title"></div>
+          <div class="lightbox-detail"></div>
+        </div>
+        <button class="lightbox-close" type="button" data-lightbox-close>Close</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const state = { order: 'reading', scope: 'all', project: 'all', status: 'all' };
+    const grid = document.querySelector('.grid');
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImage = document.querySelector('.lightbox img');
+    const lightboxTitle = document.querySelector('.lightbox-title');
+    const lightboxDetail = document.querySelector('.lightbox-detail');
+    document.querySelectorAll('.chip').forEach(button => {
+      button.addEventListener('click', () => {
+        const group = button.dataset.filter;
+        state[group] = button.dataset.value;
+        document.querySelectorAll(`.chip[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item === button));
+        applyFilters();
+      });
+    });
+    function applyFilters() {
+      document.querySelectorAll('.comic-card').forEach(card => {
+        const visible = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]));
+        card.classList.toggle('hidden', !visible);
+      });
+      sortCards();
+    }
+    function sortCards() {
+      [...document.querySelectorAll('.comic-card')]
+        .sort((left, right) => sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent))
+        .forEach(card => grid.appendChild(card));
+    }
+    function sequenceForCard(card) {
+      const order = state.order === 'all' ? 'reading' : state.order;
+      if (order === 'publication') {
+        return scopedSequence(card, 'publicationSequence');
+      }
+      if (order === 'chronological') {
+        return scopedSequence(card, 'chronologicalSequence');
+      }
+      const byOrder = sequenceMap(card.dataset.orderSequences);
+      if (byOrder[order]) {
+        return sortValue(byOrder[order]);
+      }
+      const chronological = scopedSequence(card, 'chronologicalSequence');
+      return chronological < 999999 ? chronological : sortValue(card.dataset.sequence);
+    }
+    function scopedSequence(card, orderKey) {
+      const scoped = sequenceMap(card.dataset[`${orderKey}s`]);
+      if (state.scope !== 'all' && scoped[state.scope]) {
+        return sortValue(scoped[state.scope]);
+      }
+      return sortValue(card.dataset[orderKey]);
+    }
+    function sequenceMap(value) {
+      return Object.fromEntries((value || '').split('|').filter(Boolean).map(item => {
+        const [scope, sequence] = item.split(':');
+        return [scope, sequence];
+      }));
+    }
+    function sortValue(value) {
+      const parsed = Number.parseFloat(value || '999999');
+      if (Number.isFinite(parsed)) {
+        return parsed;
+      }
+        const embedded = String(value || '').match(/\d+(\.\d+)?/);
+      return embedded ? Number.parseFloat(embedded[0]) : 999999;
+    }
+    document.querySelectorAll('.cover-button').forEach(button => {
+      button.addEventListener('click', () => {
+        lightboxImage.src = button.dataset.fullSrc;
+        lightboxImage.alt = `${button.dataset.fullTitle} cover`;
+        lightboxTitle.textContent = button.dataset.fullTitle;
+        lightboxDetail.textContent = button.dataset.fullDetail || '';
+        lightbox.classList.add('open');
+      });
+    });
+    document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
+    lightbox.addEventListener('click', event => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeLightbox();
+    });
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightboxImage.removeAttribute('src');
+      lightboxImage.removeAttribute('alt');
+      lightboxTitle.textContent = '';
+      lightboxDetail.textContent = '';
+    }
+    applyFilters();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1896 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="../assets/site/batman-favicon.png">
+  <title>Batman #1-99 - Visual Viewer</title>
+  <style>
+    :root { color-scheme: light; --ink:#172026; --muted:#5c6670; --line:#d9dee4; --paper:#f6f7f8; --panel:#ffffff; --owned:#0f7b4f; --fac:#6b4bb8; --ordered:#2166ad; --readable:#a46a00; --missing:#b42318; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); }
+    header { padding: 28px 32px 18px; background: #111820; color: white; }
+    .header-top { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .back-link { color: white; border: 1px solid rgba(255,255,255,.32); border-radius: 999px; padding: 7px 11px; text-decoration: none; font-size: 13px; background: rgba(255,255,255,.08); }
+    .back-link:hover { background: rgba(255,255,255,.16); }
+    h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; }
+    header p { margin: 0; color: #c8d0d8; max-width: 900px; }
+    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; padding: 18px 32px; background: #e9edf1; border-bottom: 1px solid var(--line); }
+    .metric { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+    .metric strong { display: block; font-size: 24px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    .controls { padding: 18px 32px; display: grid; gap: 12px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
+    .control-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .control-row b { margin-right: 4px; font-size: 13px; color: var(--muted); min-width: 70px; }
+    .chip { border: 1px solid var(--line); background: #f8fafb; color: var(--ink); border-radius: 999px; padding: 7px 11px; cursor: pointer; text-transform: capitalize; }
+    .chip.active { background: #172026; border-color: #172026; color: white; }
+    main { padding: 24px 32px 40px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 16px; align-items: start; }
+    .comic-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05); min-width: 0; display: flex; flex-direction: column; position: relative; }
+    .comic-card.owned { background: #f2fbf6; }
+    .comic-card.facsimile { background: #f6f2ff; }
+    .comic-card.ordered { background: #f1f7ff; }
+    .comic-card.readable { background: #fff8ec; }
+    .status-strip { background: var(--missing); color: white; min-height: 30px; display: grid; place-items: center; padding: 7px 8px; font-size: 12px; line-height: 1; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; }
+    .comic-card.owned .status-strip { background: var(--owned); }
+    .comic-card.facsimile .status-strip { background: var(--fac); }
+    .comic-card.ordered .status-strip { background: var(--ordered); }
+    .comic-card.readable .status-strip { background: var(--readable); }
+    .cover-wrap { aspect-ratio: 2 / 3; background: #242a31; display: grid; place-items: center; overflow: hidden; position: relative; }
+    .cover-button { appearance: none; border: 0; background: #111820; padding: 0; margin: 0; width: 100%; height: 100%; display: block; cursor: zoom-in; }
+    .cover-button:focus-visible { outline: 3px solid #f4c430; outline-offset: -3px; }
+    .cover-wrap img { width: 100%; height: 100%; object-fit: contain; background: #111820; display: block; }
+    .cover-placeholder { width: 100%; height: 100%; padding: 14px; color: white; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(145deg, #18212a, #39424c); }
+    .cover-placeholder span { font-weight: 700; line-height: 1.1; overflow-wrap: anywhere; }
+    .cover-placeholder strong { font-size: 42px; align-self: flex-end; }
+    .cover-review-badge { position: absolute; left: 8px; right: 8px; top: 8px; border-radius: 6px; padding: 6px 7px; color: white; font-size: 11px; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.22); pointer-events: none; }
+    .cover-review-badge.warning { background: rgba(164,106,0,.92); }
+    .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
+    .comic-card.cover-needs_review { border-color: #a46a00; }
+    .comic-card.cover-rejected_auto { border-color: #b42318; }
+    .card-body { padding: 10px 11px 12px; height: 205px; display: flex; flex-direction: column; overflow: hidden; }
+    .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
+    .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
+    .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
+    h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id { -webkit-line-clamp: 1; }
+    .meta, .continuity { -webkit-line-clamp: 2; }
+    .notes { -webkit-line-clamp: 2; position: relative; }
+    .notes::after { content: ""; position: absolute; inset: auto 0 0 0; height: 1.2em; background: linear-gradient(to bottom, rgba(255,255,255,0), var(--panel)); pointer-events: none; }
+    .comic-card.owned .notes::after { background: linear-gradient(to bottom, rgba(242,251,246,0), #f2fbf6); }
+    .comic-card.facsimile .notes::after { background: linear-gradient(to bottom, rgba(246,242,255,0), #f6f2ff); }
+    .comic-card.ordered .notes::after { background: linear-gradient(to bottom, rgba(241,247,255,0), #f1f7ff); }
+    .comic-card.readable .notes::after { background: linear-gradient(to bottom, rgba(255,248,236,0), #fff8ec); }
+    .hidden { display: none; }
+    .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
+    .lightbox.open { display: flex; }
+    .lightbox-panel { max-width: min(92vw, 980px); max-height: 94vh; display: grid; gap: 10px; }
+    .lightbox img { max-width: 100%; max-height: calc(94vh - 56px); object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
+    .lightbox-title { font-weight: 750; }
+    .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
+    .lightbox-close { border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: white; border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+    @media (max-width: 700px) { header, .summary, .controls, main { padding-left: 14px; padding-right: 14px; } .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; } }
+    </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <h1>Batman #1-99</h1>
+      <a class="back-link" href="visual_collection_viewer.html">All visual views</a>
+    </div>
+    <p>Batman ordinary numbered run from #1 through #99; special-numbered issues are in Batman Annuals &amp; Specials.</p>
+  </header>
+  <section class="summary">
+    <div class="metric"><strong>99</strong><span>unique publications</span></div>
+    <div class="metric"><strong>4</strong><span>owned/readable</span></div>
+    <div class="metric"><strong>4</strong><span>facsimiles</span></div>
+    <div class="metric"><strong>95</strong><span>missing</span></div>
+  </section>
+  <section class="controls">
+    <div class="control-row"><b>Order</b><button class="chip active" data-filter="order" data-value="all">All orders</button>
+<button class="chip" data-filter="order" data-value="series">series</button></div>
+    <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button>
+<button class="chip" data-filter="scope" data-value="OPPORTUNISTIC">OPPORTUNISTIC</button></div>
+    <div class="control-row"><b>Status</b><button class="chip active" data-filter="status" data-value="all">All statuses</button>
+<button class="chip" data-filter="status" data-value="owned">owned</button>
+<button class="chip" data-filter="status" data-value="facsimile">facsimile</button>
+<button class="chip" data-filter="status" data-value="ordered">ordered</button>
+<button class="chip" data-filter="status" data-value="readable">readable</button>
+<button class="chip" data-filter="status" data-value="missing">missing</button></div>
+    <div class="control-row"><b>Work</b><button class="chip active" data-filter="project" data-value="all">All works</button>
+<button class="chip" data-filter="project" data-value="First Joker and Catwoman">First Joker and Catwoman</button>
+<button class="chip" data-filter="project" data-value="Unmapped story">Unmapped story</button>
+<button class="chip" data-filter="project" data-value="Early Joker / Golden Age Batman">Early Joker / Golden Age Batman</button>
+<button class="chip" data-filter="project" data-value="Facsimile">Facsimile</button>
+<button class="chip" data-filter="project" data-value="Early Golden Age Batman">Early Golden Age Batman</button></div>
+  </section>
+  <main>
+    <section class="grid">
+      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="First Joker and Catwoman" data-status="facsimile" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000001">
+        <div class="status-strip">Facsimile</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0001.jpg" data-full-title="Batman #1" data-full-detail="PUB-BAT-0001 | Seq 000001 | OPPORTUNISTIC | derived | First Joker and Catwoman | Owned as a facsimile/readable copy; original can remain an upgrade target. | Reference data flags a key first appearance/significance. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0001.jpg" alt="Batman #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #1">Batman #1</h3>
+          <p class="pub-id" title="PUB-BAT-0001">PUB-BAT-0001</p>
+          <p class="meta" title="Seq 000001 | OPPORTUNISTIC | derived">Seq 000001 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="First Joker and Catwoman">First Joker and Catwoman</p>
+          <p class="notes" title="Owned as a facsimile/readable copy; original can remain an upgrade target. | Reference data flags a key first appearance/significance.">Owned as a facsimile/readable copy; original can remain an upgrade target. | Reference data flags a key first appearance/significance.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000002">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0002.jpg" data-full-title="Batman #2" data-full-detail="PUB-BAT-0002 | Seq 000002 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Nearby ownership context: inside a small missing gap. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0002.jpg" alt="Batman #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #2">Batman #2</h3>
+          <p class="pub-id" title="PUB-BAT-0002">PUB-BAT-0002</p>
+          <p class="meta" title="Seq 000002 | OPPORTUNISTIC | derived">Seq 000002 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered. | Nearby ownership context: inside a small missing gap.">Older Batman issues are opportunistic purchases when not already owned or ordered. | Nearby ownership context: inside a small missing gap.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000003">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0003.jpg" data-full-title="Batman #3" data-full-detail="PUB-BAT-0003 | Seq 000003 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Nearby ownership context: inside a small missing gap. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0003.jpg" alt="Batman #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #3">Batman #3</h3>
+          <p class="pub-id" title="PUB-BAT-0003">PUB-BAT-0003</p>
+          <p class="meta" title="Seq 000003 | OPPORTUNISTIC | derived">Seq 000003 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered. | Nearby ownership context: inside a small missing gap.">Older Batman issues are opportunistic purchases when not already owned or ordered. | Nearby ownership context: inside a small missing gap.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000004">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0004.jpg" data-full-title="Batman #4" data-full-detail="PUB-BAT-0004 | Seq 000004 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Nearby ownership context: inside a small missing gap. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0004.jpg" alt="Batman #4 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #4">Batman #4</h3>
+          <p class="pub-id" title="PUB-BAT-0004">PUB-BAT-0004</p>
+          <p class="meta" title="Seq 000004 | OPPORTUNISTIC | derived">Seq 000004 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered. | Nearby ownership context: inside a small missing gap.">Older Batman issues are opportunistic purchases when not already owned or ordered. | Nearby ownership context: inside a small missing gap.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Early Joker / Golden Age Batman" data-status="facsimile" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000005">
+        <div class="status-strip">Facsimile</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0005.jpg" data-full-title="Batman #5" data-full-detail="PUB-BAT-0005 | Seq 000005 | OPPORTUNISTIC | derived | Early Joker / Golden Age Batman | Owned as a facsimile/readable copy; original can remain an upgrade target. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0005.jpg" alt="Batman #5 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #5">Batman #5</h3>
+          <p class="pub-id" title="PUB-BAT-0005">PUB-BAT-0005</p>
+          <p class="meta" title="Seq 000005 | OPPORTUNISTIC | derived">Seq 000005 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Early Joker / Golden Age Batman">Early Joker / Golden Age Batman</p>
+          <p class="notes" title="Owned as a facsimile/readable copy; original can remain an upgrade target.">Owned as a facsimile/readable copy; original can remain an upgrade target.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000006">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0006.jpg" data-full-title="Batman #6" data-full-detail="PUB-BAT-0006 | Seq 000006 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Nearby ownership context: inside a small missing gap. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0006.jpg" alt="Batman #6 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #6">Batman #6</h3>
+          <p class="pub-id" title="PUB-BAT-0006">PUB-BAT-0006</p>
+          <p class="meta" title="Seq 000006 | OPPORTUNISTIC | derived">Seq 000006 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered. | Nearby ownership context: inside a small missing gap.">Older Batman issues are opportunistic purchases when not already owned or ordered. | Nearby ownership context: inside a small missing gap.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000007">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0007.jpg" data-full-title="Batman #7" data-full-detail="PUB-BAT-0007 | Seq 000007 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Nearby ownership context: inside a small missing gap. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0007.jpg" alt="Batman #7 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #7">Batman #7</h3>
+          <p class="pub-id" title="PUB-BAT-0007">PUB-BAT-0007</p>
+          <p class="meta" title="Seq 000007 | OPPORTUNISTIC | derived">Seq 000007 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered. | Nearby ownership context: inside a small missing gap.">Older Batman issues are opportunistic purchases when not already owned or ordered. | Nearby ownership context: inside a small missing gap.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000008">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0008.jpg" data-full-title="Batman #8" data-full-detail="PUB-BAT-0008 | Seq 000008 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Nearby ownership context: inside a small missing gap. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0008.jpg" alt="Batman #8 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #8">Batman #8</h3>
+          <p class="pub-id" title="PUB-BAT-0008">PUB-BAT-0008</p>
+          <p class="meta" title="Seq 000008 | OPPORTUNISTIC | derived">Seq 000008 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered. | Nearby ownership context: inside a small missing gap.">Older Batman issues are opportunistic purchases when not already owned or ordered. | Nearby ownership context: inside a small missing gap.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Facsimile" data-status="facsimile" data-sequence="000009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000009">
+        <div class="status-strip">Facsimile</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0009.jpg" data-full-title="Batman #9" data-full-detail="PUB-BAT-0009 | Seq 000009 | OPPORTUNISTIC | derived | Facsimile | Owned as a facsimile/readable copy; original can remain an upgrade target. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0009.jpg" alt="Batman #9 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #9">Batman #9</h3>
+          <p class="pub-id" title="PUB-BAT-0009">PUB-BAT-0009</p>
+          <p class="meta" title="Seq 000009 | OPPORTUNISTIC | derived">Seq 000009 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Facsimile">Facsimile</p>
+          <p class="notes" title="Owned as a facsimile/readable copy; original can remain an upgrade target.">Owned as a facsimile/readable copy; original can remain an upgrade target.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000010">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0010.jpg" data-full-title="Batman #10" data-full-detail="PUB-BAT-0010 | Seq 000010 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0010.jpg" alt="Batman #10 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #10">Batman #10</h3>
+          <p class="pub-id" title="PUB-BAT-0010">PUB-BAT-0010</p>
+          <p class="meta" title="Seq 000010 | OPPORTUNISTIC | derived">Seq 000010 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Early Golden Age Batman" data-status="missing" data-sequence="000011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000011">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0011.jpg" data-full-title="Batman #11" data-full-detail="PUB-BAT-0011 | Seq 000011 | OPPORTUNISTIC | derived | Early Golden Age Batman | A facsimile exists and the reference data marks the original as expensive or facsimile-preferred. | Appears in the consolidated wantlist. | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0011.jpg" alt="Batman #11 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #11">Batman #11</h3>
+          <p class="pub-id" title="PUB-BAT-0011">PUB-BAT-0011</p>
+          <p class="meta" title="Seq 000011 | OPPORTUNISTIC | derived">Seq 000011 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Early Golden Age Batman">Early Golden Age Batman</p>
+          <p class="notes" title="A facsimile exists and the reference data marks the original as expensive or facsimile-preferred. | Appears in the consolidated wantlist. | Older Batman issues are opportunistic purchases when not already owned or ordered.">A facsimile exists and the reference data marks the original as expensive or facsimile-preferred. | Appears in the consolidated wantlist. | Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000012">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0012.jpg" data-full-title="Batman #12" data-full-detail="PUB-BAT-0012 | Seq 000012 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0012.jpg" alt="Batman #12 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #12">Batman #12</h3>
+          <p class="pub-id" title="PUB-BAT-0012">PUB-BAT-0012</p>
+          <p class="meta" title="Seq 000012 | OPPORTUNISTIC | derived">Seq 000012 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000013" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000013">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0013.jpg" data-full-title="Batman #13" data-full-detail="PUB-BAT-0013 | Seq 000013 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0013.jpg" alt="Batman #13 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #13">Batman #13</h3>
+          <p class="pub-id" title="PUB-BAT-0013">PUB-BAT-0013</p>
+          <p class="meta" title="Seq 000013 | OPPORTUNISTIC | derived">Seq 000013 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000014" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000014">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0014.jpg" data-full-title="Batman #14" data-full-detail="PUB-BAT-0014 | Seq 000014 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0014.jpg" alt="Batman #14 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #14">Batman #14</h3>
+          <p class="pub-id" title="PUB-BAT-0014">PUB-BAT-0014</p>
+          <p class="meta" title="Seq 000014 | OPPORTUNISTIC | derived">Seq 000014 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000015" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000015">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0015.jpg" data-full-title="Batman #15" data-full-detail="PUB-BAT-0015 | Seq 000015 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0015.jpg" alt="Batman #15 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #15">Batman #15</h3>
+          <p class="pub-id" title="PUB-BAT-0015">PUB-BAT-0015</p>
+          <p class="meta" title="Seq 000015 | OPPORTUNISTIC | derived">Seq 000015 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000016" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000016">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0016.jpg" data-full-title="Batman #16" data-full-detail="PUB-BAT-0016 | Seq 000016 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0016.jpg" alt="Batman #16 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #16">Batman #16</h3>
+          <p class="pub-id" title="PUB-BAT-0016">PUB-BAT-0016</p>
+          <p class="meta" title="Seq 000016 | OPPORTUNISTIC | derived">Seq 000016 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000017" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000017">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0017.jpg" data-full-title="Batman #17" data-full-detail="PUB-BAT-0017 | Seq 000017 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0017.jpg" alt="Batman #17 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #17">Batman #17</h3>
+          <p class="pub-id" title="PUB-BAT-0017">PUB-BAT-0017</p>
+          <p class="meta" title="Seq 000017 | OPPORTUNISTIC | derived">Seq 000017 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000018" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000018">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0018.jpg" data-full-title="Batman #18" data-full-detail="PUB-BAT-0018 | Seq 000018 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0018.jpg" alt="Batman #18 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #18">Batman #18</h3>
+          <p class="pub-id" title="PUB-BAT-0018">PUB-BAT-0018</p>
+          <p class="meta" title="Seq 000018 | OPPORTUNISTIC | derived">Seq 000018 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000019" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000019">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0019.jpg" data-full-title="Batman #19" data-full-detail="PUB-BAT-0019 | Seq 000019 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0019.jpg" alt="Batman #19 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #19">Batman #19</h3>
+          <p class="pub-id" title="PUB-BAT-0019">PUB-BAT-0019</p>
+          <p class="meta" title="Seq 000019 | OPPORTUNISTIC | derived">Seq 000019 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000020">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0020.jpg" data-full-title="Batman #20" data-full-detail="PUB-BAT-0020 | Seq 000020 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0020.jpg" alt="Batman #20 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #20">Batman #20</h3>
+          <p class="pub-id" title="PUB-BAT-0020">PUB-BAT-0020</p>
+          <p class="meta" title="Seq 000020 | OPPORTUNISTIC | derived">Seq 000020 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000021">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0021.jpg" data-full-title="Batman #21" data-full-detail="PUB-BAT-0021 | Seq 000021 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0021.jpg" alt="Batman #21 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #21">Batman #21</h3>
+          <p class="pub-id" title="PUB-BAT-0021">PUB-BAT-0021</p>
+          <p class="meta" title="Seq 000021 | OPPORTUNISTIC | derived">Seq 000021 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000022" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000022">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0022.jpg" data-full-title="Batman #22" data-full-detail="PUB-BAT-0022 | Seq 000022 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0022.jpg" alt="Batman #22 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #22">Batman #22</h3>
+          <p class="pub-id" title="PUB-BAT-0022">PUB-BAT-0022</p>
+          <p class="meta" title="Seq 000022 | OPPORTUNISTIC | derived">Seq 000022 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000023" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000023">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0023.jpg" data-full-title="Batman #23" data-full-detail="PUB-BAT-0023 | Seq 000023 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0023.jpg" alt="Batman #23 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #23">Batman #23</h3>
+          <p class="pub-id" title="PUB-BAT-0023">PUB-BAT-0023</p>
+          <p class="meta" title="Seq 000023 | OPPORTUNISTIC | derived">Seq 000023 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000024" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000024">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0024.jpg" data-full-title="Batman #24" data-full-detail="PUB-BAT-0024 | Seq 000024 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0024.jpg" alt="Batman #24 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #24">Batman #24</h3>
+          <p class="pub-id" title="PUB-BAT-0024">PUB-BAT-0024</p>
+          <p class="meta" title="Seq 000024 | OPPORTUNISTIC | derived">Seq 000024 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000025" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000025">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0025.jpg" data-full-title="Batman #25" data-full-detail="PUB-BAT-0025 | Seq 000025 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0025.jpg" alt="Batman #25 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #25">Batman #25</h3>
+          <p class="pub-id" title="PUB-BAT-0025">PUB-BAT-0025</p>
+          <p class="meta" title="Seq 000025 | OPPORTUNISTIC | derived">Seq 000025 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000026" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000026">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0026.jpg" data-full-title="Batman #26" data-full-detail="PUB-BAT-0026 | Seq 000026 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0026.jpg" alt="Batman #26 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #26">Batman #26</h3>
+          <p class="pub-id" title="PUB-BAT-0026">PUB-BAT-0026</p>
+          <p class="meta" title="Seq 000026 | OPPORTUNISTIC | derived">Seq 000026 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000027" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000027">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0027.jpg" data-full-title="Batman #27" data-full-detail="PUB-BAT-0027 | Seq 000027 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0027.jpg" alt="Batman #27 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #27">Batman #27</h3>
+          <p class="pub-id" title="PUB-BAT-0027">PUB-BAT-0027</p>
+          <p class="meta" title="Seq 000027 | OPPORTUNISTIC | derived">Seq 000027 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000028" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000028">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0028.jpg" data-full-title="Batman #28" data-full-detail="PUB-BAT-0028 | Seq 000028 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0028.jpg" alt="Batman #28 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #28">Batman #28</h3>
+          <p class="pub-id" title="PUB-BAT-0028">PUB-BAT-0028</p>
+          <p class="meta" title="Seq 000028 | OPPORTUNISTIC | derived">Seq 000028 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000029" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000029">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0029.jpg" data-full-title="Batman #29" data-full-detail="PUB-BAT-0029 | Seq 000029 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0029.jpg" alt="Batman #29 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #29">Batman #29</h3>
+          <p class="pub-id" title="PUB-BAT-0029">PUB-BAT-0029</p>
+          <p class="meta" title="Seq 000029 | OPPORTUNISTIC | derived">Seq 000029 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000030" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000030">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0030.jpg" data-full-title="Batman #30" data-full-detail="PUB-BAT-0030 | Seq 000030 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0030.jpg" alt="Batman #30 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #30">Batman #30</h3>
+          <p class="pub-id" title="PUB-BAT-0030">PUB-BAT-0030</p>
+          <p class="meta" title="Seq 000030 | OPPORTUNISTIC | derived">Seq 000030 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000031" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000031">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0031.jpg" data-full-title="Batman #31" data-full-detail="PUB-BAT-0031 | Seq 000031 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0031.jpg" alt="Batman #31 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #31">Batman #31</h3>
+          <p class="pub-id" title="PUB-BAT-0031">PUB-BAT-0031</p>
+          <p class="meta" title="Seq 000031 | OPPORTUNISTIC | derived">Seq 000031 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000032" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000032">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0032.jpg" data-full-title="Batman #32" data-full-detail="PUB-BAT-0032 | Seq 000032 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0032.jpg" alt="Batman #32 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #32">Batman #32</h3>
+          <p class="pub-id" title="PUB-BAT-0032">PUB-BAT-0032</p>
+          <p class="meta" title="Seq 000032 | OPPORTUNISTIC | derived">Seq 000032 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000033" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000033">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0033.jpg" data-full-title="Batman #33" data-full-detail="PUB-BAT-0033 | Seq 000033 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0033.jpg" alt="Batman #33 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #33">Batman #33</h3>
+          <p class="pub-id" title="PUB-BAT-0033">PUB-BAT-0033</p>
+          <p class="meta" title="Seq 000033 | OPPORTUNISTIC | derived">Seq 000033 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000034" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000034">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0034.jpg" data-full-title="Batman #34" data-full-detail="PUB-BAT-0034 | Seq 000034 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0034.jpg" alt="Batman #34 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #34">Batman #34</h3>
+          <p class="pub-id" title="PUB-BAT-0034">PUB-BAT-0034</p>
+          <p class="meta" title="Seq 000034 | OPPORTUNISTIC | derived">Seq 000034 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000035" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000035">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0035.jpg" data-full-title="Batman #35" data-full-detail="PUB-BAT-0035 | Seq 000035 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0035.jpg" alt="Batman #35 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #35">Batman #35</h3>
+          <p class="pub-id" title="PUB-BAT-0035">PUB-BAT-0035</p>
+          <p class="meta" title="Seq 000035 | OPPORTUNISTIC | derived">Seq 000035 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000036" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000036">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0036.jpg" data-full-title="Batman #36" data-full-detail="PUB-BAT-0036 | Seq 000036 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0036.jpg" alt="Batman #36 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #36">Batman #36</h3>
+          <p class="pub-id" title="PUB-BAT-0036">PUB-BAT-0036</p>
+          <p class="meta" title="Seq 000036 | OPPORTUNISTIC | derived">Seq 000036 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000037" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000037">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0037.jpg" data-full-title="Batman #37" data-full-detail="PUB-BAT-0037 | Seq 000037 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0037.jpg" alt="Batman #37 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #37">Batman #37</h3>
+          <p class="pub-id" title="PUB-BAT-0037">PUB-BAT-0037</p>
+          <p class="meta" title="Seq 000037 | OPPORTUNISTIC | derived">Seq 000037 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000038" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000038">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0038.jpg" data-full-title="Batman #38" data-full-detail="PUB-BAT-0038 | Seq 000038 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0038.jpg" alt="Batman #38 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #38">Batman #38</h3>
+          <p class="pub-id" title="PUB-BAT-0038">PUB-BAT-0038</p>
+          <p class="meta" title="Seq 000038 | OPPORTUNISTIC | derived">Seq 000038 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000039" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000039">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0039.jpg" data-full-title="Batman #39" data-full-detail="PUB-BAT-0039 | Seq 000039 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0039.jpg" alt="Batman #39 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #39">Batman #39</h3>
+          <p class="pub-id" title="PUB-BAT-0039">PUB-BAT-0039</p>
+          <p class="meta" title="Seq 000039 | OPPORTUNISTIC | derived">Seq 000039 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000040" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000040">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0040.jpg" data-full-title="Batman #40" data-full-detail="PUB-BAT-0040 | Seq 000040 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0040.jpg" alt="Batman #40 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #40">Batman #40</h3>
+          <p class="pub-id" title="PUB-BAT-0040">PUB-BAT-0040</p>
+          <p class="meta" title="Seq 000040 | OPPORTUNISTIC | derived">Seq 000040 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000041" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000041">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0041.jpg" data-full-title="Batman #41" data-full-detail="PUB-BAT-0041 | Seq 000041 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0041.jpg" alt="Batman #41 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #41">Batman #41</h3>
+          <p class="pub-id" title="PUB-BAT-0041">PUB-BAT-0041</p>
+          <p class="meta" title="Seq 000041 | OPPORTUNISTIC | derived">Seq 000041 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000042" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000042">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0042.jpg" data-full-title="Batman #42" data-full-detail="PUB-BAT-0042 | Seq 000042 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0042.jpg" alt="Batman #42 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #42">Batman #42</h3>
+          <p class="pub-id" title="PUB-BAT-0042">PUB-BAT-0042</p>
+          <p class="meta" title="Seq 000042 | OPPORTUNISTIC | derived">Seq 000042 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000043" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000043">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0043.jpg" data-full-title="Batman #43" data-full-detail="PUB-BAT-0043 | Seq 000043 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0043.jpg" alt="Batman #43 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #43">Batman #43</h3>
+          <p class="pub-id" title="PUB-BAT-0043">PUB-BAT-0043</p>
+          <p class="meta" title="Seq 000043 | OPPORTUNISTIC | derived">Seq 000043 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000044" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000044">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0044.jpg" data-full-title="Batman #44" data-full-detail="PUB-BAT-0044 | Seq 000044 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0044.jpg" alt="Batman #44 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #44">Batman #44</h3>
+          <p class="pub-id" title="PUB-BAT-0044">PUB-BAT-0044</p>
+          <p class="meta" title="Seq 000044 | OPPORTUNISTIC | derived">Seq 000044 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000045" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000045">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0045.jpg" data-full-title="Batman #45" data-full-detail="PUB-BAT-0045 | Seq 000045 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0045.jpg" alt="Batman #45 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #45">Batman #45</h3>
+          <p class="pub-id" title="PUB-BAT-0045">PUB-BAT-0045</p>
+          <p class="meta" title="Seq 000045 | OPPORTUNISTIC | derived">Seq 000045 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000046" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000046">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0046.jpg" data-full-title="Batman #46" data-full-detail="PUB-BAT-0046 | Seq 000046 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0046.jpg" alt="Batman #46 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #46">Batman #46</h3>
+          <p class="pub-id" title="PUB-BAT-0046">PUB-BAT-0046</p>
+          <p class="meta" title="Seq 000046 | OPPORTUNISTIC | derived">Seq 000046 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Facsimile" data-status="facsimile" data-sequence="000047" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000047">
+        <div class="status-strip">Facsimile</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0047.jpg" data-full-title="Batman #47" data-full-detail="PUB-BAT-0047 | Seq 000047 | OPPORTUNISTIC | derived | Facsimile | Owned as a facsimile/readable copy; original can remain an upgrade target. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0047.jpg" alt="Batman #47 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #47">Batman #47</h3>
+          <p class="pub-id" title="PUB-BAT-0047">PUB-BAT-0047</p>
+          <p class="meta" title="Seq 000047 | OPPORTUNISTIC | derived">Seq 000047 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Facsimile">Facsimile</p>
+          <p class="notes" title="Owned as a facsimile/readable copy; original can remain an upgrade target.">Owned as a facsimile/readable copy; original can remain an upgrade target.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000048" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000048">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0048.jpg" data-full-title="Batman #48" data-full-detail="PUB-BAT-0048 | Seq 000048 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0048.jpg" alt="Batman #48 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #48">Batman #48</h3>
+          <p class="pub-id" title="PUB-BAT-0048">PUB-BAT-0048</p>
+          <p class="meta" title="Seq 000048 | OPPORTUNISTIC | derived">Seq 000048 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000049" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000049">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0049.jpg" data-full-title="Batman #49" data-full-detail="PUB-BAT-0049 | Seq 000049 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0049.jpg" alt="Batman #49 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #49">Batman #49</h3>
+          <p class="pub-id" title="PUB-BAT-0049">PUB-BAT-0049</p>
+          <p class="meta" title="Seq 000049 | OPPORTUNISTIC | derived">Seq 000049 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000050" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000050">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0050.jpg" data-full-title="Batman #50" data-full-detail="PUB-BAT-0050 | Seq 000050 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0050.jpg" alt="Batman #50 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #50">Batman #50</h3>
+          <p class="pub-id" title="PUB-BAT-0050">PUB-BAT-0050</p>
+          <p class="meta" title="Seq 000050 | OPPORTUNISTIC | derived">Seq 000050 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000051" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000051">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0051.jpg" data-full-title="Batman #51" data-full-detail="PUB-BAT-0051 | Seq 000051 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0051.jpg" alt="Batman #51 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #51">Batman #51</h3>
+          <p class="pub-id" title="PUB-BAT-0051">PUB-BAT-0051</p>
+          <p class="meta" title="Seq 000051 | OPPORTUNISTIC | derived">Seq 000051 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000052" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000052">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0052.jpg" data-full-title="Batman #52" data-full-detail="PUB-BAT-0052 | Seq 000052 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0052.jpg" alt="Batman #52 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #52">Batman #52</h3>
+          <p class="pub-id" title="PUB-BAT-0052">PUB-BAT-0052</p>
+          <p class="meta" title="Seq 000052 | OPPORTUNISTIC | derived">Seq 000052 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000053" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000053">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0053.jpg" data-full-title="Batman #53" data-full-detail="PUB-BAT-0053 | Seq 000053 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0053.jpg" alt="Batman #53 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #53">Batman #53</h3>
+          <p class="pub-id" title="PUB-BAT-0053">PUB-BAT-0053</p>
+          <p class="meta" title="Seq 000053 | OPPORTUNISTIC | derived">Seq 000053 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000054" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000054">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0054.jpg" data-full-title="Batman #54" data-full-detail="PUB-BAT-0054 | Seq 000054 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0054.jpg" alt="Batman #54 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #54">Batman #54</h3>
+          <p class="pub-id" title="PUB-BAT-0054">PUB-BAT-0054</p>
+          <p class="meta" title="Seq 000054 | OPPORTUNISTIC | derived">Seq 000054 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000055" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000055">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0055.jpg" data-full-title="Batman #55" data-full-detail="PUB-BAT-0055 | Seq 000055 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0055.jpg" alt="Batman #55 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #55">Batman #55</h3>
+          <p class="pub-id" title="PUB-BAT-0055">PUB-BAT-0055</p>
+          <p class="meta" title="Seq 000055 | OPPORTUNISTIC | derived">Seq 000055 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000056" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000056">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0056.jpg" data-full-title="Batman #56" data-full-detail="PUB-BAT-0056 | Seq 000056 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0056.jpg" alt="Batman #56 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #56">Batman #56</h3>
+          <p class="pub-id" title="PUB-BAT-0056">PUB-BAT-0056</p>
+          <p class="meta" title="Seq 000056 | OPPORTUNISTIC | derived">Seq 000056 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000057" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000057">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0057.jpg" data-full-title="Batman #57" data-full-detail="PUB-BAT-0057 | Seq 000057 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0057.jpg" alt="Batman #57 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #57">Batman #57</h3>
+          <p class="pub-id" title="PUB-BAT-0057">PUB-BAT-0057</p>
+          <p class="meta" title="Seq 000057 | OPPORTUNISTIC | derived">Seq 000057 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000058" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000058">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0058.jpg" data-full-title="Batman #58" data-full-detail="PUB-BAT-0058 | Seq 000058 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0058.jpg" alt="Batman #58 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #58">Batman #58</h3>
+          <p class="pub-id" title="PUB-BAT-0058">PUB-BAT-0058</p>
+          <p class="meta" title="Seq 000058 | OPPORTUNISTIC | derived">Seq 000058 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000059" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000059">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0059.jpg" data-full-title="Batman #59" data-full-detail="PUB-BAT-0059 | Seq 000059 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0059.jpg" alt="Batman #59 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #59">Batman #59</h3>
+          <p class="pub-id" title="PUB-BAT-0059">PUB-BAT-0059</p>
+          <p class="meta" title="Seq 000059 | OPPORTUNISTIC | derived">Seq 000059 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000060" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000060">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0060.jpg" data-full-title="Batman #60" data-full-detail="PUB-BAT-0060 | Seq 000060 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0060.jpg" alt="Batman #60 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #60">Batman #60</h3>
+          <p class="pub-id" title="PUB-BAT-0060">PUB-BAT-0060</p>
+          <p class="meta" title="Seq 000060 | OPPORTUNISTIC | derived">Seq 000060 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000061" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000061">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0061.jpg" data-full-title="Batman #61" data-full-detail="PUB-BAT-0061 | Seq 000061 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0061.jpg" alt="Batman #61 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #61">Batman #61</h3>
+          <p class="pub-id" title="PUB-BAT-0061">PUB-BAT-0061</p>
+          <p class="meta" title="Seq 000061 | OPPORTUNISTIC | derived">Seq 000061 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000062" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000062">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0062.jpg" data-full-title="Batman #62" data-full-detail="PUB-BAT-0062 | Seq 000062 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0062.jpg" alt="Batman #62 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #62">Batman #62</h3>
+          <p class="pub-id" title="PUB-BAT-0062">PUB-BAT-0062</p>
+          <p class="meta" title="Seq 000062 | OPPORTUNISTIC | derived">Seq 000062 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000063" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000063">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0063.jpg" data-full-title="Batman #63" data-full-detail="PUB-BAT-0063 | Seq 000063 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0063.jpg" alt="Batman #63 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #63">Batman #63</h3>
+          <p class="pub-id" title="PUB-BAT-0063">PUB-BAT-0063</p>
+          <p class="meta" title="Seq 000063 | OPPORTUNISTIC | derived">Seq 000063 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000064" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000064">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0064.jpg" data-full-title="Batman #64" data-full-detail="PUB-BAT-0064 | Seq 000064 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0064.jpg" alt="Batman #64 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #64">Batman #64</h3>
+          <p class="pub-id" title="PUB-BAT-0064">PUB-BAT-0064</p>
+          <p class="meta" title="Seq 000064 | OPPORTUNISTIC | derived">Seq 000064 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000065" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000065">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0065.jpg" data-full-title="Batman #65" data-full-detail="PUB-BAT-0065 | Seq 000065 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0065.jpg" alt="Batman #65 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #65">Batman #65</h3>
+          <p class="pub-id" title="PUB-BAT-0065">PUB-BAT-0065</p>
+          <p class="meta" title="Seq 000065 | OPPORTUNISTIC | derived">Seq 000065 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000066" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000066">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0066.jpg" data-full-title="Batman #66" data-full-detail="PUB-BAT-0066 | Seq 000066 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0066.jpg" alt="Batman #66 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #66">Batman #66</h3>
+          <p class="pub-id" title="PUB-BAT-0066">PUB-BAT-0066</p>
+          <p class="meta" title="Seq 000066 | OPPORTUNISTIC | derived">Seq 000066 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000067" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000067">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0067.jpg" data-full-title="Batman #67" data-full-detail="PUB-BAT-0067 | Seq 000067 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0067.jpg" alt="Batman #67 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #67">Batman #67</h3>
+          <p class="pub-id" title="PUB-BAT-0067">PUB-BAT-0067</p>
+          <p class="meta" title="Seq 000067 | OPPORTUNISTIC | derived">Seq 000067 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000068" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000068">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0068.jpg" data-full-title="Batman #68" data-full-detail="PUB-BAT-0068 | Seq 000068 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0068.jpg" alt="Batman #68 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #68">Batman #68</h3>
+          <p class="pub-id" title="PUB-BAT-0068">PUB-BAT-0068</p>
+          <p class="meta" title="Seq 000068 | OPPORTUNISTIC | derived">Seq 000068 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000069" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000069">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0069.jpg" data-full-title="Batman #69" data-full-detail="PUB-BAT-0069 | Seq 000069 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0069.jpg" alt="Batman #69 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #69">Batman #69</h3>
+          <p class="pub-id" title="PUB-BAT-0069">PUB-BAT-0069</p>
+          <p class="meta" title="Seq 000069 | OPPORTUNISTIC | derived">Seq 000069 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000070" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000070">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0070.jpg" data-full-title="Batman #70" data-full-detail="PUB-BAT-0070 | Seq 000070 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0070.jpg" alt="Batman #70 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #70">Batman #70</h3>
+          <p class="pub-id" title="PUB-BAT-0070">PUB-BAT-0070</p>
+          <p class="meta" title="Seq 000070 | OPPORTUNISTIC | derived">Seq 000070 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000071" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000071">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0071.jpg" data-full-title="Batman #71" data-full-detail="PUB-BAT-0071 | Seq 000071 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0071.jpg" alt="Batman #71 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #71">Batman #71</h3>
+          <p class="pub-id" title="PUB-BAT-0071">PUB-BAT-0071</p>
+          <p class="meta" title="Seq 000071 | OPPORTUNISTIC | derived">Seq 000071 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000072" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000072">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0072.jpg" data-full-title="Batman #72" data-full-detail="PUB-BAT-0072 | Seq 000072 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0072.jpg" alt="Batman #72 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #72">Batman #72</h3>
+          <p class="pub-id" title="PUB-BAT-0072">PUB-BAT-0072</p>
+          <p class="meta" title="Seq 000072 | OPPORTUNISTIC | derived">Seq 000072 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000073" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000073">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0073.jpg" data-full-title="Batman #73" data-full-detail="PUB-BAT-0073 | Seq 000073 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0073.jpg" alt="Batman #73 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #73">Batman #73</h3>
+          <p class="pub-id" title="PUB-BAT-0073">PUB-BAT-0073</p>
+          <p class="meta" title="Seq 000073 | OPPORTUNISTIC | derived">Seq 000073 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000074" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000074">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0074.jpg" data-full-title="Batman #74" data-full-detail="PUB-BAT-0074 | Seq 000074 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0074.jpg" alt="Batman #74 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #74">Batman #74</h3>
+          <p class="pub-id" title="PUB-BAT-0074">PUB-BAT-0074</p>
+          <p class="meta" title="Seq 000074 | OPPORTUNISTIC | derived">Seq 000074 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000075" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000075">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0075.jpg" data-full-title="Batman #75" data-full-detail="PUB-BAT-0075 | Seq 000075 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0075.jpg" alt="Batman #75 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #75">Batman #75</h3>
+          <p class="pub-id" title="PUB-BAT-0075">PUB-BAT-0075</p>
+          <p class="meta" title="Seq 000075 | OPPORTUNISTIC | derived">Seq 000075 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000076" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000076">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0076.jpg" data-full-title="Batman #76" data-full-detail="PUB-BAT-0076 | Seq 000076 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0076.jpg" alt="Batman #76 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #76">Batman #76</h3>
+          <p class="pub-id" title="PUB-BAT-0076">PUB-BAT-0076</p>
+          <p class="meta" title="Seq 000076 | OPPORTUNISTIC | derived">Seq 000076 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000077" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000077">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0077.jpg" data-full-title="Batman #77" data-full-detail="PUB-BAT-0077 | Seq 000077 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0077.jpg" alt="Batman #77 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #77">Batman #77</h3>
+          <p class="pub-id" title="PUB-BAT-0077">PUB-BAT-0077</p>
+          <p class="meta" title="Seq 000077 | OPPORTUNISTIC | derived">Seq 000077 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000078" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000078">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0078.jpg" data-full-title="Batman #78" data-full-detail="PUB-BAT-0078 | Seq 000078 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0078.jpg" alt="Batman #78 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #78">Batman #78</h3>
+          <p class="pub-id" title="PUB-BAT-0078">PUB-BAT-0078</p>
+          <p class="meta" title="Seq 000078 | OPPORTUNISTIC | derived">Seq 000078 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000079" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000079">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0079.jpg" data-full-title="Batman #79" data-full-detail="PUB-BAT-0079 | Seq 000079 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0079.jpg" alt="Batman #79 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #79">Batman #79</h3>
+          <p class="pub-id" title="PUB-BAT-0079">PUB-BAT-0079</p>
+          <p class="meta" title="Seq 000079 | OPPORTUNISTIC | derived">Seq 000079 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000080" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000080">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0080.jpg" data-full-title="Batman #80" data-full-detail="PUB-BAT-0080 | Seq 000080 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0080.jpg" alt="Batman #80 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #80">Batman #80</h3>
+          <p class="pub-id" title="PUB-BAT-0080">PUB-BAT-0080</p>
+          <p class="meta" title="Seq 000080 | OPPORTUNISTIC | derived">Seq 000080 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000081" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000081">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0081.jpg" data-full-title="Batman #81" data-full-detail="PUB-BAT-0081 | Seq 000081 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0081.jpg" alt="Batman #81 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #81">Batman #81</h3>
+          <p class="pub-id" title="PUB-BAT-0081">PUB-BAT-0081</p>
+          <p class="meta" title="Seq 000081 | OPPORTUNISTIC | derived">Seq 000081 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000082" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000082">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0082.jpg" data-full-title="Batman #82" data-full-detail="PUB-BAT-0082 | Seq 000082 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0082.jpg" alt="Batman #82 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #82">Batman #82</h3>
+          <p class="pub-id" title="PUB-BAT-0082">PUB-BAT-0082</p>
+          <p class="meta" title="Seq 000082 | OPPORTUNISTIC | derived">Seq 000082 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000083" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000083">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0083.jpg" data-full-title="Batman #83" data-full-detail="PUB-BAT-0083 | Seq 000083 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0083.jpg" alt="Batman #83 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #83">Batman #83</h3>
+          <p class="pub-id" title="PUB-BAT-0083">PUB-BAT-0083</p>
+          <p class="meta" title="Seq 000083 | OPPORTUNISTIC | derived">Seq 000083 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000084" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000084">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0084.jpg" data-full-title="Batman #84" data-full-detail="PUB-BAT-0084 | Seq 000084 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0084.jpg" alt="Batman #84 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #84">Batman #84</h3>
+          <p class="pub-id" title="PUB-BAT-0084">PUB-BAT-0084</p>
+          <p class="meta" title="Seq 000084 | OPPORTUNISTIC | derived">Seq 000084 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000085" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000085">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0085.jpg" data-full-title="Batman #85" data-full-detail="PUB-BAT-0085 | Seq 000085 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0085.jpg" alt="Batman #85 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #85">Batman #85</h3>
+          <p class="pub-id" title="PUB-BAT-0085">PUB-BAT-0085</p>
+          <p class="meta" title="Seq 000085 | OPPORTUNISTIC | derived">Seq 000085 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000086" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000086">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0086.jpg" data-full-title="Batman #86" data-full-detail="PUB-BAT-0086 | Seq 000086 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0086.jpg" alt="Batman #86 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #86">Batman #86</h3>
+          <p class="pub-id" title="PUB-BAT-0086">PUB-BAT-0086</p>
+          <p class="meta" title="Seq 000086 | OPPORTUNISTIC | derived">Seq 000086 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000087" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000087">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0087.jpg" data-full-title="Batman #87" data-full-detail="PUB-BAT-0087 | Seq 000087 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0087.jpg" alt="Batman #87 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #87">Batman #87</h3>
+          <p class="pub-id" title="PUB-BAT-0087">PUB-BAT-0087</p>
+          <p class="meta" title="Seq 000087 | OPPORTUNISTIC | derived">Seq 000087 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000088" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000088">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0088.jpg" data-full-title="Batman #88" data-full-detail="PUB-BAT-0088 | Seq 000088 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0088.jpg" alt="Batman #88 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #88">Batman #88</h3>
+          <p class="pub-id" title="PUB-BAT-0088">PUB-BAT-0088</p>
+          <p class="meta" title="Seq 000088 | OPPORTUNISTIC | derived">Seq 000088 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000089" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000089">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0089.jpg" data-full-title="Batman #89" data-full-detail="PUB-BAT-0089 | Seq 000089 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0089.jpg" alt="Batman #89 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #89">Batman #89</h3>
+          <p class="pub-id" title="PUB-BAT-0089">PUB-BAT-0089</p>
+          <p class="meta" title="Seq 000089 | OPPORTUNISTIC | derived">Seq 000089 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000090" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000090">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0090.jpg" data-full-title="Batman #90" data-full-detail="PUB-BAT-0090 | Seq 000090 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0090.jpg" alt="Batman #90 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #90">Batman #90</h3>
+          <p class="pub-id" title="PUB-BAT-0090">PUB-BAT-0090</p>
+          <p class="meta" title="Seq 000090 | OPPORTUNISTIC | derived">Seq 000090 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000091" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000091">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0091.jpg" data-full-title="Batman #91" data-full-detail="PUB-BAT-0091 | Seq 000091 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0091.jpg" alt="Batman #91 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #91">Batman #91</h3>
+          <p class="pub-id" title="PUB-BAT-0091">PUB-BAT-0091</p>
+          <p class="meta" title="Seq 000091 | OPPORTUNISTIC | derived">Seq 000091 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000092" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000092">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0092.jpg" data-full-title="Batman #92" data-full-detail="PUB-BAT-0092 | Seq 000092 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0092.jpg" alt="Batman #92 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #92">Batman #92</h3>
+          <p class="pub-id" title="PUB-BAT-0092">PUB-BAT-0092</p>
+          <p class="meta" title="Seq 000092 | OPPORTUNISTIC | derived">Seq 000092 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000093" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000093">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0093.jpg" data-full-title="Batman #93" data-full-detail="PUB-BAT-0093 | Seq 000093 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0093.jpg" alt="Batman #93 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #93">Batman #93</h3>
+          <p class="pub-id" title="PUB-BAT-0093">PUB-BAT-0093</p>
+          <p class="meta" title="Seq 000093 | OPPORTUNISTIC | derived">Seq 000093 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000094" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000094">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0094.jpg" data-full-title="Batman #94" data-full-detail="PUB-BAT-0094 | Seq 000094 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0094.jpg" alt="Batman #94 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #94">Batman #94</h3>
+          <p class="pub-id" title="PUB-BAT-0094">PUB-BAT-0094</p>
+          <p class="meta" title="Seq 000094 | OPPORTUNISTIC | derived">Seq 000094 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000095" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000095">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0095.jpg" data-full-title="Batman #95" data-full-detail="PUB-BAT-0095 | Seq 000095 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0095.jpg" alt="Batman #95 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #95">Batman #95</h3>
+          <p class="pub-id" title="PUB-BAT-0095">PUB-BAT-0095</p>
+          <p class="meta" title="Seq 000095 | OPPORTUNISTIC | derived">Seq 000095 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000096" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000096">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0096.jpg" data-full-title="Batman #96" data-full-detail="PUB-BAT-0096 | Seq 000096 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0096.jpg" alt="Batman #96 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #96">Batman #96</h3>
+          <p class="pub-id" title="PUB-BAT-0096">PUB-BAT-0096</p>
+          <p class="meta" title="Seq 000096 | OPPORTUNISTIC | derived">Seq 000096 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000097" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000097">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0097.jpg" data-full-title="Batman #97" data-full-detail="PUB-BAT-0097 | Seq 000097 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0097.jpg" alt="Batman #97 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #97">Batman #97</h3>
+          <p class="pub-id" title="PUB-BAT-0097">PUB-BAT-0097</p>
+          <p class="meta" title="Seq 000097 | OPPORTUNISTIC | derived">Seq 000097 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000098" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000098">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0098.jpg" data-full-title="Batman #98" data-full-detail="PUB-BAT-0098 | Seq 000098 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0098.jpg" alt="Batman #98 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #98">Batman #98</h3>
+          <p class="pub-id" title="PUB-BAT-0098">PUB-BAT-0098</p>
+          <p class="meta" title="Seq 000098 | OPPORTUNISTIC | derived">Seq 000098 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000099" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000099">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0099.jpg" data-full-title="Batman #99" data-full-detail="PUB-BAT-0099 | Seq 000099 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0099.jpg" alt="Batman #99 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">OPPORTUNISTIC</span>
+            
+          </div>
+          <h3 title="Batman #99">Batman #99</h3>
+          <p class="pub-id" title="PUB-BAT-0099">PUB-BAT-0099</p>
+          <p class="meta" title="Seq 000099 | OPPORTUNISTIC | derived">Seq 000099 | OPPORTUNISTIC | derived</p>
+          <p class="continuity" title="Unmapped story">Unmapped story</p>
+          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+  <div class="lightbox" aria-modal="true" role="dialog" aria-label="Cover preview">
+    <div class="lightbox-panel">
+      <img src="" alt="">
+      <div class="lightbox-caption">
+        <div>
+          <div class="lightbox-title"></div>
+          <div class="lightbox-detail"></div>
+        </div>
+        <button class="lightbox-close" type="button" data-lightbox-close>Close</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const state = { order: 'all', scope: 'all', project: 'all', status: 'all' };
+    const grid = document.querySelector('.grid');
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImage = document.querySelector('.lightbox img');
+    const lightboxTitle = document.querySelector('.lightbox-title');
+    const lightboxDetail = document.querySelector('.lightbox-detail');
+    document.querySelectorAll('.chip').forEach(button => {
+      button.addEventListener('click', () => {
+        const group = button.dataset.filter;
+        state[group] = button.dataset.value;
+        document.querySelectorAll(`.chip[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item === button));
+        applyFilters();
+      });
+    });
+    function applyFilters() {
+      document.querySelectorAll('.comic-card').forEach(card => {
+        const visible = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]));
+        card.classList.toggle('hidden', !visible);
+      });
+      sortCards();
+    }
+    function sortCards() {
+      [...document.querySelectorAll('.comic-card')]
+        .sort((left, right) => sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent))
+        .forEach(card => grid.appendChild(card));
+    }
+    function sequenceForCard(card) {
+      const order = state.order === 'all' ? 'all' : state.order;
+      if (order === 'publication') {
+        return scopedSequence(card, 'publicationSequence');
+      }
+      if (order === 'chronological') {
+        return scopedSequence(card, 'chronologicalSequence');
+      }
+      const byOrder = sequenceMap(card.dataset.orderSequences);
+      if (byOrder[order]) {
+        return sortValue(byOrder[order]);
+      }
+      const chronological = scopedSequence(card, 'chronologicalSequence');
+      return chronological < 999999 ? chronological : sortValue(card.dataset.sequence);
+    }
+    function scopedSequence(card, orderKey) {
+      const scoped = sequenceMap(card.dataset[`${orderKey}s`]);
+      if (state.scope !== 'all' && scoped[state.scope]) {
+        return sortValue(scoped[state.scope]);
+      }
+      return sortValue(card.dataset[orderKey]);
+    }
+    function sequenceMap(value) {
+      return Object.fromEntries((value || '').split('|').filter(Boolean).map(item => {
+        const [scope, sequence] = item.split(':');
+        return [scope, sequence];
+      }));
+    }
+    function sortValue(value) {
+      const parsed = Number.parseFloat(value || '999999');
+      if (Number.isFinite(parsed)) {
+        return parsed;
+      }
+        const embedded = String(value || '').match(/\d+(\.\d+)?/);
+      return embedded ? Number.parseFloat(embedded[0]) : 999999;
+    }
+    document.querySelectorAll('.cover-button').forEach(button => {
+      button.addEventListener('click', () => {
+        lightboxImage.src = button.dataset.fullSrc;
+        lightboxImage.alt = `${button.dataset.fullTitle} cover`;
+        lightboxTitle.textContent = button.dataset.fullTitle;
+        lightboxDetail.textContent = button.dataset.fullDetail || '';
+        lightbox.classList.add('open');
+      });
+    });
+    document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
+    lightbox.addEventListener('click', event => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeLightbox();
+    });
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightboxImage.removeAttribute('src');
+      lightboxImage.removeAttribute('alt');
+      lightboxTitle.textContent = '';
+      lightboxDetail.textContent = '';
+    }
+    applyFilters();
+    </script>
+</body>
+</html>

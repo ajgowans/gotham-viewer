@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="../assets/site/batman-favicon.png">
+  <title>Absolute Batman - Visual Viewer</title>
+  <style>
+    :root { color-scheme: light; --ink:#172026; --muted:#5c6670; --line:#d9dee4; --paper:#f6f7f8; --panel:#ffffff; --owned:#0f7b4f; --fac:#6b4bb8; --ordered:#2166ad; --readable:#a46a00; --missing:#b42318; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); }
+    header { padding: 28px 32px 18px; background: #111820; color: white; }
+    .header-top { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .back-link { color: white; border: 1px solid rgba(255,255,255,.32); border-radius: 999px; padding: 7px 11px; text-decoration: none; font-size: 13px; background: rgba(255,255,255,.08); }
+    .back-link:hover { background: rgba(255,255,255,.16); }
+    h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; }
+    header p { margin: 0; color: #c8d0d8; max-width: 900px; }
+    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; padding: 18px 32px; background: #e9edf1; border-bottom: 1px solid var(--line); }
+    .metric { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+    .metric strong { display: block; font-size: 24px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    .controls { padding: 18px 32px; display: grid; gap: 12px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
+    .control-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .control-row b { margin-right: 4px; font-size: 13px; color: var(--muted); min-width: 70px; }
+    .chip { border: 1px solid var(--line); background: #f8fafb; color: var(--ink); border-radius: 999px; padding: 7px 11px; cursor: pointer; text-transform: capitalize; }
+    .chip.active { background: #172026; border-color: #172026; color: white; }
+    main { padding: 24px 32px 40px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 16px; align-items: start; }
+    .comic-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05); min-width: 0; display: flex; flex-direction: column; position: relative; }
+    .comic-card.owned { background: #f2fbf6; }
+    .comic-card.facsimile { background: #f6f2ff; }
+    .comic-card.ordered { background: #f1f7ff; }
+    .comic-card.readable { background: #fff8ec; }
+    .status-strip { background: var(--missing); color: white; min-height: 30px; display: grid; place-items: center; padding: 7px 8px; font-size: 12px; line-height: 1; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; }
+    .comic-card.owned .status-strip { background: var(--owned); }
+    .comic-card.facsimile .status-strip { background: var(--fac); }
+    .comic-card.ordered .status-strip { background: var(--ordered); }
+    .comic-card.readable .status-strip { background: var(--readable); }
+    .cover-wrap { aspect-ratio: 2 / 3; background: #242a31; display: grid; place-items: center; overflow: hidden; position: relative; }
+    .cover-button { appearance: none; border: 0; background: #111820; padding: 0; margin: 0; width: 100%; height: 100%; display: block; cursor: zoom-in; }
+    .cover-button:focus-visible { outline: 3px solid #f4c430; outline-offset: -3px; }
+    .cover-wrap img { width: 100%; height: 100%; object-fit: contain; background: #111820; display: block; }
+    .cover-placeholder { width: 100%; height: 100%; padding: 14px; color: white; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(145deg, #18212a, #39424c); }
+    .cover-placeholder span { font-weight: 700; line-height: 1.1; overflow-wrap: anywhere; }
+    .cover-placeholder strong { font-size: 42px; align-self: flex-end; }
+    .cover-review-badge { position: absolute; left: 8px; right: 8px; top: 8px; border-radius: 6px; padding: 6px 7px; color: white; font-size: 11px; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.22); pointer-events: none; }
+    .cover-review-badge.warning { background: rgba(164,106,0,.92); }
+    .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
+    .comic-card.cover-needs_review { border-color: #a46a00; }
+    .comic-card.cover-rejected_auto { border-color: #b42318; }
+    .card-body { padding: 10px 11px 12px; height: 205px; display: flex; flex-direction: column; overflow: hidden; }
+    .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
+    .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
+    .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
+    h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id { -webkit-line-clamp: 1; }
+    .meta, .continuity { -webkit-line-clamp: 2; }
+    .notes { -webkit-line-clamp: 2; position: relative; }
+    .notes::after { content: ""; position: absolute; inset: auto 0 0 0; height: 1.2em; background: linear-gradient(to bottom, rgba(255,255,255,0), var(--panel)); pointer-events: none; }
+    .comic-card.owned .notes::after { background: linear-gradient(to bottom, rgba(242,251,246,0), #f2fbf6); }
+    .comic-card.facsimile .notes::after { background: linear-gradient(to bottom, rgba(246,242,255,0), #f6f2ff); }
+    .comic-card.ordered .notes::after { background: linear-gradient(to bottom, rgba(241,247,255,0), #f1f7ff); }
+    .comic-card.readable .notes::after { background: linear-gradient(to bottom, rgba(255,248,236,0), #fff8ec); }
+    .hidden { display: none; }
+    .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
+    .lightbox.open { display: flex; }
+    .lightbox-panel { max-width: min(92vw, 980px); max-height: 94vh; display: grid; gap: 10px; }
+    .lightbox img { max-width: 100%; max-height: calc(94vh - 56px); object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
+    .lightbox-title { font-weight: 750; }
+    .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
+    .lightbox-close { border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: white; border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+    @media (max-width: 700px) { header, .summary, .controls, main { padding-left: 14px; padding-right: 14px; } .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; } }
+    </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <h1>Absolute Batman</h1>
+      <a class="back-link" href="visual_collection_viewer.html">All visual views</a>
+    </div>
+    <p>Absolute Batman and related publications, with separate series and reading-order controls.</p>
+  </header>
+  <section class="summary">
+    <div class="metric"><strong>28</strong><span>unique publications</span></div>
+    <div class="metric"><strong>27</strong><span>owned/readable</span></div>
+    <div class="metric"><strong>0</strong><span>facsimiles</span></div>
+    <div class="metric"><strong>1</strong><span>missing</span></div>
+  </section>
+  <section class="controls">
+    <div class="control-row"><b>Order</b><button class="chip" data-filter="order" data-value="all">All orders</button>
+<button class="chip" data-filter="order" data-value="reading">reading</button>
+<button class="chip active" data-filter="order" data-value="series">series</button></div>
+    <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button></div>
+    <div class="control-row"><b>Status</b><button class="chip active" data-filter="status" data-value="all">All statuses</button>
+<button class="chip" data-filter="status" data-value="owned">owned</button>
+<button class="chip" data-filter="status" data-value="facsimile">facsimile</button>
+<button class="chip" data-filter="status" data-value="ordered">ordered</button>
+<button class="chip" data-filter="status" data-value="readable">readable</button>
+<button class="chip" data-filter="status" data-value="missing">missing</button></div>
+    <div class="control-row"><b>Work</b><button class="chip active" data-filter="project" data-value="all">All works</button></div>
+  </section>
+  <main>
+    <section class="grid">
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001|series:000001">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-dc-all-in-special-1.jpg" data-full-title="DC All In Special #1" data-full-detail="VIEW-dc-all-in-special-1 | Seq 000001 | DC Database | https://dc.fandom.com/wiki/DC_All_In_Special_Vol_1_1 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-dc-all-in-special-1.jpg" alt="DC All In Special #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="DC All In Special #1">DC All In Special #1</h3>
+          <p class="pub-id" title="VIEW-dc-all-in-special-1">VIEW-dc-all-in-special-1</p>
+          <p class="meta" title="Seq 000001">Seq 000001</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/DC_All_In_Special_Vol_1_1 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/DC_All_In_Special_Vol_1_1 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002|series:000002">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-1.jpg" data-full-title="Absolute Batman #1" data-full-detail="VIEW-absolute-batman-1 | Seq 000002 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_1 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-1.jpg" alt="Absolute Batman #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #1">Absolute Batman #1</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-1">VIEW-absolute-batman-1</p>
+          <p class="meta" title="Seq 000002">Seq 000002</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_1 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_1 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004|series:000003">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-2.jpg" data-full-title="Absolute Batman #2" data-full-detail="VIEW-absolute-batman-2 | Seq 000003 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_2 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-2.jpg" alt="Absolute Batman #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #2">Absolute Batman #2</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-2">VIEW-absolute-batman-2</p>
+          <p class="meta" title="Seq 000003">Seq 000003</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_2 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_2 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:005|series:000004">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-3.jpg" data-full-title="Absolute Batman #3" data-full-detail="VIEW-absolute-batman-3 | Seq 000004 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_3 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-3.jpg" alt="Absolute Batman #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #3">Absolute Batman #3</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-3">VIEW-absolute-batman-3</p>
+          <p class="meta" title="Seq 000004">Seq 000004</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_3 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_3 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:006|series:000005">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-4.jpg" data-full-title="Absolute Batman #4" data-full-detail="VIEW-absolute-batman-4 | Seq 000005 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_4 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-4.jpg" alt="Absolute Batman #4 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #4">Absolute Batman #4</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-4">VIEW-absolute-batman-4</p>
+          <p class="meta" title="Seq 000005">Seq 000005</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_4 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_4 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:007|series:000006">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-5.jpg" data-full-title="Absolute Batman #5" data-full-detail="VIEW-absolute-batman-5 | Seq 000006 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_5 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-5.jpg" alt="Absolute Batman #5 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #5">Absolute Batman #5</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-5">VIEW-absolute-batman-5</p>
+          <p class="meta" title="Seq 000006">Seq 000006</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_5 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_5 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:008|series:000007">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-6.jpg" data-full-title="Absolute Batman #6" data-full-detail="VIEW-absolute-batman-6 | Seq 000007 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_6 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-6.jpg" alt="Absolute Batman #6 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #6">Absolute Batman #6</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-6">VIEW-absolute-batman-6</p>
+          <p class="meta" title="Seq 000007">Seq 000007</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_6 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_6 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:009|series:000008">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-7.jpg" data-full-title="Absolute Batman #7" data-full-detail="VIEW-absolute-batman-7 | Seq 000008 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_7 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-7.jpg" alt="Absolute Batman #7 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #7">Absolute Batman #7</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-7">VIEW-absolute-batman-7</p>
+          <p class="meta" title="Seq 000008">Seq 000008</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_7 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_7 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:010|series:000009">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-8.jpg" data-full-title="Absolute Batman #8" data-full-detail="VIEW-absolute-batman-8 | Seq 000009 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_8 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-8.jpg" alt="Absolute Batman #8 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #8">Absolute Batman #8</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-8">VIEW-absolute-batman-8</p>
+          <p class="meta" title="Seq 000009">Seq 000009</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_8 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_8 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:011|series:000010">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-9.jpg" data-full-title="Absolute Batman #9" data-full-detail="VIEW-absolute-batman-9 | Seq 000010 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_9 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-9.jpg" alt="Absolute Batman #9 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #9">Absolute Batman #9</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-9">VIEW-absolute-batman-9</p>
+          <p class="meta" title="Seq 000010">Seq 000010</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_9 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_9 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:012|series:000011">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-10.jpg" data-full-title="Absolute Batman #10" data-full-detail="VIEW-absolute-batman-10 | Seq 000011 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_10 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-10.jpg" alt="Absolute Batman #10 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #10">Absolute Batman #10</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-10">VIEW-absolute-batman-10</p>
+          <p class="meta" title="Seq 000011">Seq 000011</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_10 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_10 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:013|series:000012">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-11.jpg" data-full-title="Absolute Batman #11" data-full-detail="VIEW-absolute-batman-11 | Seq 000012 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_11 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-11.jpg" alt="Absolute Batman #11 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #11">Absolute Batman #11</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-11">VIEW-absolute-batman-11</p>
+          <p class="meta" title="Seq 000012">Seq 000012</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_11 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_11 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000013" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:014|series:000013">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-12.jpg" data-full-title="Absolute Batman #12" data-full-detail="VIEW-absolute-batman-12 | Seq 000013 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_12 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-12.jpg" alt="Absolute Batman #12 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #12">Absolute Batman #12</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-12">VIEW-absolute-batman-12</p>
+          <p class="meta" title="Seq 000013">Seq 000013</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_12 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_12 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000014" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:015|series:000014">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-13.jpg" data-full-title="Absolute Batman #13" data-full-detail="VIEW-absolute-batman-13 | Seq 000014 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_13 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-13.jpg" alt="Absolute Batman #13 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #13">Absolute Batman #13</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-13">VIEW-absolute-batman-13</p>
+          <p class="meta" title="Seq 000014">Seq 000014</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_13 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_13 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000015" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:016|series:000015">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-14.jpg" data-full-title="Absolute Batman #14" data-full-detail="VIEW-absolute-batman-14 | Seq 000015 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_14 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-14.jpg" alt="Absolute Batman #14 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #14">Absolute Batman #14</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-14">VIEW-absolute-batman-14</p>
+          <p class="meta" title="Seq 000015">Seq 000015</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_14 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_14 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000016" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:017|series:000016">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-15.jpg" data-full-title="Absolute Batman #15" data-full-detail="VIEW-absolute-batman-15 | Seq 000016 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_15 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-15.jpg" alt="Absolute Batman #15 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #15">Absolute Batman #15</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-15">VIEW-absolute-batman-15</p>
+          <p class="meta" title="Seq 000016">Seq 000016</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_15 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_15 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000017" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:018|series:000017">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-16.jpg" data-full-title="Absolute Batman #16" data-full-detail="VIEW-absolute-batman-16 | Seq 000017 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_16 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-16.jpg" alt="Absolute Batman #16 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #16">Absolute Batman #16</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-16">VIEW-absolute-batman-16</p>
+          <p class="meta" title="Seq 000017">Seq 000017</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_16 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_16 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000018" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:019|series:000018">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-17.jpg" data-full-title="Absolute Batman #17" data-full-detail="VIEW-absolute-batman-17 | Seq 000018 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_17 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-17.jpg" alt="Absolute Batman #17 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #17">Absolute Batman #17</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-17">VIEW-absolute-batman-17</p>
+          <p class="meta" title="Seq 000018">Seq 000018</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_17 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_17 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000019" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:020|series:000019">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-18.jpg" data-full-title="Absolute Batman #18" data-full-detail="VIEW-absolute-batman-18 | Seq 000019 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_18 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-18.jpg" alt="Absolute Batman #18 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #18">Absolute Batman #18</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-18">VIEW-absolute-batman-18</p>
+          <p class="meta" title="Seq 000019">Seq 000019</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_18 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_18 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:021|series:000020">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-19.jpg" data-full-title="Absolute Batman #19" data-full-detail="VIEW-absolute-batman-19 | Seq 000020 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_19 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-19.jpg" alt="Absolute Batman #19 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #19">Absolute Batman #19</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-19">VIEW-absolute-batman-19</p>
+          <p class="meta" title="Seq 000020">Seq 000020</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_19 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_19 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:022|series:000021">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-20.jpg" data-full-title="Absolute Batman #20" data-full-detail="VIEW-absolute-batman-20 | Seq 000021 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_20 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-20.jpg" alt="Absolute Batman #20 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #20">Absolute Batman #20</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-20">VIEW-absolute-batman-20</p>
+          <p class="meta" title="Seq 000021">Seq 000021</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_20 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_20 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000022" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:023|series:000022">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-21.jpg" data-full-title="Absolute Batman #21" data-full-detail="VIEW-absolute-batman-21 | Seq 000022 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_21 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-21.jpg" alt="Absolute Batman #21 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #21">Absolute Batman #21</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-21">VIEW-absolute-batman-21</p>
+          <p class="meta" title="Seq 000022">Seq 000022</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_21 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_21 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="missing" data-sequence="000023" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:024|series:000023">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-22.jpg" data-full-title="Absolute Batman #22" data-full-detail="VIEW-absolute-batman-22 | Seq 000023 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_22 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-22.jpg" alt="Absolute Batman #22 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman #22">Absolute Batman #22</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-22">VIEW-absolute-batman-22</p>
+          <p class="meta" title="Seq 000023">Seq 000023</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_22 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_Vol_1_22 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000024" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:025|series:000024">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-wonder-woman-15.jpg" data-full-title="Absolute Wonder Woman #15" data-full-detail="VIEW-absolute-wonder-woman-15 | Seq 000024 | DC Database | https://dc.fandom.com/wiki/Absolute_Wonder_Woman_Vol_1_15 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-wonder-woman-15.jpg" alt="Absolute Wonder Woman #15 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Wonder Woman #15">Absolute Wonder Woman #15</h3>
+          <p class="pub-id" title="VIEW-absolute-wonder-woman-15">VIEW-absolute-wonder-woman-15</p>
+          <p class="meta" title="Seq 000024">Seq 000024</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Wonder_Woman_Vol_1_15 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Wonder_Woman_Vol_1_15 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000025" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:026|series:000025">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-ark-m-1.jpg" data-full-title="Absolute Batman: Ark M #1" data-full-detail="VIEW-absolute-batman-ark-m-1 | Seq 000025 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman%3A_Ark_M_Vol_1_1 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-ark-m-1.jpg" alt="Absolute Batman: Ark M #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman: Ark M #1">Absolute Batman: Ark M #1</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-ark-m-1">VIEW-absolute-batman-ark-m-1</p>
+          <p class="meta" title="Seq 000025">Seq 000025</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman%3A_Ark_M_Vol_1_1 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman%3A_Ark_M_Vol_1_1 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000026" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:027|series:000026">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-catwoman-1.jpg" data-full-title="Absolute Catwoman #1" data-full-detail="VIEW-absolute-catwoman-1 | Seq 000026 | DC Database | https://dc.fandom.com/wiki/Absolute_Catwoman_Vol_1_1 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-catwoman-1.jpg" alt="Absolute Catwoman #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Catwoman #1">Absolute Catwoman #1</h3>
+          <p class="pub-id" title="VIEW-absolute-catwoman-1">VIEW-absolute-catwoman-1</p>
+          <p class="meta" title="Seq 000026">Seq 000026</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Catwoman_Vol_1_1 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Catwoman_Vol_1_1 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000027" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:028|series:000027">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-catwoman-2.jpg" data-full-title="Absolute Catwoman #2" data-full-detail="VIEW-absolute-catwoman-2 | Seq 000027 | DC Database | https://dc.fandom.com/wiki/Absolute_Catwoman_Vol_1_2 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-catwoman-2.jpg" alt="Absolute Catwoman #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Catwoman #2">Absolute Catwoman #2</h3>
+          <p class="pub-id" title="VIEW-absolute-catwoman-2">VIEW-absolute-catwoman-2</p>
+          <p class="meta" title="Seq 000027">Seq 000027</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Catwoman_Vol_1_2 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Catwoman_Vol_1_2 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="series|reading" data-scope="" data-project="" data-status="owned" data-sequence="000028" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003|series:000028">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-absolute-batman-annual-1.jpg" data-full-title="Absolute Batman 2025 Annual #1" data-full-detail="VIEW-absolute-batman-annual-1 | Seq 000028 | DC Database | https://dc.fandom.com/wiki/Absolute_Batman_2025_Annual_Vol_1_1 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-absolute-batman-annual-1.jpg" alt="Absolute Batman 2025 Annual #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Absolute Batman 2025 Annual #1">Absolute Batman 2025 Annual #1</h3>
+          <p class="pub-id" title="VIEW-absolute-batman-annual-1">VIEW-absolute-batman-annual-1</p>
+          <p class="meta" title="Seq 000028">Seq 000028</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Absolute_Batman_2025_Annual_Vol_1_1 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.">DC Database | https://dc.fandom.com/wiki/Absolute_Batman_2025_Annual_Vol_1_1 | confidence=high | DC Database issue page for the original regular/main Cover A; direct image URL intentionally omitted so the existing Fandom resolver selects the page image.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+  <div class="lightbox" aria-modal="true" role="dialog" aria-label="Cover preview">
+    <div class="lightbox-panel">
+      <img src="" alt="">
+      <div class="lightbox-caption">
+        <div>
+          <div class="lightbox-title"></div>
+          <div class="lightbox-detail"></div>
+        </div>
+        <button class="lightbox-close" type="button" data-lightbox-close>Close</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const state = { order: 'series', scope: 'all', project: 'all', status: 'all' };
+    const grid = document.querySelector('.grid');
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImage = document.querySelector('.lightbox img');
+    const lightboxTitle = document.querySelector('.lightbox-title');
+    const lightboxDetail = document.querySelector('.lightbox-detail');
+    document.querySelectorAll('.chip').forEach(button => {
+      button.addEventListener('click', () => {
+        const group = button.dataset.filter;
+        state[group] = button.dataset.value;
+        document.querySelectorAll(`.chip[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item === button));
+        applyFilters();
+      });
+    });
+    function applyFilters() {
+      document.querySelectorAll('.comic-card').forEach(card => {
+        const visible = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]));
+        card.classList.toggle('hidden', !visible);
+      });
+      sortCards();
+    }
+    function sortCards() {
+      [...document.querySelectorAll('.comic-card')]
+        .sort((left, right) => sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent))
+        .forEach(card => grid.appendChild(card));
+    }
+    function sequenceForCard(card) {
+      const order = state.order === 'all' ? 'series' : state.order;
+      if (order === 'publication') {
+        return scopedSequence(card, 'publicationSequence');
+      }
+      if (order === 'chronological') {
+        return scopedSequence(card, 'chronologicalSequence');
+      }
+      const byOrder = sequenceMap(card.dataset.orderSequences);
+      if (byOrder[order]) {
+        return sortValue(byOrder[order]);
+      }
+      const chronological = scopedSequence(card, 'chronologicalSequence');
+      return chronological < 999999 ? chronological : sortValue(card.dataset.sequence);
+    }
+    function scopedSequence(card, orderKey) {
+      const scoped = sequenceMap(card.dataset[`${orderKey}s`]);
+      if (state.scope !== 'all' && scoped[state.scope]) {
+        return sortValue(scoped[state.scope]);
+      }
+      return sortValue(card.dataset[orderKey]);
+    }
+    function sequenceMap(value) {
+      return Object.fromEntries((value || '').split('|').filter(Boolean).map(item => {
+        const [scope, sequence] = item.split(':');
+        return [scope, sequence];
+      }));
+    }
+    function sortValue(value) {
+      const parsed = Number.parseFloat(value || '999999');
+      if (Number.isFinite(parsed)) {
+        return parsed;
+      }
+        const embedded = String(value || '').match(/\d+(\.\d+)?/);
+      return embedded ? Number.parseFloat(embedded[0]) : 999999;
+    }
+    document.querySelectorAll('.cover-button').forEach(button => {
+      button.addEventListener('click', () => {
+        lightboxImage.src = button.dataset.fullSrc;
+        lightboxImage.alt = `${button.dataset.fullTitle} cover`;
+        lightboxTitle.textContent = button.dataset.fullTitle;
+        lightboxDetail.textContent = button.dataset.fullDetail || '';
+        lightbox.classList.add('open');
+      });
+    });
+    document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
+    lightbox.addEventListener('click', event => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeLightbox();
+    });
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightboxImage.removeAttribute('src');
+      lightboxImage.removeAttribute('alt');
+      lightboxTitle.textContent = '';
+      lightboxDetail.textContent = '';
+    }
+    applyFilters();
+    </script>
+</body>
+</html>

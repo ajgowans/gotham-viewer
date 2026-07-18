@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="../assets/site/batman-favicon.png">
+  <title>Batman One-Shots - Visual Viewer</title>
+  <style>
+    :root { color-scheme: light; --ink:#172026; --muted:#5c6670; --line:#d9dee4; --paper:#f6f7f8; --panel:#ffffff; --owned:#0f7b4f; --fac:#6b4bb8; --ordered:#2166ad; --readable:#a46a00; --missing:#b42318; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); }
+    header { padding: 28px 32px 18px; background: #111820; color: white; }
+    .header-top { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .back-link { color: white; border: 1px solid rgba(255,255,255,.32); border-radius: 999px; padding: 7px 11px; text-decoration: none; font-size: 13px; background: rgba(255,255,255,.08); }
+    .back-link:hover { background: rgba(255,255,255,.16); }
+    h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; }
+    header p { margin: 0; color: #c8d0d8; max-width: 900px; }
+    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; padding: 18px 32px; background: #e9edf1; border-bottom: 1px solid var(--line); }
+    .metric { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+    .metric strong { display: block; font-size: 24px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    .controls { padding: 18px 32px; display: grid; gap: 12px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
+    .control-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .control-row b { margin-right: 4px; font-size: 13px; color: var(--muted); min-width: 70px; }
+    .chip { border: 1px solid var(--line); background: #f8fafb; color: var(--ink); border-radius: 999px; padding: 7px 11px; cursor: pointer; text-transform: capitalize; }
+    .chip.active { background: #172026; border-color: #172026; color: white; }
+    main { padding: 24px 32px 40px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 16px; align-items: start; }
+    .comic-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05); min-width: 0; display: flex; flex-direction: column; position: relative; }
+    .comic-card.owned { background: #f2fbf6; }
+    .comic-card.facsimile { background: #f6f2ff; }
+    .comic-card.ordered { background: #f1f7ff; }
+    .comic-card.readable { background: #fff8ec; }
+    .status-strip { background: var(--missing); color: white; min-height: 30px; display: grid; place-items: center; padding: 7px 8px; font-size: 12px; line-height: 1; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; }
+    .comic-card.owned .status-strip { background: var(--owned); }
+    .comic-card.facsimile .status-strip { background: var(--fac); }
+    .comic-card.ordered .status-strip { background: var(--ordered); }
+    .comic-card.readable .status-strip { background: var(--readable); }
+    .cover-wrap { aspect-ratio: 2 / 3; background: #242a31; display: grid; place-items: center; overflow: hidden; position: relative; }
+    .cover-button { appearance: none; border: 0; background: #111820; padding: 0; margin: 0; width: 100%; height: 100%; display: block; cursor: zoom-in; }
+    .cover-button:focus-visible { outline: 3px solid #f4c430; outline-offset: -3px; }
+    .cover-wrap img { width: 100%; height: 100%; object-fit: contain; background: #111820; display: block; }
+    .cover-placeholder { width: 100%; height: 100%; padding: 14px; color: white; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(145deg, #18212a, #39424c); }
+    .cover-placeholder span { font-weight: 700; line-height: 1.1; overflow-wrap: anywhere; }
+    .cover-placeholder strong { font-size: 42px; align-self: flex-end; }
+    .cover-review-badge { position: absolute; left: 8px; right: 8px; top: 8px; border-radius: 6px; padding: 6px 7px; color: white; font-size: 11px; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.22); pointer-events: none; }
+    .cover-review-badge.warning { background: rgba(164,106,0,.92); }
+    .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
+    .comic-card.cover-needs_review { border-color: #a46a00; }
+    .comic-card.cover-rejected_auto { border-color: #b42318; }
+    .card-body { padding: 10px 11px 12px; height: 205px; display: flex; flex-direction: column; overflow: hidden; }
+    .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
+    .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
+    .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
+    h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id { -webkit-line-clamp: 1; }
+    .meta, .continuity { -webkit-line-clamp: 2; }
+    .notes { -webkit-line-clamp: 2; position: relative; }
+    .notes::after { content: ""; position: absolute; inset: auto 0 0 0; height: 1.2em; background: linear-gradient(to bottom, rgba(255,255,255,0), var(--panel)); pointer-events: none; }
+    .comic-card.owned .notes::after { background: linear-gradient(to bottom, rgba(242,251,246,0), #f2fbf6); }
+    .comic-card.facsimile .notes::after { background: linear-gradient(to bottom, rgba(246,242,255,0), #f6f2ff); }
+    .comic-card.ordered .notes::after { background: linear-gradient(to bottom, rgba(241,247,255,0), #f1f7ff); }
+    .comic-card.readable .notes::after { background: linear-gradient(to bottom, rgba(255,248,236,0), #fff8ec); }
+    .hidden { display: none; }
+    .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
+    .lightbox.open { display: flex; }
+    .lightbox-panel { max-width: min(92vw, 980px); max-height: 94vh; display: grid; gap: 10px; }
+    .lightbox img { max-width: 100%; max-height: calc(94vh - 56px); object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
+    .lightbox-title { font-weight: 750; }
+    .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
+    .lightbox-close { border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: white; border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+    @media (max-width: 700px) { header, .summary, .controls, main { padding-left: 14px; padding-right: 14px; } .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; } }
+    </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <h1>Batman One-Shots</h1>
+      <a class="back-link" href="visual_collection_viewer.html">All visual views</a>
+    </div>
+    <p>Catalogued Batman specials prestige books adaptations and cross-company one-shots.</p>
+  </header>
+  <section class="summary">
+    <div class="metric"><strong>25</strong><span>unique publications</span></div>
+    <div class="metric"><strong>13</strong><span>owned/readable</span></div>
+    <div class="metric"><strong>1</strong><span>facsimiles</span></div>
+    <div class="metric"><strong>12</strong><span>missing</span></div>
+  </section>
+  <section class="controls">
+    <div class="control-row"><b>Order</b><button class="chip" data-filter="order" data-value="all">All orders</button>
+<button class="chip active" data-filter="order" data-value="reading">reading</button></div>
+    <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button>
+<button class="chip" data-filter="scope" data-value="main_continuity_specials">main continuity specials</button>
+<button class="chip" data-filter="scope" data-value="special_format_universe">special format universe</button>
+<button class="chip" data-filter="scope" data-value="Secret Files &amp; Origins">Secret Files &amp; Origins</button></div>
+    <div class="control-row"><b>Status</b><button class="chip active" data-filter="status" data-value="all">All statuses</button>
+<button class="chip" data-filter="status" data-value="owned">owned</button>
+<button class="chip" data-filter="status" data-value="facsimile">facsimile</button>
+<button class="chip" data-filter="status" data-value="ordered">ordered</button>
+<button class="chip" data-filter="status" data-value="readable">readable</button>
+<button class="chip" data-filter="status" data-value="missing">missing</button></div>
+    <div class="control-row"><b>Work</b><button class="chip active" data-filter="project" data-value="all">All works</button>
+<button class="chip" data-filter="project" data-value="modern_gotham_specials_one_shots">modern gotham specials one shots</button>
+<button class="chip" data-filter="project" data-value="secret_origins_files">secret origins files</button></div>
+  </section>
+  <main>
+    <section class="grid">
+      <article class="comic-card facsimile cover-approved_auto" data-order="reading" data-scope="main_continuity_specials" data-project="modern_gotham_specials_one_shots" data-status="facsimile" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000001">
+        <div class="status-strip">Facsimile</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-KILLING-JOKE-0001.jpg" data-full-title="Batman: The Killing Joke #1" data-full-detail="PUB-BAT-KILLING-JOKE-0001 | Seq 000001 | PRESTIGE_ONE_SHOT | Prestige one-shot; facsimile and deluxe editions tracked elsewhere. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-KILLING-JOKE-0001.jpg" alt="Batman: The Killing Joke #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">main continuity specials</span>
+            
+          </div>
+          <h3 title="Batman: The Killing Joke #1">Batman: The Killing Joke #1</h3>
+          <p class="pub-id" title="PUB-BAT-KILLING-JOKE-0001">PUB-BAT-KILLING-JOKE-0001</p>
+          <p class="meta" title="Seq 000001 | PRESTIGE_ONE_SHOT">Seq 000001 | PRESTIGE_ONE_SHOT</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Prestige one-shot; facsimile and deluxe editions tracked elsewhere.">Prestige one-shot; facsimile and deluxe editions tracked elsewhere.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="main_continuity_specials" data-project="modern_gotham_specials_one_shots" data-status="owned" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000002">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATGIRL-SPECIAL-0001.jpg" data-full-title="Batgirl Special #1" data-full-detail="PUB-BATGIRL-SPECIAL-0001 | Seq 000002 | SPECIAL | Sequel/conclusion to Secret Origins Vol. 2 #20; ordered original in local data. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATGIRL-SPECIAL-0001.jpg" alt="Batgirl Special #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">main continuity specials</span>
+            
+          </div>
+          <h3 title="Batgirl Special #1">Batgirl Special #1</h3>
+          <p class="pub-id" title="PUB-BATGIRL-SPECIAL-0001">PUB-BATGIRL-SPECIAL-0001</p>
+          <p class="meta" title="Seq 000002 | SPECIAL">Seq 000002 | SPECIAL</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Sequel/conclusion to Secret Origins Vol. 2 #20; ordered original in local data.">Sequel/conclusion to Secret Origins Vol. 2 #20; ordered original in local data.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-needs_review" data-order="reading" data-scope="main_continuity_specials" data-project="modern_gotham_specials_one_shots" data-status="missing" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000003">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-SEDUTION-GUN.jpg" data-full-title="Batman: Seduction of the Gun" data-full-detail="PUB-BAT-SEDUTION-GUN | Seq 000003 | ONE_SHOT | Standalone issue. | missing_image | No local cover image is available yet."><img src="../assets/covers/display/PUB-BAT-SEDUTION-GUN.jpg" alt="Batman: Seduction of the Gun cover"></button><span class="cover-review-badge warning">Cover check</span></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">main continuity specials</span>
+            <span class="badge review" title="No local cover image is available yet.">needs review</span>
+          </div>
+          <h3 title="Batman: Seduction of the Gun">Batman: Seduction of the Gun</h3>
+          <p class="pub-id" title="PUB-BAT-SEDUTION-GUN">PUB-BAT-SEDUTION-GUN</p>
+          <p class="meta" title="Seq 000003 | ONE_SHOT">Seq 000003 | ONE_SHOT</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Standalone issue.">Standalone issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-needs_review" data-order="reading" data-scope="main_continuity_specials" data-project="modern_gotham_specials_one_shots" data-status="missing" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000004">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-RIDDLE-FACTORY.jpg" data-full-title="Batman: Riddler - The Riddle Factory" data-full-detail="PUB-BAT-RIDDLE-FACTORY | Seq 000004 | ONE_SHOT | Standalone villain-focused issue. | issue_number_not_in_source | Could not find issue number 1 in the image/source URL text."><img src="../assets/covers/display/PUB-BAT-RIDDLE-FACTORY.jpg" alt="Batman: Riddler - The Riddle Factory cover"></button><span class="cover-review-badge warning">Cover check</span></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">main continuity specials</span>
+            <span class="badge review" title="Could not find issue number 1 in the image/source URL text.">needs review</span>
+          </div>
+          <h3 title="Batman: Riddler - The Riddle Factory">Batman: Riddler - The Riddle Factory</h3>
+          <p class="pub-id" title="PUB-BAT-RIDDLE-FACTORY">PUB-BAT-RIDDLE-FACTORY</p>
+          <p class="meta" title="Seq 000004 | ONE_SHOT">Seq 000004 | ONE_SHOT</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Standalone villain-focused issue.">Standalone villain-focused issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="main_continuity_specials" data-project="modern_gotham_specials_one_shots" data-status="owned" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000005">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-VENGEANCE-OF-BANE-0002.jpg" data-full-title="Batman: Vengeance of Bane II #1" data-full-detail="PUB-VENGEANCE-OF-BANE-0002 | Seq 000005 | ONE_SHOT | Follow-up one-shot. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-VENGEANCE-OF-BANE-0002.jpg" alt="Batman: Vengeance of Bane II #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">main continuity specials</span>
+            
+          </div>
+          <h3 title="Batman: Vengeance of Bane II #1">Batman: Vengeance of Bane II #1</h3>
+          <p class="pub-id" title="PUB-VENGEANCE-OF-BANE-0002">PUB-VENGEANCE-OF-BANE-0002</p>
+          <p class="meta" title="Seq 000005 | ONE_SHOT">Seq 000005 | ONE_SHOT</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Follow-up one-shot.">Follow-up one-shot.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="main_continuity_specials" data-project="modern_gotham_specials_one_shots" data-status="missing" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000006">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-SECRET-FILES-ORIGINS-0001.jpg" data-full-title="Batman Secret Files and Origins #1" data-full-detail="PUB-BATMAN-SECRET-FILES-ORIGINS-0001 | Seq 000006 | SECRET_FILES | Secret Files reference issue. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATMAN-SECRET-FILES-ORIGINS-0001.jpg" alt="Batman Secret Files and Origins #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">main continuity specials</span>
+            
+          </div>
+          <h3 title="Batman Secret Files and Origins #1">Batman Secret Files and Origins #1</h3>
+          <p class="pub-id" title="PUB-BATMAN-SECRET-FILES-ORIGINS-0001">PUB-BATMAN-SECRET-FILES-ORIGINS-0001</p>
+          <p class="meta" title="Seq 000006 | SECRET_FILES">Seq 000006 | SECRET_FILES</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Secret Files reference issue.">Secret Files reference issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="special_format_universe" data-project="modern_gotham_specials_one_shots" data-status="missing" data-sequence="000007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000007">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-SCARECROW-3D.jpg" data-full-title="Batman/Scarecrow 3-D" data-full-detail="PUB-BAT-SCARECROW-3D | Seq 000007 | ONE_SHOT | Standalone 3-D special. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-SCARECROW-3D.jpg" alt="Batman/Scarecrow 3-D cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">special format universe</span>
+            
+          </div>
+          <h3 title="Batman/Scarecrow 3-D">Batman/Scarecrow 3-D</h3>
+          <p class="pub-id" title="PUB-BAT-SCARECROW-3D">PUB-BAT-SCARECROW-3D</p>
+          <p class="meta" title="Seq 000007 | ONE_SHOT">Seq 000007 | ONE_SHOT</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Standalone 3-D special.">Standalone 3-D special.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="special_format_universe" data-project="modern_gotham_specials_one_shots" data-status="missing" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000008">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-SCOTTISH-CONNECTION.jpg" data-full-title="Batman: Scottish Connection" data-full-detail="PUB-BAT-SCOTTISH-CONNECTION | Seq 000008 | GRAPHIC_NOVEL | Owned original graphic novel; continuity not forced to main. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-SCOTTISH-CONNECTION.jpg" alt="Batman: Scottish Connection cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">special format universe</span>
+            
+          </div>
+          <h3 title="Batman: Scottish Connection">Batman: Scottish Connection</h3>
+          <p class="pub-id" title="PUB-BAT-SCOTTISH-CONNECTION">PUB-BAT-SCOTTISH-CONNECTION</p>
+          <p class="meta" title="Seq 000008 | GRAPHIC_NOVEL">Seq 000008 | GRAPHIC_NOVEL</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Owned original graphic novel; continuity not forced to main.">Owned original graphic novel; continuity not forced to main.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="main_continuity_specials" data-project="modern_gotham_specials_one_shots" data-status="owned" data-sequence="000009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000009">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-VILLAINS-SFO-0001.jpg" data-full-title="Batman Villains Secret Files and Origins #1" data-full-detail="PUB-BATMAN-VILLAINS-SFO-0001 | Seq 000009 | SECRET_FILES | Villain-focused Secret Files issue. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATMAN-VILLAINS-SFO-0001.jpg" alt="Batman Villains Secret Files and Origins #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">main continuity specials</span>
+            
+          </div>
+          <h3 title="Batman Villains Secret Files and Origins #1">Batman Villains Secret Files and Origins #1</h3>
+          <p class="pub-id" title="PUB-BATMAN-VILLAINS-SFO-0001">PUB-BATMAN-VILLAINS-SFO-0001</p>
+          <p class="meta" title="Seq 000009 | SECRET_FILES">Seq 000009 | SECRET_FILES</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Villain-focused Secret Files issue.">Villain-focused Secret Files issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="main_continuity_specials" data-project="modern_gotham_specials_one_shots" data-status="owned" data-sequence="000010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000010">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-GOTHAM-CITY-SFO-0001.jpg" data-full-title="Gotham City Secret Files and Origins #1" data-full-detail="PUB-GOTHAM-CITY-SFO-0001 | Seq 000010 | SECRET_FILES | Owned row uses title with embedded issue number. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-GOTHAM-CITY-SFO-0001.jpg" alt="Gotham City Secret Files and Origins #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">main continuity specials</span>
+            
+          </div>
+          <h3 title="Gotham City Secret Files and Origins #1">Gotham City Secret Files and Origins #1</h3>
+          <p class="pub-id" title="PUB-GOTHAM-CITY-SFO-0001">PUB-GOTHAM-CITY-SFO-0001</p>
+          <p class="meta" title="Seq 000010 | SECRET_FILES">Seq 000010 | SECRET_FILES</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Owned row uses title with embedded issue number.">Owned row uses title with embedded issue number.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000011">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-VENGEANCE-OF-BANE-0001.jpg" data-full-title="Batman: Vengeance of Bane #1" data-full-detail="PUB-BAT-VENGEANCE-OF-BANE-0001 | Seq 000011 | Publication alias: PUB-BAT-VENGEANCE-OF-BANE-0001; Collection sheet: Batman row 42 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-VENGEANCE-OF-BANE-0001.jpg" alt="Batman: Vengeance of Bane #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: Vengeance of Bane #1">Batman: Vengeance of Bane #1</h3>
+          <p class="pub-id" title="PUB-BAT-VENGEANCE-OF-BANE-0001">PUB-BAT-VENGEANCE-OF-BANE-0001</p>
+          <p class="meta" title="Seq 000011">Seq 000011</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BAT-VENGEANCE-OF-BANE-0001; Collection sheet: Batman row 42">Publication alias: PUB-BAT-VENGEANCE-OF-BANE-0001; Collection sheet: Batman row 42</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_manual" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000012">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-IN-BARCELONA.jpg" data-full-title="Batman in Barcelona" data-full-detail="PUB-BATMAN-IN-BARCELONA | Seq 000012 | Publication alias: PUB-BATMAN-IN-BARCELONA; Collection sheet: Batman row 349 | Verified original unnumbered one-shot cover; absence of issue number in source URL is expected."><img src="../assets/covers/display/PUB-BATMAN-IN-BARCELONA.jpg" alt="Batman in Barcelona cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            <span class="badge review" title="Verified original unnumbered one-shot cover; absence of issue number in source URL is expected.">approved manual</span>
+          </div>
+          <h3 title="Batman in Barcelona">Batman in Barcelona</h3>
+          <p class="pub-id" title="PUB-BATMAN-IN-BARCELONA">PUB-BATMAN-IN-BARCELONA</p>
+          <p class="meta" title="Seq 000012">Seq 000012</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BATMAN-IN-BARCELONA; Collection sheet: Batman row 349">Publication alias: PUB-BATMAN-IN-BARCELONA; Collection sheet: Batman row 349</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000013" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000013">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-THE-SPIRIT.jpg" data-full-title="Batman and the Spirit #1" data-full-detail="PUB-BAT-THE-SPIRIT | Seq 000013 | Publication alias: PUB-BAT-THE-SPIRIT; Collection sheet: Batman row 192 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-THE-SPIRIT.jpg" alt="Batman and the Spirit #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman and the Spirit #1">Batman and the Spirit #1</h3>
+          <p class="pub-id" title="PUB-BAT-THE-SPIRIT">PUB-BAT-THE-SPIRIT</p>
+          <p class="meta" title="Seq 000013">Seq 000013</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BAT-THE-SPIRIT; Collection sheet: Batman row 192">Publication alias: PUB-BAT-THE-SPIRIT; Collection sheet: Batman row 192</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000014" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000014">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-MOVIE-SPECIAL-1989.jpg" data-full-title="Batman: The Movie Special 1989" data-full-detail="PUB-BATMAN-MOVIE-SPECIAL-1989 | Seq 000014 | Publication alias: PUB-BATMAN-MOVIE-SPECIAL-1989; Collection sheet: Batman row 353 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATMAN-MOVIE-SPECIAL-1989.jpg" alt="Batman: The Movie Special 1989 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman: The Movie Special 1989">Batman: The Movie Special 1989</h3>
+          <p class="pub-id" title="PUB-BATMAN-MOVIE-SPECIAL-1989">PUB-BATMAN-MOVIE-SPECIAL-1989</p>
+          <p class="meta" title="Seq 000014">Seq 000014</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BATMAN-MOVIE-SPECIAL-1989; Collection sheet: Batman row 353">Publication alias: PUB-BATMAN-MOVIE-SPECIAL-1989; Collection sheet: Batman row 353</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000015" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000015">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SPAWN-BATMAN-0001.jpg" data-full-title="Spawn/Batman #1" data-full-detail="PUB-SPAWN-BATMAN-0001 | Seq 000015 | Publication alias: PUB-SPAWN-BATMAN-0001; Collection sheet: Batman row 653; COPY-SPAWN-BATMAN-0001-ORIG=Owned/Original Issue/Standard cover | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SPAWN-BATMAN-0001.jpg" alt="Spawn/Batman #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Spawn/Batman #1">Spawn/Batman #1</h3>
+          <p class="pub-id" title="PUB-SPAWN-BATMAN-0001">PUB-SPAWN-BATMAN-0001</p>
+          <p class="meta" title="Seq 000015">Seq 000015</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-SPAWN-BATMAN-0001; Collection sheet: Batman row 653; COPY-SPAWN-BATMAN-0001-ORIG=Owned/Original Issue/Standard cover">Publication alias: PUB-SPAWN-BATMAN-0001; Collection sheet: Batman row 653; COPY-SPAWN-BATMAN-0001-ORIG=Owned/Original Issue/Standard cover</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000016" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000016">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-SPAWN-WAR-DEVIL.jpg" data-full-title="Batman/Spawn: War Devil" data-full-detail="PUB-BAT-SPAWN-WAR-DEVIL | Seq 000016 | Publication alias: PUB-BAT-SPAWN-WAR-DEVIL; COPY-BAT-SPAWN-WAR-DEVIL-ORIG=Owned/Original Issue/Standard cover | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-SPAWN-WAR-DEVIL.jpg" alt="Batman/Spawn: War Devil cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman/Spawn: War Devil">Batman/Spawn: War Devil</h3>
+          <p class="pub-id" title="PUB-BAT-SPAWN-WAR-DEVIL">PUB-BAT-SPAWN-WAR-DEVIL</p>
+          <p class="meta" title="Seq 000016">Seq 000016</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BAT-SPAWN-WAR-DEVIL; COPY-BAT-SPAWN-WAR-DEVIL-ORIG=Owned/Original Issue/Standard cover">Publication alias: PUB-BAT-SPAWN-WAR-DEVIL; COPY-BAT-SPAWN-WAR-DEVIL-ORIG=Owned/Original Issue/Standard cover</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000017" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000017">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-PUNISHER.jpg" data-full-title="Batman/Punisher: Lake of Fire #1" data-full-detail="PUB-BATMAN-PUNISHER | Seq 000017 | Publication alias: PUB-BATMAN-PUNISHER; Collection sheet: Batman row 190 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATMAN-PUNISHER.jpg" alt="Batman/Punisher: Lake of Fire #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman/Punisher: Lake of Fire #1">Batman/Punisher: Lake of Fire #1</h3>
+          <p class="pub-id" title="PUB-BATMAN-PUNISHER">PUB-BATMAN-PUNISHER</p>
+          <p class="meta" title="Seq 000017">Seq 000017</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-BATMAN-PUNISHER; Collection sheet: Batman row 190">Publication alias: PUB-BATMAN-PUNISHER; Collection sheet: Batman row 190</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="owned" data-sequence="000018" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000018">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-PUNISHER-BATMAN.jpg" data-full-title="Punisher/Batman: Deadly Knights #1" data-full-detail="PUB-PUNISHER-BATMAN | Seq 000018 | Publication alias: PUB-PUNISHER-BATMAN; Collection sheet: Batman row 620 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-PUNISHER-BATMAN.jpg" alt="Punisher/Batman: Deadly Knights #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Punisher/Batman: Deadly Knights #1">Punisher/Batman: Deadly Knights #1</h3>
+          <p class="pub-id" title="PUB-PUNISHER-BATMAN">PUB-PUNISHER-BATMAN</p>
+          <p class="meta" title="Seq 000018">Seq 000018</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Publication alias: PUB-PUNISHER-BATMAN; Collection sheet: Batman row 620">Publication alias: PUB-PUNISHER-BATMAN; Collection sheet: Batman row 620</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-needs_review" data-order="reading" data-scope="Secret Files &amp; Origins" data-project="secret_origins_files" data-status="missing" data-sequence="000019" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000019">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Robin Secret Files and Origins</span><strong>#1</strong></div><span class="cover-review-badge warning">Cover check</span></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Secret Files &amp; Origins</span>
+            <span class="badge review" title="No local cover image is available yet.">needs review</span>
+          </div>
+          <h3 title="Robin Secret Files and Origins #1">Robin Secret Files and Origins #1</h3>
+          <p class="pub-id" title="VIEW-robin-secret-files-and-origins-1">VIEW-robin-secret-files-and-origins-1</p>
+          <p class="meta" title="Seq 000019 | core">Seq 000019 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Robin reference special.">Robin reference special.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Secret Files &amp; Origins" data-project="secret_origins_files" data-status="missing" data-sequence="000020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000020">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-nightwing-secret-files-and-origins-1.jpg" data-full-title="Nightwing Secret Files and Origins #1" data-full-detail="VIEW-nightwing-secret-files-and-origins-1 | Seq 000020 | core | Nightwing reference special. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-nightwing-secret-files-and-origins-1.jpg" alt="Nightwing Secret Files and Origins #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Secret Files &amp; Origins</span>
+            
+          </div>
+          <h3 title="Nightwing Secret Files and Origins #1">Nightwing Secret Files and Origins #1</h3>
+          <p class="pub-id" title="VIEW-nightwing-secret-files-and-origins-1">VIEW-nightwing-secret-files-and-origins-1</p>
+          <p class="meta" title="Seq 000020 | core">Seq 000020 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Nightwing reference special.">Nightwing reference special.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Secret Files &amp; Origins" data-project="secret_origins_files" data-status="missing" data-sequence="000021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000021">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-secret-files-and-origins-1.jpg" data-full-title="Batgirl Secret Files and Origins #1" data-full-detail="VIEW-batgirl-secret-files-and-origins-1 | Seq 000021 | core | Batgirl reference special. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-secret-files-and-origins-1.jpg" alt="Batgirl Secret Files and Origins #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Secret Files &amp; Origins</span>
+            
+          </div>
+          <h3 title="Batgirl Secret Files and Origins #1">Batgirl Secret Files and Origins #1</h3>
+          <p class="pub-id" title="VIEW-batgirl-secret-files-and-origins-1">VIEW-batgirl-secret-files-and-origins-1</p>
+          <p class="meta" title="Seq 000021 | core">Seq 000021 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Batgirl reference special.">Batgirl reference special.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Secret Files &amp; Origins" data-project="secret_origins_files" data-status="missing" data-sequence="000022" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000022">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-catwoman-secret-files-and-origins-1.jpg" data-full-title="Catwoman Secret Files and Origins #1" data-full-detail="VIEW-catwoman-secret-files-and-origins-1 | Seq 000022 | core | Catwoman reference special. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-catwoman-secret-files-and-origins-1.jpg" alt="Catwoman Secret Files and Origins #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Secret Files &amp; Origins</span>
+            
+          </div>
+          <h3 title="Catwoman Secret Files and Origins #1">Catwoman Secret Files and Origins #1</h3>
+          <p class="pub-id" title="VIEW-catwoman-secret-files-and-origins-1">VIEW-catwoman-secret-files-and-origins-1</p>
+          <p class="meta" title="Seq 000022 | core">Seq 000022 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Catwoman reference special.">Catwoman reference special.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-needs_review" data-order="reading" data-scope="Secret Files &amp; Origins" data-project="secret_origins_files" data-status="missing" data-sequence="000023" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000023">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Birds of Prey Secret Files and Origins</span><strong>#1</strong></div><span class="cover-review-badge warning">Cover check</span></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Secret Files &amp; Origins</span>
+            <span class="badge review" title="No local cover image is available yet.">needs review</span>
+          </div>
+          <h3 title="Birds of Prey Secret Files and Origins #1">Birds of Prey Secret Files and Origins #1</h3>
+          <p class="pub-id" title="VIEW-birds-of-prey-secret-files-and-origins-1">VIEW-birds-of-prey-secret-files-and-origins-1</p>
+          <p class="meta" title="Seq 000023 | core">Seq 000023 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Birds of Prey reference special.">Birds of Prey reference special.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-needs_review" data-order="reading" data-scope="Secret Files &amp; Origins" data-project="secret_origins_files" data-status="missing" data-sequence="000024" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000024">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Azrael Secret Files and Origins</span><strong>#1</strong></div><span class="cover-review-badge warning">Cover check</span></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Secret Files &amp; Origins</span>
+            <span class="badge review" title="No local cover image is available yet.">needs review</span>
+          </div>
+          <h3 title="Azrael Secret Files and Origins #1">Azrael Secret Files and Origins #1</h3>
+          <p class="pub-id" title="VIEW-azrael-secret-files-and-origins-1">VIEW-azrael-secret-files-and-origins-1</p>
+          <p class="meta" title="Seq 000024 | core">Seq 000024 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Azrael reference special.">Azrael reference special.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-needs_review" data-order="reading" data-scope="Secret Files &amp; Origins" data-project="secret_origins_files" data-status="missing" data-sequence="000025" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000025">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Gotham Knights Secret Files and Origins</span><strong>#1</strong></div><span class="cover-review-badge warning">Cover check</span></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Secret Files &amp; Origins</span>
+            <span class="badge review" title="No local cover image is available yet.">needs review</span>
+          </div>
+          <h3 title="Gotham Knights Secret Files and Origins #1">Gotham Knights Secret Files and Origins #1</h3>
+          <p class="pub-id" title="VIEW-gotham-knights-secret-files-and-origins-1">VIEW-gotham-knights-secret-files-and-origins-1</p>
+          <p class="meta" title="Seq 000025 | core">Seq 000025 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Gotham Knights reference special.">Gotham Knights reference special.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+  <div class="lightbox" aria-modal="true" role="dialog" aria-label="Cover preview">
+    <div class="lightbox-panel">
+      <img src="" alt="">
+      <div class="lightbox-caption">
+        <div>
+          <div class="lightbox-title"></div>
+          <div class="lightbox-detail"></div>
+        </div>
+        <button class="lightbox-close" type="button" data-lightbox-close>Close</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const state = { order: 'reading', scope: 'all', project: 'all', status: 'all' };
+    const grid = document.querySelector('.grid');
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImage = document.querySelector('.lightbox img');
+    const lightboxTitle = document.querySelector('.lightbox-title');
+    const lightboxDetail = document.querySelector('.lightbox-detail');
+    document.querySelectorAll('.chip').forEach(button => {
+      button.addEventListener('click', () => {
+        const group = button.dataset.filter;
+        state[group] = button.dataset.value;
+        document.querySelectorAll(`.chip[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item === button));
+        applyFilters();
+      });
+    });
+    function applyFilters() {
+      document.querySelectorAll('.comic-card').forEach(card => {
+        const visible = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]));
+        card.classList.toggle('hidden', !visible);
+      });
+      sortCards();
+    }
+    function sortCards() {
+      [...document.querySelectorAll('.comic-card')]
+        .sort((left, right) => sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent))
+        .forEach(card => grid.appendChild(card));
+    }
+    function sequenceForCard(card) {
+      const order = state.order === 'all' ? 'reading' : state.order;
+      if (order === 'publication') {
+        return scopedSequence(card, 'publicationSequence');
+      }
+      if (order === 'chronological') {
+        return scopedSequence(card, 'chronologicalSequence');
+      }
+      const byOrder = sequenceMap(card.dataset.orderSequences);
+      if (byOrder[order]) {
+        return sortValue(byOrder[order]);
+      }
+      const chronological = scopedSequence(card, 'chronologicalSequence');
+      return chronological < 999999 ? chronological : sortValue(card.dataset.sequence);
+    }
+    function scopedSequence(card, orderKey) {
+      const scoped = sequenceMap(card.dataset[`${orderKey}s`]);
+      if (state.scope !== 'all' && scoped[state.scope]) {
+        return sortValue(scoped[state.scope]);
+      }
+      return sortValue(card.dataset[orderKey]);
+    }
+    function sequenceMap(value) {
+      return Object.fromEntries((value || '').split('|').filter(Boolean).map(item => {
+        const [scope, sequence] = item.split(':');
+        return [scope, sequence];
+      }));
+    }
+    function sortValue(value) {
+      const parsed = Number.parseFloat(value || '999999');
+      if (Number.isFinite(parsed)) {
+        return parsed;
+      }
+        const embedded = String(value || '').match(/\d+(\.\d+)?/);
+      return embedded ? Number.parseFloat(embedded[0]) : 999999;
+    }
+    document.querySelectorAll('.cover-button').forEach(button => {
+      button.addEventListener('click', () => {
+        lightboxImage.src = button.dataset.fullSrc;
+        lightboxImage.alt = `${button.dataset.fullTitle} cover`;
+        lightboxTitle.textContent = button.dataset.fullTitle;
+        lightboxDetail.textContent = button.dataset.fullDetail || '';
+        lightbox.classList.add('open');
+      });
+    });
+    document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
+    lightbox.addEventListener('click', event => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeLightbox();
+    });
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightboxImage.removeAttribute('src');
+      lightboxImage.removeAttribute('alt');
+      lightboxTitle.textContent = '';
+      lightboxDetail.textContent = '';
+    }
+    applyFilters();
+    </script>
+</body>
+</html>

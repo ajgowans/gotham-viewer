@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="../assets/site/batman-favicon.png">
+  <title>Zero Hour Expanded - Visual Viewer</title>
+  <style>
+    :root { color-scheme: light; --ink:#172026; --muted:#5c6670; --line:#d9dee4; --paper:#f6f7f8; --panel:#ffffff; --owned:#0f7b4f; --fac:#6b4bb8; --ordered:#2166ad; --readable:#a46a00; --missing:#b42318; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); }
+    header { padding: 28px 32px 18px; background: #111820; color: white; }
+    .header-top { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .back-link { color: white; border: 1px solid rgba(255,255,255,.32); border-radius: 999px; padding: 7px 11px; text-decoration: none; font-size: 13px; background: rgba(255,255,255,.08); }
+    .back-link:hover { background: rgba(255,255,255,.16); }
+    h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; }
+    header p { margin: 0; color: #c8d0d8; max-width: 900px; }
+    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; padding: 18px 32px; background: #e9edf1; border-bottom: 1px solid var(--line); }
+    .metric { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+    .metric strong { display: block; font-size: 24px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    .controls { padding: 18px 32px; display: grid; gap: 12px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
+    .control-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .control-row b { margin-right: 4px; font-size: 13px; color: var(--muted); min-width: 70px; }
+    .chip { border: 1px solid var(--line); background: #f8fafb; color: var(--ink); border-radius: 999px; padding: 7px 11px; cursor: pointer; text-transform: capitalize; }
+    .chip.active { background: #172026; border-color: #172026; color: white; }
+    main { padding: 24px 32px 40px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 16px; align-items: start; }
+    .comic-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05); min-width: 0; display: flex; flex-direction: column; position: relative; }
+    .comic-card.owned { background: #f2fbf6; }
+    .comic-card.facsimile { background: #f6f2ff; }
+    .comic-card.ordered { background: #f1f7ff; }
+    .comic-card.readable { background: #fff8ec; }
+    .status-strip { background: var(--missing); color: white; min-height: 30px; display: grid; place-items: center; padding: 7px 8px; font-size: 12px; line-height: 1; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; }
+    .comic-card.owned .status-strip { background: var(--owned); }
+    .comic-card.facsimile .status-strip { background: var(--fac); }
+    .comic-card.ordered .status-strip { background: var(--ordered); }
+    .comic-card.readable .status-strip { background: var(--readable); }
+    .cover-wrap { aspect-ratio: 2 / 3; background: #242a31; display: grid; place-items: center; overflow: hidden; position: relative; }
+    .cover-button { appearance: none; border: 0; background: #111820; padding: 0; margin: 0; width: 100%; height: 100%; display: block; cursor: zoom-in; }
+    .cover-button:focus-visible { outline: 3px solid #f4c430; outline-offset: -3px; }
+    .cover-wrap img { width: 100%; height: 100%; object-fit: contain; background: #111820; display: block; }
+    .cover-placeholder { width: 100%; height: 100%; padding: 14px; color: white; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(145deg, #18212a, #39424c); }
+    .cover-placeholder span { font-weight: 700; line-height: 1.1; overflow-wrap: anywhere; }
+    .cover-placeholder strong { font-size: 42px; align-self: flex-end; }
+    .cover-review-badge { position: absolute; left: 8px; right: 8px; top: 8px; border-radius: 6px; padding: 6px 7px; color: white; font-size: 11px; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.22); pointer-events: none; }
+    .cover-review-badge.warning { background: rgba(164,106,0,.92); }
+    .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
+    .comic-card.cover-needs_review { border-color: #a46a00; }
+    .comic-card.cover-rejected_auto { border-color: #b42318; }
+    .card-body { padding: 10px 11px 12px; height: 205px; display: flex; flex-direction: column; overflow: hidden; }
+    .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
+    .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
+    .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
+    h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id { -webkit-line-clamp: 1; }
+    .meta, .continuity { -webkit-line-clamp: 2; }
+    .notes { -webkit-line-clamp: 2; position: relative; }
+    .notes::after { content: ""; position: absolute; inset: auto 0 0 0; height: 1.2em; background: linear-gradient(to bottom, rgba(255,255,255,0), var(--panel)); pointer-events: none; }
+    .comic-card.owned .notes::after { background: linear-gradient(to bottom, rgba(242,251,246,0), #f2fbf6); }
+    .comic-card.facsimile .notes::after { background: linear-gradient(to bottom, rgba(246,242,255,0), #f6f2ff); }
+    .comic-card.ordered .notes::after { background: linear-gradient(to bottom, rgba(241,247,255,0), #f1f7ff); }
+    .comic-card.readable .notes::after { background: linear-gradient(to bottom, rgba(255,248,236,0), #fff8ec); }
+    .hidden { display: none; }
+    .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
+    .lightbox.open { display: flex; }
+    .lightbox-panel { max-width: min(92vw, 980px); max-height: 94vh; display: grid; gap: 10px; }
+    .lightbox img { max-width: 100%; max-height: calc(94vh - 56px); object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
+    .lightbox-title { font-weight: 750; }
+    .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
+    .lightbox-close { border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: white; border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+    @media (max-width: 700px) { header, .summary, .controls, main { padding-left: 14px; padding-right: 14px; } .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; } }
+    </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <h1>Zero Hour Expanded</h1>
+      <a class="back-link" href="visual_collection_viewer.html">All visual views</a>
+    </div>
+    <p>Core Zero Hour series prelude issues Gotham tie-ins and wider DC event checklist.</p>
+  </header>
+  <section class="summary">
+    <div class="metric"><strong>36</strong><span>unique publications</span></div>
+    <div class="metric"><strong>12</strong><span>owned/readable</span></div>
+    <div class="metric"><strong>0</strong><span>facsimiles</span></div>
+    <div class="metric"><strong>24</strong><span>missing</span></div>
+  </section>
+  <section class="controls">
+    <div class="control-row"><b>Order</b><button class="chip" data-filter="order" data-value="all">All orders</button>
+<button class="chip active" data-filter="order" data-value="reading">reading</button></div>
+    <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button>
+<button class="chip" data-filter="scope" data-value="extended_dc_event">extended dc event</button></div>
+    <div class="control-row"><b>Status</b><button class="chip active" data-filter="status" data-value="all">All statuses</button>
+<button class="chip" data-filter="status" data-value="owned">owned</button>
+<button class="chip" data-filter="status" data-value="facsimile">facsimile</button>
+<button class="chip" data-filter="status" data-value="ordered">ordered</button>
+<button class="chip" data-filter="status" data-value="readable">readable</button>
+<button class="chip" data-filter="status" data-value="missing">missing</button></div>
+    <div class="control-row"><b>Work</b><button class="chip active" data-filter="project" data-value="all">All works</button>
+<button class="chip" data-filter="project" data-value="zero_hour">zero hour</button></div>
+  </section>
+  <main>
+    <section class="grid">
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="owned" data-sequence="001000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000001">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ZERO-HOUR-0004.jpg" data-full-title="Zero Hour: Crisis in Time #4" data-full-detail="PUB-ZERO-HOUR-0004 | Seq 001000001 | core | partial | core | Core miniseries counts down from 4 to 0. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ZERO-HOUR-0004.jpg" alt="Zero Hour: Crisis in Time #4 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Zero Hour: Crisis in Time #4">Zero Hour: Crisis in Time #4</h3>
+          <p class="pub-id" title="PUB-ZERO-HOUR-0004">PUB-ZERO-HOUR-0004</p>
+          <p class="meta" title="Seq 001000001 | core | partial">Seq 001000001 | core | partial</p>
+          <p class="continuity" title="core">core</p>
+          <p class="notes" title="Core miniseries counts down from 4 to 0.">Core miniseries counts down from 4 to 0.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="owned" data-sequence="001000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000002">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ZERO-HOUR-0003.jpg" data-full-title="Zero Hour: Crisis in Time #3" data-full-detail="PUB-ZERO-HOUR-0003 | Seq 001000002 | core | partial | core | Core miniseries counts down from 4 to 0. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ZERO-HOUR-0003.jpg" alt="Zero Hour: Crisis in Time #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Zero Hour: Crisis in Time #3">Zero Hour: Crisis in Time #3</h3>
+          <p class="pub-id" title="PUB-ZERO-HOUR-0003">PUB-ZERO-HOUR-0003</p>
+          <p class="meta" title="Seq 001000002 | core | partial">Seq 001000002 | core | partial</p>
+          <p class="continuity" title="core">core</p>
+          <p class="notes" title="Core miniseries counts down from 4 to 0.">Core miniseries counts down from 4 to 0.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="owned" data-sequence="001000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000003">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ZERO-HOUR-0002.jpg" data-full-title="Zero Hour: Crisis in Time #2" data-full-detail="PUB-ZERO-HOUR-0002 | Seq 001000003 | core | partial | core | Core miniseries counts down from 4 to 0. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ZERO-HOUR-0002.jpg" alt="Zero Hour: Crisis in Time #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Zero Hour: Crisis in Time #2">Zero Hour: Crisis in Time #2</h3>
+          <p class="pub-id" title="PUB-ZERO-HOUR-0002">PUB-ZERO-HOUR-0002</p>
+          <p class="meta" title="Seq 001000003 | core | partial">Seq 001000003 | core | partial</p>
+          <p class="continuity" title="core">core</p>
+          <p class="notes" title="Core miniseries counts down from 4 to 0.">Core miniseries counts down from 4 to 0.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="owned" data-sequence="001000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000004">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ZERO-HOUR-0001.jpg" data-full-title="Zero Hour: Crisis in Time #1" data-full-detail="PUB-ZERO-HOUR-0001 | Seq 001000004 | core | partial | core | Core miniseries counts down from 4 to 0. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ZERO-HOUR-0001.jpg" alt="Zero Hour: Crisis in Time #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Zero Hour: Crisis in Time #1">Zero Hour: Crisis in Time #1</h3>
+          <p class="pub-id" title="PUB-ZERO-HOUR-0001">PUB-ZERO-HOUR-0001</p>
+          <p class="meta" title="Seq 001000004 | core | partial">Seq 001000004 | core | partial</p>
+          <p class="continuity" title="core">core</p>
+          <p class="notes" title="Core miniseries counts down from 4 to 0.">Core miniseries counts down from 4 to 0.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="owned" data-sequence="001000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000005">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ZERO-HOUR-0000.jpg" data-full-title="Zero Hour: Crisis in Time #0" data-full-detail="PUB-ZERO-HOUR-0000 | Seq 001000005 | core | partial | core | Core miniseries counts down from 4 to 0. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ZERO-HOUR-0000.jpg" alt="Zero Hour: Crisis in Time #0 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Zero Hour: Crisis in Time #0">Zero Hour: Crisis in Time #0</h3>
+          <p class="pub-id" title="PUB-ZERO-HOUR-0000">PUB-ZERO-HOUR-0000</p>
+          <p class="meta" title="Seq 001000005 | core | partial">Seq 001000005 | core | partial</p>
+          <p class="continuity" title="core">core</p>
+          <p class="notes" title="Core miniseries counts down from 4 to 0.">Core miniseries counts down from 4 to 0.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000010">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-showcase-94-8.jpg" data-full-title="Showcase &#x27;94 #8" data-full-detail="VIEW-showcase-94-8 | Seq 001000010 | prelude | partial | prelude | Prelude tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-showcase-94-8.jpg" alt="Showcase &#x27;94 #8 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Showcase &#x27;94 #8">Showcase &#x27;94 #8</h3>
+          <p class="pub-id" title="VIEW-showcase-94-8">VIEW-showcase-94-8</p>
+          <p class="meta" title="Seq 001000010 | prelude | partial">Seq 001000010 | prelude | partial</p>
+          <p class="continuity" title="prelude">prelude</p>
+          <p class="notes" title="Prelude tie-in.">Prelude tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="owned" data-sequence="001000011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000011">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-showcase-94-9.jpg" data-full-title="Showcase &#x27;94 #9" data-full-detail="VIEW-showcase-94-9 | Seq 001000011 | prelude | partial | prelude | Prelude tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-showcase-94-9.jpg" alt="Showcase &#x27;94 #9 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Showcase &#x27;94 #9">Showcase &#x27;94 #9</h3>
+          <p class="pub-id" title="VIEW-showcase-94-9">VIEW-showcase-94-9</p>
+          <p class="meta" title="Seq 001000011 | prelude | partial">Seq 001000011 | prelude | partial</p>
+          <p class="continuity" title="prelude">prelude</p>
+          <p class="notes" title="Prelude tie-in.">Prelude tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="owned" data-sequence="001000012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000012">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-showcase-94-10.jpg" data-full-title="Showcase &#x27;94 #10" data-full-detail="VIEW-showcase-94-10 | Seq 001000012 | prelude | partial | prelude | Prelude tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-showcase-94-10.jpg" alt="Showcase &#x27;94 #10 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Showcase &#x27;94 #10">Showcase &#x27;94 #10</h3>
+          <p class="pub-id" title="VIEW-showcase-94-10">VIEW-showcase-94-10</p>
+          <p class="meta" title="Seq 001000012 | prelude | partial">Seq 001000012 | prelude | partial</p>
+          <p class="continuity" title="prelude">prelude</p>
+          <p class="notes" title="Prelude tie-in.">Prelude tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000020">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ACTION-COMICS-0703.jpg" data-full-title="Action Comics #703" data-full-detail="PUB-ACTION-COMICS-0703 | Seq 001000020 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ACTION-COMICS-0703.jpg" alt="Action Comics #703 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Action Comics #703">Action Comics #703</h3>
+          <p class="pub-id" title="PUB-ACTION-COMICS-0703">PUB-ACTION-COMICS-0703</p>
+          <p class="meta" title="Seq 001000020 | tie_in | partial">Seq 001000020 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000021">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-THE-ADVENTURES-OF-SUPERMAN-0516.jpg" data-full-title="The Adventures of Superman #516" data-full-detail="PUB-THE-ADVENTURES-OF-SUPERMAN-0516 | Seq 001000021 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-THE-ADVENTURES-OF-SUPERMAN-0516.jpg" alt="The Adventures of Superman #516 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="The Adventures of Superman #516">The Adventures of Superman #516</h3>
+          <p class="pub-id" title="PUB-THE-ADVENTURES-OF-SUPERMAN-0516">PUB-THE-ADVENTURES-OF-SUPERMAN-0516</p>
+          <p class="meta" title="Seq 001000021 | tie_in | partial">Seq 001000021 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000022" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000022">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ANIMA-0007.jpg" data-full-title="Anima #7" data-full-detail="PUB-ANIMA-0007 | Seq 001000022 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ANIMA-0007.jpg" alt="Anima #7 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Anima #7">Anima #7</h3>
+          <p class="pub-id" title="PUB-ANIMA-0007">PUB-ANIMA-0007</p>
+          <p class="meta" title="Seq 001000022 | tie_in | partial">Seq 001000022 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="owned" data-sequence="001000023" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000023">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0511.jpg" data-full-title="Batman #511" data-full-detail="PUB-BAT-0511 | Seq 001000023 | tie_in | partial | tie_in | Gotham tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0511.jpg" alt="Batman #511 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Batman #511">Batman #511</h3>
+          <p class="pub-id" title="PUB-BAT-0511">PUB-BAT-0511</p>
+          <p class="meta" title="Seq 001000023 | tie_in | partial">Seq 001000023 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Gotham tie-in.">Gotham tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="owned" data-sequence="001000024" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000024">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-31.jpg" data-full-title="Batman: Shadow of the Bat #31" data-full-detail="VIEW-batman-shadow-of-the-bat-31 | Seq 001000024 | tie_in | partial | tie_in | Gotham tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-31.jpg" alt="Batman: Shadow of the Bat #31 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Batman: Shadow of the Bat #31">Batman: Shadow of the Bat #31</h3>
+          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-31">VIEW-batman-shadow-of-the-bat-31</p>
+          <p class="meta" title="Seq 001000024 | tie_in | partial">Seq 001000024 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Gotham tie-in.">Gotham tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="owned" data-sequence="001000025" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000025">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-catwoman-vol-2-14.jpg" data-full-title="Catwoman (vol. 2) #14" data-full-detail="VIEW-catwoman-vol-2-14 | Seq 001000025 | tie_in | partial | tie_in | Gotham tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-catwoman-vol-2-14.jpg" alt="Catwoman (vol. 2) #14 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Catwoman (vol. 2) #14">Catwoman (vol. 2) #14</h3>
+          <p class="pub-id" title="VIEW-catwoman-vol-2-14">VIEW-catwoman-vol-2-14</p>
+          <p class="meta" title="Seq 001000025 | tie_in | partial">Seq 001000025 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Gotham tie-in.">Gotham tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000026" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000026">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DAMAGE-0006.jpg" data-full-title="Damage #6" data-full-detail="PUB-DAMAGE-0006 | Seq 001000026 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DAMAGE-0006.jpg" alt="Damage #6 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Damage #6">Damage #6</h3>
+          <p class="pub-id" title="PUB-DAMAGE-0006">PUB-DAMAGE-0006</p>
+          <p class="meta" title="Seq 001000026 | tie_in | partial">Seq 001000026 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000027" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000027">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DARKSTARS-0024.jpg" data-full-title="Darkstars #24" data-full-detail="PUB-DARKSTARS-0024 | Seq 001000027 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DARKSTARS-0024.jpg" alt="Darkstars #24 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Darkstars #24">Darkstars #24</h3>
+          <p class="pub-id" title="PUB-DARKSTARS-0024">PUB-DARKSTARS-0024</p>
+          <p class="meta" title="Seq 001000027 | tie_in | partial">Seq 001000027 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="owned" data-sequence="001000028" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000028">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-678.jpg" data-full-title="Detective Comics #678" data-full-detail="VIEW-detective-comics-678 | Seq 001000028 | tie_in | partial | tie_in | Gotham tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-678.jpg" alt="Detective Comics #678 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Detective Comics #678">Detective Comics #678</h3>
+          <p class="pub-id" title="VIEW-detective-comics-678">VIEW-detective-comics-678</p>
+          <p class="meta" title="Seq 001000028 | tie_in | partial">Seq 001000028 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Gotham tie-in.">Gotham tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000029" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000029">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-FLASH-VOL-3-0094.jpg" data-full-title="Flash (vol. 3) #94" data-full-detail="PUB-FLASH-VOL-3-0094 | Seq 001000029 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-FLASH-VOL-3-0094.jpg" alt="Flash (vol. 3) #94 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Flash (vol. 3) #94">Flash (vol. 3) #94</h3>
+          <p class="pub-id" title="PUB-FLASH-VOL-3-0094">PUB-FLASH-VOL-3-0094</p>
+          <p class="meta" title="Seq 001000029 | tie_in | partial">Seq 001000029 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000030" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000030">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-GREEN-ARROW-VOL-2-0090.jpg" data-full-title="Green Arrow (vol. 2) #90" data-full-detail="PUB-GREEN-ARROW-VOL-2-0090 | Seq 001000030 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-GREEN-ARROW-VOL-2-0090.jpg" alt="Green Arrow (vol. 2) #90 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Green Arrow (vol. 2) #90">Green Arrow (vol. 2) #90</h3>
+          <p class="pub-id" title="PUB-GREEN-ARROW-VOL-2-0090">PUB-GREEN-ARROW-VOL-2-0090</p>
+          <p class="meta" title="Seq 001000030 | tie_in | partial">Seq 001000030 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000031" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000031">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-GREEN-LANTERN-VOL-3-0055.jpg" data-full-title="Green Lantern (vol. 3) #55" data-full-detail="PUB-GREEN-LANTERN-VOL-3-0055 | Seq 001000031 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-GREEN-LANTERN-VOL-3-0055.jpg" alt="Green Lantern (vol. 3) #55 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Green Lantern (vol. 3) #55">Green Lantern (vol. 3) #55</h3>
+          <p class="pub-id" title="PUB-GREEN-LANTERN-VOL-3-0055">PUB-GREEN-LANTERN-VOL-3-0055</p>
+          <p class="meta" title="Seq 001000031 | tie_in | partial">Seq 001000031 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000032" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000032">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-GUY-GARDNER-WARRIOR-0024.jpg" data-full-title="Guy Gardner: Warrior #24" data-full-detail="PUB-GUY-GARDNER-WARRIOR-0024 | Seq 001000032 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-GUY-GARDNER-WARRIOR-0024.jpg" alt="Guy Gardner: Warrior #24 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Guy Gardner: Warrior #24">Guy Gardner: Warrior #24</h3>
+          <p class="pub-id" title="PUB-GUY-GARDNER-WARRIOR-0024">PUB-GUY-GARDNER-WARRIOR-0024</p>
+          <p class="meta" title="Seq 001000032 | tie_in | partial">Seq 001000032 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000033" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000033">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-HAWKMAN-VOL-3-0013.jpg" data-full-title="Hawkman (vol. 3) #13" data-full-detail="PUB-HAWKMAN-VOL-3-0013 | Seq 001000033 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-HAWKMAN-VOL-3-0013.jpg" alt="Hawkman (vol. 3) #13 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Hawkman (vol. 3) #13">Hawkman (vol. 3) #13</h3>
+          <p class="pub-id" title="PUB-HAWKMAN-VOL-3-0013">PUB-HAWKMAN-VOL-3-0013</p>
+          <p class="meta" title="Seq 001000033 | tie_in | partial">Seq 001000033 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000034" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000034">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-JUSTICE-LEAGUE-AMERICA-0092.jpg" data-full-title="Justice League America #92" data-full-detail="PUB-JUSTICE-LEAGUE-AMERICA-0092 | Seq 001000034 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-JUSTICE-LEAGUE-AMERICA-0092.jpg" alt="Justice League America #92 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Justice League America #92">Justice League America #92</h3>
+          <p class="pub-id" title="PUB-JUSTICE-LEAGUE-AMERICA-0092">PUB-JUSTICE-LEAGUE-AMERICA-0092</p>
+          <p class="meta" title="Seq 001000034 | tie_in | partial">Seq 001000034 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000035" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000035">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-JUSTICE-LEAGUE-INTERNATIONAL-VOL-2-0068.jpg" data-full-title="Justice League International (vol. 2) #68" data-full-detail="PUB-JUSTICE-LEAGUE-INTERNATIONAL-VOL-2-0068 | Seq 001000035 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-JUSTICE-LEAGUE-INTERNATIONAL-VOL-2-0068.jpg" alt="Justice League International (vol. 2) #68 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Justice League International (vol. 2) #68">Justice League International (vol. 2) #68</h3>
+          <p class="pub-id" title="PUB-JUSTICE-LEAGUE-INTERNATIONAL-VOL-2-0068">PUB-JUSTICE-LEAGUE-INTERNATIONAL-VOL-2-0068</p>
+          <p class="meta" title="Seq 001000035 | tie_in | partial">Seq 001000035 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000036" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000036">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-JUSTICE-LEAGUE-TASK-FORCE-0016.jpg" data-full-title="Justice League Task Force #16" data-full-detail="PUB-JUSTICE-LEAGUE-TASK-FORCE-0016 | Seq 001000036 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-JUSTICE-LEAGUE-TASK-FORCE-0016.jpg" alt="Justice League Task Force #16 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Justice League Task Force #16">Justice League Task Force #16</h3>
+          <p class="pub-id" title="PUB-JUSTICE-LEAGUE-TASK-FORCE-0016">PUB-JUSTICE-LEAGUE-TASK-FORCE-0016</p>
+          <p class="meta" title="Seq 001000036 | tie_in | partial">Seq 001000036 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000037" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000037">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-L-E-G-I-O-N-94-0070.jpg" data-full-title="L.E.G.I.O.N. &#x27;94 #70" data-full-detail="PUB-L-E-G-I-O-N-94-0070 | Seq 001000037 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-L-E-G-I-O-N-94-0070.jpg" alt="L.E.G.I.O.N. &#x27;94 #70 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="L.E.G.I.O.N. &#x27;94 #70">L.E.G.I.O.N. &#x27;94 #70</h3>
+          <p class="pub-id" title="PUB-L-E-G-I-O-N-94-0070">PUB-L-E-G-I-O-N-94-0070</p>
+          <p class="meta" title="Seq 001000037 | tie_in | partial">Seq 001000037 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000038" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000038">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-LEGION-OF-SUPER-HEROES-VOL-4-0061.jpg" data-full-title="Legion of Super-Heroes (vol. 4) #61" data-full-detail="PUB-LEGION-OF-SUPER-HEROES-VOL-4-0061 | Seq 001000038 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-LEGION-OF-SUPER-HEROES-VOL-4-0061.jpg" alt="Legion of Super-Heroes (vol. 4) #61 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Legion of Super-Heroes (vol. 4) #61">Legion of Super-Heroes (vol. 4) #61</h3>
+          <p class="pub-id" title="PUB-LEGION-OF-SUPER-HEROES-VOL-4-0061">PUB-LEGION-OF-SUPER-HEROES-VOL-4-0061</p>
+          <p class="meta" title="Seq 001000038 | tie_in | partial">Seq 001000038 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000039" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000039">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-LEGIONNAIRES-0018.jpg" data-full-title="Legionnaires #18" data-full-detail="PUB-LEGIONNAIRES-0018 | Seq 001000039 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-LEGIONNAIRES-0018.jpg" alt="Legionnaires #18 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Legionnaires #18">Legionnaires #18</h3>
+          <p class="pub-id" title="PUB-LEGIONNAIRES-0018">PUB-LEGIONNAIRES-0018</p>
+          <p class="meta" title="Seq 001000039 | tie_in | partial">Seq 001000039 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000040" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000040">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-OUTSIDERS-VOL-2-0011.jpg" data-full-title="Outsiders (vol. 2) #11" data-full-detail="PUB-OUTSIDERS-VOL-2-0011 | Seq 001000040 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-OUTSIDERS-VOL-2-0011.jpg" alt="Outsiders (vol. 2) #11 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Outsiders (vol. 2) #11">Outsiders (vol. 2) #11</h3>
+          <p class="pub-id" title="PUB-OUTSIDERS-VOL-2-0011">PUB-OUTSIDERS-VOL-2-0011</p>
+          <p class="meta" title="Seq 001000040 | tie_in | partial">Seq 001000040 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="owned" data-sequence="001000041" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000041">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ROBIN-VOL-4-0010.jpg" data-full-title="Robin (vol. 4) #10" data-full-detail="PUB-ROBIN-VOL-4-0010 | Seq 001000041 | tie_in | partial | tie_in | Gotham tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ROBIN-VOL-4-0010.jpg" alt="Robin (vol. 4) #10 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Robin (vol. 4) #10">Robin (vol. 4) #10</h3>
+          <p class="pub-id" title="PUB-ROBIN-VOL-4-0010">PUB-ROBIN-VOL-4-0010</p>
+          <p class="meta" title="Seq 001000041 | tie_in | partial">Seq 001000041 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Gotham tie-in.">Gotham tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000042" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000042">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-STEEL-VOL-2-0008.jpg" data-full-title="Steel (vol. 2) #8" data-full-detail="PUB-STEEL-VOL-2-0008 | Seq 001000042 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-STEEL-VOL-2-0008.jpg" alt="Steel (vol. 2) #8 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Steel (vol. 2) #8">Steel (vol. 2) #8</h3>
+          <p class="pub-id" title="PUB-STEEL-VOL-2-0008">PUB-STEEL-VOL-2-0008</p>
+          <p class="meta" title="Seq 001000042 | tie_in | partial">Seq 001000042 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000043" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000043">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SUPERBOY-VOL-3-0008.jpg" data-full-title="Superboy (vol. 3) #8" data-full-detail="PUB-SUPERBOY-VOL-3-0008 | Seq 001000043 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SUPERBOY-VOL-3-0008.jpg" alt="Superboy (vol. 3) #8 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Superboy (vol. 3) #8">Superboy (vol. 3) #8</h3>
+          <p class="pub-id" title="PUB-SUPERBOY-VOL-3-0008">PUB-SUPERBOY-VOL-3-0008</p>
+          <p class="meta" title="Seq 001000043 | tie_in | partial">Seq 001000043 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000044" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000044">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SUPERMAN-VOL-2-0093.jpg" data-full-title="Superman (vol. 2) #93" data-full-detail="PUB-SUPERMAN-VOL-2-0093 | Seq 001000044 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SUPERMAN-VOL-2-0093.jpg" alt="Superman (vol. 2) #93 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Superman (vol. 2) #93">Superman (vol. 2) #93</h3>
+          <p class="pub-id" title="PUB-SUPERMAN-VOL-2-0093">PUB-SUPERMAN-VOL-2-0093</p>
+          <p class="meta" title="Seq 001000044 | tie_in | partial">Seq 001000044 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000045" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000045">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SUPERMAN-THE-MAN-OF-STEEL-0037.jpg" data-full-title="Superman: The Man of Steel #37" data-full-detail="PUB-SUPERMAN-THE-MAN-OF-STEEL-0037 | Seq 001000045 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SUPERMAN-THE-MAN-OF-STEEL-0037.jpg" alt="Superman: The Man of Steel #37 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Superman: The Man of Steel #37">Superman: The Man of Steel #37</h3>
+          <p class="pub-id" title="PUB-SUPERMAN-THE-MAN-OF-STEEL-0037">PUB-SUPERMAN-THE-MAN-OF-STEEL-0037</p>
+          <p class="meta" title="Seq 001000045 | tie_in | partial">Seq 001000045 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000046" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000046">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-TEAM-TITANS-0024.jpg" data-full-title="Team Titans #24" data-full-detail="PUB-TEAM-TITANS-0024 | Seq 001000046 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-TEAM-TITANS-0024.jpg" alt="Team Titans #24 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Team Titans #24">Team Titans #24</h3>
+          <p class="pub-id" title="PUB-TEAM-TITANS-0024">PUB-TEAM-TITANS-0024</p>
+          <p class="meta" title="Seq 001000046 | tie_in | partial">Seq 001000046 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="extended_dc_event" data-project="zero_hour" data-status="missing" data-sequence="001000047" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000047">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-VALOR-0023.jpg" data-full-title="Valor #23" data-full-detail="PUB-VALOR-0023 | Seq 001000047 | tie_in | partial | tie_in | Wider DC tie-in. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-VALOR-0023.jpg" alt="Valor #23 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">extended dc event</span>
+            
+          </div>
+          <h3 title="Valor #23">Valor #23</h3>
+          <p class="pub-id" title="PUB-VALOR-0023">PUB-VALOR-0023</p>
+          <p class="meta" title="Seq 001000047 | tie_in | partial">Seq 001000047 | tie_in | partial</p>
+          <p class="continuity" title="tie_in">tie_in</p>
+          <p class="notes" title="Wider DC tie-in.">Wider DC tie-in.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+  <div class="lightbox" aria-modal="true" role="dialog" aria-label="Cover preview">
+    <div class="lightbox-panel">
+      <img src="" alt="">
+      <div class="lightbox-caption">
+        <div>
+          <div class="lightbox-title"></div>
+          <div class="lightbox-detail"></div>
+        </div>
+        <button class="lightbox-close" type="button" data-lightbox-close>Close</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const state = { order: 'reading', scope: 'all', project: 'all', status: 'all' };
+    const grid = document.querySelector('.grid');
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImage = document.querySelector('.lightbox img');
+    const lightboxTitle = document.querySelector('.lightbox-title');
+    const lightboxDetail = document.querySelector('.lightbox-detail');
+    document.querySelectorAll('.chip').forEach(button => {
+      button.addEventListener('click', () => {
+        const group = button.dataset.filter;
+        state[group] = button.dataset.value;
+        document.querySelectorAll(`.chip[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item === button));
+        applyFilters();
+      });
+    });
+    function applyFilters() {
+      document.querySelectorAll('.comic-card').forEach(card => {
+        const visible = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]));
+        card.classList.toggle('hidden', !visible);
+      });
+      sortCards();
+    }
+    function sortCards() {
+      [...document.querySelectorAll('.comic-card')]
+        .sort((left, right) => sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent))
+        .forEach(card => grid.appendChild(card));
+    }
+    function sequenceForCard(card) {
+      const order = state.order === 'all' ? 'reading' : state.order;
+      if (order === 'publication') {
+        return scopedSequence(card, 'publicationSequence');
+      }
+      if (order === 'chronological') {
+        return scopedSequence(card, 'chronologicalSequence');
+      }
+      const byOrder = sequenceMap(card.dataset.orderSequences);
+      if (byOrder[order]) {
+        return sortValue(byOrder[order]);
+      }
+      const chronological = scopedSequence(card, 'chronologicalSequence');
+      return chronological < 999999 ? chronological : sortValue(card.dataset.sequence);
+    }
+    function scopedSequence(card, orderKey) {
+      const scoped = sequenceMap(card.dataset[`${orderKey}s`]);
+      if (state.scope !== 'all' && scoped[state.scope]) {
+        return sortValue(scoped[state.scope]);
+      }
+      return sortValue(card.dataset[orderKey]);
+    }
+    function sequenceMap(value) {
+      return Object.fromEntries((value || '').split('|').filter(Boolean).map(item => {
+        const [scope, sequence] = item.split(':');
+        return [scope, sequence];
+      }));
+    }
+    function sortValue(value) {
+      const parsed = Number.parseFloat(value || '999999');
+      if (Number.isFinite(parsed)) {
+        return parsed;
+      }
+        const embedded = String(value || '').match(/\d+(\.\d+)?/);
+      return embedded ? Number.parseFloat(embedded[0]) : 999999;
+    }
+    document.querySelectorAll('.cover-button').forEach(button => {
+      button.addEventListener('click', () => {
+        lightboxImage.src = button.dataset.fullSrc;
+        lightboxImage.alt = `${button.dataset.fullTitle} cover`;
+        lightboxTitle.textContent = button.dataset.fullTitle;
+        lightboxDetail.textContent = button.dataset.fullDetail || '';
+        lightbox.classList.add('open');
+      });
+    });
+    document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
+    lightbox.addEventListener('click', event => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeLightbox();
+    });
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightboxImage.removeAttribute('src');
+      lightboxImage.removeAttribute('alt');
+      lightboxTitle.textContent = '';
+      lightboxDetail.textContent = '';
+    }
+    applyFilters();
+    </script>
+</body>
+</html>

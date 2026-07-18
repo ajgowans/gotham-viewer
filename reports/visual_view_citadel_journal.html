@@ -1,0 +1,1227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="../assets/site/batman-favicon.png">
+  <title>The Citadel Journal - Visual Viewer</title>
+  <style>
+    :root { color-scheme: light; --ink:#172026; --muted:#5c6670; --line:#d9dee4; --paper:#f6f7f8; --panel:#ffffff; --owned:#0f7b4f; --fac:#6b4bb8; --ordered:#2166ad; --readable:#a46a00; --missing:#b42318; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); }
+    header { padding: 28px 32px 18px; background: #111820; color: white; }
+    .header-top { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .back-link { color: white; border: 1px solid rgba(255,255,255,.32); border-radius: 999px; padding: 7px 11px; text-decoration: none; font-size: 13px; background: rgba(255,255,255,.08); }
+    .back-link:hover { background: rgba(255,255,255,.16); }
+    h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; }
+    header p { margin: 0; color: #c8d0d8; max-width: 900px; }
+    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; padding: 18px 32px; background: #e9edf1; border-bottom: 1px solid var(--line); }
+    .metric { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+    .metric strong { display: block; font-size: 24px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    .controls { padding: 18px 32px; display: grid; gap: 12px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
+    .control-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .control-row b { margin-right: 4px; font-size: 13px; color: var(--muted); min-width: 70px; }
+    .chip { border: 1px solid var(--line); background: #f8fafb; color: var(--ink); border-radius: 999px; padding: 7px 11px; cursor: pointer; text-transform: capitalize; }
+    .chip.active { background: #172026; border-color: #172026; color: white; }
+    main { padding: 24px 32px 40px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 16px; align-items: start; }
+    .comic-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05); min-width: 0; display: flex; flex-direction: column; position: relative; }
+    .comic-card.owned { background: #f2fbf6; }
+    .comic-card.facsimile { background: #f6f2ff; }
+    .comic-card.ordered { background: #f1f7ff; }
+    .comic-card.readable { background: #fff8ec; }
+    .status-strip { background: var(--missing); color: white; min-height: 30px; display: grid; place-items: center; padding: 7px 8px; font-size: 12px; line-height: 1; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; }
+    .comic-card.owned .status-strip { background: var(--owned); }
+    .comic-card.facsimile .status-strip { background: var(--fac); }
+    .comic-card.ordered .status-strip { background: var(--ordered); }
+    .comic-card.readable .status-strip { background: var(--readable); }
+    .cover-wrap { aspect-ratio: 2 / 3; background: #242a31; display: grid; place-items: center; overflow: hidden; position: relative; }
+    .cover-button { appearance: none; border: 0; background: #111820; padding: 0; margin: 0; width: 100%; height: 100%; display: block; cursor: zoom-in; }
+    .cover-button:focus-visible { outline: 3px solid #f4c430; outline-offset: -3px; }
+    .cover-wrap img { width: 100%; height: 100%; object-fit: contain; background: #111820; display: block; }
+    .cover-placeholder { width: 100%; height: 100%; padding: 14px; color: white; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(145deg, #18212a, #39424c); }
+    .cover-placeholder span { font-weight: 700; line-height: 1.1; overflow-wrap: anywhere; }
+    .cover-placeholder strong { font-size: 42px; align-self: flex-end; }
+    .cover-review-badge { position: absolute; left: 8px; right: 8px; top: 8px; border-radius: 6px; padding: 6px 7px; color: white; font-size: 11px; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.22); pointer-events: none; }
+    .cover-review-badge.warning { background: rgba(164,106,0,.92); }
+    .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
+    .comic-card.cover-needs_review { border-color: #a46a00; }
+    .comic-card.cover-rejected_auto { border-color: #b42318; }
+    .card-body { padding: 10px 11px 12px; height: 205px; display: flex; flex-direction: column; overflow: hidden; }
+    .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
+    .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
+    .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
+    h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id { -webkit-line-clamp: 1; }
+    .meta, .continuity { -webkit-line-clamp: 2; }
+    .notes { -webkit-line-clamp: 2; position: relative; }
+    .notes::after { content: ""; position: absolute; inset: auto 0 0 0; height: 1.2em; background: linear-gradient(to bottom, rgba(255,255,255,0), var(--panel)); pointer-events: none; }
+    .comic-card.owned .notes::after { background: linear-gradient(to bottom, rgba(242,251,246,0), #f2fbf6); }
+    .comic-card.facsimile .notes::after { background: linear-gradient(to bottom, rgba(246,242,255,0), #f6f2ff); }
+    .comic-card.ordered .notes::after { background: linear-gradient(to bottom, rgba(241,247,255,0), #f1f7ff); }
+    .comic-card.readable .notes::after { background: linear-gradient(to bottom, rgba(255,248,236,0), #fff8ec); }
+    .hidden { display: none; }
+    .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
+    .lightbox.open { display: flex; }
+    .lightbox-panel { max-width: min(92vw, 980px); max-height: 94vh; display: grid; gap: 10px; }
+    .lightbox img { max-width: 100%; max-height: calc(94vh - 56px); object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
+    .lightbox-title { font-weight: 750; }
+    .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
+    .lightbox-close { border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: white; border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+    @media (max-width: 700px) { header, .summary, .controls, main { padding-left: 14px; padding-right: 14px; } .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; } }
+    </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <h1>The Citadel Journal</h1>
+      <a class="back-link" href="visual_collection_viewer.html">All visual views</a>
+    </div>
+    <p>Verified original seasonal issues numbered run #1-50 and related Blood Bowl and Warhammer Quest publications.</p>
+  </header>
+  <section class="summary">
+    <div class="metric"><strong>60</strong><span>unique publications</span></div>
+    <div class="metric"><strong>0</strong><span>owned/readable</span></div>
+    <div class="metric"><strong>0</strong><span>facsimiles</span></div>
+    <div class="metric"><strong>60</strong><span>missing</span></div>
+  </section>
+  <section class="controls">
+    <div class="control-row"><b>Order</b><button class="chip" data-filter="order" data-value="all">All orders</button>
+<button class="chip active" data-filter="order" data-value="reading">reading</button></div>
+    <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button></div>
+    <div class="control-row"><b>Status</b><button class="chip active" data-filter="status" data-value="all">All statuses</button>
+<button class="chip" data-filter="status" data-value="owned">owned</button>
+<button class="chip" data-filter="status" data-value="facsimile">facsimile</button>
+<button class="chip" data-filter="status" data-value="ordered">ordered</button>
+<button class="chip" data-filter="status" data-value="readable">readable</button>
+<button class="chip" data-filter="status" data-value="missing">missing</button></div>
+    <div class="control-row"><b>Work</b><button class="chip active" data-filter="project" data-value="all">All works</button></div>
+  </section>
+  <main>
+    <section class="grid">
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000001">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1985-SPRING.jpg" data-full-title="The Citadel Journal #Spring 1985" data-full-detail="CJ-1985-SPRING | Seq 000001 | First incarnation; seasonal issue rather than part of the later numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1985-SPRING.jpg" alt="The Citadel Journal #Spring 1985 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #Spring 1985">The Citadel Journal #Spring 1985</h3>
+          <p class="pub-id" title="CJ-1985-SPRING">CJ-1985-SPRING</p>
+          <p class="meta" title="Seq 000001">Seq 000001</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="First incarnation; seasonal issue rather than part of the later numbered run.">First incarnation; seasonal issue rather than part of the later numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000002">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1985-AUTUMN.jpg" data-full-title="The Citadel Journal #Autumn 1985" data-full-detail="CJ-1985-AUTUMN | Seq 000002 | First incarnation; seasonal issue rather than part of the later numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1985-AUTUMN.jpg" alt="The Citadel Journal #Autumn 1985 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #Autumn 1985">The Citadel Journal #Autumn 1985</h3>
+          <p class="pub-id" title="CJ-1985-AUTUMN">CJ-1985-AUTUMN</p>
+          <p class="meta" title="Seq 000002">Seq 000002</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="First incarnation; seasonal issue rather than part of the later numbered run.">First incarnation; seasonal issue rather than part of the later numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000003">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1986-SPRING.jpg" data-full-title="The Citadel Journal #Spring 1986" data-full-detail="CJ-1986-SPRING | Seq 000003 | First incarnation; seasonal issue rather than part of the later numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1986-SPRING.jpg" alt="The Citadel Journal #Spring 1986 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #Spring 1986">The Citadel Journal #Spring 1986</h3>
+          <p class="pub-id" title="CJ-1986-SPRING">CJ-1986-SPRING</p>
+          <p class="meta" title="Seq 000003">Seq 000003</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="First incarnation; seasonal issue rather than part of the later numbered run.">First incarnation; seasonal issue rather than part of the later numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000004">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1987-SPRING.jpg" data-full-title="The Citadel Journal #Spring 1987" data-full-detail="CJ-1987-SPRING | Seq 000004 | First incarnation; seasonal issue rather than part of the later numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1987-SPRING.jpg" alt="The Citadel Journal #Spring 1987 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #Spring 1987">The Citadel Journal #Spring 1987</h3>
+          <p class="pub-id" title="CJ-1987-SPRING">CJ-1987-SPRING</p>
+          <p class="meta" title="Seq 000004">Seq 000004</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="First incarnation; seasonal issue rather than part of the later numbered run.">First incarnation; seasonal issue rather than part of the later numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001001">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0001.jpg" data-full-title="The Citadel Journal #1" data-full-detail="CJ-1994-0001 | Seq 001001 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0001.jpg" alt="The Citadel Journal #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #1">The Citadel Journal #1</h3>
+          <p class="pub-id" title="CJ-1994-0001">CJ-1994-0001</p>
+          <p class="meta" title="Seq 001001">Seq 001001</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001002">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0002.jpg" data-full-title="The Citadel Journal #2" data-full-detail="CJ-1994-0002 | Seq 001002 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0002.jpg" alt="The Citadel Journal #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #2">The Citadel Journal #2</h3>
+          <p class="pub-id" title="CJ-1994-0002">CJ-1994-0002</p>
+          <p class="meta" title="Seq 001002">Seq 001002</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001003">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0003.jpg" data-full-title="The Citadel Journal #3" data-full-detail="CJ-1994-0003 | Seq 001003 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0003.jpg" alt="The Citadel Journal #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #3">The Citadel Journal #3</h3>
+          <p class="pub-id" title="CJ-1994-0003">CJ-1994-0003</p>
+          <p class="meta" title="Seq 001003">Seq 001003</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001004">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0004.jpg" data-full-title="The Citadel Journal #4" data-full-detail="CJ-1994-0004 | Seq 001004 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0004.jpg" alt="The Citadel Journal #4 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #4">The Citadel Journal #4</h3>
+          <p class="pub-id" title="CJ-1994-0004">CJ-1994-0004</p>
+          <p class="meta" title="Seq 001004">Seq 001004</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001005">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0005.jpg" data-full-title="The Citadel Journal #5" data-full-detail="CJ-1994-0005 | Seq 001005 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0005.jpg" alt="The Citadel Journal #5 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #5">The Citadel Journal #5</h3>
+          <p class="pub-id" title="CJ-1994-0005">CJ-1994-0005</p>
+          <p class="meta" title="Seq 001005">Seq 001005</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001006">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0006.jpg" data-full-title="The Citadel Journal #6" data-full-detail="CJ-1994-0006 | Seq 001006 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0006.jpg" alt="The Citadel Journal #6 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #6">The Citadel Journal #6</h3>
+          <p class="pub-id" title="CJ-1994-0006">CJ-1994-0006</p>
+          <p class="meta" title="Seq 001006">Seq 001006</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001007">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0007.jpg" data-full-title="The Citadel Journal #7" data-full-detail="CJ-1994-0007 | Seq 001007 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0007.jpg" alt="The Citadel Journal #7 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #7">The Citadel Journal #7</h3>
+          <p class="pub-id" title="CJ-1994-0007">CJ-1994-0007</p>
+          <p class="meta" title="Seq 001007">Seq 001007</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001008">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0008.jpg" data-full-title="The Citadel Journal #8" data-full-detail="CJ-1994-0008 | Seq 001008 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0008.jpg" alt="The Citadel Journal #8 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #8">The Citadel Journal #8</h3>
+          <p class="pub-id" title="CJ-1994-0008">CJ-1994-0008</p>
+          <p class="meta" title="Seq 001008">Seq 001008</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001009">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0009.jpg" data-full-title="The Citadel Journal #9" data-full-detail="CJ-1994-0009 | Seq 001009 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0009.jpg" alt="The Citadel Journal #9 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #9">The Citadel Journal #9</h3>
+          <p class="pub-id" title="CJ-1994-0009">CJ-1994-0009</p>
+          <p class="meta" title="Seq 001009">Seq 001009</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001010">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0010.jpg" data-full-title="The Citadel Journal #10" data-full-detail="CJ-1994-0010 | Seq 001010 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0010.jpg" alt="The Citadel Journal #10 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #10">The Citadel Journal #10</h3>
+          <p class="pub-id" title="CJ-1994-0010">CJ-1994-0010</p>
+          <p class="meta" title="Seq 001010">Seq 001010</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001011">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0011.jpg" data-full-title="The Citadel Journal #11" data-full-detail="CJ-1994-0011 | Seq 001011 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0011.jpg" alt="The Citadel Journal #11 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #11">The Citadel Journal #11</h3>
+          <p class="pub-id" title="CJ-1994-0011">CJ-1994-0011</p>
+          <p class="meta" title="Seq 001011">Seq 001011</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001012">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0012.jpg" data-full-title="The Citadel Journal #12" data-full-detail="CJ-1994-0012 | Seq 001012 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0012.jpg" alt="The Citadel Journal #12 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #12">The Citadel Journal #12</h3>
+          <p class="pub-id" title="CJ-1994-0012">CJ-1994-0012</p>
+          <p class="meta" title="Seq 001012">Seq 001012</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001013" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001013">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0013.jpg" data-full-title="The Citadel Journal #13" data-full-detail="CJ-1994-0013 | Seq 001013 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0013.jpg" alt="The Citadel Journal #13 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #13">The Citadel Journal #13</h3>
+          <p class="pub-id" title="CJ-1994-0013">CJ-1994-0013</p>
+          <p class="meta" title="Seq 001013">Seq 001013</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001014" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001014">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0014.jpg" data-full-title="The Citadel Journal #14" data-full-detail="CJ-1994-0014 | Seq 001014 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0014.jpg" alt="The Citadel Journal #14 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #14">The Citadel Journal #14</h3>
+          <p class="pub-id" title="CJ-1994-0014">CJ-1994-0014</p>
+          <p class="meta" title="Seq 001014">Seq 001014</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001015" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001015">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0015.jpg" data-full-title="The Citadel Journal #15" data-full-detail="CJ-1994-0015 | Seq 001015 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0015.jpg" alt="The Citadel Journal #15 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #15">The Citadel Journal #15</h3>
+          <p class="pub-id" title="CJ-1994-0015">CJ-1994-0015</p>
+          <p class="meta" title="Seq 001015">Seq 001015</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001016" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001016">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0016.jpg" data-full-title="The Citadel Journal #16" data-full-detail="CJ-1994-0016 | Seq 001016 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0016.jpg" alt="The Citadel Journal #16 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #16">The Citadel Journal #16</h3>
+          <p class="pub-id" title="CJ-1994-0016">CJ-1994-0016</p>
+          <p class="meta" title="Seq 001016">Seq 001016</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001017" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001017">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0017.jpg" data-full-title="The Citadel Journal #17" data-full-detail="CJ-1994-0017 | Seq 001017 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0017.jpg" alt="The Citadel Journal #17 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #17">The Citadel Journal #17</h3>
+          <p class="pub-id" title="CJ-1994-0017">CJ-1994-0017</p>
+          <p class="meta" title="Seq 001017">Seq 001017</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001018" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001018">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0018.jpg" data-full-title="The Citadel Journal #18" data-full-detail="CJ-1994-0018 | Seq 001018 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0018.jpg" alt="The Citadel Journal #18 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #18">The Citadel Journal #18</h3>
+          <p class="pub-id" title="CJ-1994-0018">CJ-1994-0018</p>
+          <p class="meta" title="Seq 001018">Seq 001018</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001019" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001019">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0019.jpg" data-full-title="The Citadel Journal #19" data-full-detail="CJ-1994-0019 | Seq 001019 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0019.jpg" alt="The Citadel Journal #19 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #19">The Citadel Journal #19</h3>
+          <p class="pub-id" title="CJ-1994-0019">CJ-1994-0019</p>
+          <p class="meta" title="Seq 001019">Seq 001019</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001020">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0020.jpg" data-full-title="The Citadel Journal #20" data-full-detail="CJ-1994-0020 | Seq 001020 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0020.jpg" alt="The Citadel Journal #20 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #20">The Citadel Journal #20</h3>
+          <p class="pub-id" title="CJ-1994-0020">CJ-1994-0020</p>
+          <p class="meta" title="Seq 001020">Seq 001020</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001021">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0021.jpg" data-full-title="The Citadel Journal #21" data-full-detail="CJ-1994-0021 | Seq 001021 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0021.jpg" alt="The Citadel Journal #21 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #21">The Citadel Journal #21</h3>
+          <p class="pub-id" title="CJ-1994-0021">CJ-1994-0021</p>
+          <p class="meta" title="Seq 001021">Seq 001021</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001022" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001022">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0022.jpg" data-full-title="The Citadel Journal #22" data-full-detail="CJ-1994-0022 | Seq 001022 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0022.jpg" alt="The Citadel Journal #22 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #22">The Citadel Journal #22</h3>
+          <p class="pub-id" title="CJ-1994-0022">CJ-1994-0022</p>
+          <p class="meta" title="Seq 001022">Seq 001022</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001023" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001023">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0023.jpg" data-full-title="The Citadel Journal #23" data-full-detail="CJ-1994-0023 | Seq 001023 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0023.jpg" alt="The Citadel Journal #23 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #23">The Citadel Journal #23</h3>
+          <p class="pub-id" title="CJ-1994-0023">CJ-1994-0023</p>
+          <p class="meta" title="Seq 001023">Seq 001023</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001024" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001024">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0024.jpg" data-full-title="The Citadel Journal #24" data-full-detail="CJ-1994-0024 | Seq 001024 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0024.jpg" alt="The Citadel Journal #24 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #24">The Citadel Journal #24</h3>
+          <p class="pub-id" title="CJ-1994-0024">CJ-1994-0024</p>
+          <p class="meta" title="Seq 001024">Seq 001024</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001025" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001025">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0025.jpg" data-full-title="The Citadel Journal #25" data-full-detail="CJ-1994-0025 | Seq 001025 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0025.jpg" alt="The Citadel Journal #25 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #25">The Citadel Journal #25</h3>
+          <p class="pub-id" title="CJ-1994-0025">CJ-1994-0025</p>
+          <p class="meta" title="Seq 001025">Seq 001025</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001026" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001026">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0026.jpg" data-full-title="The Citadel Journal #26" data-full-detail="CJ-1994-0026 | Seq 001026 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0026.jpg" alt="The Citadel Journal #26 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #26">The Citadel Journal #26</h3>
+          <p class="pub-id" title="CJ-1994-0026">CJ-1994-0026</p>
+          <p class="meta" title="Seq 001026">Seq 001026</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001027" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001027">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0027.jpg" data-full-title="The Citadel Journal #27" data-full-detail="CJ-1994-0027 | Seq 001027 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0027.jpg" alt="The Citadel Journal #27 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #27">The Citadel Journal #27</h3>
+          <p class="pub-id" title="CJ-1994-0027">CJ-1994-0027</p>
+          <p class="meta" title="Seq 001027">Seq 001027</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001028" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001028">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0028.jpg" data-full-title="The Citadel Journal #28" data-full-detail="CJ-1994-0028 | Seq 001028 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0028.jpg" alt="The Citadel Journal #28 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #28">The Citadel Journal #28</h3>
+          <p class="pub-id" title="CJ-1994-0028">CJ-1994-0028</p>
+          <p class="meta" title="Seq 001028">Seq 001028</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001029" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001029">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0029.jpg" data-full-title="The Citadel Journal #29" data-full-detail="CJ-1994-0029 | Seq 001029 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0029.jpg" alt="The Citadel Journal #29 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #29">The Citadel Journal #29</h3>
+          <p class="pub-id" title="CJ-1994-0029">CJ-1994-0029</p>
+          <p class="meta" title="Seq 001029">Seq 001029</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001030" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001030">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0030.jpg" data-full-title="The Citadel Journal #30" data-full-detail="CJ-1994-0030 | Seq 001030 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0030.jpg" alt="The Citadel Journal #30 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #30">The Citadel Journal #30</h3>
+          <p class="pub-id" title="CJ-1994-0030">CJ-1994-0030</p>
+          <p class="meta" title="Seq 001030">Seq 001030</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001031" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001031">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0031.jpg" data-full-title="The Citadel Journal #31" data-full-detail="CJ-1994-0031 | Seq 001031 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0031.jpg" alt="The Citadel Journal #31 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #31">The Citadel Journal #31</h3>
+          <p class="pub-id" title="CJ-1994-0031">CJ-1994-0031</p>
+          <p class="meta" title="Seq 001031">Seq 001031</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001032" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001032">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0032.jpg" data-full-title="The Citadel Journal #32" data-full-detail="CJ-1994-0032 | Seq 001032 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0032.jpg" alt="The Citadel Journal #32 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #32">The Citadel Journal #32</h3>
+          <p class="pub-id" title="CJ-1994-0032">CJ-1994-0032</p>
+          <p class="meta" title="Seq 001032">Seq 001032</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001033" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001033">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0033.jpg" data-full-title="The Citadel Journal #33" data-full-detail="CJ-1994-0033 | Seq 001033 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0033.jpg" alt="The Citadel Journal #33 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #33">The Citadel Journal #33</h3>
+          <p class="pub-id" title="CJ-1994-0033">CJ-1994-0033</p>
+          <p class="meta" title="Seq 001033">Seq 001033</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001034" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001034">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0034.jpg" data-full-title="The Citadel Journal #34" data-full-detail="CJ-1994-0034 | Seq 001034 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0034.jpg" alt="The Citadel Journal #34 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #34">The Citadel Journal #34</h3>
+          <p class="pub-id" title="CJ-1994-0034">CJ-1994-0034</p>
+          <p class="meta" title="Seq 001034">Seq 001034</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001035" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001035">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0035.jpg" data-full-title="The Citadel Journal #35" data-full-detail="CJ-1994-0035 | Seq 001035 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0035.jpg" alt="The Citadel Journal #35 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #35">The Citadel Journal #35</h3>
+          <p class="pub-id" title="CJ-1994-0035">CJ-1994-0035</p>
+          <p class="meta" title="Seq 001035">Seq 001035</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001036" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001036">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0036.jpg" data-full-title="The Citadel Journal #36" data-full-detail="CJ-1994-0036 | Seq 001036 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0036.jpg" alt="The Citadel Journal #36 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #36">The Citadel Journal #36</h3>
+          <p class="pub-id" title="CJ-1994-0036">CJ-1994-0036</p>
+          <p class="meta" title="Seq 001036">Seq 001036</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001037" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001037">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0037.jpg" data-full-title="The Citadel Journal #37" data-full-detail="CJ-1994-0037 | Seq 001037 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0037.jpg" alt="The Citadel Journal #37 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #37">The Citadel Journal #37</h3>
+          <p class="pub-id" title="CJ-1994-0037">CJ-1994-0037</p>
+          <p class="meta" title="Seq 001037">Seq 001037</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001038" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001038">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0038.jpg" data-full-title="The Citadel Journal #38" data-full-detail="CJ-1994-0038 | Seq 001038 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0038.jpg" alt="The Citadel Journal #38 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #38">The Citadel Journal #38</h3>
+          <p class="pub-id" title="CJ-1994-0038">CJ-1994-0038</p>
+          <p class="meta" title="Seq 001038">Seq 001038</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001039" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001039">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0039.jpg" data-full-title="The Citadel Journal #39" data-full-detail="CJ-1994-0039 | Seq 001039 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0039.jpg" alt="The Citadel Journal #39 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #39">The Citadel Journal #39</h3>
+          <p class="pub-id" title="CJ-1994-0039">CJ-1994-0039</p>
+          <p class="meta" title="Seq 001039">Seq 001039</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001040" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001040">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0040.jpg" data-full-title="The Citadel Journal #40" data-full-detail="CJ-1994-0040 | Seq 001040 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0040.jpg" alt="The Citadel Journal #40 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #40">The Citadel Journal #40</h3>
+          <p class="pub-id" title="CJ-1994-0040">CJ-1994-0040</p>
+          <p class="meta" title="Seq 001040">Seq 001040</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001041" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001041">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0041.jpg" data-full-title="The Citadel Journal #41" data-full-detail="CJ-1994-0041 | Seq 001041 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0041.jpg" alt="The Citadel Journal #41 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #41">The Citadel Journal #41</h3>
+          <p class="pub-id" title="CJ-1994-0041">CJ-1994-0041</p>
+          <p class="meta" title="Seq 001041">Seq 001041</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001042" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001042">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0042.jpg" data-full-title="The Citadel Journal #42" data-full-detail="CJ-1994-0042 | Seq 001042 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0042.jpg" alt="The Citadel Journal #42 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #42">The Citadel Journal #42</h3>
+          <p class="pub-id" title="CJ-1994-0042">CJ-1994-0042</p>
+          <p class="meta" title="Seq 001042">Seq 001042</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001043" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001043">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0043.jpg" data-full-title="The Citadel Journal #43" data-full-detail="CJ-1994-0043 | Seq 001043 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0043.jpg" alt="The Citadel Journal #43 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #43">The Citadel Journal #43</h3>
+          <p class="pub-id" title="CJ-1994-0043">CJ-1994-0043</p>
+          <p class="meta" title="Seq 001043">Seq 001043</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001044" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001044">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0044.jpg" data-full-title="The Citadel Journal #44" data-full-detail="CJ-1994-0044 | Seq 001044 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0044.jpg" alt="The Citadel Journal #44 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #44">The Citadel Journal #44</h3>
+          <p class="pub-id" title="CJ-1994-0044">CJ-1994-0044</p>
+          <p class="meta" title="Seq 001044">Seq 001044</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001045" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001045">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0045.jpg" data-full-title="The Citadel Journal #45" data-full-detail="CJ-1994-0045 | Seq 001045 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0045.jpg" alt="The Citadel Journal #45 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #45">The Citadel Journal #45</h3>
+          <p class="pub-id" title="CJ-1994-0045">CJ-1994-0045</p>
+          <p class="meta" title="Seq 001045">Seq 001045</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001046" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001046">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0046.jpg" data-full-title="The Citadel Journal #46" data-full-detail="CJ-1994-0046 | Seq 001046 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0046.jpg" alt="The Citadel Journal #46 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #46">The Citadel Journal #46</h3>
+          <p class="pub-id" title="CJ-1994-0046">CJ-1994-0046</p>
+          <p class="meta" title="Seq 001046">Seq 001046</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001047" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001047">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0047.jpg" data-full-title="The Citadel Journal #47" data-full-detail="CJ-1994-0047 | Seq 001047 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0047.jpg" alt="The Citadel Journal #47 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #47">The Citadel Journal #47</h3>
+          <p class="pub-id" title="CJ-1994-0047">CJ-1994-0047</p>
+          <p class="meta" title="Seq 001047">Seq 001047</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001048" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001048">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0048.jpg" data-full-title="The Citadel Journal #48" data-full-detail="CJ-1994-0048 | Seq 001048 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0048.jpg" alt="The Citadel Journal #48 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #48">The Citadel Journal #48</h3>
+          <p class="pub-id" title="CJ-1994-0048">CJ-1994-0048</p>
+          <p class="meta" title="Seq 001048">Seq 001048</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001049" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001049">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0049.jpg" data-full-title="The Citadel Journal #49" data-full-detail="CJ-1994-0049 | Seq 001049 | Second incarnation numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0049.jpg" alt="The Citadel Journal #49 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #49">The Citadel Journal #49</h3>
+          <p class="pub-id" title="CJ-1994-0049">CJ-1994-0049</p>
+          <p class="meta" title="Seq 001049">Seq 001049</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Second incarnation numbered run.">Second incarnation numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="001050" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001050">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-1994-0050.jpg" data-full-title="The Citadel Journal #50" data-full-detail="CJ-1994-0050 | Seq 001050 | Final numbered issue. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-1994-0050.jpg" alt="The Citadel Journal #50 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal #50">The Citadel Journal #50</h3>
+          <p class="pub-id" title="CJ-1994-0050">CJ-1994-0050</p>
+          <p class="meta" title="Seq 001050">Seq 001050</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Final numbered issue.">Final numbered issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="002010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002010">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-BLOOD-BOWL-COMPENDIUM-0001.jpg" data-full-title="The Citadel Journal Blood Bowl Compendium #1" data-full-detail="CJ-BLOOD-BOWL-COMPENDIUM-0001 | Seq 002010 | Related Blood Bowl compilation. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-BLOOD-BOWL-COMPENDIUM-0001.jpg" alt="The Citadel Journal Blood Bowl Compendium #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal Blood Bowl Compendium #1">The Citadel Journal Blood Bowl Compendium #1</h3>
+          <p class="pub-id" title="CJ-BLOOD-BOWL-COMPENDIUM-0001">CJ-BLOOD-BOWL-COMPENDIUM-0001</p>
+          <p class="meta" title="Seq 002010">Seq 002010</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Related Blood Bowl compilation.">Related Blood Bowl compilation.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="002011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002011">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-BLOOD-BOWL-COMPENDIUM-0002.jpg" data-full-title="The Citadel Journal Blood Bowl Compendium #2" data-full-detail="CJ-BLOOD-BOWL-COMPENDIUM-0002 | Seq 002011 | Related Blood Bowl compilation. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-BLOOD-BOWL-COMPENDIUM-0002.jpg" alt="The Citadel Journal Blood Bowl Compendium #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal Blood Bowl Compendium #2">The Citadel Journal Blood Bowl Compendium #2</h3>
+          <p class="pub-id" title="CJ-BLOOD-BOWL-COMPENDIUM-0002">CJ-BLOOD-BOWL-COMPENDIUM-0002</p>
+          <p class="meta" title="Seq 002011">Seq 002011</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Related Blood Bowl compilation.">Related Blood Bowl compilation.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="002012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002012">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-BLOOD-BOWL-COMPENDIUM-0003.jpg" data-full-title="The Citadel Journal Blood Bowl Compendium #3" data-full-detail="CJ-BLOOD-BOWL-COMPENDIUM-0003 | Seq 002012 | Related Blood Bowl compilation. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-BLOOD-BOWL-COMPENDIUM-0003.jpg" alt="The Citadel Journal Blood Bowl Compendium #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="The Citadel Journal Blood Bowl Compendium #3">The Citadel Journal Blood Bowl Compendium #3</h3>
+          <p class="pub-id" title="CJ-BLOOD-BOWL-COMPENDIUM-0003">CJ-BLOOD-BOWL-COMPENDIUM-0003</p>
+          <p class="meta" title="Seq 002012">Seq 002012</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Related Blood Bowl compilation.">Related Blood Bowl compilation.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="002020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002020">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-DEATHBLOW-0001.jpg" data-full-title="Deathblow #1" data-full-detail="CJ-DEATHBLOW-0001 | Seq 002020 | Warhammer Quest compendium using Citadel Journal material; related rather than part of the numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-DEATHBLOW-0001.jpg" alt="Deathblow #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Deathblow #1">Deathblow #1</h3>
+          <p class="pub-id" title="CJ-DEATHBLOW-0001">CJ-DEATHBLOW-0001</p>
+          <p class="meta" title="Seq 002020">Seq 002020</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Warhammer Quest compendium using Citadel Journal material; related rather than part of the numbered run.">Warhammer Quest compendium using Citadel Journal material; related rather than part of the numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="002021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002021">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-DEATHBLOW-0002.jpg" data-full-title="Deathblow #2" data-full-detail="CJ-DEATHBLOW-0002 | Seq 002021 | Warhammer Quest compendium using Citadel Journal material; related rather than part of the numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-DEATHBLOW-0002.jpg" alt="Deathblow #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Deathblow #2">Deathblow #2</h3>
+          <p class="pub-id" title="CJ-DEATHBLOW-0002">CJ-DEATHBLOW-0002</p>
+          <p class="meta" title="Seq 002021">Seq 002021</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Warhammer Quest compendium using Citadel Journal material; related rather than part of the numbered run.">Warhammer Quest compendium using Citadel Journal material; related rather than part of the numbered run.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="" data-project="" data-status="missing" data-sequence="002022" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002022">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/CJ-DEATHBLOW-0003.jpg" data-full-title="Deathblow #3" data-full-detail="CJ-DEATHBLOW-0003 | Seq 002022 | Warhammer Quest compendium using Citadel Journal material; related rather than part of the numbered run. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/CJ-DEATHBLOW-0003.jpg" alt="Deathblow #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Deathblow #3">Deathblow #3</h3>
+          <p class="pub-id" title="CJ-DEATHBLOW-0003">CJ-DEATHBLOW-0003</p>
+          <p class="meta" title="Seq 002022">Seq 002022</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Warhammer Quest compendium using Citadel Journal material; related rather than part of the numbered run.">Warhammer Quest compendium using Citadel Journal material; related rather than part of the numbered run.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+  <div class="lightbox" aria-modal="true" role="dialog" aria-label="Cover preview">
+    <div class="lightbox-panel">
+      <img src="" alt="">
+      <div class="lightbox-caption">
+        <div>
+          <div class="lightbox-title"></div>
+          <div class="lightbox-detail"></div>
+        </div>
+        <button class="lightbox-close" type="button" data-lightbox-close>Close</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const state = { order: 'reading', scope: 'all', project: 'all', status: 'all' };
+    const grid = document.querySelector('.grid');
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImage = document.querySelector('.lightbox img');
+    const lightboxTitle = document.querySelector('.lightbox-title');
+    const lightboxDetail = document.querySelector('.lightbox-detail');
+    document.querySelectorAll('.chip').forEach(button => {
+      button.addEventListener('click', () => {
+        const group = button.dataset.filter;
+        state[group] = button.dataset.value;
+        document.querySelectorAll(`.chip[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item === button));
+        applyFilters();
+      });
+    });
+    function applyFilters() {
+      document.querySelectorAll('.comic-card').forEach(card => {
+        const visible = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]));
+        card.classList.toggle('hidden', !visible);
+      });
+      sortCards();
+    }
+    function sortCards() {
+      [...document.querySelectorAll('.comic-card')]
+        .sort((left, right) => sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent))
+        .forEach(card => grid.appendChild(card));
+    }
+    function sequenceForCard(card) {
+      const order = state.order === 'all' ? 'reading' : state.order;
+      if (order === 'publication') {
+        return scopedSequence(card, 'publicationSequence');
+      }
+      if (order === 'chronological') {
+        return scopedSequence(card, 'chronologicalSequence');
+      }
+      const byOrder = sequenceMap(card.dataset.orderSequences);
+      if (byOrder[order]) {
+        return sortValue(byOrder[order]);
+      }
+      const chronological = scopedSequence(card, 'chronologicalSequence');
+      return chronological < 999999 ? chronological : sortValue(card.dataset.sequence);
+    }
+    function scopedSequence(card, orderKey) {
+      const scoped = sequenceMap(card.dataset[`${orderKey}s`]);
+      if (state.scope !== 'all' && scoped[state.scope]) {
+        return sortValue(scoped[state.scope]);
+      }
+      return sortValue(card.dataset[orderKey]);
+    }
+    function sequenceMap(value) {
+      return Object.fromEntries((value || '').split('|').filter(Boolean).map(item => {
+        const [scope, sequence] = item.split(':');
+        return [scope, sequence];
+      }));
+    }
+    function sortValue(value) {
+      const parsed = Number.parseFloat(value || '999999');
+      if (Number.isFinite(parsed)) {
+        return parsed;
+      }
+        const embedded = String(value || '').match(/\d+(\.\d+)?/);
+      return embedded ? Number.parseFloat(embedded[0]) : 999999;
+    }
+    document.querySelectorAll('.cover-button').forEach(button => {
+      button.addEventListener('click', () => {
+        lightboxImage.src = button.dataset.fullSrc;
+        lightboxImage.alt = `${button.dataset.fullTitle} cover`;
+        lightboxTitle.textContent = button.dataset.fullTitle;
+        lightboxDetail.textContent = button.dataset.fullDetail || '';
+        lightbox.classList.add('open');
+      });
+    });
+    document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
+    lightbox.addEventListener('click', event => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeLightbox();
+    });
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightboxImage.removeAttribute('src');
+      lightboxImage.removeAttribute('alt');
+      lightboxTitle.textContent = '';
+      lightboxDetail.textContent = '';
+    }
+    applyFilters();
+    </script>
+</body>
+</html>

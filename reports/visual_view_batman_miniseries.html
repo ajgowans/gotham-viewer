@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="../assets/site/batman-favicon.png">
+  <title>Batman Miniseries &amp; Prestige Books - Visual Viewer</title>
+  <style>
+    :root { color-scheme: light; --ink:#172026; --muted:#5c6670; --line:#d9dee4; --paper:#f6f7f8; --panel:#ffffff; --owned:#0f7b4f; --fac:#6b4bb8; --ordered:#2166ad; --readable:#a46a00; --missing:#b42318; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); }
+    header { padding: 28px 32px 18px; background: #111820; color: white; }
+    .header-top { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .back-link { color: white; border: 1px solid rgba(255,255,255,.32); border-radius: 999px; padding: 7px 11px; text-decoration: none; font-size: 13px; background: rgba(255,255,255,.08); }
+    .back-link:hover { background: rgba(255,255,255,.16); }
+    h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; }
+    header p { margin: 0; color: #c8d0d8; max-width: 900px; }
+    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; padding: 18px 32px; background: #e9edf1; border-bottom: 1px solid var(--line); }
+    .metric { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+    .metric strong { display: block; font-size: 24px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    .controls { padding: 18px 32px; display: grid; gap: 12px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
+    .control-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .control-row b { margin-right: 4px; font-size: 13px; color: var(--muted); min-width: 70px; }
+    .chip { border: 1px solid var(--line); background: #f8fafb; color: var(--ink); border-radius: 999px; padding: 7px 11px; cursor: pointer; text-transform: capitalize; }
+    .chip.active { background: #172026; border-color: #172026; color: white; }
+    main { padding: 24px 32px 40px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 16px; align-items: start; }
+    .comic-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05); min-width: 0; display: flex; flex-direction: column; position: relative; }
+    .comic-card.owned { background: #f2fbf6; }
+    .comic-card.facsimile { background: #f6f2ff; }
+    .comic-card.ordered { background: #f1f7ff; }
+    .comic-card.readable { background: #fff8ec; }
+    .status-strip { background: var(--missing); color: white; min-height: 30px; display: grid; place-items: center; padding: 7px 8px; font-size: 12px; line-height: 1; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; }
+    .comic-card.owned .status-strip { background: var(--owned); }
+    .comic-card.facsimile .status-strip { background: var(--fac); }
+    .comic-card.ordered .status-strip { background: var(--ordered); }
+    .comic-card.readable .status-strip { background: var(--readable); }
+    .cover-wrap { aspect-ratio: 2 / 3; background: #242a31; display: grid; place-items: center; overflow: hidden; position: relative; }
+    .cover-button { appearance: none; border: 0; background: #111820; padding: 0; margin: 0; width: 100%; height: 100%; display: block; cursor: zoom-in; }
+    .cover-button:focus-visible { outline: 3px solid #f4c430; outline-offset: -3px; }
+    .cover-wrap img { width: 100%; height: 100%; object-fit: contain; background: #111820; display: block; }
+    .cover-placeholder { width: 100%; height: 100%; padding: 14px; color: white; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(145deg, #18212a, #39424c); }
+    .cover-placeholder span { font-weight: 700; line-height: 1.1; overflow-wrap: anywhere; }
+    .cover-placeholder strong { font-size: 42px; align-self: flex-end; }
+    .cover-review-badge { position: absolute; left: 8px; right: 8px; top: 8px; border-radius: 6px; padding: 6px 7px; color: white; font-size: 11px; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.22); pointer-events: none; }
+    .cover-review-badge.warning { background: rgba(164,106,0,.92); }
+    .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
+    .comic-card.cover-needs_review { border-color: #a46a00; }
+    .comic-card.cover-rejected_auto { border-color: #b42318; }
+    .card-body { padding: 10px 11px 12px; height: 205px; display: flex; flex-direction: column; overflow: hidden; }
+    .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
+    .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
+    .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
+    h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id { -webkit-line-clamp: 1; }
+    .meta, .continuity { -webkit-line-clamp: 2; }
+    .notes { -webkit-line-clamp: 2; position: relative; }
+    .notes::after { content: ""; position: absolute; inset: auto 0 0 0; height: 1.2em; background: linear-gradient(to bottom, rgba(255,255,255,0), var(--panel)); pointer-events: none; }
+    .comic-card.owned .notes::after { background: linear-gradient(to bottom, rgba(242,251,246,0), #f2fbf6); }
+    .comic-card.facsimile .notes::after { background: linear-gradient(to bottom, rgba(246,242,255,0), #f6f2ff); }
+    .comic-card.ordered .notes::after { background: linear-gradient(to bottom, rgba(241,247,255,0), #f1f7ff); }
+    .comic-card.readable .notes::after { background: linear-gradient(to bottom, rgba(255,248,236,0), #fff8ec); }
+    .hidden { display: none; }
+    .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
+    .lightbox.open { display: flex; }
+    .lightbox-panel { max-width: min(92vw, 980px); max-height: 94vh; display: grid; gap: 10px; }
+    .lightbox img { max-width: 100%; max-height: calc(94vh - 56px); object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
+    .lightbox-title { font-weight: 750; }
+    .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
+    .lightbox-close { border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: white; border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+    @media (max-width: 700px) { header, .summary, .controls, main { padding-left: 14px; padding-right: 14px; } .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; } }
+    </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <h1>Batman Miniseries &amp; Prestige Books</h1>
+      <a class="back-link" href="visual_collection_viewer.html">All visual views</a>
+    </div>
+    <p>Curated Batman miniseries original graphic novels and prestige one-shots with canonical identities.</p>
+  </header>
+  <section class="summary">
+    <div class="metric"><strong>32</strong><span>unique publications</span></div>
+    <div class="metric"><strong>17</strong><span>owned/readable</span></div>
+    <div class="metric"><strong>0</strong><span>facsimiles</span></div>
+    <div class="metric"><strong>15</strong><span>missing</span></div>
+  </section>
+  <section class="controls">
+    <div class="control-row"><b>Order</b><button class="chip" data-filter="order" data-value="all">All orders</button>
+<button class="chip active" data-filter="order" data-value="reading">reading</button></div>
+    <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button>
+<button class="chip" data-filter="scope" data-value="Batman: The Cult">Batman: The Cult</button>
+<button class="chip" data-filter="scope" data-value="The Untold Legend of the Batman">The Untold Legend of the Batman</button>
+<button class="chip" data-filter="scope" data-value="Batman: Book of the Dead">Batman: Book of the Dead</button>
+<button class="chip" data-filter="scope" data-value="Batman: Toyman">Batman: Toyman</button>
+<button class="chip" data-filter="scope" data-value="Batman: Jazz">Batman: Jazz</button>
+<button class="chip" data-filter="scope" data-value="Batman/Wildcat">Batman/Wildcat</button>
+<button class="chip" data-filter="scope" data-value="Batman: Death and the Maidens">Batman: Death and the Maidens</button>
+<button class="chip" data-filter="scope" data-value="Demon Trilogy">Demon Trilogy</button>
+<button class="chip" data-filter="scope" data-value="Prestige one-shot">Prestige one-shot</button></div>
+    <div class="control-row"><b>Status</b><button class="chip active" data-filter="status" data-value="all">All statuses</button>
+<button class="chip" data-filter="status" data-value="owned">owned</button>
+<button class="chip" data-filter="status" data-value="facsimile">facsimile</button>
+<button class="chip" data-filter="status" data-value="ordered">ordered</button>
+<button class="chip" data-filter="status" data-value="readable">readable</button>
+<button class="chip" data-filter="status" data-value="missing">missing</button></div>
+    <div class="control-row"><b>Work</b><button class="chip active" data-filter="project" data-value="all">All works</button>
+<button class="chip" data-filter="project" data-value="batman_miniseries">batman miniseries</button></div>
+  </section>
+  <main>
+    <section class="grid">
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: The Cult" data-project="batman_miniseries" data-status="owned" data-sequence="000100" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000100">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-CULT-0001.jpg" data-full-title="Batman: The Cult #1" data-full-detail="PUB-BAT-CULT-0001 | Seq 000100 | core | Four-issue prestige miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-CULT-0001.jpg" alt="Batman: The Cult #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: The Cult</span>
+            
+          </div>
+          <h3 title="Batman: The Cult #1">Batman: The Cult #1</h3>
+          <p class="pub-id" title="PUB-BAT-CULT-0001">PUB-BAT-CULT-0001</p>
+          <p class="meta" title="Seq 000100 | core">Seq 000100 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Four-issue prestige miniseries.">Four-issue prestige miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: The Cult" data-project="batman_miniseries" data-status="owned" data-sequence="000101" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000101">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-CULT-0002.jpg" data-full-title="Batman: The Cult #2" data-full-detail="PUB-BAT-CULT-0002 | Seq 000101 | core | Four-issue prestige miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-CULT-0002.jpg" alt="Batman: The Cult #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: The Cult</span>
+            
+          </div>
+          <h3 title="Batman: The Cult #2">Batman: The Cult #2</h3>
+          <p class="pub-id" title="PUB-BAT-CULT-0002">PUB-BAT-CULT-0002</p>
+          <p class="meta" title="Seq 000101 | core">Seq 000101 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Four-issue prestige miniseries.">Four-issue prestige miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: The Cult" data-project="batman_miniseries" data-status="owned" data-sequence="000102" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000102">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-CULT-0003.jpg" data-full-title="Batman: The Cult #3" data-full-detail="PUB-BAT-CULT-0003 | Seq 000102 | core | Four-issue prestige miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-CULT-0003.jpg" alt="Batman: The Cult #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: The Cult</span>
+            
+          </div>
+          <h3 title="Batman: The Cult #3">Batman: The Cult #3</h3>
+          <p class="pub-id" title="PUB-BAT-CULT-0003">PUB-BAT-CULT-0003</p>
+          <p class="meta" title="Seq 000102 | core">Seq 000102 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Four-issue prestige miniseries.">Four-issue prestige miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: The Cult" data-project="batman_miniseries" data-status="owned" data-sequence="000103" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000103">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-CULT-0004.jpg" data-full-title="Batman: The Cult #4" data-full-detail="PUB-BAT-CULT-0004 | Seq 000103 | core | Four-issue prestige miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-CULT-0004.jpg" alt="Batman: The Cult #4 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: The Cult</span>
+            
+          </div>
+          <h3 title="Batman: The Cult #4">Batman: The Cult #4</h3>
+          <p class="pub-id" title="PUB-BAT-CULT-0004">PUB-BAT-CULT-0004</p>
+          <p class="meta" title="Seq 000103 | core">Seq 000103 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Four-issue prestige miniseries.">Four-issue prestige miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="The Untold Legend of the Batman" data-project="batman_miniseries" data-status="owned" data-sequence="000200" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000200">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-UNTOLD-LEGEND-0001.jpg" data-full-title="The Untold Legend of the Batman #1" data-full-detail="PUB-UNTOLD-LEGEND-0001 | Seq 000200 | core | Three-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-UNTOLD-LEGEND-0001.jpg" alt="The Untold Legend of the Batman #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">The Untold Legend of the Batman</span>
+            
+          </div>
+          <h3 title="The Untold Legend of the Batman #1">The Untold Legend of the Batman #1</h3>
+          <p class="pub-id" title="PUB-UNTOLD-LEGEND-0001">PUB-UNTOLD-LEGEND-0001</p>
+          <p class="meta" title="Seq 000200 | core">Seq 000200 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Three-issue miniseries.">Three-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="The Untold Legend of the Batman" data-project="batman_miniseries" data-status="owned" data-sequence="000201" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000201">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-UNTOLD-LEGEND-0002.jpg" data-full-title="The Untold Legend of the Batman #2" data-full-detail="PUB-UNTOLD-LEGEND-0002 | Seq 000201 | core | Three-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-UNTOLD-LEGEND-0002.jpg" alt="The Untold Legend of the Batman #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">The Untold Legend of the Batman</span>
+            
+          </div>
+          <h3 title="The Untold Legend of the Batman #2">The Untold Legend of the Batman #2</h3>
+          <p class="pub-id" title="PUB-UNTOLD-LEGEND-0002">PUB-UNTOLD-LEGEND-0002</p>
+          <p class="meta" title="Seq 000201 | core">Seq 000201 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Three-issue miniseries.">Three-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="The Untold Legend of the Batman" data-project="batman_miniseries" data-status="owned" data-sequence="000202" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000202">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-UNTOLD-LEGEND-0003.jpg" data-full-title="The Untold Legend of the Batman #3" data-full-detail="PUB-UNTOLD-LEGEND-0003 | Seq 000202 | core | Three-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-UNTOLD-LEGEND-0003.jpg" alt="The Untold Legend of the Batman #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">The Untold Legend of the Batman</span>
+            
+          </div>
+          <h3 title="The Untold Legend of the Batman #3">The Untold Legend of the Batman #3</h3>
+          <p class="pub-id" title="PUB-UNTOLD-LEGEND-0003">PUB-UNTOLD-LEGEND-0003</p>
+          <p class="meta" title="Seq 000202 | core">Seq 000202 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Three-issue miniseries.">Three-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Batman: Book of the Dead" data-project="batman_miniseries" data-status="missing" data-sequence="000300" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000300">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-book-of-the-dead-1.jpg" data-full-title="Batman: Book of the Dead #1" data-full-detail="VIEW-batman-book-of-the-dead-1 | Seq 000300 | core | Two-issue Elseworlds miniseries; also remains in Elseworlds. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-book-of-the-dead-1.jpg" alt="Batman: Book of the Dead #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: Book of the Dead</span>
+            
+          </div>
+          <h3 title="Batman: Book of the Dead #1">Batman: Book of the Dead #1</h3>
+          <p class="pub-id" title="VIEW-batman-book-of-the-dead-1">VIEW-batman-book-of-the-dead-1</p>
+          <p class="meta" title="Seq 000300 | core">Seq 000300 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Two-issue Elseworlds miniseries; also remains in Elseworlds.">Two-issue Elseworlds miniseries; also remains in Elseworlds.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Batman: Book of the Dead" data-project="batman_miniseries" data-status="missing" data-sequence="000301" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000301">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-book-of-the-dead-2.jpg" data-full-title="Batman: Book of the Dead #2" data-full-detail="VIEW-batman-book-of-the-dead-2 | Seq 000301 | core | Two-issue Elseworlds miniseries; also remains in Elseworlds. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-book-of-the-dead-2.jpg" alt="Batman: Book of the Dead #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: Book of the Dead</span>
+            
+          </div>
+          <h3 title="Batman: Book of the Dead #2">Batman: Book of the Dead #2</h3>
+          <p class="pub-id" title="VIEW-batman-book-of-the-dead-2">VIEW-batman-book-of-the-dead-2</p>
+          <p class="meta" title="Seq 000301 | core">Seq 000301 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Two-issue Elseworlds miniseries; also remains in Elseworlds.">Two-issue Elseworlds miniseries; also remains in Elseworlds.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: Toyman" data-project="batman_miniseries" data-status="owned" data-sequence="000400" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000400">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-TOYMAN-0001.jpg" data-full-title="Batman: Toyman #1" data-full-detail="PUB-BAT-TOYMAN-0001 | Seq 000400 | core | Four-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-TOYMAN-0001.jpg" alt="Batman: Toyman #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: Toyman</span>
+            
+          </div>
+          <h3 title="Batman: Toyman #1">Batman: Toyman #1</h3>
+          <p class="pub-id" title="PUB-BAT-TOYMAN-0001">PUB-BAT-TOYMAN-0001</p>
+          <p class="meta" title="Seq 000400 | core">Seq 000400 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Four-issue miniseries.">Four-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: Toyman" data-project="batman_miniseries" data-status="owned" data-sequence="000401" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000401">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-TOYMAN-0002.jpg" data-full-title="Batman: Toyman #2" data-full-detail="PUB-BAT-TOYMAN-0002 | Seq 000401 | core | Four-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-TOYMAN-0002.jpg" alt="Batman: Toyman #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: Toyman</span>
+            
+          </div>
+          <h3 title="Batman: Toyman #2">Batman: Toyman #2</h3>
+          <p class="pub-id" title="PUB-BAT-TOYMAN-0002">PUB-BAT-TOYMAN-0002</p>
+          <p class="meta" title="Seq 000401 | core">Seq 000401 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Four-issue miniseries.">Four-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: Toyman" data-project="batman_miniseries" data-status="owned" data-sequence="000402" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000402">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-TOYMAN-0003.jpg" data-full-title="Batman: Toyman #3" data-full-detail="PUB-BAT-TOYMAN-0003 | Seq 000402 | core | Four-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-TOYMAN-0003.jpg" alt="Batman: Toyman #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: Toyman</span>
+            
+          </div>
+          <h3 title="Batman: Toyman #3">Batman: Toyman #3</h3>
+          <p class="pub-id" title="PUB-BAT-TOYMAN-0003">PUB-BAT-TOYMAN-0003</p>
+          <p class="meta" title="Seq 000402 | core">Seq 000402 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Four-issue miniseries.">Four-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: Toyman" data-project="batman_miniseries" data-status="owned" data-sequence="000403" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000403">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-TOYMAN-0004.jpg" data-full-title="Batman: Toyman #4" data-full-detail="PUB-BAT-TOYMAN-0004 | Seq 000403 | core | Four-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-TOYMAN-0004.jpg" alt="Batman: Toyman #4 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: Toyman</span>
+            
+          </div>
+          <h3 title="Batman: Toyman #4">Batman: Toyman #4</h3>
+          <p class="pub-id" title="PUB-BAT-TOYMAN-0004">PUB-BAT-TOYMAN-0004</p>
+          <p class="meta" title="Seq 000403 | core">Seq 000403 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Four-issue miniseries.">Four-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: Jazz" data-project="batman_miniseries" data-status="owned" data-sequence="000500" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000500">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-JAZZ-0001.jpg" data-full-title="Batman: Jazz #1" data-full-detail="PUB-BAT-JAZZ-0001 | Seq 000500 | core | Standalone three-issue miniseries; not a Legends of the Dark Knight special. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-JAZZ-0001.jpg" alt="Batman: Jazz #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: Jazz</span>
+            
+          </div>
+          <h3 title="Batman: Jazz #1">Batman: Jazz #1</h3>
+          <p class="pub-id" title="PUB-BAT-JAZZ-0001">PUB-BAT-JAZZ-0001</p>
+          <p class="meta" title="Seq 000500 | core">Seq 000500 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Standalone three-issue miniseries; not a Legends of the Dark Knight special.">Standalone three-issue miniseries; not a Legends of the Dark Knight special.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: Jazz" data-project="batman_miniseries" data-status="owned" data-sequence="000501" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000501">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-JAZZ-0002.jpg" data-full-title="Batman: Jazz #2" data-full-detail="PUB-BAT-JAZZ-0002 | Seq 000501 | core | Standalone three-issue miniseries; not a Legends of the Dark Knight special. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-JAZZ-0002.jpg" alt="Batman: Jazz #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: Jazz</span>
+            
+          </div>
+          <h3 title="Batman: Jazz #2">Batman: Jazz #2</h3>
+          <p class="pub-id" title="PUB-BAT-JAZZ-0002">PUB-BAT-JAZZ-0002</p>
+          <p class="meta" title="Seq 000501 | core">Seq 000501 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Standalone three-issue miniseries; not a Legends of the Dark Knight special.">Standalone three-issue miniseries; not a Legends of the Dark Knight special.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: Jazz" data-project="batman_miniseries" data-status="owned" data-sequence="000502" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000502">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-JAZZ-0003.jpg" data-full-title="Batman: Jazz #3" data-full-detail="PUB-BAT-JAZZ-0003 | Seq 000502 | core | Standalone three-issue miniseries; not a Legends of the Dark Knight special. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-JAZZ-0003.jpg" alt="Batman: Jazz #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: Jazz</span>
+            
+          </div>
+          <h3 title="Batman: Jazz #3">Batman: Jazz #3</h3>
+          <p class="pub-id" title="PUB-BAT-JAZZ-0003">PUB-BAT-JAZZ-0003</p>
+          <p class="meta" title="Seq 000502 | core">Seq 000502 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Standalone three-issue miniseries; not a Legends of the Dark Knight special.">Standalone three-issue miniseries; not a Legends of the Dark Knight special.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman/Wildcat" data-project="batman_miniseries" data-status="owned" data-sequence="000600" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000600">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-WILDCAT-0001.jpg" data-full-title="Batman/Wildcat #1" data-full-detail="PUB-BAT-WILDCAT-0001 | Seq 000600 | core | Three-issue crossover miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-WILDCAT-0001.jpg" alt="Batman/Wildcat #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman/Wildcat</span>
+            
+          </div>
+          <h3 title="Batman/Wildcat #1">Batman/Wildcat #1</h3>
+          <p class="pub-id" title="PUB-BAT-WILDCAT-0001">PUB-BAT-WILDCAT-0001</p>
+          <p class="meta" title="Seq 000600 | core">Seq 000600 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Three-issue crossover miniseries.">Three-issue crossover miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman/Wildcat" data-project="batman_miniseries" data-status="owned" data-sequence="000601" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000601">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-WILDCAT-0002.jpg" data-full-title="Batman/Wildcat #2" data-full-detail="PUB-BAT-WILDCAT-0002 | Seq 000601 | core | Three-issue crossover miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-WILDCAT-0002.jpg" alt="Batman/Wildcat #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman/Wildcat</span>
+            
+          </div>
+          <h3 title="Batman/Wildcat #2">Batman/Wildcat #2</h3>
+          <p class="pub-id" title="PUB-BAT-WILDCAT-0002">PUB-BAT-WILDCAT-0002</p>
+          <p class="meta" title="Seq 000601 | core">Seq 000601 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Three-issue crossover miniseries.">Three-issue crossover miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman/Wildcat" data-project="batman_miniseries" data-status="owned" data-sequence="000602" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000602">
+        <div class="status-strip">Owned</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-WILDCAT-0003.jpg" data-full-title="Batman/Wildcat #3" data-full-detail="PUB-BAT-WILDCAT-0003 | Seq 000602 | core | Three-issue crossover miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-WILDCAT-0003.jpg" alt="Batman/Wildcat #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman/Wildcat</span>
+            
+          </div>
+          <h3 title="Batman/Wildcat #3">Batman/Wildcat #3</h3>
+          <p class="pub-id" title="PUB-BAT-WILDCAT-0003">PUB-BAT-WILDCAT-0003</p>
+          <p class="meta" title="Seq 000602 | core">Seq 000602 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Three-issue crossover miniseries.">Three-issue crossover miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Batman: Death and the Maidens" data-project="batman_miniseries" data-status="missing" data-sequence="000700" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000700">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-death-and-the-maidens-1.jpg" data-full-title="Batman: Death and the Maidens #1" data-full-detail="VIEW-batman-death-and-the-maidens-1 | Seq 000700 | core | Complete nine-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-death-and-the-maidens-1.jpg" alt="Batman: Death and the Maidens #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: Death and the Maidens</span>
+            
+          </div>
+          <h3 title="Batman: Death and the Maidens #1">Batman: Death and the Maidens #1</h3>
+          <p class="pub-id" title="VIEW-batman-death-and-the-maidens-1">VIEW-batman-death-and-the-maidens-1</p>
+          <p class="meta" title="Seq 000700 | core">Seq 000700 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete nine-issue miniseries.">Complete nine-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Batman: Death and the Maidens" data-project="batman_miniseries" data-status="missing" data-sequence="000701" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000701">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-death-and-the-maidens-2.jpg" data-full-title="Batman: Death and the Maidens #2" data-full-detail="VIEW-batman-death-and-the-maidens-2 | Seq 000701 | core | Complete nine-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-death-and-the-maidens-2.jpg" alt="Batman: Death and the Maidens #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: Death and the Maidens</span>
+            
+          </div>
+          <h3 title="Batman: Death and the Maidens #2">Batman: Death and the Maidens #2</h3>
+          <p class="pub-id" title="VIEW-batman-death-and-the-maidens-2">VIEW-batman-death-and-the-maidens-2</p>
+          <p class="meta" title="Seq 000701 | core">Seq 000701 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete nine-issue miniseries.">Complete nine-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Batman: Death and the Maidens" data-project="batman_miniseries" data-status="missing" data-sequence="000702" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000702">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-death-and-the-maidens-3.jpg" data-full-title="Batman: Death and the Maidens #3" data-full-detail="VIEW-batman-death-and-the-maidens-3 | Seq 000702 | core | Complete nine-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-death-and-the-maidens-3.jpg" alt="Batman: Death and the Maidens #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: Death and the Maidens</span>
+            
+          </div>
+          <h3 title="Batman: Death and the Maidens #3">Batman: Death and the Maidens #3</h3>
+          <p class="pub-id" title="VIEW-batman-death-and-the-maidens-3">VIEW-batman-death-and-the-maidens-3</p>
+          <p class="meta" title="Seq 000702 | core">Seq 000702 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete nine-issue miniseries.">Complete nine-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Batman: Death and the Maidens" data-project="batman_miniseries" data-status="missing" data-sequence="000703" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000703">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-death-and-the-maidens-4.jpg" data-full-title="Batman: Death and the Maidens #4" data-full-detail="VIEW-batman-death-and-the-maidens-4 | Seq 000703 | core | Complete nine-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-death-and-the-maidens-4.jpg" alt="Batman: Death and the Maidens #4 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: Death and the Maidens</span>
+            
+          </div>
+          <h3 title="Batman: Death and the Maidens #4">Batman: Death and the Maidens #4</h3>
+          <p class="pub-id" title="VIEW-batman-death-and-the-maidens-4">VIEW-batman-death-and-the-maidens-4</p>
+          <p class="meta" title="Seq 000703 | core">Seq 000703 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete nine-issue miniseries.">Complete nine-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Batman: Death and the Maidens" data-project="batman_miniseries" data-status="missing" data-sequence="000704" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000704">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-death-and-the-maidens-5.jpg" data-full-title="Batman: Death and the Maidens #5" data-full-detail="VIEW-batman-death-and-the-maidens-5 | Seq 000704 | core | Complete nine-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-death-and-the-maidens-5.jpg" alt="Batman: Death and the Maidens #5 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: Death and the Maidens</span>
+            
+          </div>
+          <h3 title="Batman: Death and the Maidens #5">Batman: Death and the Maidens #5</h3>
+          <p class="pub-id" title="VIEW-batman-death-and-the-maidens-5">VIEW-batman-death-and-the-maidens-5</p>
+          <p class="meta" title="Seq 000704 | core">Seq 000704 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete nine-issue miniseries.">Complete nine-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Batman: Death and the Maidens" data-project="batman_miniseries" data-status="missing" data-sequence="000705" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000705">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-death-and-the-maidens-6.jpg" data-full-title="Batman: Death and the Maidens #6" data-full-detail="VIEW-batman-death-and-the-maidens-6 | Seq 000705 | core | Complete nine-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-death-and-the-maidens-6.jpg" alt="Batman: Death and the Maidens #6 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: Death and the Maidens</span>
+            
+          </div>
+          <h3 title="Batman: Death and the Maidens #6">Batman: Death and the Maidens #6</h3>
+          <p class="pub-id" title="VIEW-batman-death-and-the-maidens-6">VIEW-batman-death-and-the-maidens-6</p>
+          <p class="meta" title="Seq 000705 | core">Seq 000705 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete nine-issue miniseries.">Complete nine-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Batman: Death and the Maidens" data-project="batman_miniseries" data-status="missing" data-sequence="000706" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000706">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-death-and-the-maidens-7.jpg" data-full-title="Batman: Death and the Maidens #7" data-full-detail="VIEW-batman-death-and-the-maidens-7 | Seq 000706 | core | Complete nine-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-death-and-the-maidens-7.jpg" alt="Batman: Death and the Maidens #7 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: Death and the Maidens</span>
+            
+          </div>
+          <h3 title="Batman: Death and the Maidens #7">Batman: Death and the Maidens #7</h3>
+          <p class="pub-id" title="VIEW-batman-death-and-the-maidens-7">VIEW-batman-death-and-the-maidens-7</p>
+          <p class="meta" title="Seq 000706 | core">Seq 000706 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete nine-issue miniseries.">Complete nine-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Batman: Death and the Maidens" data-project="batman_miniseries" data-status="missing" data-sequence="000707" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000707">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-death-and-the-maidens-8.jpg" data-full-title="Batman: Death and the Maidens #8" data-full-detail="VIEW-batman-death-and-the-maidens-8 | Seq 000707 | core | Complete nine-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-death-and-the-maidens-8.jpg" alt="Batman: Death and the Maidens #8 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: Death and the Maidens</span>
+            
+          </div>
+          <h3 title="Batman: Death and the Maidens #8">Batman: Death and the Maidens #8</h3>
+          <p class="pub-id" title="VIEW-batman-death-and-the-maidens-8">VIEW-batman-death-and-the-maidens-8</p>
+          <p class="meta" title="Seq 000707 | core">Seq 000707 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete nine-issue miniseries.">Complete nine-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Batman: Death and the Maidens" data-project="batman_miniseries" data-status="missing" data-sequence="000708" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000708">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-death-and-the-maidens-9.jpg" data-full-title="Batman: Death and the Maidens #9" data-full-detail="VIEW-batman-death-and-the-maidens-9 | Seq 000708 | core | Complete nine-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-death-and-the-maidens-9.jpg" alt="Batman: Death and the Maidens #9 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Batman: Death and the Maidens</span>
+            
+          </div>
+          <h3 title="Batman: Death and the Maidens #9">Batman: Death and the Maidens #9</h3>
+          <p class="pub-id" title="VIEW-batman-death-and-the-maidens-9">VIEW-batman-death-and-the-maidens-9</p>
+          <p class="meta" title="Seq 000708 | core">Seq 000708 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Complete nine-issue miniseries.">Complete nine-issue miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Demon Trilogy" data-project="batman_miniseries" data-status="missing" data-sequence="010001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:010001">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-SON-OF-DEMON.jpg" data-full-title="Batman: Son of the Demon #1" data-full-detail="PUB-BAT-SON-OF-DEMON | Seq 010001 | core | Original graphic novel; one physical publication rather than a numbered miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-SON-OF-DEMON.jpg" alt="Batman: Son of the Demon #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Demon Trilogy</span>
+            
+          </div>
+          <h3 title="Batman: Son of the Demon #1">Batman: Son of the Demon #1</h3>
+          <p class="pub-id" title="PUB-BAT-SON-OF-DEMON">PUB-BAT-SON-OF-DEMON</p>
+          <p class="meta" title="Seq 010001 | core">Seq 010001 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original graphic novel; one physical publication rather than a numbered miniseries.">Original graphic novel; one physical publication rather than a numbered miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_manual" data-order="reading" data-scope="Demon Trilogy" data-project="batman_miniseries" data-status="missing" data-sequence="010002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:010002">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-BRIDE-OF-DEMON.jpg" data-full-title="Batman: Bride of the Demon #1" data-full-detail="PUB-BAT-BRIDE-OF-DEMON | Seq 010002 | core | Original graphic novel; one physical publication rather than a numbered miniseries. | Verified unnumbered prestige one-shot; absence of issue number in source URL is expected."><img src="../assets/covers/display/PUB-BAT-BRIDE-OF-DEMON.jpg" alt="Batman: Bride of the Demon #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Demon Trilogy</span>
+            <span class="badge review" title="Verified unnumbered prestige one-shot; absence of issue number in source URL is expected.">approved manual</span>
+          </div>
+          <h3 title="Batman: Bride of the Demon #1">Batman: Bride of the Demon #1</h3>
+          <p class="pub-id" title="PUB-BAT-BRIDE-OF-DEMON">PUB-BAT-BRIDE-OF-DEMON</p>
+          <p class="meta" title="Seq 010002 | core">Seq 010002 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original graphic novel; one physical publication rather than a numbered miniseries.">Original graphic novel; one physical publication rather than a numbered miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_manual" data-order="reading" data-scope="Demon Trilogy" data-project="batman_miniseries" data-status="missing" data-sequence="010003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:010003">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-BIRTH-OF-DEMON.jpg" data-full-title="Batman: Birth of the Demon #1" data-full-detail="PUB-BAT-BIRTH-OF-DEMON | Seq 010003 | core | Original graphic novel; one physical publication rather than a numbered miniseries. | Verified unnumbered prestige one-shot; absence of issue number in source URL is expected."><img src="../assets/covers/display/PUB-BAT-BIRTH-OF-DEMON.jpg" alt="Batman: Birth of the Demon #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Demon Trilogy</span>
+            <span class="badge review" title="Verified unnumbered prestige one-shot; absence of issue number in source URL is expected.">approved manual</span>
+          </div>
+          <h3 title="Batman: Birth of the Demon #1">Batman: Birth of the Demon #1</h3>
+          <p class="pub-id" title="PUB-BAT-BIRTH-OF-DEMON">PUB-BAT-BIRTH-OF-DEMON</p>
+          <p class="meta" title="Seq 010003 | core">Seq 010003 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original graphic novel; one physical publication rather than a numbered miniseries.">Original graphic novel; one physical publication rather than a numbered miniseries.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-needs_review" data-order="reading" data-scope="Prestige one-shot" data-project="batman_miniseries" data-status="missing" data-sequence="030001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:030001">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-TWOFACE-CRIME-PUNISHMENT.jpg" data-full-title="Batman: Two-Face - Crime and Punishment #1" data-full-detail="PUB-BAT-TWOFACE-CRIME-PUNISHMENT | Seq 030001 | core | Prestige one-shot; not a miniseries despite inclusion in this collector-facing grouping. | missing_image | No local cover image is available yet."><img src="../assets/covers/display/PUB-BAT-TWOFACE-CRIME-PUNISHMENT.jpg" alt="Batman: Two-Face - Crime and Punishment #1 cover"></button><span class="cover-review-badge warning">Cover check</span></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Prestige one-shot</span>
+            <span class="badge review" title="No local cover image is available yet.">needs review</span>
+          </div>
+          <h3 title="Batman: Two-Face - Crime and Punishment #1">Batman: Two-Face - Crime and Punishment #1</h3>
+          <p class="pub-id" title="PUB-BAT-TWOFACE-CRIME-PUNISHMENT">PUB-BAT-TWOFACE-CRIME-PUNISHMENT</p>
+          <p class="meta" title="Seq 030001 | core">Seq 030001 | core</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Prestige one-shot; not a miniseries despite inclusion in this collector-facing grouping.">Prestige one-shot; not a miniseries despite inclusion in this collector-facing grouping.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+  <div class="lightbox" aria-modal="true" role="dialog" aria-label="Cover preview">
+    <div class="lightbox-panel">
+      <img src="" alt="">
+      <div class="lightbox-caption">
+        <div>
+          <div class="lightbox-title"></div>
+          <div class="lightbox-detail"></div>
+        </div>
+        <button class="lightbox-close" type="button" data-lightbox-close>Close</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const state = { order: 'reading', scope: 'all', project: 'all', status: 'all' };
+    const grid = document.querySelector('.grid');
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImage = document.querySelector('.lightbox img');
+    const lightboxTitle = document.querySelector('.lightbox-title');
+    const lightboxDetail = document.querySelector('.lightbox-detail');
+    document.querySelectorAll('.chip').forEach(button => {
+      button.addEventListener('click', () => {
+        const group = button.dataset.filter;
+        state[group] = button.dataset.value;
+        document.querySelectorAll(`.chip[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item === button));
+        applyFilters();
+      });
+    });
+    function applyFilters() {
+      document.querySelectorAll('.comic-card').forEach(card => {
+        const visible = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]));
+        card.classList.toggle('hidden', !visible);
+      });
+      sortCards();
+    }
+    function sortCards() {
+      [...document.querySelectorAll('.comic-card')]
+        .sort((left, right) => sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent))
+        .forEach(card => grid.appendChild(card));
+    }
+    function sequenceForCard(card) {
+      const order = state.order === 'all' ? 'reading' : state.order;
+      if (order === 'publication') {
+        return scopedSequence(card, 'publicationSequence');
+      }
+      if (order === 'chronological') {
+        return scopedSequence(card, 'chronologicalSequence');
+      }
+      const byOrder = sequenceMap(card.dataset.orderSequences);
+      if (byOrder[order]) {
+        return sortValue(byOrder[order]);
+      }
+      const chronological = scopedSequence(card, 'chronologicalSequence');
+      return chronological < 999999 ? chronological : sortValue(card.dataset.sequence);
+    }
+    function scopedSequence(card, orderKey) {
+      const scoped = sequenceMap(card.dataset[`${orderKey}s`]);
+      if (state.scope !== 'all' && scoped[state.scope]) {
+        return sortValue(scoped[state.scope]);
+      }
+      return sortValue(card.dataset[orderKey]);
+    }
+    function sequenceMap(value) {
+      return Object.fromEntries((value || '').split('|').filter(Boolean).map(item => {
+        const [scope, sequence] = item.split(':');
+        return [scope, sequence];
+      }));
+    }
+    function sortValue(value) {
+      const parsed = Number.parseFloat(value || '999999');
+      if (Number.isFinite(parsed)) {
+        return parsed;
+      }
+        const embedded = String(value || '').match(/\d+(\.\d+)?/);
+      return embedded ? Number.parseFloat(embedded[0]) : 999999;
+    }
+    document.querySelectorAll('.cover-button').forEach(button => {
+      button.addEventListener('click', () => {
+        lightboxImage.src = button.dataset.fullSrc;
+        lightboxImage.alt = `${button.dataset.fullTitle} cover`;
+        lightboxTitle.textContent = button.dataset.fullTitle;
+        lightboxDetail.textContent = button.dataset.fullDetail || '';
+        lightbox.classList.add('open');
+      });
+    });
+    document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
+    lightbox.addEventListener('click', event => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeLightbox();
+    });
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightboxImage.removeAttribute('src');
+      lightboxImage.removeAttribute('alt');
+      lightboxTitle.textContent = '';
+      lightboxDetail.textContent = '';
+    }
+    applyFilters();
+    </script>
+</body>
+</html>
