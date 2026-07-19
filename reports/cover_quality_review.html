@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="../assets/site/batman-favicon.png">
+  <title>Gotham Library Cover Quality Review</title>
+  <style>
+    :root { --ink:#18212a; --muted:#5b6670; --line:#d9dee4; --paper:#f6f7f8; --panel:white; --warn:#a46a00; --bad:#b42318; --ok:#0f7b4f; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color:var(--ink); background:var(--paper); }
+    header { background:#111820; color:white; padding:28px 32px 18px; }
+    h1 { margin:0 0 8px; font-size:28px; }
+    header p { margin:0; color:#c8d0d8; max-width:900px; line-height:1.4; }
+    .summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; padding:18px 32px; background:#e9edf1; border-bottom:1px solid var(--line); }
+    .metric { background:white; border:1px solid var(--line); border-radius:8px; padding:12px; }
+    .metric strong { display:block; font-size:24px; }
+    .metric span { color:var(--muted); font-size:13px; }
+    main { padding:24px 32px 42px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px; align-items:start; }
+    .card { background:var(--panel); border:1px solid var(--line); border-radius:8px; overflow:hidden; box-shadow:0 1px 2px rgba(0,0,0,.05); }
+    .card.needs_review { border-color:var(--warn); }
+    .card.rejected_auto { border-color:var(--bad); }
+    .status { color:white; background:var(--warn); padding:8px 10px; text-transform:uppercase; font-size:12px; font-weight:800; letter-spacing:.04em; text-align:center; }
+    .rejected_auto .status { background:var(--bad); }
+    .cover { aspect-ratio:2/3; background:#111820; display:grid; place-items:center; overflow:hidden; }
+    .cover img { max-width:100%; max-height:100%; object-fit:contain; display:block; }
+    .placeholder { color:white; padding:14px; text-align:center; }
+    .body { padding:12px; display:grid; gap:7px; }
+    h3 { margin:0; font-size:16px; line-height:1.2; }
+    p { margin:0; color:var(--muted); font-size:12px; line-height:1.35; overflow-wrap:anywhere; }
+    .id { color:#33404c; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
+    a { color:#1f6feb; }
+    </style>
+</head>
+<body>
+  <header>
+    <h1>Cover Quality Review</h1>
+    <p>Automatic cover-source checks. This page only shows covers that need attention or were rejected automatically; clean rows are kept out of the way.</p>
+  </header>
+  <section class="summary">
+    <div class="metric"><strong>5174</strong><span>manifest rows checked</span></div>
+    <div class="metric"><strong>5174</strong><span>approved / not applicable</span></div>
+    <div class="metric"><strong>0</strong><span>need review</span></div>
+    <div class="metric"><strong>0</strong><span>auto rejected</span></div>
+  </section>
+  <main>
+    <section class="grid"><p>No flagged covers.</p></section>
+  </main>
+</body>
+</html>
