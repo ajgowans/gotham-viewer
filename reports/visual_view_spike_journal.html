@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="../assets/site/batman-favicon.png">
+  <title>Blood Bowl Spike! Journal - Visual Viewer</title>
+  <style>
+    :root { color-scheme: light; --ink:#172026; --muted:#5c6670; --line:#d9dee4; --paper:#f6f7f8; --panel:#ffffff; --owned:#0f7b4f; --fac:#6b4bb8; --ordered:#2166ad; --readable:#a46a00; --missing:#b42318; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); }
+    header { padding: 28px 32px 18px; background: #111820; color: white; }
+    .header-top { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .back-link { color: white; border: 1px solid rgba(255,255,255,.32); border-radius: 999px; padding: 7px 11px; text-decoration: none; font-size: 13px; background: rgba(255,255,255,.08); }
+    .back-link:hover { background: rgba(255,255,255,.16); }
+    h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; }
+    header p { margin: 0; color: #c8d0d8; max-width: 900px; }
+    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; padding: 18px 32px; background: #e9edf1; border-bottom: 1px solid var(--line); }
+    .metric { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+    .metric strong { display: block; font-size: 24px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    .controls { padding: 18px 32px; display: grid; gap: 12px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
+    .filter-toggle { display: none; width: 100%; border: 1px solid var(--line); background: #172026; color: white; border-radius: 6px; padding: 9px 12px; font-weight: 750; cursor: pointer; align-items: center; justify-content: space-between; }
+    .filter-toggle::after { content: "+"; font-size: 18px; line-height: 1; }
+    .controls.open .filter-toggle::after { content: "−"; }
+    .control-content { display: grid; gap: 12px; }
+    .control-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .control-row b { margin-right: 4px; font-size: 13px; color: var(--muted); min-width: 70px; }
+    .chip { border: 1px solid var(--line); background: #f8fafb; color: var(--ink); border-radius: 999px; padding: 7px 11px; cursor: pointer; text-transform: capitalize; }
+    .chip.active { background: #172026; border-color: #172026; color: white; }
+    main { padding: 24px 32px 40px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 16px; align-items: start; }
+    .comic-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05); min-width: 0; display: flex; flex-direction: column; position: relative; }
+    .comic-card.owned { background: #f2fbf6; }
+    .comic-card.facsimile { background: #f6f2ff; }
+    .comic-card.ordered { background: #f1f7ff; }
+    .comic-card.readable { background: #fff8ec; }
+    .status-strip { background: var(--missing); color: white; min-height: 30px; display: grid; place-items: center; padding: 7px 8px; font-size: 12px; line-height: 1; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; }
+    .comic-card.owned .status-strip { background: var(--owned); }
+    .comic-card.facsimile .status-strip { background: var(--fac); }
+    .comic-card.ordered .status-strip { background: var(--ordered); }
+    .comic-card.readable .status-strip { background: var(--readable); }
+    .cover-wrap { aspect-ratio: 2 / 3; background: #242a31; display: grid; place-items: center; overflow: hidden; position: relative; }
+    .cover-button { appearance: none; border: 0; background: #111820; padding: 0; margin: 0; width: 100%; height: 100%; display: block; cursor: zoom-in; }
+    .cover-button:focus-visible { outline: 3px solid #f4c430; outline-offset: -3px; }
+    .cover-wrap img { width: 100%; height: 100%; object-fit: contain; background: #111820; display: block; }
+    .cover-placeholder { width: 100%; height: 100%; padding: 14px; color: white; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(145deg, #18212a, #39424c); }
+    .cover-placeholder span { font-weight: 700; line-height: 1.1; overflow-wrap: anywhere; }
+    .cover-placeholder strong { font-size: 42px; align-self: flex-end; }
+    .cover-review-badge { position: absolute; left: 8px; right: 8px; top: 8px; border-radius: 6px; padding: 6px 7px; color: white; font-size: 11px; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.22); pointer-events: none; }
+    .cover-review-badge.warning { background: rgba(164,106,0,.92); }
+    .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
+    .comic-card.cover-needs_review { border-color: #a46a00; }
+    .comic-card.cover-rejected_auto { border-color: #b42318; }
+    .card-body { padding: 10px 11px 12px; height: 205px; display: flex; flex-direction: column; overflow: hidden; }
+    .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
+    .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
+    .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
+    h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id { -webkit-line-clamp: 1; }
+    .meta, .continuity { -webkit-line-clamp: 2; }
+    .notes { -webkit-line-clamp: 2; position: relative; }
+    .notes::after { content: ""; position: absolute; inset: auto 0 0 0; height: 1.2em; background: linear-gradient(to bottom, rgba(255,255,255,0), var(--panel)); pointer-events: none; }
+    .comic-card.owned .notes::after { background: linear-gradient(to bottom, rgba(242,251,246,0), #f2fbf6); }
+    .comic-card.facsimile .notes::after { background: linear-gradient(to bottom, rgba(246,242,255,0), #f6f2ff); }
+    .comic-card.ordered .notes::after { background: linear-gradient(to bottom, rgba(241,247,255,0), #f1f7ff); }
+    .comic-card.readable .notes::after { background: linear-gradient(to bottom, rgba(255,248,236,0), #fff8ec); }
+    .hidden { display: none; }
+    .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
+    .lightbox.open { display: flex; }
+    .lightbox-panel { max-width: min(92vw, 980px); max-height: 94vh; display: grid; gap: 10px; }
+    .lightbox img { max-width: 100%; max-height: calc(94vh - 56px); object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
+    .lightbox-title { font-weight: 750; }
+    .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
+    .lightbox-close { border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: white; border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+    @media (max-width: 700px) {
+      header, .summary, main { padding-left: 14px; padding-right: 14px; }
+      .controls { padding: 8px 14px; gap: 8px; }
+      .filter-toggle { display: flex; }
+      .control-content { display: none; max-height: 58vh; overflow-y: auto; padding: 4px 0 8px; }
+      .controls.open .control-content { display: grid; }
+      .control-row b { flex-basis: 100%; min-width: 0; }
+      .chip { padding: 6px 9px; font-size: 13px; }
+      .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; }
+    }
+    </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <h1>Blood Bowl Spike! Journal</h1>
+      <a class="back-link" href="visual_collection_viewer.html">All visual views</a>
+    </div>
+    <p>Complete published Spike! Journal magazine run #1-21 with edition filters and ownership.</p>
+  </header>
+  <section class="summary">
+    <div class="metric"><strong>21</strong><span>unique publications</span></div>
+    <div class="metric"><strong>9</strong><span>owned/readable</span></div>
+    <div class="metric"><strong>0</strong><span>facsimiles</span></div>
+    <div class="metric"><strong>12</strong><span>missing</span></div>
+  </section>
+  <section class="controls">
+    <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="viewer-filters"><span>Filters and order</span></button>
+    <div class="control-content" id="viewer-filters">
+      <div class="control-row"><b>Order</b><button class="chip" data-filter="order" data-value="all">All orders</button>
+<button class="chip active" data-filter="order" data-value="series">series</button></div>
+      <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button>
+<button class="chip" data-filter="scope" data-value="2016 Edition">2016 Edition</button>
+<button class="chip" data-filter="scope" data-value="Second Season Edition">Second Season Edition</button>
+<button class="chip" data-filter="scope" data-value="Third Season Edition">Third Season Edition</button></div>
+      <div class="control-row"><b>Status</b><button class="chip active" data-filter="status" data-value="all">All statuses</button>
+<button class="chip" data-filter="status" data-value="owned">owned</button>
+<button class="chip" data-filter="status" data-value="facsimile">facsimile</button>
+<button class="chip" data-filter="status" data-value="ordered">ordered</button>
+<button class="chip" data-filter="status" data-value="readable">readable</button>
+<button class="chip" data-filter="status" data-value="missing">missing</button></div>
+      <div class="control-row"><b>Work</b><button class="chip active" data-filter="project" data-value="all">All works</button>
+<button class="chip" data-filter="project" data-value="spike_journal">spike journal</button></div>
+    </div>
+  </section>
+  <main>
+    <section class="grid">
+      <article class="comic-card owned cover-unchecked" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="owned" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000001">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0001.jpg" data-full-title="Spike! Journal #1" data-full-detail="SPIKE-JOURNAL-0001 | Seq 000001 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0001.jpg" alt="Spike! Journal #1 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2016 Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #1">Spike! Journal #1</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0001">SPIKE-JOURNAL-0001</p>
+          <p class="meta" title="Seq 000001 | Magazine issue">Seq 000001 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="missing" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000002">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0002.jpg" data-full-title="Spike! Journal #2" data-full-detail="SPIKE-JOURNAL-0002 | Seq 000002 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0002.jpg" alt="Spike! Journal #2 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2016 Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #2">Spike! Journal #2</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0002">SPIKE-JOURNAL-0002</p>
+          <p class="meta" title="Seq 000002 | Magazine issue">Seq 000002 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="missing" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000003">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0003.jpg" data-full-title="Spike! Journal #3" data-full-detail="SPIKE-JOURNAL-0003 | Seq 000003 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0003.jpg" alt="Spike! Journal #3 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2016 Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #3">Spike! Journal #3</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0003">SPIKE-JOURNAL-0003</p>
+          <p class="meta" title="Seq 000003 | Magazine issue">Seq 000003 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-unchecked" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="owned" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000004">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0004.jpg" data-full-title="Spike! Journal #4" data-full-detail="SPIKE-JOURNAL-0004 | Seq 000004 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0004.jpg" alt="Spike! Journal #4 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2016 Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #4">Spike! Journal #4</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0004">SPIKE-JOURNAL-0004</p>
+          <p class="meta" title="Seq 000004 | Magazine issue">Seq 000004 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-unchecked" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="owned" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000005">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0005.jpg" data-full-title="Spike! Journal #5" data-full-detail="SPIKE-JOURNAL-0005 | Seq 000005 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0005.jpg" alt="Spike! Journal #5 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2016 Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #5">Spike! Journal #5</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0005">SPIKE-JOURNAL-0005</p>
+          <p class="meta" title="Seq 000005 | Magazine issue">Seq 000005 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-unchecked" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="owned" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000006">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0006.jpg" data-full-title="Spike! Journal #6" data-full-detail="SPIKE-JOURNAL-0006 | Seq 000006 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0006.jpg" alt="Spike! Journal #6 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2016 Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #6">Spike! Journal #6</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0006">SPIKE-JOURNAL-0006</p>
+          <p class="meta" title="Seq 000006 | Magazine issue">Seq 000006 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="missing" data-sequence="000007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000007">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0007.jpg" data-full-title="Spike! Journal #7" data-full-detail="SPIKE-JOURNAL-0007 | Seq 000007 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0007.jpg" alt="Spike! Journal #7 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2016 Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #7">Spike! Journal #7</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0007">SPIKE-JOURNAL-0007</p>
+          <p class="meta" title="Seq 000007 | Magazine issue">Seq 000007 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="missing" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000008">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0008.jpg" data-full-title="Spike! Journal #8" data-full-detail="SPIKE-JOURNAL-0008 | Seq 000008 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0008.jpg" alt="Spike! Journal #8 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2016 Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #8">Spike! Journal #8</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0008">SPIKE-JOURNAL-0008</p>
+          <p class="meta" title="Seq 000008 | Magazine issue">Seq 000008 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-unchecked" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="owned" data-sequence="000009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000009">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0009.jpg" data-full-title="Spike! Journal #9" data-full-detail="SPIKE-JOURNAL-0009 | Seq 000009 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0009.jpg" alt="Spike! Journal #9 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2016 Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #9">Spike! Journal #9</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0009">SPIKE-JOURNAL-0009</p>
+          <p class="meta" title="Seq 000009 | Magazine issue">Seq 000009 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-unchecked" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="owned" data-sequence="000010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000010">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0010.jpg" data-full-title="Spike! Journal #10" data-full-detail="SPIKE-JOURNAL-0010 | Seq 000010 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0010.jpg" alt="Spike! Journal #10 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2016 Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #10">Spike! Journal #10</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0010">SPIKE-JOURNAL-0010</p>
+          <p class="meta" title="Seq 000010 | Magazine issue">Seq 000010 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-unchecked" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="owned" data-sequence="000011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000011">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0011.jpg" data-full-title="Spike! Journal #11" data-full-detail="SPIKE-JOURNAL-0011 | Seq 000011 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0011.jpg" alt="Spike! Journal #11 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2016 Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #11">Spike! Journal #11</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0011">SPIKE-JOURNAL-0011</p>
+          <p class="meta" title="Seq 000011 | Magazine issue">Seq 000011 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-unchecked" data-order="series" data-scope="Second Season Edition" data-project="spike_journal" data-status="owned" data-sequence="000012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000012">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0012.jpg" data-full-title="Spike! Journal #12" data-full-detail="SPIKE-JOURNAL-0012 | Seq 000012 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0012.jpg" alt="Spike! Journal #12 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Second Season Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #12">Spike! Journal #12</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0012">SPIKE-JOURNAL-0012</p>
+          <p class="meta" title="Seq 000012 | Magazine issue">Seq 000012 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-unchecked" data-order="series" data-scope="Second Season Edition" data-project="spike_journal" data-status="owned" data-sequence="000013" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000013">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0013.jpg" data-full-title="Spike! Journal #13" data-full-detail="SPIKE-JOURNAL-0013 | Seq 000013 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0013.jpg" alt="Spike! Journal #13 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Second Season Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #13">Spike! Journal #13</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0013">SPIKE-JOURNAL-0013</p>
+          <p class="meta" title="Seq 000013 | Magazine issue">Seq 000013 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="series" data-scope="Second Season Edition" data-project="spike_journal" data-status="missing" data-sequence="000014" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000014">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0014.jpg" data-full-title="Spike! Journal #14" data-full-detail="SPIKE-JOURNAL-0014 | Seq 000014 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0014.jpg" alt="Spike! Journal #14 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Second Season Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #14">Spike! Journal #14</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0014">SPIKE-JOURNAL-0014</p>
+          <p class="meta" title="Seq 000014 | Magazine issue">Seq 000014 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="series" data-scope="Second Season Edition" data-project="spike_journal" data-status="missing" data-sequence="000015" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000015">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0015.jpg" data-full-title="Spike! Journal #15" data-full-detail="SPIKE-JOURNAL-0015 | Seq 000015 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0015.jpg" alt="Spike! Journal #15 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Second Season Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #15">Spike! Journal #15</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0015">SPIKE-JOURNAL-0015</p>
+          <p class="meta" title="Seq 000015 | Magazine issue">Seq 000015 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="series" data-scope="Second Season Edition" data-project="spike_journal" data-status="missing" data-sequence="000016" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000016">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0016.jpg" data-full-title="Spike! Journal #16" data-full-detail="SPIKE-JOURNAL-0016 | Seq 000016 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0016.jpg" alt="Spike! Journal #16 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Second Season Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #16">Spike! Journal #16</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0016">SPIKE-JOURNAL-0016</p>
+          <p class="meta" title="Seq 000016 | Magazine issue">Seq 000016 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="series" data-scope="Second Season Edition" data-project="spike_journal" data-status="missing" data-sequence="000017" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000017">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0017.jpg" data-full-title="Spike! Journal #17" data-full-detail="SPIKE-JOURNAL-0017 | Seq 000017 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0017.jpg" alt="Spike! Journal #17 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Second Season Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #17">Spike! Journal #17</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0017">SPIKE-JOURNAL-0017</p>
+          <p class="meta" title="Seq 000017 | Magazine issue">Seq 000017 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="series" data-scope="Second Season Edition" data-project="spike_journal" data-status="missing" data-sequence="000018" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000018">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0018.jpg" data-full-title="Spike! Journal #18" data-full-detail="SPIKE-JOURNAL-0018 | Seq 000018 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0018.jpg" alt="Spike! Journal #18 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Second Season Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #18">Spike! Journal #18</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0018">SPIKE-JOURNAL-0018</p>
+          <p class="meta" title="Seq 000018 | Magazine issue">Seq 000018 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="series" data-scope="Third Season Edition" data-project="spike_journal" data-status="missing" data-sequence="000019" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000019">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0019.jpg" data-full-title="Spike! Journal #19" data-full-detail="SPIKE-JOURNAL-0019 | Seq 000019 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0019.jpg" alt="Spike! Journal #19 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Third Season Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #19">Spike! Journal #19</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0019">SPIKE-JOURNAL-0019</p>
+          <p class="meta" title="Seq 000019 | Magazine issue">Seq 000019 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="series" data-scope="Third Season Edition" data-project="spike_journal" data-status="missing" data-sequence="000020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000020">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0020.jpg" data-full-title="Spike! Journal #20" data-full-detail="SPIKE-JOURNAL-0020 | Seq 000020 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0020.jpg" alt="Spike! Journal #20 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Third Season Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #20">Spike! Journal #20</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0020">SPIKE-JOURNAL-0020</p>
+          <p class="meta" title="Seq 000020 | Magazine issue">Seq 000020 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="series" data-scope="Third Season Edition" data-project="spike_journal" data-status="missing" data-sequence="000021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000021">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0021.jpg" data-full-title="Spike! Journal #21" data-full-detail="SPIKE-JOURNAL-0021 | Seq 000021 | Magazine issue | Original magazine issue."><img src="../assets/covers/display/SPIKE-JOURNAL-0021.jpg" alt="Spike! Journal #21 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Third Season Edition</span>
+            
+          </div>
+          <h3 title="Spike! Journal #21">Spike! Journal #21</h3>
+          <p class="pub-id" title="SPIKE-JOURNAL-0021">SPIKE-JOURNAL-0021</p>
+          <p class="meta" title="Seq 000021 | Magazine issue">Seq 000021 | Magazine issue</p>
+          <p class="continuity" title=""></p>
+          <p class="notes" title="Original magazine issue.">Original magazine issue.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+  <div class="lightbox" aria-modal="true" role="dialog" aria-label="Cover preview">
+    <div class="lightbox-panel">
+      <img src="" alt="">
+      <div class="lightbox-caption">
+        <div>
+          <div class="lightbox-title"></div>
+          <div class="lightbox-detail"></div>
+        </div>
+        <button class="lightbox-close" type="button" data-lightbox-close>Close</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const state = { order: 'series', scope: 'all', project: 'all', status: 'all' };
+    const grid = document.querySelector('.grid');
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImage = document.querySelector('.lightbox img');
+    const lightboxTitle = document.querySelector('.lightbox-title');
+    const lightboxDetail = document.querySelector('.lightbox-detail');
+    const controls = document.querySelector('.controls');
+    const filterToggle = document.querySelector('.filter-toggle');
+    filterToggle.addEventListener('click', () => {
+      const open = controls.classList.toggle('open');
+      filterToggle.setAttribute('aria-expanded', String(open));
+    });
+    document.querySelectorAll('.chip').forEach(button => {
+      button.addEventListener('click', () => {
+        const group = button.dataset.filter;
+        state[group] = button.dataset.value;
+        document.querySelectorAll(`.chip[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item === button));
+        applyFilters();
+      });
+    });
+    function applyFilters() {
+      document.querySelectorAll('.comic-card').forEach(card => {
+        const visible = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]));
+        card.classList.toggle('hidden', !visible);
+      });
+      sortCards();
+    }
+    function sortCards() {
+      [...document.querySelectorAll('.comic-card')]
+        .sort((left, right) => sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent))
+        .forEach(card => grid.appendChild(card));
+    }
+    function sequenceForCard(card) {
+      const order = state.order === 'all' ? 'series' : state.order;
+      if (order === 'publication') {
+        return scopedSequence(card, 'publicationSequence');
+      }
+      if (order === 'chronological') {
+        return scopedSequence(card, 'chronologicalSequence');
+      }
+      const byOrder = sequenceMap(card.dataset.orderSequences);
+      if (byOrder[order]) {
+        return sortValue(byOrder[order]);
+      }
+      const chronological = scopedSequence(card, 'chronologicalSequence');
+      return chronological < 999999 ? chronological : sortValue(card.dataset.sequence);
+    }
+    function scopedSequence(card, orderKey) {
+      const scoped = sequenceMap(card.dataset[`${orderKey}s`]);
+      if (state.scope !== 'all' && scoped[state.scope]) {
+        return sortValue(scoped[state.scope]);
+      }
+      return sortValue(card.dataset[orderKey]);
+    }
+    function sequenceMap(value) {
+      return Object.fromEntries((value || '').split('|').filter(Boolean).map(item => {
+        const [scope, sequence] = item.split(':');
+        return [scope, sequence];
+      }));
+    }
+    function sortValue(value) {
+      const parsed = Number.parseFloat(value || '999999');
+      if (Number.isFinite(parsed)) {
+        return parsed;
+      }
+        const embedded = String(value || '').match(/\d+(\.\d+)?/);
+      return embedded ? Number.parseFloat(embedded[0]) : 999999;
+    }
+    document.querySelectorAll('.cover-button').forEach(button => {
+      button.addEventListener('click', () => {
+        lightboxImage.src = button.dataset.fullSrc;
+        lightboxImage.alt = `${button.dataset.fullTitle} cover`;
+        lightboxTitle.textContent = button.dataset.fullTitle;
+        lightboxDetail.textContent = button.dataset.fullDetail || '';
+        lightbox.classList.add('open');
+      });
+    });
+    document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
+    lightbox.addEventListener('click', event => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeLightbox();
+    });
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightboxImage.removeAttribute('src');
+      lightboxImage.removeAttribute('alt');
+      lightboxTitle.textContent = '';
+      lightboxDetail.textContent = '';
+    }
+    applyFilters();
+    </script>
+</body>
+</html>
