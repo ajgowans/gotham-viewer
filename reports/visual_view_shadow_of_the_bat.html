@@ -53,11 +53,12 @@
     .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
     .comic-card.cover-needs_review { border-color: #a46a00; }
     .comic-card.cover-rejected_auto { border-color: #b42318; }
-    .card-body { padding: 10px 11px 12px; height: 205px; display: flex; flex-direction: column; overflow: hidden; }
+    .card-body { padding: 10px 11px 12px; min-height: 86px; display: flex; flex-direction: column; overflow: hidden; }
     .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
     .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
     .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
     h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .publication-date { margin: auto 0 0; color: var(--muted); font-size: 12px; line-height: 1.3; }
     .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
     .pub-id { -webkit-line-clamp: 1; }
     .meta, .continuity { -webkit-line-clamp: 2; }
@@ -70,8 +71,8 @@
     .hidden { display: none; }
     .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
     .lightbox.open { display: flex; }
-    .lightbox-panel { max-width: min(92vw, 980px); max-height: 94vh; display: grid; gap: 10px; }
-    .lightbox img { max-width: 100%; max-height: calc(94vh - 56px); object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-panel { width: min(92vw, 980px); height: 94vh; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; align-items: center; justify-items: center; }
+    .lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; align-self: center; }
     .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
     .lightbox-title { font-weight: 750; }
     .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
@@ -128,112 +129,91 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #0">Batman: Shadow of the Bat #0</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-0">VIEW-batman-shadow-of-the-bat-0</p>
-          <p class="meta" title="Seq 0001">Seq 0001</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_0 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_0 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0002">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-1.jpg" data-full-title="Batman: Shadow of the Bat #1" data-full-detail="VIEW-batman-shadow-of-the-bat-1 | Seq 0002 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_1 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-1.jpg" alt="Batman: Shadow of the Bat #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-1.jpg" data-full-title="Batman: Shadow of the Bat #1" data-full-detail="Published 1992-05-27 | VIEW-batman-shadow-of-the-bat-1 | Seq 0002 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_1 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-1.jpg" alt="Batman: Shadow of the Bat #1 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #1">Batman: Shadow of the Bat #1</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-1">VIEW-batman-shadow-of-the-bat-1</p>
-          <p class="meta" title="Seq 0002">Seq 0002</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_1 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_1 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1992-05-27</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0003">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-2.jpg" data-full-title="Batman: Shadow of the Bat #2" data-full-detail="VIEW-batman-shadow-of-the-bat-2 | Seq 0003 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_2 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-2.jpg" alt="Batman: Shadow of the Bat #2 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-2.jpg" data-full-title="Batman: Shadow of the Bat #2" data-full-detail="Published 1992-06-10 | VIEW-batman-shadow-of-the-bat-2 | Seq 0003 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_2 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-2.jpg" alt="Batman: Shadow of the Bat #2 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #2">Batman: Shadow of the Bat #2</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-2">VIEW-batman-shadow-of-the-bat-2</p>
-          <p class="meta" title="Seq 0003">Seq 0003</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_2 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_2 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1992-06-10</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0004">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-3.jpg" data-full-title="Batman: Shadow of the Bat #3" data-full-detail="VIEW-batman-shadow-of-the-bat-3 | Seq 0004 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_3 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-3.jpg" alt="Batman: Shadow of the Bat #3 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-3.jpg" data-full-title="Batman: Shadow of the Bat #3" data-full-detail="Published 1992-06-24 | VIEW-batman-shadow-of-the-bat-3 | Seq 0004 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_3 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_3 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-3.jpg" alt="Batman: Shadow of the Bat #3 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #3">Batman: Shadow of the Bat #3</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-3">VIEW-batman-shadow-of-the-bat-3</p>
-          <p class="meta" title="Seq 0004">Seq 0004</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_3 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_3 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1992-06-24</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0005">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-4.jpg" data-full-title="Batman: Shadow of the Bat #4" data-full-detail="VIEW-batman-shadow-of-the-bat-4 | Seq 0005 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_4 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-4.jpg" alt="Batman: Shadow of the Bat #4 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-4.jpg" data-full-title="Batman: Shadow of the Bat #4" data-full-detail="Published 1992-07-08 | VIEW-batman-shadow-of-the-bat-4 | Seq 0005 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_4 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_4 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-4.jpg" alt="Batman: Shadow of the Bat #4 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #4">Batman: Shadow of the Bat #4</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-4">VIEW-batman-shadow-of-the-bat-4</p>
-          <p class="meta" title="Seq 0005">Seq 0005</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_4 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_4 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1992-07-08</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0006">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-5.jpg" data-full-title="Batman: Shadow of the Bat #5" data-full-detail="VIEW-batman-shadow-of-the-bat-5 | Seq 0006 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_5 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-5.jpg" alt="Batman: Shadow of the Bat #5 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-5.jpg" data-full-title="Batman: Shadow of the Bat #5" data-full-detail="Published 1992-08 | VIEW-batman-shadow-of-the-bat-5 | Seq 0006 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_5 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_5 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-5.jpg" alt="Batman: Shadow of the Bat #5 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #5">Batman: Shadow of the Bat #5</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-5">VIEW-batman-shadow-of-the-bat-5</p>
-          <p class="meta" title="Seq 0006">Seq 0006</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_5 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_5 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1992-08</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0007">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-6.jpg" data-full-title="Batman: Shadow of the Bat #6" data-full-detail="VIEW-batman-shadow-of-the-bat-6 | Seq 0007 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_6 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-6.jpg" alt="Batman: Shadow of the Bat #6 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-6.jpg" data-full-title="Batman: Shadow of the Bat #6" data-full-detail="Published 1992-09 | VIEW-batman-shadow-of-the-bat-6 | Seq 0007 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_6 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_6 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-6.jpg" alt="Batman: Shadow of the Bat #6 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #6">Batman: Shadow of the Bat #6</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-6">VIEW-batman-shadow-of-the-bat-6</p>
-          <p class="meta" title="Seq 0007">Seq 0007</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_6 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_6 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1992-09</p>
         </div>
       </article>
     
@@ -247,10 +227,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #7">Batman: Shadow of the Bat #7</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-7">VIEW-batman-shadow-of-the-bat-7</p>
-          <p class="meta" title="Seq 0008">Seq 0008</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_7 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_7 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -264,10 +241,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #8">Batman: Shadow of the Bat #8</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-8">VIEW-batman-shadow-of-the-bat-8</p>
-          <p class="meta" title="Seq 0009">Seq 0009</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_8 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_8 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -281,10 +255,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #9">Batman: Shadow of the Bat #9</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-9">VIEW-batman-shadow-of-the-bat-9</p>
-          <p class="meta" title="Seq 0010">Seq 0010</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_9 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_9 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -298,10 +269,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #10">Batman: Shadow of the Bat #10</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-10">VIEW-batman-shadow-of-the-bat-10</p>
-          <p class="meta" title="Seq 0011">Seq 0011</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_10 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_10 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -315,10 +283,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #11">Batman: Shadow of the Bat #11</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-11">VIEW-batman-shadow-of-the-bat-11</p>
-          <p class="meta" title="Seq 0012">Seq 0012</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_11 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_11 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -332,10 +297,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #12">Batman: Shadow of the Bat #12</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-12">VIEW-batman-shadow-of-the-bat-12</p>
-          <p class="meta" title="Seq 0013">Seq 0013</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_12 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_12 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -349,44 +311,35 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #13">Batman: Shadow of the Bat #13</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-13">VIEW-batman-shadow-of-the-bat-13</p>
-          <p class="meta" title="Seq 0014">Seq 0014</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_13 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_13 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0015" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0015">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-14.jpg" data-full-title="Batman: Shadow of the Bat #14" data-full-detail="VIEW-batman-shadow-of-the-bat-14 | Seq 0015 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_14 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-14.jpg" alt="Batman: Shadow of the Bat #14 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-14.jpg" data-full-title="Batman: Shadow of the Bat #14" data-full-detail="Published 1993-05 | VIEW-batman-shadow-of-the-bat-14 | Seq 0015 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_14 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_14 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-14.jpg" alt="Batman: Shadow of the Bat #14 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #14">Batman: Shadow of the Bat #14</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-14">VIEW-batman-shadow-of-the-bat-14</p>
-          <p class="meta" title="Seq 0015">Seq 0015</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_14 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_14 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1993-05</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0016" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0016">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-15.jpg" data-full-title="Batman: Shadow of the Bat #15" data-full-detail="VIEW-batman-shadow-of-the-bat-15 | Seq 0016 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_15 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-15.jpg" alt="Batman: Shadow of the Bat #15 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-15.jpg" data-full-title="Batman: Shadow of the Bat #15" data-full-detail="Published 1993-06 | VIEW-batman-shadow-of-the-bat-15 | Seq 0016 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_15 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_15 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-15.jpg" alt="Batman: Shadow of the Bat #15 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #15">Batman: Shadow of the Bat #15</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-15">VIEW-batman-shadow-of-the-bat-15</p>
-          <p class="meta" title="Seq 0016">Seq 0016</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_15 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_15 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1993-06</p>
         </div>
       </article>
     
@@ -400,10 +353,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #16">Batman: Shadow of the Bat #16</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-16">VIEW-batman-shadow-of-the-bat-16</p>
-          <p class="meta" title="Seq 0017">Seq 0017</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_16 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_16 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -417,10 +367,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #17">Batman: Shadow of the Bat #17</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-17">VIEW-batman-shadow-of-the-bat-17</p>
-          <p class="meta" title="Seq 0018">Seq 0018</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_17 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_17 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -434,10 +381,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #18">Batman: Shadow of the Bat #18</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-18">VIEW-batman-shadow-of-the-bat-18</p>
-          <p class="meta" title="Seq 0019">Seq 0019</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_18 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_18 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -451,10 +395,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #19">Batman: Shadow of the Bat #19</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-19">VIEW-batman-shadow-of-the-bat-19</p>
-          <p class="meta" title="Seq 0020">Seq 0020</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_19 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_19 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -468,10 +409,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #20">Batman: Shadow of the Bat #20</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-20">VIEW-batman-shadow-of-the-bat-20</p>
-          <p class="meta" title="Seq 0021">Seq 0021</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_20 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_20 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -485,10 +423,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #21">Batman: Shadow of the Bat #21</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-21">VIEW-batman-shadow-of-the-bat-21</p>
-          <p class="meta" title="Seq 0022">Seq 0022</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_21 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_21 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -502,10 +437,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #22">Batman: Shadow of the Bat #22</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-22">VIEW-batman-shadow-of-the-bat-22</p>
-          <p class="meta" title="Seq 0023">Seq 0023</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_22 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_22 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -519,10 +451,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #23">Batman: Shadow of the Bat #23</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-23">VIEW-batman-shadow-of-the-bat-23</p>
-          <p class="meta" title="Seq 0024">Seq 0024</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_23 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_23 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -536,10 +465,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #24">Batman: Shadow of the Bat #24</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-24">VIEW-batman-shadow-of-the-bat-24</p>
-          <p class="meta" title="Seq 0025">Seq 0025</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_24 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_24 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -553,10 +479,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #25">Batman: Shadow of the Bat #25</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-25">VIEW-batman-shadow-of-the-bat-25</p>
-          <p class="meta" title="Seq 0026">Seq 0026</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_25 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_25 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -570,10 +493,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #26">Batman: Shadow of the Bat #26</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-26">VIEW-batman-shadow-of-the-bat-26</p>
-          <p class="meta" title="Seq 0027">Seq 0027</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_26 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_26 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -587,10 +507,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #27">Batman: Shadow of the Bat #27</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-27">VIEW-batman-shadow-of-the-bat-27</p>
-          <p class="meta" title="Seq 0028">Seq 0028</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_27 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_27 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -604,10 +521,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #28">Batman: Shadow of the Bat #28</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-28">VIEW-batman-shadow-of-the-bat-28</p>
-          <p class="meta" title="Seq 0029">Seq 0029</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_28 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_28 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -621,180 +535,147 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #29">Batman: Shadow of the Bat #29</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-29">VIEW-batman-shadow-of-the-bat-29</p>
-          <p class="meta" title="Seq 0030">Seq 0030</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_29 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_29 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="owned" data-sequence="0031" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0031">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-30.jpg" data-full-title="Batman: Shadow of the Bat #30" data-full-detail="VIEW-batman-shadow-of-the-bat-30 | Seq 0031 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_30 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-30.jpg" alt="Batman: Shadow of the Bat #30 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-30.jpg" data-full-title="Batman: Shadow of the Bat #30" data-full-detail="Published 1994-06-22 | VIEW-batman-shadow-of-the-bat-30 | Seq 0031 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_30 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_30 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-30.jpg" alt="Batman: Shadow of the Bat #30 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #30">Batman: Shadow of the Bat #30</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-30">VIEW-batman-shadow-of-the-bat-30</p>
-          <p class="meta" title="Seq 0031">Seq 0031</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_30 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_30 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1994-06-22</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="owned" data-sequence="0032" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0032">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-31.jpg" data-full-title="Batman: Shadow of the Bat #31" data-full-detail="VIEW-batman-shadow-of-the-bat-31 | Seq 0032 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_31 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-31.jpg" alt="Batman: Shadow of the Bat #31 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-31.jpg" data-full-title="Batman: Shadow of the Bat #31" data-full-detail="Published 1994-07 | VIEW-batman-shadow-of-the-bat-31 | Seq 0032 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_31 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_31 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-31.jpg" alt="Batman: Shadow of the Bat #31 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #31">Batman: Shadow of the Bat #31</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-31">VIEW-batman-shadow-of-the-bat-31</p>
-          <p class="meta" title="Seq 0032">Seq 0032</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_31 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_31 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1994-07</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="owned" data-sequence="0033" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0033">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0032.jpg" data-full-title="Batman: Shadow of the Bat #32" data-full-detail="PUB-SOTB-0032 | Seq 0033 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_32 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0032.jpg" alt="Batman: Shadow of the Bat #32 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0032.jpg" data-full-title="Batman: Shadow of the Bat #32" data-full-detail="Published 1994-09 | PUB-SOTB-0032 | Seq 0033 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_32 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_32 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0032.jpg" alt="Batman: Shadow of the Bat #32 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #32">Batman: Shadow of the Bat #32</h3>
-          <p class="pub-id" title="PUB-SOTB-0032">PUB-SOTB-0032</p>
-          <p class="meta" title="Seq 0033">Seq 0033</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_32 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_32 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1994-09</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="owned" data-sequence="0034" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0034">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0033.jpg" data-full-title="Batman: Shadow of the Bat #33" data-full-detail="PUB-SOTB-0033 | Seq 0034 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_33 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0033.jpg" alt="Batman: Shadow of the Bat #33 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0033.jpg" data-full-title="Batman: Shadow of the Bat #33" data-full-detail="Published 1994-10 | PUB-SOTB-0033 | Seq 0034 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_33 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_33 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0033.jpg" alt="Batman: Shadow of the Bat #33 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #33">Batman: Shadow of the Bat #33</h3>
-          <p class="pub-id" title="PUB-SOTB-0033">PUB-SOTB-0033</p>
-          <p class="meta" title="Seq 0034">Seq 0034</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_33 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_33 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1994-10</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="owned" data-sequence="0035" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0035">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0034.jpg" data-full-title="Batman: Shadow of the Bat #34" data-full-detail="PUB-SOTB-0034 | Seq 0035 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_34 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0034.jpg" alt="Batman: Shadow of the Bat #34 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0034.jpg" data-full-title="Batman: Shadow of the Bat #34" data-full-detail="Published 1994-11 | PUB-SOTB-0034 | Seq 0035 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_34 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_34 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0034.jpg" alt="Batman: Shadow of the Bat #34 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #34">Batman: Shadow of the Bat #34</h3>
-          <p class="pub-id" title="PUB-SOTB-0034">PUB-SOTB-0034</p>
-          <p class="meta" title="Seq 0035">Seq 0035</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_34 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_34 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1994-11</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="owned" data-sequence="0036" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0036">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0035.jpg" data-full-title="Batman: Shadow of the Bat #35" data-full-detail="PUB-SOTB-0035 | Seq 0036 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_35 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0035.jpg" alt="Batman: Shadow of the Bat #35 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0035.jpg" data-full-title="Batman: Shadow of the Bat #35" data-full-detail="Published 1994-12-21 | PUB-SOTB-0035 | Seq 0036 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_35 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_35 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0035.jpg" alt="Batman: Shadow of the Bat #35 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #35">Batman: Shadow of the Bat #35</h3>
-          <p class="pub-id" title="PUB-SOTB-0035">PUB-SOTB-0035</p>
-          <p class="meta" title="Seq 0036">Seq 0036</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_35 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_35 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1994-12-21</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="owned" data-sequence="0037" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0037">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-36.jpg" data-full-title="Batman: Shadow of the Bat #36" data-full-detail="VIEW-batman-shadow-of-the-bat-36 | Seq 0037 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_36 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-36.jpg" alt="Batman: Shadow of the Bat #36 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-36.jpg" data-full-title="Batman: Shadow of the Bat #36" data-full-detail="Published 1995-01 | VIEW-batman-shadow-of-the-bat-36 | Seq 0037 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_36 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_36 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-36.jpg" alt="Batman: Shadow of the Bat #36 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #36">Batman: Shadow of the Bat #36</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-36">VIEW-batman-shadow-of-the-bat-36</p>
-          <p class="meta" title="Seq 0037">Seq 0037</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_36 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_36 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1995-01</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0038" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0038">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-37.jpg" data-full-title="Batman: Shadow of the Bat #37" data-full-detail="VIEW-batman-shadow-of-the-bat-37 | Seq 0038 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_37 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-37.jpg" alt="Batman: Shadow of the Bat #37 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-37.jpg" data-full-title="Batman: Shadow of the Bat #37" data-full-detail="Published 1995-02 | VIEW-batman-shadow-of-the-bat-37 | Seq 0038 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_37 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_37 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-37.jpg" alt="Batman: Shadow of the Bat #37 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #37">Batman: Shadow of the Bat #37</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-37">VIEW-batman-shadow-of-the-bat-37</p>
-          <p class="meta" title="Seq 0038">Seq 0038</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_37 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_37 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1995-02</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0039" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0039">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-38.jpg" data-full-title="Batman: Shadow of the Bat #38" data-full-detail="VIEW-batman-shadow-of-the-bat-38 | Seq 0039 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_38 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-38.jpg" alt="Batman: Shadow of the Bat #38 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-38.jpg" data-full-title="Batman: Shadow of the Bat #38" data-full-detail="Published 1995-03 | VIEW-batman-shadow-of-the-bat-38 | Seq 0039 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_38 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_38 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-38.jpg" alt="Batman: Shadow of the Bat #38 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #38">Batman: Shadow of the Bat #38</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-38">VIEW-batman-shadow-of-the-bat-38</p>
-          <p class="meta" title="Seq 0039">Seq 0039</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_38 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_38 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1995-03</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0040" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0040">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-39.jpg" data-full-title="Batman: Shadow of the Bat #39" data-full-detail="VIEW-batman-shadow-of-the-bat-39 | Seq 0040 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_39 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-39.jpg" alt="Batman: Shadow of the Bat #39 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-39.jpg" data-full-title="Batman: Shadow of the Bat #39" data-full-detail="Published 1995-04-19 | VIEW-batman-shadow-of-the-bat-39 | Seq 0040 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_39 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_39 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-39.jpg" alt="Batman: Shadow of the Bat #39 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #39">Batman: Shadow of the Bat #39</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-39">VIEW-batman-shadow-of-the-bat-39</p>
-          <p class="meta" title="Seq 0040">Seq 0040</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_39 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_39 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1995-04-19</p>
         </div>
       </article>
     
@@ -808,10 +689,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #40">Batman: Shadow of the Bat #40</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-40">VIEW-batman-shadow-of-the-bat-40</p>
-          <p class="meta" title="Seq 0041">Seq 0041</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_40 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_40 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -825,10 +703,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #41">Batman: Shadow of the Bat #41</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-41">VIEW-batman-shadow-of-the-bat-41</p>
-          <p class="meta" title="Seq 0042">Seq 0042</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_41 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_41 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -842,10 +717,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #42">Batman: Shadow of the Bat #42</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-42">VIEW-batman-shadow-of-the-bat-42</p>
-          <p class="meta" title="Seq 0043">Seq 0043</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_42 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_42 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -859,10 +731,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #43">Batman: Shadow of the Bat #43</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-43">VIEW-batman-shadow-of-the-bat-43</p>
-          <p class="meta" title="Seq 0044">Seq 0044</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_43 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_43 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -876,10 +745,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #44">Batman: Shadow of the Bat #44</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-44">VIEW-batman-shadow-of-the-bat-44</p>
-          <p class="meta" title="Seq 0045">Seq 0045</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_44 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_44 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -893,214 +759,175 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #45">Batman: Shadow of the Bat #45</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-45">VIEW-batman-shadow-of-the-bat-45</p>
-          <p class="meta" title="Seq 0046">Seq 0046</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_45 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_45 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0047" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0047">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-46.jpg" data-full-title="Batman: Shadow of the Bat #46" data-full-detail="VIEW-batman-shadow-of-the-bat-46 | Seq 0047 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_46 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-46.jpg" alt="Batman: Shadow of the Bat #46 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-46.jpg" data-full-title="Batman: Shadow of the Bat #46" data-full-detail="Published 1995-11 | VIEW-batman-shadow-of-the-bat-46 | Seq 0047 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_46 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_46 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-46.jpg" alt="Batman: Shadow of the Bat #46 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #46">Batman: Shadow of the Bat #46</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-46">VIEW-batman-shadow-of-the-bat-46</p>
-          <p class="meta" title="Seq 0047">Seq 0047</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_46 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_46 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1995-11</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0048" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0048">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-47.jpg" data-full-title="Batman: Shadow of the Bat #47" data-full-detail="VIEW-batman-shadow-of-the-bat-47 | Seq 0048 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_47 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-47.jpg" alt="Batman: Shadow of the Bat #47 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-47.jpg" data-full-title="Batman: Shadow of the Bat #47" data-full-detail="Published 1995-12 | VIEW-batman-shadow-of-the-bat-47 | Seq 0048 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_47 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_47 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-47.jpg" alt="Batman: Shadow of the Bat #47 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #47">Batman: Shadow of the Bat #47</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-47">VIEW-batman-shadow-of-the-bat-47</p>
-          <p class="meta" title="Seq 0048">Seq 0048</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_47 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_47 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1995-12</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0049" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0049">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-SHADOW-OF-THE-BAT-0048.jpg" data-full-title="Batman: Shadow of the Bat #48" data-full-detail="PUB-BATMAN-SHADOW-OF-THE-BAT-0048 | Seq 0049 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_48 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATMAN-SHADOW-OF-THE-BAT-0048.jpg" alt="Batman: Shadow of the Bat #48 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-SHADOW-OF-THE-BAT-0048.jpg" data-full-title="Batman: Shadow of the Bat #48" data-full-detail="Published 1996-01 | PUB-BATMAN-SHADOW-OF-THE-BAT-0048 | Seq 0049 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_48 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_48 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATMAN-SHADOW-OF-THE-BAT-0048.jpg" alt="Batman: Shadow of the Bat #48 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #48">Batman: Shadow of the Bat #48</h3>
-          <p class="pub-id" title="PUB-BATMAN-SHADOW-OF-THE-BAT-0048">PUB-BATMAN-SHADOW-OF-THE-BAT-0048</p>
-          <p class="meta" title="Seq 0049">Seq 0049</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_48 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_48 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1996-01</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0050" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0050">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-SHADOW-OF-THE-BAT-0049.jpg" data-full-title="Batman: Shadow of the Bat #49" data-full-detail="PUB-BATMAN-SHADOW-OF-THE-BAT-0049 | Seq 0050 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_49 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATMAN-SHADOW-OF-THE-BAT-0049.jpg" alt="Batman: Shadow of the Bat #49 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-SHADOW-OF-THE-BAT-0049.jpg" data-full-title="Batman: Shadow of the Bat #49" data-full-detail="Published 1996-02 | PUB-BATMAN-SHADOW-OF-THE-BAT-0049 | Seq 0050 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_49 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_49 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATMAN-SHADOW-OF-THE-BAT-0049.jpg" alt="Batman: Shadow of the Bat #49 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #49">Batman: Shadow of the Bat #49</h3>
-          <p class="pub-id" title="PUB-BATMAN-SHADOW-OF-THE-BAT-0049">PUB-BATMAN-SHADOW-OF-THE-BAT-0049</p>
-          <p class="meta" title="Seq 0050">Seq 0050</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_49 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_49 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1996-02</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0051" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0051">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-50.jpg" data-full-title="Batman: Shadow of the Bat #50" data-full-detail="VIEW-batman-shadow-of-the-bat-50 | Seq 0051 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_50 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-50.jpg" alt="Batman: Shadow of the Bat #50 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-50.jpg" data-full-title="Batman: Shadow of the Bat #50" data-full-detail="Published 1996-03 | VIEW-batman-shadow-of-the-bat-50 | Seq 0051 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_50 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_50 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-50.jpg" alt="Batman: Shadow of the Bat #50 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #50">Batman: Shadow of the Bat #50</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-50">VIEW-batman-shadow-of-the-bat-50</p>
-          <p class="meta" title="Seq 0051">Seq 0051</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_50 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_50 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1996-03</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0052" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0052">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-51.jpg" data-full-title="Batman: Shadow of the Bat #51" data-full-detail="VIEW-batman-shadow-of-the-bat-51 | Seq 0052 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_51 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-51.jpg" alt="Batman: Shadow of the Bat #51 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-51.jpg" data-full-title="Batman: Shadow of the Bat #51" data-full-detail="Published 1996-04 | VIEW-batman-shadow-of-the-bat-51 | Seq 0052 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_51 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_51 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-51.jpg" alt="Batman: Shadow of the Bat #51 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #51">Batman: Shadow of the Bat #51</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-51">VIEW-batman-shadow-of-the-bat-51</p>
-          <p class="meta" title="Seq 0052">Seq 0052</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_51 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_51 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1996-04</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0053" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0053">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-52.jpg" data-full-title="Batman: Shadow of the Bat #52" data-full-detail="VIEW-batman-shadow-of-the-bat-52 | Seq 0053 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_52 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-52.jpg" alt="Batman: Shadow of the Bat #52 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-52.jpg" data-full-title="Batman: Shadow of the Bat #52" data-full-detail="Published 1996-05 | VIEW-batman-shadow-of-the-bat-52 | Seq 0053 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_52 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_52 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-52.jpg" alt="Batman: Shadow of the Bat #52 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #52">Batman: Shadow of the Bat #52</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-52">VIEW-batman-shadow-of-the-bat-52</p>
-          <p class="meta" title="Seq 0053">Seq 0053</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_52 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_52 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1996-05</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0054" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0054">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-SHADOW-OF-THE-BAT-0053.jpg" data-full-title="Batman: Shadow of the Bat #53" data-full-detail="PUB-BATMAN-SHADOW-OF-THE-BAT-0053 | Seq 0054 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_53 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATMAN-SHADOW-OF-THE-BAT-0053.jpg" alt="Batman: Shadow of the Bat #53 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-SHADOW-OF-THE-BAT-0053.jpg" data-full-title="Batman: Shadow of the Bat #53" data-full-detail="Published 1996-06 | PUB-BATMAN-SHADOW-OF-THE-BAT-0053 | Seq 0054 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_53 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_53 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATMAN-SHADOW-OF-THE-BAT-0053.jpg" alt="Batman: Shadow of the Bat #53 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #53">Batman: Shadow of the Bat #53</h3>
-          <p class="pub-id" title="PUB-BATMAN-SHADOW-OF-THE-BAT-0053">PUB-BATMAN-SHADOW-OF-THE-BAT-0053</p>
-          <p class="meta" title="Seq 0054">Seq 0054</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_53 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_53 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1996-06</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0055" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0055">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-SHADOW-OF-THE-BAT-0054.jpg" data-full-title="Batman: Shadow of the Bat #54" data-full-detail="PUB-BATMAN-SHADOW-OF-THE-BAT-0054 | Seq 0055 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_54 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATMAN-SHADOW-OF-THE-BAT-0054.jpg" alt="Batman: Shadow of the Bat #54 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATMAN-SHADOW-OF-THE-BAT-0054.jpg" data-full-title="Batman: Shadow of the Bat #54" data-full-detail="Published 1996-07 | PUB-BATMAN-SHADOW-OF-THE-BAT-0054 | Seq 0055 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_54 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_54 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATMAN-SHADOW-OF-THE-BAT-0054.jpg" alt="Batman: Shadow of the Bat #54 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #54">Batman: Shadow of the Bat #54</h3>
-          <p class="pub-id" title="PUB-BATMAN-SHADOW-OF-THE-BAT-0054">PUB-BATMAN-SHADOW-OF-THE-BAT-0054</p>
-          <p class="meta" title="Seq 0055">Seq 0055</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_54 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_54 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1996-07</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0056" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0056">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-55.jpg" data-full-title="Batman: Shadow of the Bat #55" data-full-detail="VIEW-batman-shadow-of-the-bat-55 | Seq 0056 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_55 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-55.jpg" alt="Batman: Shadow of the Bat #55 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-55.jpg" data-full-title="Batman: Shadow of the Bat #55" data-full-detail="Published 1996-08 | VIEW-batman-shadow-of-the-bat-55 | Seq 0056 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_55 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_55 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-55.jpg" alt="Batman: Shadow of the Bat #55 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #55">Batman: Shadow of the Bat #55</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-55">VIEW-batman-shadow-of-the-bat-55</p>
-          <p class="meta" title="Seq 0056">Seq 0056</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_55 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_55 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1996-08</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0057" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0057">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-56.jpg" data-full-title="Batman: Shadow of the Bat #56" data-full-detail="VIEW-batman-shadow-of-the-bat-56 | Seq 0057 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_56 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-56.jpg" alt="Batman: Shadow of the Bat #56 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-56.jpg" data-full-title="Batman: Shadow of the Bat #56" data-full-detail="Published 1996-09 | VIEW-batman-shadow-of-the-bat-56 | Seq 0057 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_56 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_56 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-56.jpg" alt="Batman: Shadow of the Bat #56 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #56">Batman: Shadow of the Bat #56</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-56">VIEW-batman-shadow-of-the-bat-56</p>
-          <p class="meta" title="Seq 0057">Seq 0057</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_56 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_56 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1996-09</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0058" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0058">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-57.jpg" data-full-title="Batman: Shadow of the Bat #57" data-full-detail="VIEW-batman-shadow-of-the-bat-57 | Seq 0058 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_57 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-57.jpg" alt="Batman: Shadow of the Bat #57 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-57.jpg" data-full-title="Batman: Shadow of the Bat #57" data-full-detail="Published 1996-10 | VIEW-batman-shadow-of-the-bat-57 | Seq 0058 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_57 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_57 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-57.jpg" alt="Batman: Shadow of the Bat #57 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #57">Batman: Shadow of the Bat #57</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-57">VIEW-batman-shadow-of-the-bat-57</p>
-          <p class="meta" title="Seq 0058">Seq 0058</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_57 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_57 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1996-10</p>
         </div>
       </article>
     
@@ -1114,10 +941,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #58">Batman: Shadow of the Bat #58</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-58">VIEW-batman-shadow-of-the-bat-58</p>
-          <p class="meta" title="Seq 0059">Seq 0059</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_58 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_58 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1131,10 +955,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #59">Batman: Shadow of the Bat #59</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-59">VIEW-batman-shadow-of-the-bat-59</p>
-          <p class="meta" title="Seq 0060">Seq 0060</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_59 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_59 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1148,10 +969,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #60">Batman: Shadow of the Bat #60</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-60">VIEW-batman-shadow-of-the-bat-60</p>
-          <p class="meta" title="Seq 0061">Seq 0061</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_60 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_60 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1165,10 +983,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #61">Batman: Shadow of the Bat #61</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-61">VIEW-batman-shadow-of-the-bat-61</p>
-          <p class="meta" title="Seq 0062">Seq 0062</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_61 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_61 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1182,10 +997,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #62">Batman: Shadow of the Bat #62</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-62">VIEW-batman-shadow-of-the-bat-62</p>
-          <p class="meta" title="Seq 0063">Seq 0063</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_62 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_62 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1199,10 +1011,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #63">Batman: Shadow of the Bat #63</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-63">VIEW-batman-shadow-of-the-bat-63</p>
-          <p class="meta" title="Seq 0064">Seq 0064</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_63 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_63 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1216,10 +1025,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #64">Batman: Shadow of the Bat #64</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-64">VIEW-batman-shadow-of-the-bat-64</p>
-          <p class="meta" title="Seq 0065">Seq 0065</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_64 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_64 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1233,10 +1039,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #65">Batman: Shadow of the Bat #65</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-65">VIEW-batman-shadow-of-the-bat-65</p>
-          <p class="meta" title="Seq 0066">Seq 0066</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_65 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_65 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1250,10 +1053,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #66">Batman: Shadow of the Bat #66</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-66">VIEW-batman-shadow-of-the-bat-66</p>
-          <p class="meta" title="Seq 0067">Seq 0067</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_66 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_66 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1267,10 +1067,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #67">Batman: Shadow of the Bat #67</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-67">VIEW-batman-shadow-of-the-bat-67</p>
-          <p class="meta" title="Seq 0068">Seq 0068</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_67 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_67 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1284,10 +1081,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #68">Batman: Shadow of the Bat #68</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-68">VIEW-batman-shadow-of-the-bat-68</p>
-          <p class="meta" title="Seq 0069">Seq 0069</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_68 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_68 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1301,10 +1095,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #69">Batman: Shadow of the Bat #69</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-69">VIEW-batman-shadow-of-the-bat-69</p>
-          <p class="meta" title="Seq 0070">Seq 0070</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_69 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_69 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1318,10 +1109,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #70">Batman: Shadow of the Bat #70</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-70">VIEW-batman-shadow-of-the-bat-70</p>
-          <p class="meta" title="Seq 0071">Seq 0071</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_70 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_70 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1335,10 +1123,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #71">Batman: Shadow of the Bat #71</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-71">VIEW-batman-shadow-of-the-bat-71</p>
-          <p class="meta" title="Seq 0072">Seq 0072</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_71 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_71 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1352,10 +1137,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #72">Batman: Shadow of the Bat #72</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-72">VIEW-batman-shadow-of-the-bat-72</p>
-          <p class="meta" title="Seq 0073">Seq 0073</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_72 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_72 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1369,10 +1151,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #73">Batman: Shadow of the Bat #73</h3>
-          <p class="pub-id" title="PUB-SOTB-0073">PUB-SOTB-0073</p>
-          <p class="meta" title="Seq 0074">Seq 0074</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_73 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_73 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1386,10 +1165,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #74">Batman: Shadow of the Bat #74</h3>
-          <p class="pub-id" title="PUB-SOTB-0074">PUB-SOTB-0074</p>
-          <p class="meta" title="Seq 0075">Seq 0075</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_74 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_74 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1403,10 +1179,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #75">Batman: Shadow of the Bat #75</h3>
-          <p class="pub-id" title="PUB-SOTB-0075">PUB-SOTB-0075</p>
-          <p class="meta" title="Seq 0076">Seq 0076</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_75 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_75 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1420,10 +1193,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #76">Batman: Shadow of the Bat #76</h3>
-          <p class="pub-id" title="PUB-SOTB-0076">PUB-SOTB-0076</p>
-          <p class="meta" title="Seq 0077">Seq 0077</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_76 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_76 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1437,10 +1207,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #77">Batman: Shadow of the Bat #77</h3>
-          <p class="pub-id" title="PUB-SOTB-0077">PUB-SOTB-0077</p>
-          <p class="meta" title="Seq 0078">Seq 0078</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_77 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_77 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1454,44 +1221,35 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #78">Batman: Shadow of the Bat #78</h3>
-          <p class="pub-id" title="PUB-SOTB-0078">PUB-SOTB-0078</p>
-          <p class="meta" title="Seq 0079">Seq 0079</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_78 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_78 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0080" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0080">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0079.jpg" data-full-title="Batman: Shadow of the Bat #79" data-full-detail="PUB-SOTB-0079 | Seq 0080 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_79 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0079.jpg" alt="Batman: Shadow of the Bat #79 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0079.jpg" data-full-title="Batman: Shadow of the Bat #79" data-full-detail="Published 1998-08-05 | PUB-SOTB-0079 | Seq 0080 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_79 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_79 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0079.jpg" alt="Batman: Shadow of the Bat #79 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #79">Batman: Shadow of the Bat #79</h3>
-          <p class="pub-id" title="PUB-SOTB-0079">PUB-SOTB-0079</p>
-          <p class="meta" title="Seq 0080">Seq 0080</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_79 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_79 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1998-08-05</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0081" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0081">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0080.jpg" data-full-title="Batman: Shadow of the Bat #80" data-full-detail="PUB-SOTB-0080 | Seq 0081 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_80 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0080.jpg" alt="Batman: Shadow of the Bat #80 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0080.jpg" data-full-title="Batman: Shadow of the Bat #80" data-full-detail="Published 1998-10 | PUB-SOTB-0080 | Seq 0081 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_80 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_80 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0080.jpg" alt="Batman: Shadow of the Bat #80 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #80">Batman: Shadow of the Bat #80</h3>
-          <p class="pub-id" title="PUB-SOTB-0080">PUB-SOTB-0080</p>
-          <p class="meta" title="Seq 0081">Seq 0081</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_80 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_80 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1998-10</p>
         </div>
       </article>
     
@@ -1505,10 +1263,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #81">Batman: Shadow of the Bat #81</h3>
-          <p class="pub-id" title="PUB-SOTB-0081">PUB-SOTB-0081</p>
-          <p class="meta" title="Seq 0082">Seq 0082</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_81 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_81 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1522,10 +1277,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #82">Batman: Shadow of the Bat #82</h3>
-          <p class="pub-id" title="PUB-SOTB-0082">PUB-SOTB-0082</p>
-          <p class="meta" title="Seq 0083">Seq 0083</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_82 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_82 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1539,10 +1291,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #83">Batman: Shadow of the Bat #83</h3>
-          <p class="pub-id" title="PUB-SOTB-0083">PUB-SOTB-0083</p>
-          <p class="meta" title="Seq 0084">Seq 0084</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_83 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_83 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1556,10 +1305,7 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #84">Batman: Shadow of the Bat #84</h3>
-          <p class="pub-id" title="PUB-SOTB-0084">PUB-SOTB-0084</p>
-          <p class="meta" title="Seq 0085">Seq 0085</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_84 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_84 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1573,265 +1319,217 @@
             
           </div>
           <h3 title="Batman: Shadow of the Bat #85">Batman: Shadow of the Bat #85</h3>
-          <p class="pub-id" title="PUB-SOTB-0085">PUB-SOTB-0085</p>
-          <p class="meta" title="Seq 0086">Seq 0086</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_85 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_85 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0087" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0087">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0086.jpg" data-full-title="Batman: Shadow of the Bat #86" data-full-detail="PUB-SOTB-0086 | Seq 0087 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_86 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0086.jpg" alt="Batman: Shadow of the Bat #86 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0086.jpg" data-full-title="Batman: Shadow of the Bat #86" data-full-detail="Published 1999-04 | PUB-SOTB-0086 | Seq 0087 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_86 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_86 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0086.jpg" alt="Batman: Shadow of the Bat #86 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #86">Batman: Shadow of the Bat #86</h3>
-          <p class="pub-id" title="PUB-SOTB-0086">PUB-SOTB-0086</p>
-          <p class="meta" title="Seq 0087">Seq 0087</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_86 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_86 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1999-04</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0088" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0088">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0087.jpg" data-full-title="Batman: Shadow of the Bat #87" data-full-detail="PUB-SOTB-0087 | Seq 0088 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_87 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0087.jpg" alt="Batman: Shadow of the Bat #87 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0087.jpg" data-full-title="Batman: Shadow of the Bat #87" data-full-detail="Published 1999-05 | PUB-SOTB-0087 | Seq 0088 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_87 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_87 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0087.jpg" alt="Batman: Shadow of the Bat #87 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #87">Batman: Shadow of the Bat #87</h3>
-          <p class="pub-id" title="PUB-SOTB-0087">PUB-SOTB-0087</p>
-          <p class="meta" title="Seq 0088">Seq 0088</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_87 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_87 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1999-05</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0089" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0089">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0088.jpg" data-full-title="Batman: Shadow of the Bat #88" data-full-detail="PUB-SOTB-0088 | Seq 0089 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_88 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0088.jpg" alt="Batman: Shadow of the Bat #88 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0088.jpg" data-full-title="Batman: Shadow of the Bat #88" data-full-detail="Published 1999-06 | PUB-SOTB-0088 | Seq 0089 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_88 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_88 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0088.jpg" alt="Batman: Shadow of the Bat #88 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #88">Batman: Shadow of the Bat #88</h3>
-          <p class="pub-id" title="PUB-SOTB-0088">PUB-SOTB-0088</p>
-          <p class="meta" title="Seq 0089">Seq 0089</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_88 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_88 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1999-06</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0090" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0090">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0089.jpg" data-full-title="Batman: Shadow of the Bat #89" data-full-detail="PUB-SOTB-0089 | Seq 0090 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_89 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0089.jpg" alt="Batman: Shadow of the Bat #89 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0089.jpg" data-full-title="Batman: Shadow of the Bat #89" data-full-detail="Published 1999-07 | PUB-SOTB-0089 | Seq 0090 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_89 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_89 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0089.jpg" alt="Batman: Shadow of the Bat #89 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #89">Batman: Shadow of the Bat #89</h3>
-          <p class="pub-id" title="PUB-SOTB-0089">PUB-SOTB-0089</p>
-          <p class="meta" title="Seq 0090">Seq 0090</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_89 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_89 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1999-07</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0091" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0091">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0090.jpg" data-full-title="Batman: Shadow of the Bat #90" data-full-detail="PUB-SOTB-0090 | Seq 0091 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_90 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0090.jpg" alt="Batman: Shadow of the Bat #90 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0090.jpg" data-full-title="Batman: Shadow of the Bat #90" data-full-detail="Published 1999-08 | PUB-SOTB-0090 | Seq 0091 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_90 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_90 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0090.jpg" alt="Batman: Shadow of the Bat #90 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #90">Batman: Shadow of the Bat #90</h3>
-          <p class="pub-id" title="PUB-SOTB-0090">PUB-SOTB-0090</p>
-          <p class="meta" title="Seq 0091">Seq 0091</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_90 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_90 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1999-08</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0092" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0092">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0091.jpg" data-full-title="Batman: Shadow of the Bat #91" data-full-detail="PUB-SOTB-0091 | Seq 0092 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_91 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0091.jpg" alt="Batman: Shadow of the Bat #91 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0091.jpg" data-full-title="Batman: Shadow of the Bat #91" data-full-detail="Published 1999-09 | PUB-SOTB-0091 | Seq 0092 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_91 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_91 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0091.jpg" alt="Batman: Shadow of the Bat #91 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #91">Batman: Shadow of the Bat #91</h3>
-          <p class="pub-id" title="PUB-SOTB-0091">PUB-SOTB-0091</p>
-          <p class="meta" title="Seq 0092">Seq 0092</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_91 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_91 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1999-09</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0093" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0093">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0092.jpg" data-full-title="Batman: Shadow of the Bat #92" data-full-detail="PUB-SOTB-0092 | Seq 0093 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_92 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0092.jpg" alt="Batman: Shadow of the Bat #92 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0092.jpg" data-full-title="Batman: Shadow of the Bat #92" data-full-detail="Published 1999-10 | PUB-SOTB-0092 | Seq 0093 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_92 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_92 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0092.jpg" alt="Batman: Shadow of the Bat #92 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #92">Batman: Shadow of the Bat #92</h3>
-          <p class="pub-id" title="PUB-SOTB-0092">PUB-SOTB-0092</p>
-          <p class="meta" title="Seq 0093">Seq 0093</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_92 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_92 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1999-10</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0094" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0094">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0093.jpg" data-full-title="Batman: Shadow of the Bat #93" data-full-detail="PUB-SOTB-0093 | Seq 0094 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_93 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0093.jpg" alt="Batman: Shadow of the Bat #93 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0093.jpg" data-full-title="Batman: Shadow of the Bat #93" data-full-detail="Published 1999-11 | PUB-SOTB-0093 | Seq 0094 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_93 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_93 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0093.jpg" alt="Batman: Shadow of the Bat #93 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #93">Batman: Shadow of the Bat #93</h3>
-          <p class="pub-id" title="PUB-SOTB-0093">PUB-SOTB-0093</p>
-          <p class="meta" title="Seq 0094">Seq 0094</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_93 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_93 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1999-11</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0095" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0095">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0094.jpg" data-full-title="Batman: Shadow of the Bat #94" data-full-detail="PUB-SOTB-0094 | Seq 0095 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_94 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0094.jpg" alt="Batman: Shadow of the Bat #94 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-0094.jpg" data-full-title="Batman: Shadow of the Bat #94" data-full-detail="Published 1999-12-22 | PUB-SOTB-0094 | Seq 0095 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_94 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_94 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-0094.jpg" alt="Batman: Shadow of the Bat #94 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #94">Batman: Shadow of the Bat #94</h3>
-          <p class="pub-id" title="PUB-SOTB-0094">PUB-SOTB-0094</p>
-          <p class="meta" title="Seq 0095">Seq 0095</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_94 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_94 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1999-12-22</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0096" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0096">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-1000000.jpg" data-full-title="Batman: Shadow of the Bat #1,000,000" data-full-detail="VIEW-batman-shadow-of-the-bat-1000000 | Seq 0096 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_1000000 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-1000000.jpg" alt="Batman: Shadow of the Bat #1,000,000 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-1000000.jpg" data-full-title="Batman: Shadow of the Bat #1,000,000" data-full-detail="Published 1998-09 | VIEW-batman-shadow-of-the-bat-1000000 | Seq 0096 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_1000000 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_1000000 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-1000000.jpg" alt="Batman: Shadow of the Bat #1,000,000 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat #1,000,000">Batman: Shadow of the Bat #1,000,000</h3>
-          <p class="pub-id" title="VIEW-batman-shadow-of-the-bat-1000000">VIEW-batman-shadow-of-the-bat-1000000</p>
-          <p class="meta" title="Seq 0096">Seq 0096</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_1000000 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Vol_1_1000000 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1998-09</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0097" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0097">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-ANN-0001.jpg" data-full-title="Batman: Shadow of the Bat Annual #1" data-full-detail="PUB-SOTB-ANN-0001 | Seq 0097 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_1 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.; DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_1 | confidence=high | Exact canonical PublicationID taken from the whole-collection cover audit. DC Database issue page supplied for cover resolution. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-ANN-0001.jpg" alt="Batman: Shadow of the Bat Annual #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-ANN-0001.jpg" data-full-title="Batman: Shadow of the Bat Annual #1" data-full-detail="Published 1993 | PUB-SOTB-ANN-0001 | Seq 0097 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_1 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.; DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_1 | confidence=high | Exact canonical PublicationID taken from the whole-collection cover audit. DC Database issue page supplied for cover resolution. | https://en.wikipedia.org/wiki/Publication_history_of_DC_Comics_crossover_events | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-ANN-0001.jpg" alt="Batman: Shadow of the Bat Annual #1 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat Annual #1">Batman: Shadow of the Bat Annual #1</h3>
-          <p class="pub-id" title="PUB-SOTB-ANN-0001">PUB-SOTB-ANN-0001</p>
-          <p class="meta" title="Seq 0097">Seq 0097</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_1 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.; DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_1 | confidence=high | Exact canonical PublicationID taken from the whole-collection cover audit. DC Database issue page supplied for cover resolution.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_1 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.; DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_1 | confidence=high | Exact canonical PublicationID taken from the whole-collection cover audit. DC Database issue page supplied for cover resolution.</p>
+          <p class="publication-date">Published 1993</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0098" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0098">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-annual-2.jpg" data-full-title="Batman: Shadow of the Bat Annual #2" data-full-detail="PUB-SOTB-ANN-0002 | Seq 0098 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_2 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-annual-2.jpg" alt="Batman: Shadow of the Bat Annual #2 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-annual-2.jpg" data-full-title="Batman: Shadow of the Bat Annual #2" data-full-detail="Published 1994 | PUB-SOTB-ANN-0002 | Seq 0098 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_2 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-annual-2.jpg" alt="Batman: Shadow of the Bat Annual #2 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat Annual #2">Batman: Shadow of the Bat Annual #2</h3>
-          <p class="pub-id" title="PUB-SOTB-ANN-0002">PUB-SOTB-ANN-0002</p>
-          <p class="meta" title="Seq 0098">Seq 0098</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_2 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_2 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1994</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0099" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0099">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-ANN-0003.jpg" data-full-title="Batman: Shadow of the Bat Annual #3" data-full-detail="PUB-SOTB-ANN-0003 | Seq 0099 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_3 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.; DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_3 | confidence=high | Exact canonical PublicationID taken from the whole-collection cover audit. DC Database issue page supplied for cover resolution. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-ANN-0003.jpg" alt="Batman: Shadow of the Bat Annual #3 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SOTB-ANN-0003.jpg" data-full-title="Batman: Shadow of the Bat Annual #3" data-full-detail="Published 1995 | PUB-SOTB-ANN-0003 | Seq 0099 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_3 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.; DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_3 | confidence=high | Exact canonical PublicationID taken from the whole-collection cover audit. DC Database issue page supplied for cover resolution. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SOTB-ANN-0003.jpg" alt="Batman: Shadow of the Bat Annual #3 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat Annual #3">Batman: Shadow of the Bat Annual #3</h3>
-          <p class="pub-id" title="PUB-SOTB-ANN-0003">PUB-SOTB-ANN-0003</p>
-          <p class="meta" title="Seq 0099">Seq 0099</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_3 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.; DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_3 | confidence=high | Exact canonical PublicationID taken from the whole-collection cover audit. DC Database issue page supplied for cover resolution.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_3 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.; DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_3 | confidence=high | Exact canonical PublicationID taken from the whole-collection cover audit. DC Database issue page supplied for cover resolution.</p>
+          <p class="publication-date">Published 1995</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0100" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0100">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-annual-4.jpg" data-full-title="Batman: Shadow of the Bat Annual #4" data-full-detail="PUB-SOTB-ANN-0004 | Seq 0100 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_4 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-annual-4.jpg" alt="Batman: Shadow of the Bat Annual #4 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-annual-4.jpg" data-full-title="Batman: Shadow of the Bat Annual #4" data-full-detail="Published 1996 | PUB-SOTB-ANN-0004 | Seq 0100 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_4 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-annual-4.jpg" alt="Batman: Shadow of the Bat Annual #4 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat Annual #4">Batman: Shadow of the Bat Annual #4</h3>
-          <p class="pub-id" title="PUB-SOTB-ANN-0004">PUB-SOTB-ANN-0004</p>
-          <p class="meta" title="Seq 0100">Seq 0100</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_4 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_4 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1996</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0101" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0101">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-annual-5.jpg" data-full-title="Batman: Shadow of the Bat Annual #5" data-full-detail="PUB-SOTB-ANN-0005 | Seq 0101 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_5 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-annual-5.jpg" alt="Batman: Shadow of the Bat Annual #5 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-annual-5.jpg" data-full-title="Batman: Shadow of the Bat Annual #5" data-full-detail="Published 1997 | PUB-SOTB-ANN-0005 | Seq 0101 | DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_5 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-shadow-of-the-bat-annual-5.jpg" alt="Batman: Shadow of the Bat Annual #5 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Batman: Shadow of the Bat Annual #5">Batman: Shadow of the Bat Annual #5</h3>
-          <p class="pub-id" title="PUB-SOTB-ANN-0005">PUB-SOTB-ANN-0005</p>
-          <p class="meta" title="Seq 0101">Seq 0101</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_5 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.">DC Database | https://dc.fandom.com/wiki/Batman:_Shadow_of_the_Bat_Annual_Vol_1_5 | confidence=high | DC Database issue page used as the resolvable cover source; no static.wikia hash path guessed.</p>
+          <p class="publication-date">Published 1997</p>
         </div>
       </article>
     </section>
@@ -1927,9 +1625,7 @@
       });
     });
     document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
-    lightbox.addEventListener('click', event => {
-      if (event.target === lightbox) closeLightbox();
-    });
+    lightbox.addEventListener('click', closeLightbox);
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape') closeLightbox();
     });

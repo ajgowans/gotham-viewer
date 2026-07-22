@@ -1,0 +1,1841 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="../assets/site/batman-favicon.png">
+  <title>Batman #600-714 - Visual Viewer</title>
+  <style>
+    :root { color-scheme: light; --ink:#172026; --muted:#5c6670; --line:#d9dee4; --paper:#f6f7f8; --panel:#ffffff; --owned:#0f7b4f; --fac:#6b4bb8; --ordered:#2166ad; --readable:#a46a00; --missing:#b42318; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); }
+    header { padding: 28px 32px 18px; background: #111820; color: white; }
+    .header-top { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .back-link { color: white; border: 1px solid rgba(255,255,255,.32); border-radius: 999px; padding: 7px 11px; text-decoration: none; font-size: 13px; background: rgba(255,255,255,.08); }
+    .back-link:hover { background: rgba(255,255,255,.16); }
+    h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; }
+    header p { margin: 0; color: #c8d0d8; max-width: 900px; }
+    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; padding: 18px 32px; background: #e9edf1; border-bottom: 1px solid var(--line); }
+    .metric { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+    .metric strong { display: block; font-size: 24px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    .controls { padding: 18px 32px; display: grid; gap: 12px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
+    .filter-toggle { display: none; width: 100%; border: 1px solid var(--line); background: #172026; color: white; border-radius: 6px; padding: 9px 12px; font-weight: 750; cursor: pointer; align-items: center; justify-content: space-between; }
+    .filter-toggle::after { content: "+"; font-size: 18px; line-height: 1; }
+    .controls.open .filter-toggle::after { content: "−"; }
+    .control-content { display: grid; gap: 12px; }
+    .control-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .control-row b { margin-right: 4px; font-size: 13px; color: var(--muted); min-width: 70px; }
+    .chip { border: 1px solid var(--line); background: #f8fafb; color: var(--ink); border-radius: 999px; padding: 7px 11px; cursor: pointer; text-transform: capitalize; }
+    .chip.active { background: #172026; border-color: #172026; color: white; }
+    main { padding: 24px 32px 40px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 16px; align-items: start; }
+    .comic-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05); min-width: 0; display: flex; flex-direction: column; position: relative; }
+    .comic-card.owned { background: #f2fbf6; }
+    .comic-card.facsimile { background: #f6f2ff; }
+    .comic-card.ordered { background: #f1f7ff; }
+    .comic-card.readable { background: #fff8ec; }
+    .status-strip { background: var(--missing); color: white; min-height: 30px; display: grid; place-items: center; padding: 7px 8px; font-size: 12px; line-height: 1; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; }
+    .comic-card.owned .status-strip { background: var(--owned); }
+    .comic-card.facsimile .status-strip { background: var(--fac); }
+    .comic-card.ordered .status-strip { background: var(--ordered); }
+    .comic-card.readable .status-strip { background: var(--readable); }
+    .cover-wrap { aspect-ratio: 2 / 3; background: #242a31; display: grid; place-items: center; overflow: hidden; position: relative; }
+    .cover-button { appearance: none; border: 0; background: #111820; padding: 0; margin: 0; width: 100%; height: 100%; display: block; cursor: zoom-in; }
+    .cover-button:focus-visible { outline: 3px solid #f4c430; outline-offset: -3px; }
+    .cover-wrap img { width: 100%; height: 100%; object-fit: contain; background: #111820; display: block; }
+    .cover-placeholder { width: 100%; height: 100%; padding: 14px; color: white; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(145deg, #18212a, #39424c); }
+    .cover-placeholder span { font-weight: 700; line-height: 1.1; overflow-wrap: anywhere; }
+    .cover-placeholder strong { font-size: 42px; align-self: flex-end; }
+    .cover-review-badge { position: absolute; left: 8px; right: 8px; top: 8px; border-radius: 6px; padding: 6px 7px; color: white; font-size: 11px; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.22); pointer-events: none; }
+    .cover-review-badge.warning { background: rgba(164,106,0,.92); }
+    .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
+    .comic-card.cover-needs_review { border-color: #a46a00; }
+    .comic-card.cover-rejected_auto { border-color: #b42318; }
+    .card-body { padding: 10px 11px 12px; min-height: 86px; display: flex; flex-direction: column; overflow: hidden; }
+    .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
+    .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
+    .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
+    h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .publication-date { margin: auto 0 0; color: var(--muted); font-size: 12px; line-height: 1.3; }
+    .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id { -webkit-line-clamp: 1; }
+    .meta, .continuity { -webkit-line-clamp: 2; }
+    .notes { -webkit-line-clamp: 2; position: relative; }
+    .notes::after { content: ""; position: absolute; inset: auto 0 0 0; height: 1.2em; background: linear-gradient(to bottom, rgba(255,255,255,0), var(--panel)); pointer-events: none; }
+    .comic-card.owned .notes::after { background: linear-gradient(to bottom, rgba(242,251,246,0), #f2fbf6); }
+    .comic-card.facsimile .notes::after { background: linear-gradient(to bottom, rgba(246,242,255,0), #f6f2ff); }
+    .comic-card.ordered .notes::after { background: linear-gradient(to bottom, rgba(241,247,255,0), #f1f7ff); }
+    .comic-card.readable .notes::after { background: linear-gradient(to bottom, rgba(255,248,236,0), #fff8ec); }
+    .hidden { display: none; }
+    .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
+    .lightbox.open { display: flex; }
+    .lightbox-panel { width: min(92vw, 980px); height: 94vh; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; align-items: center; justify-items: center; }
+    .lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; align-self: center; }
+    .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
+    .lightbox-title { font-weight: 750; }
+    .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
+    .lightbox-close { border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: white; border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+    @media (max-width: 700px) {
+      header, .summary, main { padding-left: 14px; padding-right: 14px; }
+      .controls { padding: 8px 14px; gap: 8px; }
+      .filter-toggle { display: flex; }
+      .control-content { display: none; max-height: 58vh; overflow-y: auto; padding: 4px 0 8px; }
+      .controls.open .control-content { display: grid; }
+      .control-row b { flex-basis: 100%; min-width: 0; }
+      .chip { padding: 6px 9px; font-size: 13px; }
+      .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; }
+    }
+    </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <h1>Batman #600-714</h1>
+      <a class="back-link" href="visual_collection_viewer.html">All visual views</a>
+    </div>
+    <p>Batman numbered run from #600 through the end of the original volume at #713 plus legacy boundary #714.</p>
+  </header>
+  <section class="summary">
+    <div class="metric"><strong>115</strong><span>unique publications</span></div>
+    <div class="metric"><strong>0</strong><span>owned/readable</span></div>
+    <div class="metric"><strong>0</strong><span>facsimiles</span></div>
+    <div class="metric"><strong>115</strong><span>missing</span></div>
+  </section>
+  <section class="controls">
+    <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="viewer-filters"><span>Filters and order</span></button>
+    <div class="control-content" id="viewer-filters">
+      <div class="control-row"><b>Order</b><button class="chip active" data-filter="order" data-value="all">All orders</button>
+<button class="chip" data-filter="order" data-value="series">series</button></div>
+      <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button>
+<button class="chip" data-filter="scope" data-value="EXCLUDED">EXCLUDED</button>
+<button class="chip" data-filter="scope" data-value="STORY_PROJECT">STORY PROJECT</button></div>
+      <div class="control-row"><b>Status</b><button class="chip active" data-filter="status" data-value="all">All statuses</button>
+<button class="chip" data-filter="status" data-value="owned">owned</button>
+<button class="chip" data-filter="status" data-value="facsimile">facsimile</button>
+<button class="chip" data-filter="status" data-value="ordered">ordered</button>
+<button class="chip" data-filter="status" data-value="readable">readable</button>
+<button class="chip" data-filter="status" data-value="missing">missing</button></div>
+      <div class="control-row"><b>Work</b><button class="chip active" data-filter="project" data-value="all">All works</button>
+<button class="chip" data-filter="project" data-value="Unmapped story">Unmapped story</button></div>
+    </div>
+  </section>
+  <main>
+    <section class="grid">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000001">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0600.jpg" data-full-title="Batman #600" data-full-detail="PUB-BAT-0600 | Seq 000001 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0600.jpg" alt="Batman #600 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #600">Batman #600</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000002">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0601.jpg" data-full-title="Batman #601" data-full-detail="PUB-BAT-0601 | Seq 000002 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0601.jpg" alt="Batman #601 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #601">Batman #601</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000003">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0602.jpg" data-full-title="Batman #602" data-full-detail="PUB-BAT-0602 | Seq 000003 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0602.jpg" alt="Batman #602 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #602">Batman #602</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000004">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0603.jpg" data-full-title="Batman #603" data-full-detail="PUB-BAT-0603 | Seq 000004 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0603.jpg" alt="Batman #603 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #603">Batman #603</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000005">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0604.jpg" data-full-title="Batman #604" data-full-detail="PUB-BAT-0604 | Seq 000005 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0604.jpg" alt="Batman #604 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #604">Batman #604</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000006">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0605.jpg" data-full-title="Batman #605" data-full-detail="PUB-BAT-0605 | Seq 000006 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0605.jpg" alt="Batman #605 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #605">Batman #605</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000007">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0606.jpg" data-full-title="Batman #606" data-full-detail="PUB-BAT-0606 | Seq 000007 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0606.jpg" alt="Batman #606 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #606">Batman #606</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000008">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0607.jpg" data-full-title="Batman #607" data-full-detail="PUB-BAT-0607 | Seq 000008 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0607.jpg" alt="Batman #607 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #607">Batman #607</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="STORY_PROJECT" data-project="Unmapped story" data-status="missing" data-sequence="000009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000009">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0608.jpg" data-full-title="Batman #608" data-full-detail="Published 2002-10-23 | PUB-BAT-0608 | Seq 000009 | STORY_PROJECT | derived | Unmapped story | Tracked original Hush storyline exception. | https://dc.fandom.com/wiki/Batman_Vol_1_608 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0608.jpg" alt="Batman #608 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">STORY PROJECT</span>
+            
+          </div>
+          <h3 title="Batman #608">Batman #608</h3>
+          <p class="publication-date">Published 2002-10-23</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="STORY_PROJECT" data-project="Unmapped story" data-status="missing" data-sequence="000010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000010">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0609.jpg" data-full-title="Batman #609" data-full-detail="Published 2002-11-27 | PUB-BAT-0609 | Seq 000010 | STORY_PROJECT | derived | Unmapped story | Tracked original Hush storyline exception. | https://dc.fandom.com/wiki/Batman_Vol_1_609 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0609.jpg" alt="Batman #609 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">STORY PROJECT</span>
+            
+          </div>
+          <h3 title="Batman #609">Batman #609</h3>
+          <p class="publication-date">Published 2002-11-27</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="STORY_PROJECT" data-project="Unmapped story" data-status="missing" data-sequence="000011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000011">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0610.jpg" data-full-title="Batman #610" data-full-detail="Published 2002-12-25 | PUB-BAT-0610 | Seq 000011 | STORY_PROJECT | derived | Unmapped story | Tracked original Hush storyline exception. | https://dc.fandom.com/wiki/Batman_Vol_1_610 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0610.jpg" alt="Batman #610 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">STORY PROJECT</span>
+            
+          </div>
+          <h3 title="Batman #610">Batman #610</h3>
+          <p class="publication-date">Published 2002-12-25</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="STORY_PROJECT" data-project="Unmapped story" data-status="missing" data-sequence="000012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000012">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0611.jpg" data-full-title="Batman #611" data-full-detail="Published 2003-01-22 | PUB-BAT-0611 | Seq 000012 | STORY_PROJECT | derived | Unmapped story | Tracked original Hush storyline exception. | https://dc.fandom.com/wiki/Batman_Vol_1_611 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0611.jpg" alt="Batman #611 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">STORY PROJECT</span>
+            
+          </div>
+          <h3 title="Batman #611">Batman #611</h3>
+          <p class="publication-date">Published 2003-01-22</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="STORY_PROJECT" data-project="Unmapped story" data-status="missing" data-sequence="000013" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000013">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0612.jpg" data-full-title="Batman #612" data-full-detail="Published 2003-02-26 | PUB-BAT-0612 | Seq 000013 | STORY_PROJECT | derived | Unmapped story | Tracked original Hush storyline exception. | https://dc.fandom.com/wiki/Batman_Vol_1_612 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0612.jpg" alt="Batman #612 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">STORY PROJECT</span>
+            
+          </div>
+          <h3 title="Batman #612">Batman #612</h3>
+          <p class="publication-date">Published 2003-02-26</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="STORY_PROJECT" data-project="Unmapped story" data-status="missing" data-sequence="000014" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000014">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0613.jpg" data-full-title="Batman #613" data-full-detail="Published 2003-03-26 | PUB-BAT-0613 | Seq 000014 | STORY_PROJECT | derived | Unmapped story | Tracked original Hush storyline exception. | https://dc.fandom.com/wiki/Batman_Vol_1_613 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0613.jpg" alt="Batman #613 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">STORY PROJECT</span>
+            
+          </div>
+          <h3 title="Batman #613">Batman #613</h3>
+          <p class="publication-date">Published 2003-03-26</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="STORY_PROJECT" data-project="Unmapped story" data-status="missing" data-sequence="000015" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000015">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0614.jpg" data-full-title="Batman #614" data-full-detail="Published 2003-04-30 | PUB-BAT-0614 | Seq 000015 | STORY_PROJECT | derived | Unmapped story | Tracked original Hush storyline exception. | https://dc.fandom.com/wiki/Batman_Vol_1_614 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0614.jpg" alt="Batman #614 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">STORY PROJECT</span>
+            
+          </div>
+          <h3 title="Batman #614">Batman #614</h3>
+          <p class="publication-date">Published 2003-04-30</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="STORY_PROJECT" data-project="Unmapped story" data-status="missing" data-sequence="000016" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000016">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0615.jpg" data-full-title="Batman #615" data-full-detail="Published 2003-05-28 | PUB-BAT-0615 | Seq 000016 | STORY_PROJECT | derived | Unmapped story | Tracked original Hush storyline exception. | https://dc.fandom.com/wiki/Batman_Vol_1_615 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0615.jpg" alt="Batman #615 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">STORY PROJECT</span>
+            
+          </div>
+          <h3 title="Batman #615">Batman #615</h3>
+          <p class="publication-date">Published 2003-05-28</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="STORY_PROJECT" data-project="Unmapped story" data-status="missing" data-sequence="000017" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000017">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0616.jpg" data-full-title="Batman #616" data-full-detail="Published 2003-06-25 | PUB-BAT-0616 | Seq 000017 | STORY_PROJECT | derived | Unmapped story | Tracked original Hush storyline exception. | https://dc.fandom.com/wiki/Batman_Vol_1_616 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0616.jpg" alt="Batman #616 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">STORY PROJECT</span>
+            
+          </div>
+          <h3 title="Batman #616">Batman #616</h3>
+          <p class="publication-date">Published 2003-06-25</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="STORY_PROJECT" data-project="Unmapped story" data-status="missing" data-sequence="000018" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000018">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0617.jpg" data-full-title="Batman #617" data-full-detail="Published 2003-07-30 | PUB-BAT-0617 | Seq 000018 | STORY_PROJECT | derived | Unmapped story | Tracked original Hush storyline exception. | https://dc.fandom.com/wiki/Batman_Vol_1_617 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0617.jpg" alt="Batman #617 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">STORY PROJECT</span>
+            
+          </div>
+          <h3 title="Batman #617">Batman #617</h3>
+          <p class="publication-date">Published 2003-07-30</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="STORY_PROJECT" data-project="Unmapped story" data-status="missing" data-sequence="000019" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000019">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0618.jpg" data-full-title="Batman #618" data-full-detail="Published 2003-08-27 | PUB-BAT-0618 | Seq 000019 | STORY_PROJECT | derived | Unmapped story | Tracked original Hush storyline exception. | https://dc.fandom.com/wiki/Batman_Vol_1_618 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0618.jpg" alt="Batman #618 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">STORY PROJECT</span>
+            
+          </div>
+          <h3 title="Batman #618">Batman #618</h3>
+          <p class="publication-date">Published 2003-08-27</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="STORY_PROJECT" data-project="Unmapped story" data-status="missing" data-sequence="000020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000020">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0619.jpg" data-full-title="Batman #619" data-full-detail="Published 2003-09-24 | PUB-BAT-0619 | Seq 000020 | STORY_PROJECT | derived | Unmapped story | Tracked original Hush storyline exception. | https://dc.fandom.com/wiki/Batman_Vol_1_619 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0619.jpg" alt="Batman #619 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">STORY PROJECT</span>
+            
+          </div>
+          <h3 title="Batman #619">Batman #619</h3>
+          <p class="publication-date">Published 2003-09-24</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000021">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0620.jpg" data-full-title="Batman #620" data-full-detail="Published 2003-10-22 | PUB-BAT-0620 | Seq 000021 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_620 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0620.jpg" alt="Batman #620 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #620">Batman #620</h3>
+          <p class="publication-date">Published 2003-10-22</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000022" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000022">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0621.jpg" data-full-title="Batman #621" data-full-detail="Published 2003-11-26 | PUB-BAT-0621 | Seq 000022 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_621 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0621.jpg" alt="Batman #621 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #621">Batman #621</h3>
+          <p class="publication-date">Published 2003-11-26</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000023" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000023">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0622.jpg" data-full-title="Batman #622" data-full-detail="Published 2003-12 | PUB-BAT-0622 | Seq 000023 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_622 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0622.jpg" alt="Batman #622 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #622">Batman #622</h3>
+          <p class="publication-date">Published 2003-12</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000024" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000024">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0623.jpg" data-full-title="Batman #623" data-full-detail="PUB-BAT-0623 | Seq 000024 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0623.jpg" alt="Batman #623 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #623">Batman #623</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000025" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000025">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0624.jpg" data-full-title="Batman #624" data-full-detail="PUB-BAT-0624 | Seq 000025 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0624.jpg" alt="Batman #624 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #624">Batman #624</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000026" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000026">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0625.jpg" data-full-title="Batman #625" data-full-detail="PUB-BAT-0625 | Seq 000026 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0625.jpg" alt="Batman #625 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #625">Batman #625</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000027" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000027">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0626.jpg" data-full-title="Batman #626" data-full-detail="PUB-BAT-0626 | Seq 000027 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0626.jpg" alt="Batman #626 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #626">Batman #626</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000028" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000028">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0627.jpg" data-full-title="Batman #627" data-full-detail="Published 2004-05-12 | PUB-BAT-0627 | Seq 000028 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_627 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0627.jpg" alt="Batman #627 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #627">Batman #627</h3>
+          <p class="publication-date">Published 2004-05-12</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000029" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000029">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0628.jpg" data-full-title="Batman #628" data-full-detail="PUB-BAT-0628 | Seq 000029 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0628.jpg" alt="Batman #628 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #628">Batman #628</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000030" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000030">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0629.jpg" data-full-title="Batman #629" data-full-detail="PUB-BAT-0629 | Seq 000030 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0629.jpg" alt="Batman #629 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #629">Batman #629</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000031" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000031">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0630.jpg" data-full-title="Batman #630" data-full-detail="PUB-BAT-0630 | Seq 000031 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0630.jpg" alt="Batman #630 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #630">Batman #630</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000032" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000032">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0631.jpg" data-full-title="Batman #631" data-full-detail="PUB-BAT-0631 | Seq 000032 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0631.jpg" alt="Batman #631 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #631">Batman #631</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000033" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000033">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0632.jpg" data-full-title="Batman #632" data-full-detail="PUB-BAT-0632 | Seq 000033 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0632.jpg" alt="Batman #632 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #632">Batman #632</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000034" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000034">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0633.jpg" data-full-title="Batman #633" data-full-detail="PUB-BAT-0633 | Seq 000034 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0633.jpg" alt="Batman #633 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #633">Batman #633</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000035" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000035">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0634.jpg" data-full-title="Batman #634" data-full-detail="PUB-BAT-0634 | Seq 000035 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0634.jpg" alt="Batman #634 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #634">Batman #634</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000036" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000036">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0635.jpg" data-full-title="Batman #635" data-full-detail="Published 2004-12-29 | PUB-BAT-0635 | Seq 000036 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_635 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0635.jpg" alt="Batman #635 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #635">Batman #635</h3>
+          <p class="publication-date">Published 2004-12-29</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000037" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000037">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0636.jpg" data-full-title="Batman #636" data-full-detail="PUB-BAT-0636 | Seq 000037 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0636.jpg" alt="Batman #636 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #636">Batman #636</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000038" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000038">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0637.jpg" data-full-title="Batman #637" data-full-detail="PUB-BAT-0637 | Seq 000038 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0637.jpg" alt="Batman #637 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #637">Batman #637</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000039" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000039">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0638.jpg" data-full-title="Batman #638" data-full-detail="PUB-BAT-0638 | Seq 000039 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0638.jpg" alt="Batman #638 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #638">Batman #638</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000040" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000040">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0639.jpg" data-full-title="Batman #639" data-full-detail="PUB-BAT-0639 | Seq 000040 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0639.jpg" alt="Batman #639 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #639">Batman #639</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000041" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000041">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0640.jpg" data-full-title="Batman #640" data-full-detail="PUB-BAT-0640 | Seq 000041 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0640.jpg" alt="Batman #640 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #640">Batman #640</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000042" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000042">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0641.jpg" data-full-title="Batman #641" data-full-detail="PUB-BAT-0641 | Seq 000042 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0641.jpg" alt="Batman #641 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #641">Batman #641</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000043" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000043">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0642.jpg" data-full-title="Batman #642" data-full-detail="PUB-BAT-0642 | Seq 000043 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0642.jpg" alt="Batman #642 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #642">Batman #642</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000044" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000044">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0643.jpg" data-full-title="Batman #643" data-full-detail="PUB-BAT-0643 | Seq 000044 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0643.jpg" alt="Batman #643 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #643">Batman #643</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000045" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000045">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0644.jpg" data-full-title="Batman #644" data-full-detail="PUB-BAT-0644 | Seq 000045 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0644.jpg" alt="Batman #644 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #644">Batman #644</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000046" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000046">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0645.jpg" data-full-title="Batman #645" data-full-detail="PUB-BAT-0645 | Seq 000046 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0645.jpg" alt="Batman #645 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #645">Batman #645</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000047" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000047">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0646.jpg" data-full-title="Batman #646" data-full-detail="PUB-BAT-0646 | Seq 000047 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0646.jpg" alt="Batman #646 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #646">Batman #646</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000048" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000048">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0647.jpg" data-full-title="Batman #647" data-full-detail="PUB-BAT-0647 | Seq 000048 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0647.jpg" alt="Batman #647 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #647">Batman #647</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000049" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000049">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0648.jpg" data-full-title="Batman #648" data-full-detail="PUB-BAT-0648 | Seq 000049 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0648.jpg" alt="Batman #648 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #648">Batman #648</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000050" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000050">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0649.jpg" data-full-title="Batman #649" data-full-detail="PUB-BAT-0649 | Seq 000050 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0649.jpg" alt="Batman #649 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #649">Batman #649</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000051" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000051">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0650.jpg" data-full-title="Batman #650" data-full-detail="PUB-BAT-0650 | Seq 000051 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0650.jpg" alt="Batman #650 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #650">Batman #650</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000052" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000052">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0651.jpg" data-full-title="Batman #651" data-full-detail="Published 2006-03-22 | PUB-BAT-0651 | Seq 000052 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_651 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0651.jpg" alt="Batman #651 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #651">Batman #651</h3>
+          <p class="publication-date">Published 2006-03-22</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000053" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000053">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0652.jpg" data-full-title="Batman #652" data-full-detail="Published 2006-04-26 | PUB-BAT-0652 | Seq 000053 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_652 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0652.jpg" alt="Batman #652 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #652">Batman #652</h3>
+          <p class="publication-date">Published 2006-04-26</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000054" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000054">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0653.jpg" data-full-title="Batman #653" data-full-detail="Published 2006-05-24 | PUB-BAT-0653 | Seq 000054 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_653 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0653.jpg" alt="Batman #653 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #653">Batman #653</h3>
+          <p class="publication-date">Published 2006-05-24</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000055" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000055">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0654.jpg" data-full-title="Batman #654" data-full-detail="Published 2006-06-28 | PUB-BAT-0654 | Seq 000055 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_654 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0654.jpg" alt="Batman #654 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #654">Batman #654</h3>
+          <p class="publication-date">Published 2006-06-28</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000056" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000056">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0655.jpg" data-full-title="Batman #655" data-full-detail="Published 2006-07-26 | PUB-BAT-0655 | Seq 000056 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_655 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0655.jpg" alt="Batman #655 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #655">Batman #655</h3>
+          <p class="publication-date">Published 2006-07-26</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000057" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000057">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0656.jpg" data-full-title="Batman #656" data-full-detail="Published 2006-08-23 | PUB-BAT-0656 | Seq 000057 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_656 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0656.jpg" alt="Batman #656 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #656">Batman #656</h3>
+          <p class="publication-date">Published 2006-08-23</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000058" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000058">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0657.jpg" data-full-title="Batman #657" data-full-detail="PUB-BAT-0657 | Seq 000058 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0657.jpg" alt="Batman #657 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #657">Batman #657</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000059" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000059">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0658.jpg" data-full-title="Batman #658" data-full-detail="Published 2006-11-08 | PUB-BAT-0658 | Seq 000059 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_658 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0658.jpg" alt="Batman #658 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #658">Batman #658</h3>
+          <p class="publication-date">Published 2006-11-08</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000060" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000060">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0659.jpg" data-full-title="Batman #659" data-full-detail="Published 2006-11-29 | PUB-BAT-0659 | Seq 000060 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_659 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0659.jpg" alt="Batman #659 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #659">Batman #659</h3>
+          <p class="publication-date">Published 2006-11-29</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000061" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000061">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0660.jpg" data-full-title="Batman #660" data-full-detail="Published 2006-12-13 | PUB-BAT-0660 | Seq 000061 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_660 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0660.jpg" alt="Batman #660 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #660">Batman #660</h3>
+          <p class="publication-date">Published 2006-12-13</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000062" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000062">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0661.jpg" data-full-title="Batman #661" data-full-detail="Published 2006-12-27 | PUB-BAT-0661 | Seq 000062 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_661 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0661.jpg" alt="Batman #661 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #661">Batman #661</h3>
+          <p class="publication-date">Published 2006-12-27</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000063" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000063">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0662.jpg" data-full-title="Batman #662" data-full-detail="Published 2007-01 | PUB-BAT-0662 | Seq 000063 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_662 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0662.jpg" alt="Batman #662 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #662">Batman #662</h3>
+          <p class="publication-date">Published 2007-01</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000064" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000064">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0663.jpg" data-full-title="Batman #663" data-full-detail="Published 2007-02 | PUB-BAT-0663 | Seq 000064 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_663 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0663.jpg" alt="Batman #663 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #663">Batman #663</h3>
+          <p class="publication-date">Published 2007-02</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000065" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000065">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0664.jpg" data-full-title="Batman #664" data-full-detail="Published 2007-03 | PUB-BAT-0664 | Seq 000065 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_664 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0664.jpg" alt="Batman #664 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #664">Batman #664</h3>
+          <p class="publication-date">Published 2007-03</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000066" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000066">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0665.jpg" data-full-title="Batman #665" data-full-detail="Published 2007-04 | PUB-BAT-0665 | Seq 000066 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_665 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0665.jpg" alt="Batman #665 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #665">Batman #665</h3>
+          <p class="publication-date">Published 2007-04</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000067" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000067">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0666.jpg" data-full-title="Batman #666" data-full-detail="Published 2007-07-25 | PUB-BAT-0666 | Seq 000067 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_666 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0666.jpg" alt="Batman #666 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #666">Batman #666</h3>
+          <p class="publication-date">Published 2007-07-25</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000068" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000068">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0667.jpg" data-full-title="Batman #667" data-full-detail="Published 2007-06 | PUB-BAT-0667 | Seq 000068 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_667 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0667.jpg" alt="Batman #667 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #667">Batman #667</h3>
+          <p class="publication-date">Published 2007-06</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000069" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000069">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0668.jpg" data-full-title="Batman #668" data-full-detail="PUB-BAT-0668 | Seq 000069 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0668.jpg" alt="Batman #668 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #668">Batman #668</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000070" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000070">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0669.jpg" data-full-title="Batman #669" data-full-detail="PUB-BAT-0669 | Seq 000070 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0669.jpg" alt="Batman #669 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #669">Batman #669</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000071" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000071">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0670.jpg" data-full-title="Batman #670" data-full-detail="PUB-BAT-0670 | Seq 000071 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0670.jpg" alt="Batman #670 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #670">Batman #670</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000072" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000072">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0671.jpg" data-full-title="Batman #671" data-full-detail="PUB-BAT-0671 | Seq 000072 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0671.jpg" alt="Batman #671 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #671">Batman #671</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000073" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000073">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0672.jpg" data-full-title="Batman #672" data-full-detail="PUB-BAT-0672 | Seq 000073 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0672.jpg" alt="Batman #672 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #672">Batman #672</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000074" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000074">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0673.jpg" data-full-title="Batman #673" data-full-detail="PUB-BAT-0673 | Seq 000074 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0673.jpg" alt="Batman #673 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #673">Batman #673</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000075" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000075">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0674.jpg" data-full-title="Batman #674" data-full-detail="PUB-BAT-0674 | Seq 000075 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0674.jpg" alt="Batman #674 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #674">Batman #674</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000076" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000076">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0675.jpg" data-full-title="Batman #675" data-full-detail="PUB-BAT-0675 | Seq 000076 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0675.jpg" alt="Batman #675 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #675">Batman #675</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000077" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000077">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0676.jpg" data-full-title="Batman #676" data-full-detail="Published 2008-04 | PUB-BAT-0676 | Seq 000077 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_676 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0676.jpg" alt="Batman #676 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #676">Batman #676</h3>
+          <p class="publication-date">Published 2008-04</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000078" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000078">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0677.jpg" data-full-title="Batman #677" data-full-detail="PUB-BAT-0677 | Seq 000078 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0677.jpg" alt="Batman #677 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #677">Batman #677</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000079" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000079">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0678.jpg" data-full-title="Batman #678" data-full-detail="PUB-BAT-0678 | Seq 000079 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0678.jpg" alt="Batman #678 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #678">Batman #678</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000080" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000080">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0679.jpg" data-full-title="Batman #679" data-full-detail="PUB-BAT-0679 | Seq 000080 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0679.jpg" alt="Batman #679 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #679">Batman #679</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000081" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000081">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0680.jpg" data-full-title="Batman #680" data-full-detail="PUB-BAT-0680 | Seq 000081 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0680.jpg" alt="Batman #680 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #680">Batman #680</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000082" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000082">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0681.jpg" data-full-title="Batman #681" data-full-detail="PUB-BAT-0681 | Seq 000082 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0681.jpg" alt="Batman #681 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #681">Batman #681</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000083" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000083">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0682.jpg" data-full-title="Batman #682" data-full-detail="PUB-BAT-0682 | Seq 000083 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0682.jpg" alt="Batman #682 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #682">Batman #682</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000084" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000084">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0683.jpg" data-full-title="Batman #683" data-full-detail="PUB-BAT-0683 | Seq 000084 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0683.jpg" alt="Batman #683 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #683">Batman #683</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000085" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000085">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0684.jpg" data-full-title="Batman #684" data-full-detail="PUB-BAT-0684 | Seq 000085 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0684.jpg" alt="Batman #684 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #684">Batman #684</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000086" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000086">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0685.jpg" data-full-title="Batman #685" data-full-detail="PUB-BAT-0685 | Seq 000086 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0685.jpg" alt="Batman #685 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #685">Batman #685</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000087" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000087">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0686.jpg" data-full-title="Batman #686" data-full-detail="PUB-BAT-0686 | Seq 000087 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0686.jpg" alt="Batman #686 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #686">Batman #686</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000088" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000088">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0687.jpg" data-full-title="Batman #687" data-full-detail="PUB-BAT-0687 | Seq 000088 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0687.jpg" alt="Batman #687 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #687">Batman #687</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000089" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000089">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0688.jpg" data-full-title="Batman #688" data-full-detail="PUB-BAT-0688 | Seq 000089 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0688.jpg" alt="Batman #688 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #688">Batman #688</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000090" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000090">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0689.jpg" data-full-title="Batman #689" data-full-detail="PUB-BAT-0689 | Seq 000090 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0689.jpg" alt="Batman #689 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #689">Batman #689</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000091" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000091">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0690.jpg" data-full-title="Batman #690" data-full-detail="PUB-BAT-0690 | Seq 000091 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0690.jpg" alt="Batman #690 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #690">Batman #690</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000092" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000092">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0691.jpg" data-full-title="Batman #691" data-full-detail="PUB-BAT-0691 | Seq 000092 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0691.jpg" alt="Batman #691 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #691">Batman #691</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000093" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000093">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0692.jpg" data-full-title="Batman #692" data-full-detail="PUB-BAT-0692 | Seq 000093 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0692.jpg" alt="Batman #692 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #692">Batman #692</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000094" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000094">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0693.jpg" data-full-title="Batman #693" data-full-detail="PUB-BAT-0693 | Seq 000094 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0693.jpg" alt="Batman #693 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #693">Batman #693</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000095" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000095">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0694.jpg" data-full-title="Batman #694" data-full-detail="Published 2009-12-16 | PUB-BAT-0694 | Seq 000095 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | https://dc.fandom.com/wiki/Batman_Vol_1_694 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0694.jpg" alt="Batman #694 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #694">Batman #694</h3>
+          <p class="publication-date">Published 2009-12-16</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000096" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000096">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0695.jpg" data-full-title="Batman #695" data-full-detail="PUB-BAT-0695 | Seq 000096 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0695.jpg" alt="Batman #695 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #695">Batman #695</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000097" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000097">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0696.jpg" data-full-title="Batman #696" data-full-detail="PUB-BAT-0696 | Seq 000097 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0696.jpg" alt="Batman #696 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #696">Batman #696</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000098" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000098">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0697.jpg" data-full-title="Batman #697" data-full-detail="PUB-BAT-0697 | Seq 000098 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0697.jpg" alt="Batman #697 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #697">Batman #697</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000099" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000099">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0698.jpg" data-full-title="Batman #698" data-full-detail="PUB-BAT-0698 | Seq 000099 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0698.jpg" alt="Batman #698 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #698">Batman #698</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000100" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000100">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0699.jpg" data-full-title="Batman #699" data-full-detail="PUB-BAT-0699 | Seq 000100 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0699.jpg" alt="Batman #699 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #699">Batman #699</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000101" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000101">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0700.jpg" data-full-title="Batman #700" data-full-detail="PUB-BAT-0700 | Seq 000101 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0700.jpg" alt="Batman #700 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #700">Batman #700</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000102" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000102">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0701.jpg" data-full-title="Batman #701" data-full-detail="PUB-BAT-0701 | Seq 000102 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0701.jpg" alt="Batman #701 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #701">Batman #701</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000103" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000103">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0702.jpg" data-full-title="Batman #702" data-full-detail="PUB-BAT-0702 | Seq 000103 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0702.jpg" alt="Batman #702 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #702">Batman #702</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000104" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000104">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0703.jpg" data-full-title="Batman #703" data-full-detail="PUB-BAT-0703 | Seq 000104 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0703.jpg" alt="Batman #703 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #703">Batman #703</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000105" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000105">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0704.jpg" data-full-title="Batman #704" data-full-detail="PUB-BAT-0704 | Seq 000105 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0704.jpg" alt="Batman #704 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #704">Batman #704</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000106" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000106">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0705.jpg" data-full-title="Batman #705" data-full-detail="PUB-BAT-0705 | Seq 000106 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0705.jpg" alt="Batman #705 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #705">Batman #705</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-needs_review" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000107" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000107">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0706.jpg" data-full-title="Batman #706" data-full-detail="PUB-BAT-0706 | Seq 000107 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | possible_perspective_preview | The complete outer edge is a pale product background; verify that the image is a flat full-cover scan rather than a perspective preview."><img src="../assets/covers/display/PUB-BAT-0706.jpg" alt="Batman #706 cover"></button><span class="cover-review-badge warning">Cover check</span></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            <span class="badge review" title="The complete outer edge is a pale product background; verify that the image is a flat full-cover scan rather than a perspective preview.">needs review</span>
+          </div>
+          <h3 title="Batman #706">Batman #706</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000108" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000108">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0707.jpg" data-full-title="Batman #707" data-full-detail="PUB-BAT-0707 | Seq 000108 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0707.jpg" alt="Batman #707 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #707">Batman #707</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000109" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000109">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0708.jpg" data-full-title="Batman #708" data-full-detail="PUB-BAT-0708 | Seq 000109 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0708.jpg" alt="Batman #708 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #708">Batman #708</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000110" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000110">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0709.jpg" data-full-title="Batman #709" data-full-detail="PUB-BAT-0709 | Seq 000110 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0709.jpg" alt="Batman #709 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #709">Batman #709</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000111" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000111">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0710.jpg" data-full-title="Batman #710" data-full-detail="PUB-BAT-0710 | Seq 000111 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0710.jpg" alt="Batman #710 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #710">Batman #710</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000112" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000112">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0711.jpg" data-full-title="Batman #711" data-full-detail="PUB-BAT-0711 | Seq 000112 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0711.jpg" alt="Batman #711 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #711">Batman #711</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000113" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000113">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0712.jpg" data-full-title="Batman #712" data-full-detail="PUB-BAT-0712 | Seq 000113 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0712.jpg" alt="Batman #712 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #712">Batman #712</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000114" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000114">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0713.jpg" data-full-title="Batman #713" data-full-detail="PUB-BAT-0713 | Seq 000114 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0713.jpg" alt="Batman #713 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #713">Batman #713</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="EXCLUDED" data-project="Unmapped story" data-status="missing" data-sequence="000115" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000115">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-legacy-714.jpg" data-full-title="Batman #714" data-full-detail="VIEW-batman-714 | Seq 000115 | EXCLUDED | derived | Unmapped story | Default skip after the core range unless an override policy or tracked item applies. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-legacy-714.jpg" alt="Batman #714 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">EXCLUDED</span>
+            
+          </div>
+          <h3 title="Batman #714">Batman #714</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    </section>
+  </main>
+  <div class="lightbox" aria-modal="true" role="dialog" aria-label="Cover preview">
+    <div class="lightbox-panel">
+      <img src="" alt="">
+      <div class="lightbox-caption">
+        <div>
+          <div class="lightbox-title"></div>
+          <div class="lightbox-detail"></div>
+        </div>
+        <button class="lightbox-close" type="button" data-lightbox-close>Close</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const state = { order: 'all', scope: 'all', project: 'all', status: 'all' };
+    const grid = document.querySelector('.grid');
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImage = document.querySelector('.lightbox img');
+    const lightboxTitle = document.querySelector('.lightbox-title');
+    const lightboxDetail = document.querySelector('.lightbox-detail');
+    const controls = document.querySelector('.controls');
+    const filterToggle = document.querySelector('.filter-toggle');
+    filterToggle.addEventListener('click', () => {
+      const open = controls.classList.toggle('open');
+      filterToggle.setAttribute('aria-expanded', String(open));
+    });
+    document.querySelectorAll('.chip').forEach(button => {
+      button.addEventListener('click', () => {
+        const group = button.dataset.filter;
+        state[group] = button.dataset.value;
+        document.querySelectorAll(`.chip[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item === button));
+        applyFilters();
+      });
+    });
+    function applyFilters() {
+      document.querySelectorAll('.comic-card').forEach(card => {
+        const visible = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]));
+        card.classList.toggle('hidden', !visible);
+      });
+      sortCards();
+    }
+    function sortCards() {
+      [...document.querySelectorAll('.comic-card')]
+        .sort((left, right) => sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent))
+        .forEach(card => grid.appendChild(card));
+    }
+    function sequenceForCard(card) {
+      const order = state.order === 'all' ? 'all' : state.order;
+      if (order === 'publication') {
+        return scopedSequence(card, 'publicationSequence');
+      }
+      if (order === 'chronological') {
+        return scopedSequence(card, 'chronologicalSequence');
+      }
+      const byOrder = sequenceMap(card.dataset.orderSequences);
+      if (byOrder[order]) {
+        return sortValue(byOrder[order]);
+      }
+      const chronological = scopedSequence(card, 'chronologicalSequence');
+      return chronological < 999999 ? chronological : sortValue(card.dataset.sequence);
+    }
+    function scopedSequence(card, orderKey) {
+      const scoped = sequenceMap(card.dataset[`${orderKey}s`]);
+      if (state.scope !== 'all' && scoped[state.scope]) {
+        return sortValue(scoped[state.scope]);
+      }
+      return sortValue(card.dataset[orderKey]);
+    }
+    function sequenceMap(value) {
+      return Object.fromEntries((value || '').split('|').filter(Boolean).map(item => {
+        const [scope, sequence] = item.split(':');
+        return [scope, sequence];
+      }));
+    }
+    function sortValue(value) {
+      const parsed = Number.parseFloat(value || '999999');
+      if (Number.isFinite(parsed)) {
+        return parsed;
+      }
+        const embedded = String(value || '').match(/\d+(\.\d+)?/);
+      return embedded ? Number.parseFloat(embedded[0]) : 999999;
+    }
+    document.querySelectorAll('.cover-button').forEach(button => {
+      button.addEventListener('click', () => {
+        lightboxImage.src = button.dataset.fullSrc;
+        lightboxImage.alt = `${button.dataset.fullTitle} cover`;
+        lightboxTitle.textContent = button.dataset.fullTitle;
+        lightboxDetail.textContent = button.dataset.fullDetail || '';
+        lightbox.classList.add('open');
+      });
+    });
+    document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
+    lightbox.addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeLightbox();
+    });
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightboxImage.removeAttribute('src');
+      lightboxImage.removeAttribute('alt');
+      lightboxTitle.textContent = '';
+      lightboxDetail.textContent = '';
+    }
+    applyFilters();
+    </script>
+</body>
+</html>

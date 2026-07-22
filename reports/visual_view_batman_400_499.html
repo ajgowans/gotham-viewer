@@ -53,11 +53,12 @@
     .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
     .comic-card.cover-needs_review { border-color: #a46a00; }
     .comic-card.cover-rejected_auto { border-color: #b42318; }
-    .card-body { padding: 10px 11px 12px; height: 205px; display: flex; flex-direction: column; overflow: hidden; }
+    .card-body { padding: 10px 11px 12px; min-height: 86px; display: flex; flex-direction: column; overflow: hidden; }
     .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
     .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
     .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
     h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .publication-date { margin: auto 0 0; color: var(--muted); font-size: 12px; line-height: 1.3; }
     .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
     .pub-id { -webkit-line-clamp: 1; }
     .meta, .continuity { -webkit-line-clamp: 2; }
@@ -70,8 +71,8 @@
     .hidden { display: none; }
     .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
     .lightbox.open { display: flex; }
-    .lightbox-panel { max-width: min(92vw, 980px); max-height: 94vh; display: grid; gap: 10px; }
-    .lightbox img { max-width: 100%; max-height: calc(94vh - 56px); object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-panel { width: min(92vw, 980px); height: 94vh; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; align-items: center; justify-items: center; }
+    .lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; align-self: center; }
     .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
     .lightbox-title { font-weight: 750; }
     .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
@@ -141,136 +142,112 @@
     <section class="grid">
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000001">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0400.jpg" data-full-title="Batman #400" data-full-detail="PUB-BAT-0400 | Seq 000001 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0400.jpg" alt="Batman #400 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0400.jpg" data-full-title="Batman #400" data-full-detail="Published 1986-07-09 | PUB-BAT-0400 | Seq 000001 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | https://dc.fandom.com/wiki/Batman_Vol_1_400 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0400.jpg" alt="Batman #400 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">OPPORTUNISTIC</span>
             
           </div>
           <h3 title="Batman #400">Batman #400</h3>
-          <p class="pub-id" title="PUB-BAT-0400">PUB-BAT-0400</p>
-          <p class="meta" title="Seq 000001 | OPPORTUNISTIC | derived">Seq 000001 | OPPORTUNISTIC | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+          <p class="publication-date">Published 1986-07-09</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000002">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0401.jpg" data-full-title="Batman #401" data-full-detail="PUB-BAT-0401 | Seq 000002 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0401.jpg" alt="Batman #401 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0401.jpg" data-full-title="Batman #401" data-full-detail="Published 1986-07-16 | PUB-BAT-0401 | Seq 000002 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | https://dc.fandom.com/wiki/Batman_Vol_1_401 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0401.jpg" alt="Batman #401 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">OPPORTUNISTIC</span>
             
           </div>
           <h3 title="Batman #401">Batman #401</h3>
-          <p class="pub-id" title="PUB-BAT-0401">PUB-BAT-0401</p>
-          <p class="meta" title="Seq 000002 | OPPORTUNISTIC | derived">Seq 000002 | OPPORTUNISTIC | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+          <p class="publication-date">Published 1986-07-16</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000003">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0402.jpg" data-full-title="Batman #402" data-full-detail="PUB-BAT-0402 | Seq 000003 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0402.jpg" alt="Batman #402 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0402.jpg" data-full-title="Batman #402" data-full-detail="Published 1986-08-20 | PUB-BAT-0402 | Seq 000003 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | https://dc.fandom.com/wiki/Batman_Vol_1_402 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0402.jpg" alt="Batman #402 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">OPPORTUNISTIC</span>
             
           </div>
           <h3 title="Batman #402">Batman #402</h3>
-          <p class="pub-id" title="PUB-BAT-0402">PUB-BAT-0402</p>
-          <p class="meta" title="Seq 000003 | OPPORTUNISTIC | derived">Seq 000003 | OPPORTUNISTIC | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+          <p class="publication-date">Published 1986-08-20</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="OPPORTUNISTIC" data-project="Unmapped story" data-status="missing" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000004">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0403.jpg" data-full-title="Batman #403" data-full-detail="PUB-BAT-0403 | Seq 000004 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0403.jpg" alt="Batman #403 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0403.jpg" data-full-title="Batman #403" data-full-detail="Published 1986-09-17 | PUB-BAT-0403 | Seq 000004 | OPPORTUNISTIC | derived | Unmapped story | Older Batman issues are opportunistic purchases when not already owned or ordered. | https://dc.fandom.com/wiki/Batman_Vol_1_403 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0403.jpg" alt="Batman #403 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">OPPORTUNISTIC</span>
             
           </div>
           <h3 title="Batman #403">Batman #403</h3>
-          <p class="pub-id" title="PUB-BAT-0403">PUB-BAT-0403</p>
-          <p class="meta" title="Seq 000004 | OPPORTUNISTIC | derived">Seq 000004 | OPPORTUNISTIC | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Older Batman issues are opportunistic purchases when not already owned or ordered.">Older Batman issues are opportunistic purchases when not already owned or ordered.</p>
+          <p class="publication-date">Published 1986-09-17</p>
         </div>
       </article>
     
 
       <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Year One" data-status="facsimile" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000005">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0404.jpg" data-full-title="Batman #404" data-full-detail="PUB-BAT-0404 | Seq 000005 | COMPLETE_RUN | derived | Year One | Owned as a facsimile/readable copy; original can remain an upgrade target. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0404.jpg" alt="Batman #404 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0404.jpg" data-full-title="Batman #404" data-full-detail="Published 1986-10-22 | PUB-BAT-0404 | Seq 000005 | COMPLETE_RUN | derived | Year One | Owned as a facsimile/readable copy; original can remain an upgrade target. | https://dc.fandom.com/wiki/Batman_Vol_1_404 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0404.jpg" alt="Batman #404 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #404">Batman #404</h3>
-          <p class="pub-id" title="PUB-BAT-0404">PUB-BAT-0404</p>
-          <p class="meta" title="Seq 000005 | COMPLETE_RUN | derived">Seq 000005 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Year One">Year One</p>
-          <p class="notes" title="Owned as a facsimile/readable copy; original can remain an upgrade target.">Owned as a facsimile/readable copy; original can remain an upgrade target.</p>
+          <p class="publication-date">Published 1986-10-22</p>
         </div>
       </article>
     
 
       <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Year One" data-status="facsimile" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000006">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0405.jpg" data-full-title="Batman #405" data-full-detail="PUB-BAT-0405 | Seq 000006 | COMPLETE_RUN | derived | Year One | Owned as a facsimile/readable copy; original can remain an upgrade target. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0405.jpg" alt="Batman #405 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0405.jpg" data-full-title="Batman #405" data-full-detail="Published 1986-11-19 | PUB-BAT-0405 | Seq 000006 | COMPLETE_RUN | derived | Year One | Owned as a facsimile/readable copy; original can remain an upgrade target. | https://dc.fandom.com/wiki/Batman_Vol_1_405 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0405.jpg" alt="Batman #405 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #405">Batman #405</h3>
-          <p class="pub-id" title="PUB-BAT-0405">PUB-BAT-0405</p>
-          <p class="meta" title="Seq 000006 | COMPLETE_RUN | derived">Seq 000006 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Year One">Year One</p>
-          <p class="notes" title="Owned as a facsimile/readable copy; original can remain an upgrade target.">Owned as a facsimile/readable copy; original can remain an upgrade target.</p>
+          <p class="publication-date">Published 1986-11-19</p>
         </div>
       </article>
     
 
       <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Year One" data-status="facsimile" data-sequence="000007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000007">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0406.jpg" data-full-title="Batman #406" data-full-detail="PUB-BAT-0406 | Seq 000007 | COMPLETE_RUN | derived | Year One | Owned as a facsimile/readable copy; original can remain an upgrade target. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0406.jpg" alt="Batman #406 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0406.jpg" data-full-title="Batman #406" data-full-detail="Published 1986-12-17 | PUB-BAT-0406 | Seq 000007 | COMPLETE_RUN | derived | Year One | Owned as a facsimile/readable copy; original can remain an upgrade target. | https://dc.fandom.com/wiki/Batman_Vol_1_406 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0406.jpg" alt="Batman #406 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #406">Batman #406</h3>
-          <p class="pub-id" title="PUB-BAT-0406">PUB-BAT-0406</p>
-          <p class="meta" title="Seq 000007 | COMPLETE_RUN | derived">Seq 000007 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Year One">Year One</p>
-          <p class="notes" title="Owned as a facsimile/readable copy; original can remain an upgrade target.">Owned as a facsimile/readable copy; original can remain an upgrade target.</p>
+          <p class="publication-date">Published 1986-12-17</p>
         </div>
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Year One" data-status="facsimile" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000008">
+      <article class="comic-card facsimile cover-needs_review" data-order="series" data-scope="COMPLETE_RUN" data-project="Year One" data-status="facsimile" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000008">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0407.jpg" data-full-title="Batman #407" data-full-detail="PUB-BAT-0407 | Seq 000008 | COMPLETE_RUN | derived | Year One | Owned as a facsimile/readable copy; original can remain an upgrade target. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0407.jpg" alt="Batman #407 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0407.jpg" data-full-title="Batman #407" data-full-detail="Published 1987-01-21 | PUB-BAT-0407 | Seq 000008 | COMPLETE_RUN | derived | Year One | Owned as a facsimile/readable copy; original can remain an upgrade target. | https://dc.fandom.com/wiki/Batman_Vol_1_407 | embedded_black_border | Most outer-edge pixels are black while the cover interior is brighter; the image may contain a scanned black frame."><img src="../assets/covers/display/PUB-BAT-0407.jpg" alt="Batman #407 cover"></button><span class="cover-review-badge warning">Cover check</span></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
-            
+            <span class="badge review" title="Most outer-edge pixels are black while the cover interior is brighter; the image may contain a scanned black frame.">needs review</span>
           </div>
           <h3 title="Batman #407">Batman #407</h3>
-          <p class="pub-id" title="PUB-BAT-0407">PUB-BAT-0407</p>
-          <p class="meta" title="Seq 000008 | COMPLETE_RUN | derived">Seq 000008 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Year One">Year One</p>
-          <p class="notes" title="Owned as a facsimile/readable copy; original can remain an upgrade target.">Owned as a facsimile/readable copy; original can remain an upgrade target.</p>
+          <p class="publication-date">Published 1987-01-21</p>
         </div>
       </article>
     
@@ -284,10 +261,7 @@
             
           </div>
           <h3 title="Batman #408">Batman #408</h3>
-          <p class="pub-id" title="PUB-BAT-0408">PUB-BAT-0408</p>
-          <p class="meta" title="Seq 000009 | COMPLETE_RUN | derived">Seq 000009 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -301,10 +275,7 @@
             
           </div>
           <h3 title="Batman #409">Batman #409</h3>
-          <p class="pub-id" title="PUB-BAT-0409">PUB-BAT-0409</p>
-          <p class="meta" title="Seq 000010 | COMPLETE_RUN | derived">Seq 000010 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -318,10 +289,7 @@
             
           </div>
           <h3 title="Batman #410">Batman #410</h3>
-          <p class="pub-id" title="PUB-BAT-0410">PUB-BAT-0410</p>
-          <p class="meta" title="Seq 000011 | COMPLETE_RUN | derived">Seq 000011 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -335,10 +303,7 @@
             
           </div>
           <h3 title="Batman #411">Batman #411</h3>
-          <p class="pub-id" title="PUB-BAT-0411">PUB-BAT-0411</p>
-          <p class="meta" title="Seq 000012 | COMPLETE_RUN | derived">Seq 000012 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -352,10 +317,7 @@
             
           </div>
           <h3 title="Batman #412">Batman #412</h3>
-          <p class="pub-id" title="PUB-BAT-0412">PUB-BAT-0412</p>
-          <p class="meta" title="Seq 000013 | COMPLETE_RUN | derived">Seq 000013 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -369,10 +331,7 @@
             
           </div>
           <h3 title="Batman #413">Batman #413</h3>
-          <p class="pub-id" title="PUB-BAT-0413">PUB-BAT-0413</p>
-          <p class="meta" title="Seq 000014 | COMPLETE_RUN | derived">Seq 000014 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -386,10 +345,7 @@
             
           </div>
           <h3 title="Batman #414">Batman #414</h3>
-          <p class="pub-id" title="PUB-BAT-0414">PUB-BAT-0414</p>
-          <p class="meta" title="Seq 000015 | COMPLETE_RUN | derived">Seq 000015 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -403,10 +359,7 @@
             
           </div>
           <h3 title="Batman #415">Batman #415</h3>
-          <p class="pub-id" title="PUB-BAT-0415">PUB-BAT-0415</p>
-          <p class="meta" title="Seq 000016 | COMPLETE_RUN | derived">Seq 000016 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a one-issue gap between owned issues. | Nearby ownership context: fills a one-issue gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a one-issue gap between owned issues. | Nearby ownership context: fills a one-issue gap.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -420,10 +373,7 @@
             
           </div>
           <h3 title="Batman #416">Batman #416</h3>
-          <p class="pub-id" title="PUB-BAT-0416">PUB-BAT-0416</p>
-          <p class="meta" title="Seq 000017 | COMPLETE_RUN | derived">Seq 000017 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -437,10 +387,7 @@
             
           </div>
           <h3 title="Batman #417">Batman #417</h3>
-          <p class="pub-id" title="PUB-BAT-0417">PUB-BAT-0417</p>
-          <p class="meta" title="Seq 000018 | COMPLETE_RUN | derived">Seq 000018 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -454,10 +401,7 @@
             
           </div>
           <h3 title="Batman #418">Batman #418</h3>
-          <p class="pub-id" title="PUB-BAT-0418">PUB-BAT-0418</p>
-          <p class="meta" title="Seq 000019 | COMPLETE_RUN | derived">Seq 000019 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -471,10 +415,7 @@
             
           </div>
           <h3 title="Batman #419">Batman #419</h3>
-          <p class="pub-id" title="PUB-BAT-0419">PUB-BAT-0419</p>
-          <p class="meta" title="Seq 000020 | COMPLETE_RUN | derived">Seq 000020 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -488,10 +429,7 @@
             
           </div>
           <h3 title="Batman #420">Batman #420</h3>
-          <p class="pub-id" title="PUB-BAT-0420">PUB-BAT-0420</p>
-          <p class="meta" title="Seq 000021 | COMPLETE_RUN | derived">Seq 000021 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -505,10 +443,7 @@
             
           </div>
           <h3 title="Batman #421">Batman #421</h3>
-          <p class="pub-id" title="PUB-BAT-0421">PUB-BAT-0421</p>
-          <p class="meta" title="Seq 000022 | COMPLETE_RUN | derived">Seq 000022 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -522,10 +457,7 @@
             
           </div>
           <h3 title="Batman #422">Batman #422</h3>
-          <p class="pub-id" title="PUB-BAT-0422">PUB-BAT-0422</p>
-          <p class="meta" title="Seq 000023 | COMPLETE_RUN | derived">Seq 000023 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -539,10 +471,7 @@
             
           </div>
           <h3 title="Batman #423">Batman #423</h3>
-          <p class="pub-id" title="PUB-BAT-0423">PUB-BAT-0423</p>
-          <p class="meta" title="Seq 000024 | COMPLETE_RUN | derived">Seq 000024 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -556,10 +485,7 @@
             
           </div>
           <h3 title="Batman #424">Batman #424</h3>
-          <p class="pub-id" title="PUB-BAT-0424">PUB-BAT-0424</p>
-          <p class="meta" title="Seq 000025 | COMPLETE_RUN | derived">Seq 000025 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -573,78 +499,63 @@
             
           </div>
           <h3 title="Batman #425">Batman #425</h3>
-          <p class="pub-id" title="PUB-BAT-0425">PUB-BAT-0425</p>
-          <p class="meta" title="Seq 000026 | COMPLETE_RUN | derived">Seq 000026 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="A Death In The Family" data-status="owned" data-sequence="000027" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000027">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0426.jpg" data-full-title="Batman #426" data-full-detail="PUB-BAT-0426 | Seq 000027 | COMPLETE_RUN | derived | A Death In The Family | Owned as an original individual issue. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0426.jpg" alt="Batman #426 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0426.jpg" data-full-title="Batman #426" data-full-detail="Published 1988-08-24 | PUB-BAT-0426 | Seq 000027 | COMPLETE_RUN | derived | A Death In The Family | Owned as an original individual issue. | https://dc.fandom.com/wiki/Batman_Vol_1_426 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0426.jpg" alt="Batman #426 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #426">Batman #426</h3>
-          <p class="pub-id" title="PUB-BAT-0426">PUB-BAT-0426</p>
-          <p class="meta" title="Seq 000027 | COMPLETE_RUN | derived">Seq 000027 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="A Death In The Family">A Death In The Family</p>
-          <p class="notes" title="Owned as an original individual issue.">Owned as an original individual issue.</p>
+          <p class="publication-date">Published 1988-08-24</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="A Death In The Family" data-status="owned" data-sequence="000028" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000028">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0427.jpg" data-full-title="Batman #427" data-full-detail="PUB-BAT-0427 | Seq 000028 | COMPLETE_RUN | derived | A Death In The Family | Owned as an original individual issue. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0427.jpg" alt="Batman #427 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0427.jpg" data-full-title="Batman #427" data-full-detail="Published 1988-09-07 | PUB-BAT-0427 | Seq 000028 | COMPLETE_RUN | derived | A Death In The Family | Owned as an original individual issue. | https://dc.fandom.com/wiki/Batman_Vol_1_427 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0427.jpg" alt="Batman #427 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #427">Batman #427</h3>
-          <p class="pub-id" title="PUB-BAT-0427">PUB-BAT-0427</p>
-          <p class="meta" title="Seq 000028 | COMPLETE_RUN | derived">Seq 000028 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="A Death In The Family">A Death In The Family</p>
-          <p class="notes" title="Owned as an original individual issue.">Owned as an original individual issue.</p>
+          <p class="publication-date">Published 1988-09-07</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="A Death In The Family" data-status="owned" data-sequence="000029" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000029">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0428.jpg" data-full-title="Batman #428" data-full-detail="PUB-BAT-0428 | Seq 000029 | COMPLETE_RUN | derived | A Death In The Family | Owned as an original individual issue. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0428.jpg" alt="Batman #428 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0428.jpg" data-full-title="Batman #428" data-full-detail="Published 1988-10-19 | PUB-BAT-0428 | Seq 000029 | COMPLETE_RUN | derived | A Death In The Family | Owned as an original individual issue. | https://dc.fandom.com/wiki/Batman_Vol_1_428 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0428.jpg" alt="Batman #428 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #428">Batman #428</h3>
-          <p class="pub-id" title="PUB-BAT-0428">PUB-BAT-0428</p>
-          <p class="meta" title="Seq 000029 | COMPLETE_RUN | derived">Seq 000029 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="A Death In The Family">A Death In The Family</p>
-          <p class="notes" title="Owned as an original individual issue.">Owned as an original individual issue.</p>
+          <p class="publication-date">Published 1988-10-19</p>
         </div>
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="A Death In The Family" data-status="owned" data-sequence="000030" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000030">
+      <article class="comic-card owned cover-needs_review" data-order="series" data-scope="COMPLETE_RUN" data-project="A Death In The Family" data-status="owned" data-sequence="000030" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000030">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0429.jpg" data-full-title="Batman #429" data-full-detail="PUB-BAT-0429 | Seq 000030 | COMPLETE_RUN | derived | A Death In The Family | Owned as an original individual issue. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0429.jpg" alt="Batman #429 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0429.jpg" data-full-title="Batman #429" data-full-detail="Published 1988-11 | PUB-BAT-0429 | Seq 000030 | COMPLETE_RUN | derived | A Death In The Family | Owned as an original individual issue. | https://dc.fandom.com/wiki/Batman_Vol_1_429 | embedded_black_border | Most outer-edge pixels are black while the cover interior is brighter; the image may contain a scanned black frame."><img src="../assets/covers/display/PUB-BAT-0429.jpg" alt="Batman #429 cover"></button><span class="cover-review-badge warning">Cover check</span></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
-            
+            <span class="badge review" title="Most outer-edge pixels are black while the cover interior is brighter; the image may contain a scanned black frame.">needs review</span>
           </div>
           <h3 title="Batman #429">Batman #429</h3>
-          <p class="pub-id" title="PUB-BAT-0429">PUB-BAT-0429</p>
-          <p class="meta" title="Seq 000030 | COMPLETE_RUN | derived">Seq 000030 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="A Death In The Family">A Death In The Family</p>
-          <p class="notes" title="Owned as an original individual issue.">Owned as an original individual issue.</p>
+          <p class="publication-date">Published 1988-11</p>
         </div>
       </article>
     
@@ -658,10 +569,7 @@
             
           </div>
           <h3 title="Batman #430">Batman #430</h3>
-          <p class="pub-id" title="PUB-BAT-0430">PUB-BAT-0430</p>
-          <p class="meta" title="Seq 000031 | COMPLETE_RUN | derived">Seq 000031 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Fatal Wish">Fatal Wish</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -675,10 +583,7 @@
             
           </div>
           <h3 title="Batman #431">Batman #431</h3>
-          <p class="pub-id" title="PUB-BAT-0431">PUB-BAT-0431</p>
-          <p class="meta" title="Seq 000032 | COMPLETE_RUN | derived">Seq 000032 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a one-issue gap between owned issues. | Nearby ownership context: fills a one-issue gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a one-issue gap between owned issues. | Nearby ownership context: fills a one-issue gap.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -692,27 +597,21 @@
             
           </div>
           <h3 title="Batman #432">Batman #432</h3>
-          <p class="pub-id" title="PUB-BAT-0432">PUB-BAT-0432</p>
-          <p class="meta" title="Seq 000033 | COMPLETE_RUN | derived">Seq 000033 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Dead Letter Office">Dead Letter Office</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="The Many Deaths Of..." data-status="owned" data-sequence="000034" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000034">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0433.jpg" data-full-title="Batman #433" data-full-detail="PUB-BAT-0433 | Seq 000034 | COMPLETE_RUN | derived | The Many Deaths Of... | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0433.jpg" alt="Batman #433 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0433.jpg" data-full-title="Batman #433" data-full-detail="Published 1989-03 | PUB-BAT-0433 | Seq 000034 | COMPLETE_RUN | derived | The Many Deaths Of... | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_433 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0433.jpg" alt="Batman #433 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #433">Batman #433</h3>
-          <p class="pub-id" title="PUB-BAT-0433">PUB-BAT-0433</p>
-          <p class="meta" title="Seq 000034 | COMPLETE_RUN | derived">Seq 000034 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="The Many Deaths Of...">The Many Deaths Of...</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1989-03</p>
         </div>
       </article>
     
@@ -726,10 +625,7 @@
             
           </div>
           <h3 title="Batman #434">Batman #434</h3>
-          <p class="pub-id" title="PUB-BAT-0434">PUB-BAT-0434</p>
-          <p class="meta" title="Seq 000035 | COMPLETE_RUN | derived">Seq 000035 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="The Many Deaths Of...">The Many Deaths Of...</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -743,231 +639,189 @@
             
           </div>
           <h3 title="Batman #435">Batman #435</h3>
-          <p class="pub-id" title="PUB-BAT-0435">PUB-BAT-0435</p>
-          <p class="meta" title="Seq 000036 | COMPLETE_RUN | derived">Seq 000036 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="The Many Deaths Of...">The Many Deaths Of...</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Year Three" data-status="owned" data-sequence="000037" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000037">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0436.jpg" data-full-title="Batman #436" data-full-detail="PUB-BAT-0436 | Seq 000037 | COMPLETE_RUN | derived | Year Three | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0436.jpg" alt="Batman #436 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0436.jpg" data-full-title="Batman #436" data-full-detail="Published 1989-06 | PUB-BAT-0436 | Seq 000037 | COMPLETE_RUN | derived | Year Three | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_436 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0436.jpg" alt="Batman #436 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #436">Batman #436</h3>
-          <p class="pub-id" title="PUB-BAT-0436">PUB-BAT-0436</p>
-          <p class="meta" title="Seq 000037 | COMPLETE_RUN | derived">Seq 000037 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Year Three">Year Three</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1989-06</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Year Three" data-status="owned" data-sequence="000038" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000038">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0437.jpg" data-full-title="Batman #437" data-full-detail="PUB-BAT-0437 | Seq 000038 | COMPLETE_RUN | derived | Year Three | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0437.jpg" alt="Batman #437 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0437.jpg" data-full-title="Batman #437" data-full-detail="Published 1989-06 | PUB-BAT-0437 | Seq 000038 | COMPLETE_RUN | derived | Year Three | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_437 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0437.jpg" alt="Batman #437 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #437">Batman #437</h3>
-          <p class="pub-id" title="PUB-BAT-0437">PUB-BAT-0437</p>
-          <p class="meta" title="Seq 000038 | COMPLETE_RUN | derived">Seq 000038 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Year Three">Year Three</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1989-06</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Year Three" data-status="owned" data-sequence="000039" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000039">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0438.jpg" data-full-title="Batman #438" data-full-detail="PUB-BAT-0438 | Seq 000039 | COMPLETE_RUN | derived | Year Three | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0438.jpg" alt="Batman #438 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0438.jpg" data-full-title="Batman #438" data-full-detail="Published 1989-07 | PUB-BAT-0438 | Seq 000039 | COMPLETE_RUN | derived | Year Three | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_438 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0438.jpg" alt="Batman #438 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #438">Batman #438</h3>
-          <p class="pub-id" title="PUB-BAT-0438">PUB-BAT-0438</p>
-          <p class="meta" title="Seq 000039 | COMPLETE_RUN | derived">Seq 000039 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Year Three">Year Three</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1989-07</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Year Three" data-status="owned" data-sequence="000040" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000040">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0439.jpg" data-full-title="Batman #439" data-full-detail="PUB-BAT-0439 | Seq 000040 | COMPLETE_RUN | derived | Year Three | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0439.jpg" alt="Batman #439 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0439.jpg" data-full-title="Batman #439" data-full-detail="Published 1989-07 | PUB-BAT-0439 | Seq 000040 | COMPLETE_RUN | derived | Year Three | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_439 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0439.jpg" alt="Batman #439 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #439">Batman #439</h3>
-          <p class="pub-id" title="PUB-BAT-0439">PUB-BAT-0439</p>
-          <p class="meta" title="Seq 000040 | COMPLETE_RUN | derived">Seq 000040 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Year Three">Year Three</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1989-07</p>
         </div>
       </article>
     
 
       <article class="comic-card readable cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="A Lonely Place of Dying" data-status="readable" data-sequence="000041" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000041">
         <div class="status-strip">Readable</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0440.jpg" data-full-title="Batman #440" data-full-detail="PUB-BAT-0440 | Seq 000041 | COMPLETE_RUN | derived | A Lonely Place of Dying | Readable through an owned collected edition, but no original individual issue is recorded. | Still marked as wanted as an original individual issue despite other readability. | Appears in the consolidated wantlist. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0440.jpg" alt="Batman #440 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0440.jpg" data-full-title="Batman #440" data-full-detail="Published 1989-08-30 | PUB-BAT-0440 | Seq 000041 | COMPLETE_RUN | derived | A Lonely Place of Dying | Readable through an owned collected edition, but no original individual issue is recorded. | Still marked as wanted as an original individual issue despite other readability. | Appears in the consolidated wantlist. | https://dc.fandom.com/wiki/Batman_Vol_1_440 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0440.jpg" alt="Batman #440 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #440">Batman #440</h3>
-          <p class="pub-id" title="PUB-BAT-0440">PUB-BAT-0440</p>
-          <p class="meta" title="Seq 000041 | COMPLETE_RUN | derived">Seq 000041 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="A Lonely Place of Dying">A Lonely Place of Dying</p>
-          <p class="notes" title="Readable through an owned collected edition, but no original individual issue is recorded. | Still marked as wanted as an original individual issue despite other readability. | Appears in the consolidated wantlist.">Readable through an owned collected edition, but no original individual issue is recorded. | Still marked as wanted as an original individual issue despite other readability. | Appears in the consolidated wantlist.</p>
+          <p class="publication-date">Published 1989-08-30</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="A Lonely Place of Dying" data-status="owned" data-sequence="000042" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000042">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0441.jpg" data-full-title="Batman #441" data-full-detail="PUB-BAT-0441 | Seq 000042 | COMPLETE_RUN | derived | A Lonely Place of Dying | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0441.jpg" alt="Batman #441 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0441.jpg" data-full-title="Batman #441" data-full-detail="Published 1989-09-27 | PUB-BAT-0441 | Seq 000042 | COMPLETE_RUN | derived | A Lonely Place of Dying | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_441 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0441.jpg" alt="Batman #441 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #441">Batman #441</h3>
-          <p class="pub-id" title="PUB-BAT-0441">PUB-BAT-0441</p>
-          <p class="meta" title="Seq 000042 | COMPLETE_RUN | derived">Seq 000042 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="A Lonely Place of Dying">A Lonely Place of Dying</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1989-09-27</p>
         </div>
       </article>
     
 
       <article class="comic-card readable cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="A Lonely Place of Dying" data-status="readable" data-sequence="000043" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000043">
         <div class="status-strip">Readable</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0442.jpg" data-full-title="Batman #442" data-full-detail="PUB-BAT-0442 | Seq 000043 | COMPLETE_RUN | derived | A Lonely Place of Dying | Readable through an owned collected edition, but no original individual issue is recorded. | Still marked as wanted as an original individual issue despite other readability. | Appears in the consolidated wantlist. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0442.jpg" alt="Batman #442 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0442.jpg" data-full-title="Batman #442" data-full-detail="Published 1989-11-01 | PUB-BAT-0442 | Seq 000043 | COMPLETE_RUN | derived | A Lonely Place of Dying | Readable through an owned collected edition, but no original individual issue is recorded. | Still marked as wanted as an original individual issue despite other readability. | Appears in the consolidated wantlist. | https://dc.fandom.com/wiki/Batman_Vol_1_442 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0442.jpg" alt="Batman #442 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #442">Batman #442</h3>
-          <p class="pub-id" title="PUB-BAT-0442">PUB-BAT-0442</p>
-          <p class="meta" title="Seq 000043 | COMPLETE_RUN | derived">Seq 000043 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="A Lonely Place of Dying">A Lonely Place of Dying</p>
-          <p class="notes" title="Readable through an owned collected edition, but no original individual issue is recorded. | Still marked as wanted as an original individual issue despite other readability. | Appears in the consolidated wantlist.">Readable through an owned collected edition, but no original individual issue is recorded. | Still marked as wanted as an original individual issue despite other readability. | Appears in the consolidated wantlist.</p>
+          <p class="publication-date">Published 1989-11-01</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Crimesmith" data-status="owned" data-sequence="000044" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000044">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0443.jpg" data-full-title="Batman #443" data-full-detail="PUB-BAT-0443 | Seq 000044 | COMPLETE_RUN | derived | Crimesmith | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0443.jpg" alt="Batman #443 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0443.jpg" data-full-title="Batman #443" data-full-detail="Published 1989-11 | PUB-BAT-0443 | Seq 000044 | COMPLETE_RUN | derived | Crimesmith | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_443 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0443.jpg" alt="Batman #443 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #443">Batman #443</h3>
-          <p class="pub-id" title="PUB-BAT-0443">PUB-BAT-0443</p>
-          <p class="meta" title="Seq 000044 | COMPLETE_RUN | derived">Seq 000044 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Crimesmith">Crimesmith</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1989-11</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Unmapped story" data-status="missing" data-sequence="000045" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000045">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0444.jpg" data-full-title="Batman #444" data-full-detail="PUB-BAT-0444 | Seq 000045 | COMPLETE_RUN | derived | Unmapped story | Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0444.jpg" alt="Batman #444 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0444.jpg" data-full-title="Batman #444" data-full-detail="Published 1989-12 | PUB-BAT-0444 | Seq 000045 | COMPLETE_RUN | derived | Unmapped story | Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap. | https://dc.fandom.com/wiki/Batman_Vol_1_444 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0444.jpg" alt="Batman #444 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #444">Batman #444</h3>
-          <p class="pub-id" title="PUB-BAT-0444">PUB-BAT-0444</p>
-          <p class="meta" title="Seq 000045 | COMPLETE_RUN | derived">Seq 000045 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.</p>
+          <p class="publication-date">Published 1989-12</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Unmapped story" data-status="missing" data-sequence="000046" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000046">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0445.jpg" data-full-title="Batman #445" data-full-detail="PUB-BAT-0445 | Seq 000046 | COMPLETE_RUN | derived | Unmapped story | Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0445.jpg" alt="Batman #445 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0445.jpg" data-full-title="Batman #445" data-full-detail="Published 1990-01 | PUB-BAT-0445 | Seq 000046 | COMPLETE_RUN | derived | Unmapped story | Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap. | https://dc.fandom.com/wiki/Batman_Vol_1_445 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0445.jpg" alt="Batman #445 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #445">Batman #445</h3>
-          <p class="pub-id" title="PUB-BAT-0445">PUB-BAT-0445</p>
-          <p class="meta" title="Seq 000046 | COMPLETE_RUN | derived">Seq 000046 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.</p>
+          <p class="publication-date">Published 1990-01</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Unmapped story" data-status="owned" data-sequence="000047" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000047">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0446.jpg" data-full-title="Batman #446" data-full-detail="PUB-BAT-0446 | Seq 000047 | COMPLETE_RUN | derived | Unmapped story | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0446.jpg" alt="Batman #446 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0446.jpg" data-full-title="Batman #446" data-full-detail="Published 1990-02 | PUB-BAT-0446 | Seq 000047 | COMPLETE_RUN | derived | Unmapped story | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_446 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0446.jpg" alt="Batman #446 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #446">Batman #446</h3>
-          <p class="pub-id" title="PUB-BAT-0446">PUB-BAT-0446</p>
-          <p class="meta" title="Seq 000047 | COMPLETE_RUN | derived">Seq 000047 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1990-02</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Unmapped story" data-status="owned" data-sequence="000048" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000048">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0447.jpg" data-full-title="Batman #447" data-full-detail="PUB-BAT-0447 | Seq 000048 | COMPLETE_RUN | derived | Unmapped story | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0447.jpg" alt="Batman #447 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0447.jpg" data-full-title="Batman #447" data-full-detail="Published 1990-03 | PUB-BAT-0447 | Seq 000048 | COMPLETE_RUN | derived | Unmapped story | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_447 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0447.jpg" alt="Batman #447 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #447">Batman #447</h3>
-          <p class="pub-id" title="PUB-BAT-0447">PUB-BAT-0447</p>
-          <p class="meta" title="Seq 000048 | COMPLETE_RUN | derived">Seq 000048 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1990-03</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="The Penguin Affair" data-status="owned" data-sequence="000049" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000049">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0448.jpg" data-full-title="Batman #448" data-full-detail="PUB-BAT-0448 | Seq 000049 | COMPLETE_RUN | derived | The Penguin Affair | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0448.jpg" alt="Batman #448 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0448.jpg" data-full-title="Batman #448" data-full-detail="Published 1990-04 | PUB-BAT-0448 | Seq 000049 | COMPLETE_RUN | derived | The Penguin Affair | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_448 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0448.jpg" alt="Batman #448 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #448">Batman #448</h3>
-          <p class="pub-id" title="PUB-BAT-0448">PUB-BAT-0448</p>
-          <p class="meta" title="Seq 000049 | COMPLETE_RUN | derived">Seq 000049 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="The Penguin Affair">The Penguin Affair</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1990-04</p>
         </div>
       </article>
     
@@ -981,10 +835,7 @@
             
           </div>
           <h3 title="Batman #449">Batman #449</h3>
-          <p class="pub-id" title="PUB-BAT-0449">PUB-BAT-0449</p>
-          <p class="meta" title="Seq 000050 | COMPLETE_RUN | derived">Seq 000050 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="The Penguin Affair">The Penguin Affair</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -998,10 +849,7 @@
             
           </div>
           <h3 title="Batman #450">Batman #450</h3>
-          <p class="pub-id" title="PUB-BAT-0450">PUB-BAT-0450</p>
-          <p class="meta" title="Seq 000051 | COMPLETE_RUN | derived">Seq 000051 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1015,27 +863,21 @@
             
           </div>
           <h3 title="Batman #451">Batman #451</h3>
-          <p class="pub-id" title="PUB-BAT-0451">PUB-BAT-0451</p>
-          <p class="meta" title="Seq 000052 | COMPLETE_RUN | derived">Seq 000052 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Dark Knight, Dark City" data-status="owned" data-sequence="000053" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000053">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0452.jpg" data-full-title="Batman #452" data-full-detail="PUB-BAT-0452 | Seq 000053 | COMPLETE_RUN | derived | Dark Knight, Dark City | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0452.jpg" alt="Batman #452 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0452.jpg" data-full-title="Batman #452" data-full-detail="Published 1990-06 | PUB-BAT-0452 | Seq 000053 | COMPLETE_RUN | derived | Dark Knight, Dark City | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_452 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0452.jpg" alt="Batman #452 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #452">Batman #452</h3>
-          <p class="pub-id" title="PUB-BAT-0452">PUB-BAT-0452</p>
-          <p class="meta" title="Seq 000053 | COMPLETE_RUN | derived">Seq 000053 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Dark Knight, Dark City">Dark Knight, Dark City</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1990-06</p>
         </div>
       </article>
     
@@ -1049,10 +891,7 @@
             
           </div>
           <h3 title="Batman #453">Batman #453</h3>
-          <p class="pub-id" title="PUB-BAT-0453">PUB-BAT-0453</p>
-          <p class="meta" title="Seq 000054 | COMPLETE_RUN | derived">Seq 000054 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1066,61 +905,49 @@
             
           </div>
           <h3 title="Batman #454">Batman #454</h3>
-          <p class="pub-id" title="PUB-BAT-0454">PUB-BAT-0454</p>
-          <p class="meta" title="Seq 000055 | COMPLETE_RUN | derived">Seq 000055 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a small local gap in an owned run. | Nearby ownership context: inside a small missing gap.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Robin Reborn" data-status="owned" data-sequence="000056" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000056">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0455.jpg" data-full-title="Batman #455" data-full-detail="PUB-BAT-0455 | Seq 000056 | COMPLETE_RUN | derived | Robin Reborn | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0455.jpg" alt="Batman #455 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0455.jpg" data-full-title="Batman #455" data-full-detail="Published 1990-08 | PUB-BAT-0455 | Seq 000056 | COMPLETE_RUN | derived | Robin Reborn | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_455 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0455.jpg" alt="Batman #455 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #455">Batman #455</h3>
-          <p class="pub-id" title="PUB-BAT-0455">PUB-BAT-0455</p>
-          <p class="meta" title="Seq 000056 | COMPLETE_RUN | derived">Seq 000056 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Robin Reborn">Robin Reborn</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1990-08</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Robin Reborn" data-status="owned" data-sequence="000057" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000057">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0456.jpg" data-full-title="Batman #456" data-full-detail="PUB-BAT-0456 | Seq 000057 | COMPLETE_RUN | derived | Robin Reborn | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0456.jpg" alt="Batman #456 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0456.jpg" data-full-title="Batman #456" data-full-detail="Published 1990-09 | PUB-BAT-0456 | Seq 000057 | COMPLETE_RUN | derived | Robin Reborn | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_456 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0456.jpg" alt="Batman #456 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #456">Batman #456</h3>
-          <p class="pub-id" title="PUB-BAT-0456">PUB-BAT-0456</p>
-          <p class="meta" title="Seq 000057 | COMPLETE_RUN | derived">Seq 000057 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Robin Reborn">Robin Reborn</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1990-09</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Robin Reborn" data-status="owned" data-sequence="000058" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000058">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0457.jpg" data-full-title="Batman #457" data-full-detail="PUB-BAT-0457 | Seq 000058 | COMPLETE_RUN | derived | Robin Reborn | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0457.jpg" alt="Batman #457 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0457.jpg" data-full-title="Batman #457" data-full-detail="Published 1990-10 | PUB-BAT-0457 | Seq 000058 | COMPLETE_RUN | derived | Robin Reborn | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_457 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0457.jpg" alt="Batman #457 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #457">Batman #457</h3>
-          <p class="pub-id" title="PUB-BAT-0457">PUB-BAT-0457</p>
-          <p class="meta" title="Seq 000058 | COMPLETE_RUN | derived">Seq 000058 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Robin Reborn">Robin Reborn</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1990-10</p>
         </div>
       </article>
     
@@ -1134,10 +961,7 @@
             
           </div>
           <h3 title="Batman #458">Batman #458</h3>
-          <p class="pub-id" title="PUB-BAT-0458">PUB-BAT-0458</p>
-          <p class="meta" title="Seq 000059 | COMPLETE_RUN | derived">Seq 000059 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1151,10 +975,7 @@
             
           </div>
           <h3 title="Batman #459">Batman #459</h3>
-          <p class="pub-id" title="PUB-BAT-0459">PUB-BAT-0459</p>
-          <p class="meta" title="Seq 000060 | COMPLETE_RUN | derived">Seq 000060 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1168,10 +989,7 @@
             
           </div>
           <h3 title="Batman #460">Batman #460</h3>
-          <p class="pub-id" title="PUB-BAT-0460">PUB-BAT-0460</p>
-          <p class="meta" title="Seq 000061 | COMPLETE_RUN | derived">Seq 000061 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1185,10 +1003,7 @@
             
           </div>
           <h3 title="Batman #461">Batman #461</h3>
-          <p class="pub-id" title="PUB-BAT-0461">PUB-BAT-0461</p>
-          <p class="meta" title="Seq 000062 | COMPLETE_RUN | derived">Seq 000062 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1202,10 +1017,7 @@
             
           </div>
           <h3 title="Batman #462">Batman #462</h3>
-          <p class="pub-id" title="PUB-BAT-0462">PUB-BAT-0462</p>
-          <p class="meta" title="Seq 000063 | COMPLETE_RUN | derived">Seq 000063 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1219,10 +1031,7 @@
             
           </div>
           <h3 title="Batman #463">Batman #463</h3>
-          <p class="pub-id" title="PUB-BAT-0463">PUB-BAT-0463</p>
-          <p class="meta" title="Seq 000064 | COMPLETE_RUN | derived">Seq 000064 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a one-issue gap between owned issues. | Nearby ownership context: fills a one-issue gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a one-issue gap between owned issues. | Nearby ownership context: fills a one-issue gap.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1236,10 +1045,7 @@
             
           </div>
           <h3 title="Batman #464">Batman #464</h3>
-          <p class="pub-id" title="PUB-BAT-0464">PUB-BAT-0464</p>
-          <p class="meta" title="Seq 000065 | COMPLETE_RUN | derived">Seq 000065 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1253,10 +1059,7 @@
             
           </div>
           <h3 title="Batman #465">Batman #465</h3>
-          <p class="pub-id" title="PUB-BAT-0465">PUB-BAT-0465</p>
-          <p class="meta" title="Seq 000066 | COMPLETE_RUN | derived">Seq 000066 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a one-issue gap between owned issues. | Nearby ownership context: fills a one-issue gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a one-issue gap between owned issues. | Nearby ownership context: fills a one-issue gap.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1270,10 +1073,7 @@
             
           </div>
           <h3 title="Batman #466">Batman #466</h3>
-          <p class="pub-id" title="PUB-BAT-0466">PUB-BAT-0466</p>
-          <p class="meta" title="Seq 000067 | COMPLETE_RUN | derived">Seq 000067 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1287,10 +1087,7 @@
             
           </div>
           <h3 title="Batman #467">Batman #467</h3>
-          <p class="pub-id" title="PUB-BAT-0467">PUB-BAT-0467</p>
-          <p class="meta" title="Seq 000068 | COMPLETE_RUN | derived">Seq 000068 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1304,10 +1101,7 @@
             
           </div>
           <h3 title="Batman #468">Batman #468</h3>
-          <p class="pub-id" title="PUB-BAT-0468">PUB-BAT-0468</p>
-          <p class="meta" title="Seq 000069 | COMPLETE_RUN | derived">Seq 000069 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1321,10 +1115,7 @@
             
           </div>
           <h3 title="Batman #469">Batman #469</h3>
-          <p class="pub-id" title="PUB-BAT-0469">PUB-BAT-0469</p>
-          <p class="meta" title="Seq 000070 | COMPLETE_RUN | derived">Seq 000070 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1338,27 +1129,21 @@
             
           </div>
           <h3 title="Batman #470">Batman #470</h3>
-          <p class="pub-id" title="PUB-BAT-0470">PUB-BAT-0470</p>
-          <p class="meta" title="Seq 000071 | COMPLETE_RUN | derived">Seq 000071 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Unmapped story" data-status="owned" data-sequence="000072" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000072">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0471.jpg" data-full-title="Batman #471" data-full-detail="PUB-BAT-0471 | Seq 000072 | COMPLETE_RUN | derived | Unmapped story | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0471.jpg" alt="Batman #471 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0471.jpg" data-full-title="Batman #471" data-full-detail="Published 1991-09 | PUB-BAT-0471 | Seq 000072 | COMPLETE_RUN | derived | Unmapped story | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_471 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0471.jpg" alt="Batman #471 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #471">Batman #471</h3>
-          <p class="pub-id" title="PUB-BAT-0471">PUB-BAT-0471</p>
-          <p class="meta" title="Seq 000072 | COMPLETE_RUN | derived">Seq 000072 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1991-09</p>
         </div>
       </article>
     
@@ -1372,10 +1157,7 @@
             
           </div>
           <h3 title="Batman #472">Batman #472</h3>
-          <p class="pub-id" title="PUB-BAT-0472">PUB-BAT-0472</p>
-          <p class="meta" title="Seq 000073 | COMPLETE_RUN | derived">Seq 000073 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1389,10 +1171,7 @@
             
           </div>
           <h3 title="Batman #473">Batman #473</h3>
-          <p class="pub-id" title="PUB-BAT-0473">PUB-BAT-0473</p>
-          <p class="meta" title="Seq 000074 | COMPLETE_RUN | derived">Seq 000074 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1406,44 +1185,35 @@
             
           </div>
           <h3 title="Batman #474">Batman #474</h3>
-          <p class="pub-id" title="PUB-BAT-0474">PUB-BAT-0474</p>
-          <p class="meta" title="Seq 000075 | COMPLETE_RUN | derived">Seq 000075 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Unmapped story" data-status="missing" data-sequence="000076" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000076">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0475.jpg" data-full-title="Batman #475" data-full-detail="PUB-BAT-0475 | Seq 000076 | COMPLETE_RUN | derived | Unmapped story | Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a one-issue gap between owned issues. | Nearby ownership context: fills a one-issue gap. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0475.jpg" alt="Batman #475 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0475.jpg" data-full-title="Batman #475" data-full-detail="Published 1992-01-22 | PUB-BAT-0475 | Seq 000076 | COMPLETE_RUN | derived | Unmapped story | Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a one-issue gap between owned issues. | Nearby ownership context: fills a one-issue gap. | https://dc.fandom.com/wiki/Batman_Vol_1_475 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0475.jpg" alt="Batman #475 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #475">Batman #475</h3>
-          <p class="pub-id" title="PUB-BAT-0475">PUB-BAT-0475</p>
-          <p class="meta" title="Seq 000076 | COMPLETE_RUN | derived">Seq 000076 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a one-issue gap between owned issues. | Nearby ownership context: fills a one-issue gap.">Core configured Batman collecting era. | Appears in the consolidated wantlist. | Fills a one-issue gap between owned issues. | Nearby ownership context: fills a one-issue gap.</p>
+          <p class="publication-date">Published 1992-01-22</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Unmapped story" data-status="owned" data-sequence="000077" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000077">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0476.jpg" data-full-title="Batman #476" data-full-detail="PUB-BAT-0476 | Seq 000077 | COMPLETE_RUN | derived | Unmapped story | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0476.jpg" alt="Batman #476 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0476.jpg" data-full-title="Batman #476" data-full-detail="Published 1992-02 | PUB-BAT-0476 | Seq 000077 | COMPLETE_RUN | derived | Unmapped story | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_476 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0476.jpg" alt="Batman #476 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #476">Batman #476</h3>
-          <p class="pub-id" title="PUB-BAT-0476">PUB-BAT-0476</p>
-          <p class="meta" title="Seq 000077 | COMPLETE_RUN | derived">Seq 000077 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Unmapped story">Unmapped story</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1992-02</p>
         </div>
       </article>
     
@@ -1457,10 +1227,7 @@
             
           </div>
           <h3 title="Batman #477">Batman #477</h3>
-          <p class="pub-id" title="PUB-BAT-0477">PUB-BAT-0477</p>
-          <p class="meta" title="Seq 000078 | COMPLETE_RUN | derived">Seq 000078 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="A Gotham Tale">A Gotham Tale</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1474,10 +1241,7 @@
             
           </div>
           <h3 title="Batman #478">Batman #478</h3>
-          <p class="pub-id" title="PUB-BAT-0478">PUB-BAT-0478</p>
-          <p class="meta" title="Seq 000079 | COMPLETE_RUN | derived">Seq 000079 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="A Gotham Tale">A Gotham Tale</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1491,10 +1255,7 @@
             
           </div>
           <h3 title="Batman #479">Batman #479</h3>
-          <p class="pub-id" title="PUB-BAT-0479">PUB-BAT-0479</p>
-          <p class="meta" title="Seq 000080 | COMPLETE_RUN | derived">Seq 000080 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Pagan">Pagan</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1508,78 +1269,63 @@
             
           </div>
           <h3 title="Batman #480">Batman #480</h3>
-          <p class="pub-id" title="PUB-BAT-0480">PUB-BAT-0480</p>
-          <p class="meta" title="Seq 000081 | COMPLETE_RUN | derived">Seq 000081 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="To The Father I Never Knew...">To The Father I Never Knew...</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Zeus" data-status="owned" data-sequence="000082" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000082">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0481.jpg" data-full-title="Batman #481" data-full-detail="PUB-BAT-0481 | Seq 000082 | COMPLETE_RUN | derived | Zeus | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0481.jpg" alt="Batman #481 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0481.jpg" data-full-title="Batman #481" data-full-detail="Published 1992-05 | PUB-BAT-0481 | Seq 000082 | COMPLETE_RUN | derived | Zeus | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_481 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0481.jpg" alt="Batman #481 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #481">Batman #481</h3>
-          <p class="pub-id" title="PUB-BAT-0481">PUB-BAT-0481</p>
-          <p class="meta" title="Seq 000082 | COMPLETE_RUN | derived">Seq 000082 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Zeus">Zeus</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1992-05</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Zeus" data-status="owned" data-sequence="000083" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000083">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0482.jpg" data-full-title="Batman #482" data-full-detail="PUB-BAT-0482 | Seq 000083 | COMPLETE_RUN | derived | Zeus | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0482.jpg" alt="Batman #482 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0482.jpg" data-full-title="Batman #482" data-full-detail="Published 1992-05 | PUB-BAT-0482 | Seq 000083 | COMPLETE_RUN | derived | Zeus | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_482 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0482.jpg" alt="Batman #482 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #482">Batman #482</h3>
-          <p class="pub-id" title="PUB-BAT-0482">PUB-BAT-0482</p>
-          <p class="meta" title="Seq 000083 | COMPLETE_RUN | derived">Seq 000083 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Zeus">Zeus</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1992-05</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Crash And Burn" data-status="owned" data-sequence="000084" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000084">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0483.jpg" data-full-title="Batman #483" data-full-detail="PUB-BAT-0483 | Seq 000084 | COMPLETE_RUN | derived | Crash And Burn | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0483.jpg" alt="Batman #483 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0483.jpg" data-full-title="Batman #483" data-full-detail="Published 1992-06 | PUB-BAT-0483 | Seq 000084 | COMPLETE_RUN | derived | Crash And Burn | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_483 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0483.jpg" alt="Batman #483 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #483">Batman #483</h3>
-          <p class="pub-id" title="PUB-BAT-0483">PUB-BAT-0483</p>
-          <p class="meta" title="Seq 000084 | COMPLETE_RUN | derived">Seq 000084 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Crash And Burn">Crash And Burn</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1992-06</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Knightfall" data-status="owned" data-sequence="000085" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000085">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0484.jpg" data-full-title="Batman #484" data-full-detail="PUB-BAT-0484 | Seq 000085 | COMPLETE_RUN | derived | Knightfall | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0484.jpg" alt="Batman #484 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0484.jpg" data-full-title="Batman #484" data-full-detail="Published 1992-07 | PUB-BAT-0484 | Seq 000085 | COMPLETE_RUN | derived | Knightfall | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_484 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0484.jpg" alt="Batman #484 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #484">Batman #484</h3>
-          <p class="pub-id" title="PUB-BAT-0484">PUB-BAT-0484</p>
-          <p class="meta" title="Seq 000085 | COMPLETE_RUN | derived">Seq 000085 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Knightfall">Knightfall</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1992-07</p>
         </div>
       </article>
     
@@ -1593,10 +1339,7 @@
             
           </div>
           <h3 title="Batman #485">Batman #485</h3>
-          <p class="pub-id" title="PUB-BAT-0485">PUB-BAT-0485</p>
-          <p class="meta" title="Seq 000086 | COMPLETE_RUN | derived">Seq 000086 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Knightfall">Knightfall</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1610,10 +1353,7 @@
             
           </div>
           <h3 title="Batman #486">Batman #486</h3>
-          <p class="pub-id" title="PUB-BAT-0486">PUB-BAT-0486</p>
-          <p class="meta" title="Seq 000087 | COMPLETE_RUN | derived">Seq 000087 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Knightfall">Knightfall</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1627,10 +1367,7 @@
             
           </div>
           <h3 title="Batman #487">Batman #487</h3>
-          <p class="pub-id" title="PUB-BAT-0487">PUB-BAT-0487</p>
-          <p class="meta" title="Seq 000088 | COMPLETE_RUN | derived">Seq 000088 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Knightfall">Knightfall</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1644,27 +1381,21 @@
             
           </div>
           <h3 title="Batman #488">Batman #488</h3>
-          <p class="pub-id" title="PUB-BAT-0488">PUB-BAT-0488</p>
-          <p class="meta" title="Seq 000089 | COMPLETE_RUN | derived">Seq 000089 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Knightfall">Knightfall</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Knightfall" data-status="owned" data-sequence="000090" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000090">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0489.jpg" data-full-title="Batman #489" data-full-detail="PUB-BAT-0489 | Seq 000090 | COMPLETE_RUN | derived | Knightfall | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0489.jpg" alt="Batman #489 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0489.jpg" data-full-title="Batman #489" data-full-detail="Published 1992-12-23 | PUB-BAT-0489 | Seq 000090 | COMPLETE_RUN | derived | Knightfall | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_489 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0489.jpg" alt="Batman #489 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #489">Batman #489</h3>
-          <p class="pub-id" title="PUB-BAT-0489">PUB-BAT-0489</p>
-          <p class="meta" title="Seq 000090 | COMPLETE_RUN | derived">Seq 000090 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Knightfall">Knightfall</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1992-12-23</p>
         </div>
       </article>
     
@@ -1678,10 +1409,7 @@
             
           </div>
           <h3 title="Batman #490">Batman #490</h3>
-          <p class="pub-id" title="PUB-BAT-0490">PUB-BAT-0490</p>
-          <p class="meta" title="Seq 000091 | COMPLETE_RUN | derived">Seq 000091 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Knightfall">Knightfall</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1695,27 +1423,21 @@
             
           </div>
           <h3 title="Batman #491">Batman #491</h3>
-          <p class="pub-id" title="PUB-BAT-0491">PUB-BAT-0491</p>
-          <p class="meta" title="Seq 000092 | COMPLETE_RUN | derived">Seq 000092 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Knightfall">Knightfall</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Knightfall" data-status="owned" data-sequence="000093" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000093">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0492.jpg" data-full-title="Batman #492" data-full-detail="PUB-BAT-0492 | Seq 000093 | COMPLETE_RUN | derived | Knightfall | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0492.jpg" alt="Batman #492 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0492.jpg" data-full-title="Batman #492" data-full-detail="Published 1993-03-17 | PUB-BAT-0492 | Seq 000093 | COMPLETE_RUN | derived | Knightfall | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_492 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0492.jpg" alt="Batman #492 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #492">Batman #492</h3>
-          <p class="pub-id" title="PUB-BAT-0492">PUB-BAT-0492</p>
-          <p class="meta" title="Seq 000093 | COMPLETE_RUN | derived">Seq 000093 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Knightfall">Knightfall</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1993-03-17</p>
         </div>
       </article>
     
@@ -1729,10 +1451,7 @@
             
           </div>
           <h3 title="Batman #493">Batman #493</h3>
-          <p class="pub-id" title="PUB-BAT-0493">PUB-BAT-0493</p>
-          <p class="meta" title="Seq 000094 | COMPLETE_RUN | derived">Seq 000094 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Knightfall">Knightfall</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1746,10 +1465,7 @@
             
           </div>
           <h3 title="Batman #494">Batman #494</h3>
-          <p class="pub-id" title="PUB-BAT-0494">PUB-BAT-0494</p>
-          <p class="meta" title="Seq 000095 | COMPLETE_RUN | derived">Seq 000095 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Knightfall">Knightfall</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1763,10 +1479,7 @@
             
           </div>
           <h3 title="Batman #495">Batman #495</h3>
-          <p class="pub-id" title="PUB-BAT-0495">PUB-BAT-0495</p>
-          <p class="meta" title="Seq 000096 | COMPLETE_RUN | derived">Seq 000096 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Knightfall">Knightfall</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1780,44 +1493,35 @@
             
           </div>
           <h3 title="Batman #496">Batman #496</h3>
-          <p class="pub-id" title="PUB-BAT-0496">PUB-BAT-0496</p>
-          <p class="meta" title="Seq 000097 | COMPLETE_RUN | derived">Seq 000097 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Knightfall">Knightfall</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Knightfall" data-status="owned" data-sequence="000098" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000098">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0497.jpg" data-full-title="Batman #497" data-full-detail="PUB-BAT-0497 | Seq 000098 | COMPLETE_RUN | derived | Knightfall | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0497.jpg" alt="Batman #497 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0497.jpg" data-full-title="Batman #497" data-full-detail="Published 1993-05-26 | PUB-BAT-0497 | Seq 000098 | COMPLETE_RUN | derived | Knightfall | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_497 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0497.jpg" alt="Batman #497 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #497">Batman #497</h3>
-          <p class="pub-id" title="PUB-BAT-0497">PUB-BAT-0497</p>
-          <p class="meta" title="Seq 000098 | COMPLETE_RUN | derived">Seq 000098 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Knightfall">Knightfall</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1993-05-26</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="COMPLETE_RUN" data-project="Knightfall" data-status="owned" data-sequence="000099" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000099">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0498.jpg" data-full-title="Batman #498" data-full-detail="PUB-BAT-0498 | Seq 000099 | COMPLETE_RUN | derived | Knightfall | Owned; edition type is not recorded yet. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0498.jpg" alt="Batman #498 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0498.jpg" data-full-title="Batman #498" data-full-detail="Published 1993-06-16 | PUB-BAT-0498 | Seq 000099 | COMPLETE_RUN | derived | Knightfall | Owned; edition type is not recorded yet. | https://dc.fandom.com/wiki/Batman_Vol_1_498 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0498.jpg" alt="Batman #498 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">COMPLETE RUN</span>
             
           </div>
           <h3 title="Batman #498">Batman #498</h3>
-          <p class="pub-id" title="PUB-BAT-0498">PUB-BAT-0498</p>
-          <p class="meta" title="Seq 000099 | COMPLETE_RUN | derived">Seq 000099 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Knightfall">Knightfall</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date">Published 1993-06-16</p>
         </div>
       </article>
     
@@ -1831,10 +1535,7 @@
             
           </div>
           <h3 title="Batman #499">Batman #499</h3>
-          <p class="pub-id" title="PUB-BAT-0499">PUB-BAT-0499</p>
-          <p class="meta" title="Seq 000100 | COMPLETE_RUN | derived">Seq 000100 | COMPLETE_RUN | derived</p>
-          <p class="continuity" title="Knightfall">Knightfall</p>
-          <p class="notes" title="Owned; edition type is not recorded yet.">Owned; edition type is not recorded yet.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     </section>
@@ -1930,9 +1631,7 @@
       });
     });
     document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
-    lightbox.addEventListener('click', event => {
-      if (event.target === lightbox) closeLightbox();
-    });
+    lightbox.addEventListener('click', closeLightbox);
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape') closeLightbox();
     });

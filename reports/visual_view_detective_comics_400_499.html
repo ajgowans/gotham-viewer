@@ -53,11 +53,12 @@
     .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
     .comic-card.cover-needs_review { border-color: #a46a00; }
     .comic-card.cover-rejected_auto { border-color: #b42318; }
-    .card-body { padding: 10px 11px 12px; height: 205px; display: flex; flex-direction: column; overflow: hidden; }
+    .card-body { padding: 10px 11px 12px; min-height: 86px; display: flex; flex-direction: column; overflow: hidden; }
     .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
     .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
     .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
     h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .publication-date { margin: auto 0 0; color: var(--muted); font-size: 12px; line-height: 1.3; }
     .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
     .pub-id { -webkit-line-clamp: 1; }
     .meta, .continuity { -webkit-line-clamp: 2; }
@@ -70,8 +71,8 @@
     .hidden { display: none; }
     .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
     .lightbox.open { display: flex; }
-    .lightbox-panel { max-width: min(92vw, 980px); max-height: 94vh; display: grid; gap: 10px; }
-    .lightbox img { max-width: 100%; max-height: calc(94vh - 56px); object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-panel { width: min(92vw, 980px); height: 94vh; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; align-items: center; justify-items: center; }
+    .lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; align-self: center; }
     .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
     .lightbox-title { font-weight: 750; }
     .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
@@ -121,34 +122,28 @@
     <section class="grid">
       <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000001">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-400.jpg" data-full-title="Detective Comics #400" data-full-detail="VIEW-detective-comics-400 | Seq 000001 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_400 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-400.jpg" alt="Detective Comics #400 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-400.jpg" data-full-title="Detective Comics #400" data-full-detail="Published 1970-04-29 | VIEW-detective-comics-400 | Seq 000001 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_400 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_400 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-400.jpg" alt="Detective Comics #400 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #400">Detective Comics #400</h3>
-          <p class="pub-id" title="VIEW-detective-comics-400">VIEW-detective-comics-400</p>
-          <p class="meta" title="Seq 000001">Seq 000001</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_400 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_400 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1970-04-29</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000002">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-401.jpg" data-full-title="Detective Comics #401" data-full-detail="VIEW-detective-comics-401 | Seq 000002 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_401 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-401.jpg" alt="Detective Comics #401 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-401.jpg" data-full-title="Detective Comics #401" data-full-detail="Published 1970-05 | VIEW-detective-comics-401 | Seq 000002 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_401 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_401 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-401.jpg" alt="Detective Comics #401 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #401">Detective Comics #401</h3>
-          <p class="pub-id" title="VIEW-detective-comics-401">VIEW-detective-comics-401</p>
-          <p class="meta" title="Seq 000002">Seq 000002</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_401 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_401 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1970-05</p>
         </div>
       </article>
     
@@ -162,10 +157,7 @@
             
           </div>
           <h3 title="Detective Comics #402">Detective Comics #402</h3>
-          <p class="pub-id" title="VIEW-detective-comics-402">VIEW-detective-comics-402</p>
-          <p class="meta" title="Seq 000003">Seq 000003</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_402 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_402 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -179,95 +171,77 @@
             
           </div>
           <h3 title="Detective Comics #403">Detective Comics #403</h3>
-          <p class="pub-id" title="VIEW-detective-comics-403">VIEW-detective-comics-403</p>
-          <p class="meta" title="Seq 000004">Seq 000004</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_403 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_403 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000005">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-404.jpg" data-full-title="Detective Comics #404" data-full-detail="VIEW-detective-comics-404 | Seq 000005 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_404 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-404.jpg" alt="Detective Comics #404 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-404.jpg" data-full-title="Detective Comics #404" data-full-detail="Published 1970-08 | VIEW-detective-comics-404 | Seq 000005 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_404 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_404 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-404.jpg" alt="Detective Comics #404 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #404">Detective Comics #404</h3>
-          <p class="pub-id" title="VIEW-detective-comics-404">VIEW-detective-comics-404</p>
-          <p class="meta" title="Seq 000005">Seq 000005</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_404 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_404 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1970-08</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000006">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-405.jpg" data-full-title="Detective Comics #405" data-full-detail="VIEW-detective-comics-405 | Seq 000006 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_405 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-405.jpg" alt="Detective Comics #405 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-405.jpg" data-full-title="Detective Comics #405" data-full-detail="Published 1970-09-30 | VIEW-detective-comics-405 | Seq 000006 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_405 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_405 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-405.jpg" alt="Detective Comics #405 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #405">Detective Comics #405</h3>
-          <p class="pub-id" title="VIEW-detective-comics-405">VIEW-detective-comics-405</p>
-          <p class="meta" title="Seq 000006">Seq 000006</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_405 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_405 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1970-09-30</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000007">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-406.jpg" data-full-title="Detective Comics #406" data-full-detail="VIEW-detective-comics-406 | Seq 000007 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_406 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-406.jpg" alt="Detective Comics #406 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-406.jpg" data-full-title="Detective Comics #406" data-full-detail="Published 1970-10-28 | VIEW-detective-comics-406 | Seq 000007 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_406 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_406 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-406.jpg" alt="Detective Comics #406 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #406">Detective Comics #406</h3>
-          <p class="pub-id" title="VIEW-detective-comics-406">VIEW-detective-comics-406</p>
-          <p class="meta" title="Seq 000007">Seq 000007</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_406 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_406 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1970-10-28</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000008">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-407.jpg" data-full-title="Detective Comics #407" data-full-detail="VIEW-detective-comics-407 | Seq 000008 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_407 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-407.jpg" alt="Detective Comics #407 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-407.jpg" data-full-title="Detective Comics #407" data-full-detail="Published 1970-11-25 | VIEW-detective-comics-407 | Seq 000008 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_407 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_407 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-407.jpg" alt="Detective Comics #407 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #407">Detective Comics #407</h3>
-          <p class="pub-id" title="VIEW-detective-comics-407">VIEW-detective-comics-407</p>
-          <p class="meta" title="Seq 000008">Seq 000008</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_407 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_407 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1970-11-25</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000009">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-408.jpg" data-full-title="Detective Comics #408" data-full-detail="VIEW-detective-comics-408 | Seq 000009 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_408 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-408.jpg" alt="Detective Comics #408 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-408.jpg" data-full-title="Detective Comics #408" data-full-detail="Published 1970-12 | VIEW-detective-comics-408 | Seq 000009 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_408 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_408 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-408.jpg" alt="Detective Comics #408 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #408">Detective Comics #408</h3>
-          <p class="pub-id" title="VIEW-detective-comics-408">VIEW-detective-comics-408</p>
-          <p class="meta" title="Seq 000009">Seq 000009</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_408 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_408 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1970-12</p>
         </div>
       </article>
     
@@ -281,10 +255,7 @@
             
           </div>
           <h3 title="Detective Comics #409">Detective Comics #409</h3>
-          <p class="pub-id" title="VIEW-detective-comics-409">VIEW-detective-comics-409</p>
-          <p class="meta" title="Seq 000010">Seq 000010</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_409 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_409 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -298,214 +269,175 @@
             
           </div>
           <h3 title="Detective Comics #410">Detective Comics #410</h3>
-          <p class="pub-id" title="VIEW-detective-comics-410">VIEW-detective-comics-410</p>
-          <p class="meta" title="Seq 000011">Seq 000011</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_410 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_410 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000012">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-411.jpg" data-full-title="Detective Comics #411" data-full-detail="VIEW-detective-comics-411 | Seq 000012 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_411 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-411.jpg" alt="Detective Comics #411 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-411.jpg" data-full-title="Detective Comics #411" data-full-detail="Published 1971-03-31 | VIEW-detective-comics-411 | Seq 000012 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_411 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_411 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-411.jpg" alt="Detective Comics #411 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #411">Detective Comics #411</h3>
-          <p class="pub-id" title="VIEW-detective-comics-411">VIEW-detective-comics-411</p>
-          <p class="meta" title="Seq 000012">Seq 000012</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_411 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_411 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1971-03-31</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000013" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000013">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-412.jpg" data-full-title="Detective Comics #412" data-full-detail="VIEW-detective-comics-412 | Seq 000013 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_412 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-412.jpg" alt="Detective Comics #412 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-412.jpg" data-full-title="Detective Comics #412" data-full-detail="Published 1971-04 | VIEW-detective-comics-412 | Seq 000013 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_412 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_412 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-412.jpg" alt="Detective Comics #412 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #412">Detective Comics #412</h3>
-          <p class="pub-id" title="VIEW-detective-comics-412">VIEW-detective-comics-412</p>
-          <p class="meta" title="Seq 000013">Seq 000013</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_412 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_412 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1971-04</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000014" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000014">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-413.jpg" data-full-title="Detective Comics #413" data-full-detail="VIEW-detective-comics-413 | Seq 000014 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_413 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-413.jpg" alt="Detective Comics #413 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-413.jpg" data-full-title="Detective Comics #413" data-full-detail="Published 1971-05-26 | VIEW-detective-comics-413 | Seq 000014 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_413 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_413 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-413.jpg" alt="Detective Comics #413 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #413">Detective Comics #413</h3>
-          <p class="pub-id" title="VIEW-detective-comics-413">VIEW-detective-comics-413</p>
-          <p class="meta" title="Seq 000014">Seq 000014</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_413 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_413 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1971-05-26</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000015" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000015">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-414.jpg" data-full-title="Detective Comics #414" data-full-detail="VIEW-detective-comics-414 | Seq 000015 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_414 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-414.jpg" alt="Detective Comics #414 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-414.jpg" data-full-title="Detective Comics #414" data-full-detail="Published 1971-06 | VIEW-detective-comics-414 | Seq 000015 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_414 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_414 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-414.jpg" alt="Detective Comics #414 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #414">Detective Comics #414</h3>
-          <p class="pub-id" title="VIEW-detective-comics-414">VIEW-detective-comics-414</p>
-          <p class="meta" title="Seq 000015">Seq 000015</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_414 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_414 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1971-06</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000016" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000016">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-415.jpg" data-full-title="Detective Comics #415" data-full-detail="VIEW-detective-comics-415 | Seq 000016 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_415 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-415.jpg" alt="Detective Comics #415 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-415.jpg" data-full-title="Detective Comics #415" data-full-detail="Published 1971-07 | VIEW-detective-comics-415 | Seq 000016 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_415 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_415 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-415.jpg" alt="Detective Comics #415 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #415">Detective Comics #415</h3>
-          <p class="pub-id" title="VIEW-detective-comics-415">VIEW-detective-comics-415</p>
-          <p class="meta" title="Seq 000016">Seq 000016</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_415 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_415 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1971-07</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000017" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000017">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-416.jpg" data-full-title="Detective Comics #416" data-full-detail="VIEW-detective-comics-416 | Seq 000017 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_416 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-416.jpg" alt="Detective Comics #416 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-416.jpg" data-full-title="Detective Comics #416" data-full-detail="Published 1971-08 | VIEW-detective-comics-416 | Seq 000017 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_416 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_416 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-416.jpg" alt="Detective Comics #416 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #416">Detective Comics #416</h3>
-          <p class="pub-id" title="VIEW-detective-comics-416">VIEW-detective-comics-416</p>
-          <p class="meta" title="Seq 000017">Seq 000017</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_416 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_416 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1971-08</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000018" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000018">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-417.jpg" data-full-title="Detective Comics #417" data-full-detail="VIEW-detective-comics-417 | Seq 000018 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_417 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-417.jpg" alt="Detective Comics #417 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-417.jpg" data-full-title="Detective Comics #417" data-full-detail="Published 1971-09 | VIEW-detective-comics-417 | Seq 000018 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_417 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_417 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-417.jpg" alt="Detective Comics #417 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #417">Detective Comics #417</h3>
-          <p class="pub-id" title="VIEW-detective-comics-417">VIEW-detective-comics-417</p>
-          <p class="meta" title="Seq 000018">Seq 000018</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_417 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_417 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1971-09</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000019" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000019">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-418.jpg" data-full-title="Detective Comics #418" data-full-detail="VIEW-detective-comics-418 | Seq 000019 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_418 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-418.jpg" alt="Detective Comics #418 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-418.jpg" data-full-title="Detective Comics #418" data-full-detail="Published 1971-10 | VIEW-detective-comics-418 | Seq 000019 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_418 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_418 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-418.jpg" alt="Detective Comics #418 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #418">Detective Comics #418</h3>
-          <p class="pub-id" title="VIEW-detective-comics-418">VIEW-detective-comics-418</p>
-          <p class="meta" title="Seq 000019">Seq 000019</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_418 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_418 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1971-10</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000020">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-419.jpg" data-full-title="Detective Comics #419" data-full-detail="VIEW-detective-comics-419 | Seq 000020 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_419 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-419.jpg" alt="Detective Comics #419 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-419.jpg" data-full-title="Detective Comics #419" data-full-detail="Published 1971-11 | VIEW-detective-comics-419 | Seq 000020 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_419 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_419 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-419.jpg" alt="Detective Comics #419 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #419">Detective Comics #419</h3>
-          <p class="pub-id" title="VIEW-detective-comics-419">VIEW-detective-comics-419</p>
-          <p class="meta" title="Seq 000020">Seq 000020</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_419 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_419 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1971-11</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000021">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-420.jpg" data-full-title="Detective Comics #420" data-full-detail="VIEW-detective-comics-420 | Seq 000021 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_420 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-420.jpg" alt="Detective Comics #420 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-420.jpg" data-full-title="Detective Comics #420" data-full-detail="Published 1971-12 | VIEW-detective-comics-420 | Seq 000021 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_420 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_420 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-420.jpg" alt="Detective Comics #420 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #420">Detective Comics #420</h3>
-          <p class="pub-id" title="VIEW-detective-comics-420">VIEW-detective-comics-420</p>
-          <p class="meta" title="Seq 000021">Seq 000021</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_420 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_420 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1971-12</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000022" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000022">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-421.jpg" data-full-title="Detective Comics #421" data-full-detail="VIEW-detective-comics-421 | Seq 000022 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_421 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-421.jpg" alt="Detective Comics #421 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-421.jpg" data-full-title="Detective Comics #421" data-full-detail="Published 1972-01 | VIEW-detective-comics-421 | Seq 000022 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_421 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_421 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-421.jpg" alt="Detective Comics #421 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #421">Detective Comics #421</h3>
-          <p class="pub-id" title="VIEW-detective-comics-421">VIEW-detective-comics-421</p>
-          <p class="meta" title="Seq 000022">Seq 000022</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_421 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_421 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1972-01</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000023" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000023">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-422.jpg" data-full-title="Detective Comics #422" data-full-detail="VIEW-detective-comics-422 | Seq 000023 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_422 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-422.jpg" alt="Detective Comics #422 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-422.jpg" data-full-title="Detective Comics #422" data-full-detail="Published 1972-02 | VIEW-detective-comics-422 | Seq 000023 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_422 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_422 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-422.jpg" alt="Detective Comics #422 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #422">Detective Comics #422</h3>
-          <p class="pub-id" title="VIEW-detective-comics-422">VIEW-detective-comics-422</p>
-          <p class="meta" title="Seq 000023">Seq 000023</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_422 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_422 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1972-02</p>
         </div>
       </article>
     
@@ -519,10 +451,7 @@
             
           </div>
           <h3 title="Detective Comics #423">Detective Comics #423</h3>
-          <p class="pub-id" title="VIEW-detective-comics-423">VIEW-detective-comics-423</p>
-          <p class="meta" title="Seq 000024">Seq 000024</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_423 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_423 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -536,10 +465,7 @@
             
           </div>
           <h3 title="Detective Comics #424">Detective Comics #424</h3>
-          <p class="pub-id" title="VIEW-detective-comics-424">VIEW-detective-comics-424</p>
-          <p class="meta" title="Seq 000025">Seq 000025</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_424 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_424 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -553,10 +479,7 @@
             
           </div>
           <h3 title="Detective Comics #425">Detective Comics #425</h3>
-          <p class="pub-id" title="VIEW-detective-comics-425">VIEW-detective-comics-425</p>
-          <p class="meta" title="Seq 000026">Seq 000026</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_425 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_425 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -570,10 +493,7 @@
             
           </div>
           <h3 title="Detective Comics #426">Detective Comics #426</h3>
-          <p class="pub-id" title="VIEW-detective-comics-426">VIEW-detective-comics-426</p>
-          <p class="meta" title="Seq 000027">Seq 000027</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_426 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_426 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -587,10 +507,7 @@
             
           </div>
           <h3 title="Detective Comics #427">Detective Comics #427</h3>
-          <p class="pub-id" title="VIEW-detective-comics-427">VIEW-detective-comics-427</p>
-          <p class="meta" title="Seq 000028">Seq 000028</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_427 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_427 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -604,10 +521,7 @@
             
           </div>
           <h3 title="Detective Comics #428">Detective Comics #428</h3>
-          <p class="pub-id" title="VIEW-detective-comics-428">VIEW-detective-comics-428</p>
-          <p class="meta" title="Seq 000029">Seq 000029</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_428 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_428 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -621,10 +535,7 @@
             
           </div>
           <h3 title="Detective Comics #429">Detective Comics #429</h3>
-          <p class="pub-id" title="VIEW-detective-comics-429">VIEW-detective-comics-429</p>
-          <p class="meta" title="Seq 000030">Seq 000030</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_429 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_429 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -638,10 +549,7 @@
             
           </div>
           <h3 title="Detective Comics #430">Detective Comics #430</h3>
-          <p class="pub-id" title="VIEW-detective-comics-430">VIEW-detective-comics-430</p>
-          <p class="meta" title="Seq 000031">Seq 000031</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_430 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_430 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -655,10 +563,7 @@
             
           </div>
           <h3 title="Detective Comics #431">Detective Comics #431</h3>
-          <p class="pub-id" title="VIEW-detective-comics-431">VIEW-detective-comics-431</p>
-          <p class="meta" title="Seq 000032">Seq 000032</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_431 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_431 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -672,10 +577,7 @@
             
           </div>
           <h3 title="Detective Comics #432">Detective Comics #432</h3>
-          <p class="pub-id" title="VIEW-detective-comics-432">VIEW-detective-comics-432</p>
-          <p class="meta" title="Seq 000033">Seq 000033</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_432 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_432 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -689,10 +591,7 @@
             
           </div>
           <h3 title="Detective Comics #433">Detective Comics #433</h3>
-          <p class="pub-id" title="VIEW-detective-comics-433">VIEW-detective-comics-433</p>
-          <p class="meta" title="Seq 000034">Seq 000034</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_433 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_433 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -706,10 +605,7 @@
             
           </div>
           <h3 title="Detective Comics #434">Detective Comics #434</h3>
-          <p class="pub-id" title="VIEW-detective-comics-434">VIEW-detective-comics-434</p>
-          <p class="meta" title="Seq 000035">Seq 000035</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_434 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_434 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -723,10 +619,7 @@
             
           </div>
           <h3 title="Detective Comics #435">Detective Comics #435</h3>
-          <p class="pub-id" title="VIEW-detective-comics-435">VIEW-detective-comics-435</p>
-          <p class="meta" title="Seq 000036">Seq 000036</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_435 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_435 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -740,10 +633,7 @@
             
           </div>
           <h3 title="Detective Comics #436">Detective Comics #436</h3>
-          <p class="pub-id" title="VIEW-detective-comics-436">VIEW-detective-comics-436</p>
-          <p class="meta" title="Seq 000037">Seq 000037</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_436 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_436 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -757,10 +647,7 @@
             
           </div>
           <h3 title="Detective Comics #437">Detective Comics #437</h3>
-          <p class="pub-id" title="VIEW-detective-comics-437">VIEW-detective-comics-437</p>
-          <p class="meta" title="Seq 000038">Seq 000038</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_437 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_437 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -774,10 +661,7 @@
             
           </div>
           <h3 title="Detective Comics #438">Detective Comics #438</h3>
-          <p class="pub-id" title="VIEW-detective-comics-438">VIEW-detective-comics-438</p>
-          <p class="meta" title="Seq 000039">Seq 000039</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_438 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_438 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -791,10 +675,7 @@
             
           </div>
           <h3 title="Detective Comics #439">Detective Comics #439</h3>
-          <p class="pub-id" title="VIEW-detective-comics-439">VIEW-detective-comics-439</p>
-          <p class="meta" title="Seq 000040">Seq 000040</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_439 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_439 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -808,10 +689,7 @@
             
           </div>
           <h3 title="Detective Comics #440">Detective Comics #440</h3>
-          <p class="pub-id" title="VIEW-detective-comics-440">VIEW-detective-comics-440</p>
-          <p class="meta" title="Seq 000041">Seq 000041</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_440 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_440 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -825,10 +703,7 @@
             
           </div>
           <h3 title="Detective Comics #441">Detective Comics #441</h3>
-          <p class="pub-id" title="VIEW-detective-comics-441">VIEW-detective-comics-441</p>
-          <p class="meta" title="Seq 000042">Seq 000042</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_441 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_441 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -842,10 +717,7 @@
             
           </div>
           <h3 title="Detective Comics #442">Detective Comics #442</h3>
-          <p class="pub-id" title="VIEW-detective-comics-442">VIEW-detective-comics-442</p>
-          <p class="meta" title="Seq 000043">Seq 000043</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_442 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_442 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -859,10 +731,7 @@
             
           </div>
           <h3 title="Detective Comics #443">Detective Comics #443</h3>
-          <p class="pub-id" title="VIEW-detective-comics-443">VIEW-detective-comics-443</p>
-          <p class="meta" title="Seq 000044">Seq 000044</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_443 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_443 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -876,10 +745,7 @@
             
           </div>
           <h3 title="Detective Comics #444">Detective Comics #444</h3>
-          <p class="pub-id" title="VIEW-detective-comics-444">VIEW-detective-comics-444</p>
-          <p class="meta" title="Seq 000045">Seq 000045</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_444 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_444 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -893,10 +759,7 @@
             
           </div>
           <h3 title="Detective Comics #445">Detective Comics #445</h3>
-          <p class="pub-id" title="VIEW-detective-comics-445">VIEW-detective-comics-445</p>
-          <p class="meta" title="Seq 000046">Seq 000046</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_445 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_445 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -910,10 +773,7 @@
             
           </div>
           <h3 title="Detective Comics #446">Detective Comics #446</h3>
-          <p class="pub-id" title="VIEW-detective-comics-446">VIEW-detective-comics-446</p>
-          <p class="meta" title="Seq 000047">Seq 000047</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_446 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_446 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -927,10 +787,7 @@
             
           </div>
           <h3 title="Detective Comics #447">Detective Comics #447</h3>
-          <p class="pub-id" title="VIEW-detective-comics-447">VIEW-detective-comics-447</p>
-          <p class="meta" title="Seq 000048">Seq 000048</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_447 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_447 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -944,95 +801,77 @@
             
           </div>
           <h3 title="Detective Comics #448">Detective Comics #448</h3>
-          <p class="pub-id" title="VIEW-detective-comics-448">VIEW-detective-comics-448</p>
-          <p class="meta" title="Seq 000049">Seq 000049</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_448 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_448 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000050" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000050">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-449.jpg" data-full-title="Detective Comics #449" data-full-detail="VIEW-detective-comics-449 | Seq 000050 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_449 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-449.jpg" alt="Detective Comics #449 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-449.jpg" data-full-title="Detective Comics #449" data-full-detail="Published 1975-05 | VIEW-detective-comics-449 | Seq 000050 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_449 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_449 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-449.jpg" alt="Detective Comics #449 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #449">Detective Comics #449</h3>
-          <p class="pub-id" title="VIEW-detective-comics-449">VIEW-detective-comics-449</p>
-          <p class="meta" title="Seq 000050">Seq 000050</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_449 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_449 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1975-05</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000051" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000051">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-450.jpg" data-full-title="Detective Comics #450" data-full-detail="VIEW-detective-comics-450 | Seq 000051 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_450 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-450.jpg" alt="Detective Comics #450 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-450.jpg" data-full-title="Detective Comics #450" data-full-detail="Published 1975-05-28 | VIEW-detective-comics-450 | Seq 000051 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_450 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_450 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-450.jpg" alt="Detective Comics #450 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #450">Detective Comics #450</h3>
-          <p class="pub-id" title="VIEW-detective-comics-450">VIEW-detective-comics-450</p>
-          <p class="meta" title="Seq 000051">Seq 000051</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_450 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_450 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1975-05-28</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000052" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000052">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-451.jpg" data-full-title="Detective Comics #451" data-full-detail="VIEW-detective-comics-451 | Seq 000052 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_451 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-451.jpg" alt="Detective Comics #451 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-451.jpg" data-full-title="Detective Comics #451" data-full-detail="Published 1975-07 | VIEW-detective-comics-451 | Seq 000052 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_451 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_451 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-451.jpg" alt="Detective Comics #451 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #451">Detective Comics #451</h3>
-          <p class="pub-id" title="VIEW-detective-comics-451">VIEW-detective-comics-451</p>
-          <p class="meta" title="Seq 000052">Seq 000052</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_451 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_451 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1975-07</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000053" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000053">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-452.jpg" data-full-title="Detective Comics #452" data-full-detail="VIEW-detective-comics-452 | Seq 000053 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_452 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-452.jpg" alt="Detective Comics #452 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-452.jpg" data-full-title="Detective Comics #452" data-full-detail="Published 1975-08 | VIEW-detective-comics-452 | Seq 000053 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_452 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_452 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-452.jpg" alt="Detective Comics #452 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #452">Detective Comics #452</h3>
-          <p class="pub-id" title="VIEW-detective-comics-452">VIEW-detective-comics-452</p>
-          <p class="meta" title="Seq 000053">Seq 000053</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_452 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_452 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1975-08</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000054" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000054">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-453.jpg" data-full-title="Detective Comics #453" data-full-detail="VIEW-detective-comics-453 | Seq 000054 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_453 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-453.jpg" alt="Detective Comics #453 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-453.jpg" data-full-title="Detective Comics #453" data-full-detail="Published 1975-09 | VIEW-detective-comics-453 | Seq 000054 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_453 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_453 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-453.jpg" alt="Detective Comics #453 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #453">Detective Comics #453</h3>
-          <p class="pub-id" title="VIEW-detective-comics-453">VIEW-detective-comics-453</p>
-          <p class="meta" title="Seq 000054">Seq 000054</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_453 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_453 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1975-09</p>
         </div>
       </article>
     
@@ -1046,146 +885,119 @@
             
           </div>
           <h3 title="Detective Comics #454">Detective Comics #454</h3>
-          <p class="pub-id" title="VIEW-detective-comics-454">VIEW-detective-comics-454</p>
-          <p class="meta" title="Seq 000055">Seq 000055</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_454 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_454 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000056" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000056">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-455.jpg" data-full-title="Detective Comics #455" data-full-detail="VIEW-detective-comics-455 | Seq 000056 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_455 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-455.jpg" alt="Detective Comics #455 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-455.jpg" data-full-title="Detective Comics #455" data-full-detail="Published 1975-11 | VIEW-detective-comics-455 | Seq 000056 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_455 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_455 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-455.jpg" alt="Detective Comics #455 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #455">Detective Comics #455</h3>
-          <p class="pub-id" title="VIEW-detective-comics-455">VIEW-detective-comics-455</p>
-          <p class="meta" title="Seq 000056">Seq 000056</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_455 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_455 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1975-11</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="owned" data-sequence="000057" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000057">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-456.jpg" data-full-title="Detective Comics #456" data-full-detail="VIEW-detective-comics-456 | Seq 000057 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_456 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-456.jpg" alt="Detective Comics #456 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-456.jpg" data-full-title="Detective Comics #456" data-full-detail="Published 1975-12 | VIEW-detective-comics-456 | Seq 000057 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_456 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_456 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-456.jpg" alt="Detective Comics #456 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #456">Detective Comics #456</h3>
-          <p class="pub-id" title="VIEW-detective-comics-456">VIEW-detective-comics-456</p>
-          <p class="meta" title="Seq 000057">Seq 000057</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_456 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_456 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1975-12</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000058" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000058">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-457.jpg" data-full-title="Detective Comics #457" data-full-detail="VIEW-detective-comics-457 | Seq 000058 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_457 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-457.jpg" alt="Detective Comics #457 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-457.jpg" data-full-title="Detective Comics #457" data-full-detail="Published 1975-12-31 | VIEW-detective-comics-457 | Seq 000058 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_457 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_457 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-457.jpg" alt="Detective Comics #457 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #457">Detective Comics #457</h3>
-          <p class="pub-id" title="VIEW-detective-comics-457">VIEW-detective-comics-457</p>
-          <p class="meta" title="Seq 000058">Seq 000058</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_457 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_457 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1975-12-31</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000059" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000059">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-458.jpg" data-full-title="Detective Comics #458" data-full-detail="VIEW-detective-comics-458 | Seq 000059 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_458 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-458.jpg" alt="Detective Comics #458 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-458.jpg" data-full-title="Detective Comics #458" data-full-detail="Published 1976-02 | VIEW-detective-comics-458 | Seq 000059 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_458 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_458 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-458.jpg" alt="Detective Comics #458 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #458">Detective Comics #458</h3>
-          <p class="pub-id" title="VIEW-detective-comics-458">VIEW-detective-comics-458</p>
-          <p class="meta" title="Seq 000059">Seq 000059</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_458 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_458 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1976-02</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000060" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000060">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-459.jpg" data-full-title="Detective Comics #459" data-full-detail="VIEW-detective-comics-459 | Seq 000060 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_459 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-459.jpg" alt="Detective Comics #459 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-459.jpg" data-full-title="Detective Comics #459" data-full-detail="Published 1976-03 | VIEW-detective-comics-459 | Seq 000060 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_459 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_459 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-459.jpg" alt="Detective Comics #459 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #459">Detective Comics #459</h3>
-          <p class="pub-id" title="VIEW-detective-comics-459">VIEW-detective-comics-459</p>
-          <p class="meta" title="Seq 000060">Seq 000060</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_459 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_459 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1976-03</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000061" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000061">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-460.jpg" data-full-title="Detective Comics #460" data-full-detail="VIEW-detective-comics-460 | Seq 000061 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_460 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-460.jpg" alt="Detective Comics #460 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-460.jpg" data-full-title="Detective Comics #460" data-full-detail="Published 1976-04 | VIEW-detective-comics-460 | Seq 000061 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_460 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_460 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-460.jpg" alt="Detective Comics #460 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #460">Detective Comics #460</h3>
-          <p class="pub-id" title="VIEW-detective-comics-460">VIEW-detective-comics-460</p>
-          <p class="meta" title="Seq 000061">Seq 000061</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_460 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_460 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1976-04</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000062" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000062">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-461.jpg" data-full-title="Detective Comics #461" data-full-detail="VIEW-detective-comics-461 | Seq 000062 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_461 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-461.jpg" alt="Detective Comics #461 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-461.jpg" data-full-title="Detective Comics #461" data-full-detail="Published 1976-05 | VIEW-detective-comics-461 | Seq 000062 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_461 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_461 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-461.jpg" alt="Detective Comics #461 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #461">Detective Comics #461</h3>
-          <p class="pub-id" title="VIEW-detective-comics-461">VIEW-detective-comics-461</p>
-          <p class="meta" title="Seq 000062">Seq 000062</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_461 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_461 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1976-05</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000063" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000063">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-462.jpg" data-full-title="Detective Comics #462" data-full-detail="VIEW-detective-comics-462 | Seq 000063 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_462 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-462.jpg" alt="Detective Comics #462 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-462.jpg" data-full-title="Detective Comics #462" data-full-detail="Published 1976-05-26 | VIEW-detective-comics-462 | Seq 000063 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_462 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_462 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-462.jpg" alt="Detective Comics #462 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #462">Detective Comics #462</h3>
-          <p class="pub-id" title="VIEW-detective-comics-462">VIEW-detective-comics-462</p>
-          <p class="meta" title="Seq 000063">Seq 000063</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_462 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_462 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1976-05-26</p>
         </div>
       </article>
     
@@ -1199,27 +1011,21 @@
             
           </div>
           <h3 title="Detective Comics #463">Detective Comics #463</h3>
-          <p class="pub-id" title="VIEW-detective-comics-463">VIEW-detective-comics-463</p>
-          <p class="meta" title="Seq 000064">Seq 000064</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_463 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_463 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000065" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000065">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-464.jpg" data-full-title="Detective Comics #464" data-full-detail="VIEW-detective-comics-464 | Seq 000065 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_464 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-464.jpg" alt="Detective Comics #464 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-464.jpg" data-full-title="Detective Comics #464" data-full-detail="Published 1976-07-28 | VIEW-detective-comics-464 | Seq 000065 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_464 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_464 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-464.jpg" alt="Detective Comics #464 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #464">Detective Comics #464</h3>
-          <p class="pub-id" title="VIEW-detective-comics-464">VIEW-detective-comics-464</p>
-          <p class="meta" title="Seq 000065">Seq 000065</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_464 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_464 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1976-07-28</p>
         </div>
       </article>
     
@@ -1233,10 +1039,7 @@
             
           </div>
           <h3 title="Detective Comics #465">Detective Comics #465</h3>
-          <p class="pub-id" title="VIEW-detective-comics-465">VIEW-detective-comics-465</p>
-          <p class="meta" title="Seq 000066">Seq 000066</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_465 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_465 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1250,61 +1053,49 @@
             
           </div>
           <h3 title="Detective Comics #466">Detective Comics #466</h3>
-          <p class="pub-id" title="VIEW-detective-comics-466">VIEW-detective-comics-466</p>
-          <p class="meta" title="Seq 000067">Seq 000067</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_466 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_466 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000068" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000068">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-467.jpg" data-full-title="Detective Comics #467" data-full-detail="VIEW-detective-comics-467 | Seq 000068 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_467 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-467.jpg" alt="Detective Comics #467 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-467.jpg" data-full-title="Detective Comics #467" data-full-detail="Published 1976-12 | VIEW-detective-comics-467 | Seq 000068 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_467 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_467 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-467.jpg" alt="Detective Comics #467 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #467">Detective Comics #467</h3>
-          <p class="pub-id" title="VIEW-detective-comics-467">VIEW-detective-comics-467</p>
-          <p class="meta" title="Seq 000068">Seq 000068</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_467 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_467 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1976-12</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000069" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000069">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-468.jpg" data-full-title="Detective Comics #468" data-full-detail="VIEW-detective-comics-468 | Seq 000069 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_468 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-468.jpg" alt="Detective Comics #468 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-468.jpg" data-full-title="Detective Comics #468" data-full-detail="Published 1977-02 | VIEW-detective-comics-468 | Seq 000069 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_468 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_468 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-468.jpg" alt="Detective Comics #468 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #468">Detective Comics #468</h3>
-          <p class="pub-id" title="VIEW-detective-comics-468">VIEW-detective-comics-468</p>
-          <p class="meta" title="Seq 000069">Seq 000069</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_468 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_468 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1977-02</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000070" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000070">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-469.jpg" data-full-title="Detective Comics #469" data-full-detail="VIEW-detective-comics-469 | Seq 000070 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_469 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-469.jpg" alt="Detective Comics #469 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-469.jpg" data-full-title="Detective Comics #469" data-full-detail="Published 1977-02-23 | VIEW-detective-comics-469 | Seq 000070 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_469 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_469 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-469.jpg" alt="Detective Comics #469 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #469">Detective Comics #469</h3>
-          <p class="pub-id" title="VIEW-detective-comics-469">VIEW-detective-comics-469</p>
-          <p class="meta" title="Seq 000070">Seq 000070</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_469 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_469 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1977-02-23</p>
         </div>
       </article>
     
@@ -1318,10 +1109,7 @@
             
           </div>
           <h3 title="Detective Comics #470">Detective Comics #470</h3>
-          <p class="pub-id" title="VIEW-detective-comics-470">VIEW-detective-comics-470</p>
-          <p class="meta" title="Seq 000071">Seq 000071</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_470 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_470 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1335,10 +1123,7 @@
             
           </div>
           <h3 title="Detective Comics #471">Detective Comics #471</h3>
-          <p class="pub-id" title="VIEW-detective-comics-471">VIEW-detective-comics-471</p>
-          <p class="meta" title="Seq 000072">Seq 000072</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_471 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_471 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1352,10 +1137,7 @@
             
           </div>
           <h3 title="Detective Comics #472">Detective Comics #472</h3>
-          <p class="pub-id" title="VIEW-detective-comics-472">VIEW-detective-comics-472</p>
-          <p class="meta" title="Seq 000073">Seq 000073</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_472 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_472 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1369,10 +1151,7 @@
             
           </div>
           <h3 title="Detective Comics #473">Detective Comics #473</h3>
-          <p class="pub-id" title="VIEW-detective-comics-473">VIEW-detective-comics-473</p>
-          <p class="meta" title="Seq 000074">Seq 000074</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_473 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_473 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1386,10 +1165,7 @@
             
           </div>
           <h3 title="Detective Comics #474">Detective Comics #474</h3>
-          <p class="pub-id" title="VIEW-detective-comics-474">VIEW-detective-comics-474</p>
-          <p class="meta" title="Seq 000075">Seq 000075</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_474 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_474 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1403,10 +1179,7 @@
             
           </div>
           <h3 title="Detective Comics #475">Detective Comics #475</h3>
-          <p class="pub-id" title="VIEW-detective-comics-475">VIEW-detective-comics-475</p>
-          <p class="meta" title="Seq 000076">Seq 000076</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_475 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_475 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1420,10 +1193,7 @@
             
           </div>
           <h3 title="Detective Comics #476">Detective Comics #476</h3>
-          <p class="pub-id" title="VIEW-detective-comics-476">VIEW-detective-comics-476</p>
-          <p class="meta" title="Seq 000077">Seq 000077</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_476 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_476 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1437,10 +1207,7 @@
             
           </div>
           <h3 title="Detective Comics #477">Detective Comics #477</h3>
-          <p class="pub-id" title="VIEW-detective-comics-477">VIEW-detective-comics-477</p>
-          <p class="meta" title="Seq 000078">Seq 000078</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_477 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_477 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1454,10 +1221,7 @@
             
           </div>
           <h3 title="Detective Comics #478">Detective Comics #478</h3>
-          <p class="pub-id" title="VIEW-detective-comics-478">VIEW-detective-comics-478</p>
-          <p class="meta" title="Seq 000079">Seq 000079</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_478 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_478 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1471,10 +1235,7 @@
             
           </div>
           <h3 title="Detective Comics #479">Detective Comics #479</h3>
-          <p class="pub-id" title="VIEW-detective-comics-479">VIEW-detective-comics-479</p>
-          <p class="meta" title="Seq 000080">Seq 000080</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_479 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_479 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1488,10 +1249,7 @@
             
           </div>
           <h3 title="Detective Comics #480">Detective Comics #480</h3>
-          <p class="pub-id" title="VIEW-detective-comics-480">VIEW-detective-comics-480</p>
-          <p class="meta" title="Seq 000081">Seq 000081</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_480 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_480 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1505,10 +1263,7 @@
             
           </div>
           <h3 title="Detective Comics #481">Detective Comics #481</h3>
-          <p class="pub-id" title="VIEW-detective-comics-481">VIEW-detective-comics-481</p>
-          <p class="meta" title="Seq 000082">Seq 000082</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_481 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_481 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1522,10 +1277,7 @@
             
           </div>
           <h3 title="Detective Comics #482">Detective Comics #482</h3>
-          <p class="pub-id" title="VIEW-detective-comics-482">VIEW-detective-comics-482</p>
-          <p class="meta" title="Seq 000083">Seq 000083</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_482 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_482 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1539,10 +1291,7 @@
             
           </div>
           <h3 title="Detective Comics #483">Detective Comics #483</h3>
-          <p class="pub-id" title="VIEW-detective-comics-483">VIEW-detective-comics-483</p>
-          <p class="meta" title="Seq 000084">Seq 000084</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_483 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_483 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1556,10 +1305,7 @@
             
           </div>
           <h3 title="Detective Comics #484">Detective Comics #484</h3>
-          <p class="pub-id" title="VIEW-detective-comics-484">VIEW-detective-comics-484</p>
-          <p class="meta" title="Seq 000085">Seq 000085</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_484 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_484 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1573,10 +1319,7 @@
             
           </div>
           <h3 title="Detective Comics #485">Detective Comics #485</h3>
-          <p class="pub-id" title="VIEW-detective-comics-485">VIEW-detective-comics-485</p>
-          <p class="meta" title="Seq 000086">Seq 000086</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_485 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_485 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1590,10 +1333,7 @@
             
           </div>
           <h3 title="Detective Comics #486">Detective Comics #486</h3>
-          <p class="pub-id" title="VIEW-detective-comics-486">VIEW-detective-comics-486</p>
-          <p class="meta" title="Seq 000087">Seq 000087</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_486 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_486 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1607,10 +1347,7 @@
             
           </div>
           <h3 title="Detective Comics #487">Detective Comics #487</h3>
-          <p class="pub-id" title="VIEW-detective-comics-487">VIEW-detective-comics-487</p>
-          <p class="meta" title="Seq 000088">Seq 000088</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_487 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_487 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1624,10 +1361,7 @@
             
           </div>
           <h3 title="Detective Comics #488">Detective Comics #488</h3>
-          <p class="pub-id" title="VIEW-detective-comics-488">VIEW-detective-comics-488</p>
-          <p class="meta" title="Seq 000089">Seq 000089</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_488 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_488 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1641,10 +1375,7 @@
             
           </div>
           <h3 title="Detective Comics #489">Detective Comics #489</h3>
-          <p class="pub-id" title="VIEW-detective-comics-489">VIEW-detective-comics-489</p>
-          <p class="meta" title="Seq 000090">Seq 000090</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_489 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_489 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1658,10 +1389,7 @@
             
           </div>
           <h3 title="Detective Comics #490">Detective Comics #490</h3>
-          <p class="pub-id" title="VIEW-detective-comics-490">VIEW-detective-comics-490</p>
-          <p class="meta" title="Seq 000091">Seq 000091</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_490 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_490 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1675,129 +1403,105 @@
             
           </div>
           <h3 title="Detective Comics #491">Detective Comics #491</h3>
-          <p class="pub-id" title="VIEW-detective-comics-491">VIEW-detective-comics-491</p>
-          <p class="meta" title="Seq 000092">Seq 000092</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_491 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_491 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000093" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000093">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-492.jpg" data-full-title="Detective Comics #492" data-full-detail="VIEW-detective-comics-492 | Seq 000093 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_492 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-492.jpg" alt="Detective Comics #492 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-492.jpg" data-full-title="Detective Comics #492" data-full-detail="Published 1980-05 | VIEW-detective-comics-492 | Seq 000093 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_492 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_492 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-492.jpg" alt="Detective Comics #492 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #492">Detective Comics #492</h3>
-          <p class="pub-id" title="VIEW-detective-comics-492">VIEW-detective-comics-492</p>
-          <p class="meta" title="Seq 000093">Seq 000093</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_492 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_492 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1980-05</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000094" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000094">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-493.jpg" data-full-title="Detective Comics #493" data-full-detail="VIEW-detective-comics-493 | Seq 000094 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_493 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-493.jpg" alt="Detective Comics #493 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-493.jpg" data-full-title="Detective Comics #493" data-full-detail="Published 1980-05-21 | VIEW-detective-comics-493 | Seq 000094 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_493 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_493 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-493.jpg" alt="Detective Comics #493 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #493">Detective Comics #493</h3>
-          <p class="pub-id" title="VIEW-detective-comics-493">VIEW-detective-comics-493</p>
-          <p class="meta" title="Seq 000094">Seq 000094</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_493 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_493 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1980-05-21</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000095" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000095">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-494.jpg" data-full-title="Detective Comics #494" data-full-detail="VIEW-detective-comics-494 | Seq 000095 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_494 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-494.jpg" alt="Detective Comics #494 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-494.jpg" data-full-title="Detective Comics #494" data-full-detail="Published 1980-07 | VIEW-detective-comics-494 | Seq 000095 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_494 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_494 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-494.jpg" alt="Detective Comics #494 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #494">Detective Comics #494</h3>
-          <p class="pub-id" title="VIEW-detective-comics-494">VIEW-detective-comics-494</p>
-          <p class="meta" title="Seq 000095">Seq 000095</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_494 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_494 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1980-07</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000096" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000096">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-495.jpg" data-full-title="Detective Comics #495" data-full-detail="VIEW-detective-comics-495 | Seq 000096 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_495 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-495.jpg" alt="Detective Comics #495 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-495.jpg" data-full-title="Detective Comics #495" data-full-detail="Published 1980-08 | VIEW-detective-comics-495 | Seq 000096 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_495 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_495 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-495.jpg" alt="Detective Comics #495 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #495">Detective Comics #495</h3>
-          <p class="pub-id" title="VIEW-detective-comics-495">VIEW-detective-comics-495</p>
-          <p class="meta" title="Seq 000096">Seq 000096</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_495 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_495 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1980-08</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000097" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000097">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-496.jpg" data-full-title="Detective Comics #496" data-full-detail="VIEW-detective-comics-496 | Seq 000097 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_496 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-496.jpg" alt="Detective Comics #496 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-496.jpg" data-full-title="Detective Comics #496" data-full-detail="Published 1980-08-27 | VIEW-detective-comics-496 | Seq 000097 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_496 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_496 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-496.jpg" alt="Detective Comics #496 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #496">Detective Comics #496</h3>
-          <p class="pub-id" title="VIEW-detective-comics-496">VIEW-detective-comics-496</p>
-          <p class="meta" title="Seq 000097">Seq 000097</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_496 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_496 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1980-08-27</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000098" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000098">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-497.jpg" data-full-title="Detective Comics #497" data-full-detail="VIEW-detective-comics-497 | Seq 000098 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_497 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-497.jpg" alt="Detective Comics #497 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-497.jpg" data-full-title="Detective Comics #497" data-full-detail="Published 1980-09-24 | VIEW-detective-comics-497 | Seq 000098 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_497 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_497 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-497.jpg" alt="Detective Comics #497 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #497">Detective Comics #497</h3>
-          <p class="pub-id" title="VIEW-detective-comics-497">VIEW-detective-comics-497</p>
-          <p class="meta" title="Seq 000098">Seq 000098</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_497 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_497 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1980-09-24</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000099" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000099">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-498.jpg" data-full-title="Detective Comics #498" data-full-detail="VIEW-detective-comics-498 | Seq 000099 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_498 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-498.jpg" alt="Detective Comics #498 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-498.jpg" data-full-title="Detective Comics #498" data-full-detail="Published 1980-10 | VIEW-detective-comics-498 | Seq 000099 | DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_498 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_498 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-498.jpg" alt="Detective Comics #498 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
             
           </div>
           <h3 title="Detective Comics #498">Detective Comics #498</h3>
-          <p class="pub-id" title="VIEW-detective-comics-498">VIEW-detective-comics-498</p>
-          <p class="meta" title="Seq 000099">Seq 000099</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_498 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_498 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date">Published 1980-10</p>
         </div>
       </article>
     
@@ -1811,10 +1515,7 @@
             
           </div>
           <h3 title="Detective Comics #499">Detective Comics #499</h3>
-          <p class="pub-id" title="VIEW-detective-comics-499">VIEW-detective-comics-499</p>
-          <p class="meta" title="Seq 000100">Seq 000100</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_499 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.">DC Database | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_499 | confidence=high | DC Database issue page used as the resolvable cover source; direct static.wikia hash path not guessed.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     </section>
@@ -1910,9 +1611,7 @@
       });
     });
     document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
-    lightbox.addEventListener('click', event => {
-      if (event.target === lightbox) closeLightbox();
-    });
+    lightbox.addEventListener('click', closeLightbox);
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape') closeLightbox();
     });

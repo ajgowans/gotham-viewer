@@ -53,11 +53,12 @@
     .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
     .comic-card.cover-needs_review { border-color: #a46a00; }
     .comic-card.cover-rejected_auto { border-color: #b42318; }
-    .card-body { padding: 10px 11px 12px; height: 205px; display: flex; flex-direction: column; overflow: hidden; }
+    .card-body { padding: 10px 11px 12px; min-height: 86px; display: flex; flex-direction: column; overflow: hidden; }
     .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
     .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
     .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
     h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .publication-date { margin: auto 0 0; color: var(--muted); font-size: 12px; line-height: 1.3; }
     .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
     .pub-id { -webkit-line-clamp: 1; }
     .meta, .continuity { -webkit-line-clamp: 2; }
@@ -70,8 +71,8 @@
     .hidden { display: none; }
     .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
     .lightbox.open { display: flex; }
-    .lightbox-panel { max-width: min(92vw, 980px); max-height: 94vh; display: grid; gap: 10px; }
-    .lightbox img { max-width: 100%; max-height: calc(94vh - 56px); object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-panel { width: min(92vw, 980px); height: 94vh; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; align-items: center; justify-items: center; }
+    .lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; align-self: center; }
     .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
     .lightbox-title { font-weight: 750; }
     .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
@@ -128,10 +129,7 @@
             
           </div>
           <h3 title="Doomsday Clock #1">Doomsday Clock #1</h3>
-          <p class="pub-id" title="PUB-DOOMSDAY-CLOCK-0001">PUB-DOOMSDAY-CLOCK-0001</p>
-          <p class="meta" title="Seq 000001">Seq 000001</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Publication alias: PUB-DOOMSDAY-CLOCK-0001; Collection sheet: Batman row 591">Publication alias: PUB-DOOMSDAY-CLOCK-0001; Collection sheet: Batman row 591</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -145,10 +143,7 @@
             
           </div>
           <h3 title="Doomsday Clock #2">Doomsday Clock #2</h3>
-          <p class="pub-id" title="PUB-DOOMSDAY-CLOCK-0002">PUB-DOOMSDAY-CLOCK-0002</p>
-          <p class="meta" title="Seq 000002">Seq 000002</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Publication alias: PUB-DOOMSDAY-CLOCK-0002; Collection sheet: Batman row 592">Publication alias: PUB-DOOMSDAY-CLOCK-0002; Collection sheet: Batman row 592</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -162,10 +157,7 @@
             
           </div>
           <h3 title="Doomsday Clock #3">Doomsday Clock #3</h3>
-          <p class="pub-id" title="PUB-DOOMSDAY-CLOCK-0003">PUB-DOOMSDAY-CLOCK-0003</p>
-          <p class="meta" title="Seq 000003">Seq 000003</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Publication alias: PUB-DOOMSDAY-CLOCK-0003; Collection sheet: Batman row 593">Publication alias: PUB-DOOMSDAY-CLOCK-0003; Collection sheet: Batman row 593</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -179,10 +171,7 @@
             
           </div>
           <h3 title="Doomsday Clock #4">Doomsday Clock #4</h3>
-          <p class="pub-id" title="PUB-DOOMSDAY-CLOCK-0004">PUB-DOOMSDAY-CLOCK-0004</p>
-          <p class="meta" title="Seq 000004">Seq 000004</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Publication alias: PUB-DOOMSDAY-CLOCK-0004; Collection sheet: Batman row 594">Publication alias: PUB-DOOMSDAY-CLOCK-0004; Collection sheet: Batman row 594</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -196,10 +185,7 @@
             
           </div>
           <h3 title="Doomsday Clock #5">Doomsday Clock #5</h3>
-          <p class="pub-id" title="PUB-DOOMSDAY-CLOCK-0005">PUB-DOOMSDAY-CLOCK-0005</p>
-          <p class="meta" title="Seq 000005">Seq 000005</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Publication alias: PUB-DOOMSDAY-CLOCK-0005; Collection sheet: Batman row 595">Publication alias: PUB-DOOMSDAY-CLOCK-0005; Collection sheet: Batman row 595</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -213,10 +199,7 @@
             
           </div>
           <h3 title="Doomsday Clock #6">Doomsday Clock #6</h3>
-          <p class="pub-id" title="PUB-DOOMSDAY-CLOCK-0006">PUB-DOOMSDAY-CLOCK-0006</p>
-          <p class="meta" title="Seq 000006">Seq 000006</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Publication alias: PUB-DOOMSDAY-CLOCK-0006; Collection sheet: Batman row 596">Publication alias: PUB-DOOMSDAY-CLOCK-0006; Collection sheet: Batman row 596</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -230,10 +213,7 @@
             
           </div>
           <h3 title="Doomsday Clock #7">Doomsday Clock #7</h3>
-          <p class="pub-id" title="PUB-DOOMSDAY-CLOCK-0007">PUB-DOOMSDAY-CLOCK-0007</p>
-          <p class="meta" title="Seq 000007">Seq 000007</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Publication alias: PUB-DOOMSDAY-CLOCK-0007; Collection sheet: Batman row 597">Publication alias: PUB-DOOMSDAY-CLOCK-0007; Collection sheet: Batman row 597</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -247,10 +227,7 @@
             
           </div>
           <h3 title="Doomsday Clock #8">Doomsday Clock #8</h3>
-          <p class="pub-id" title="PUB-DOOMSDAY-CLOCK-0008">PUB-DOOMSDAY-CLOCK-0008</p>
-          <p class="meta" title="Seq 000008">Seq 000008</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Publication alias: PUB-DOOMSDAY-CLOCK-0008; Collection sheet: Batman row 598">Publication alias: PUB-DOOMSDAY-CLOCK-0008; Collection sheet: Batman row 598</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -264,10 +241,7 @@
             
           </div>
           <h3 title="Doomsday Clock #9">Doomsday Clock #9</h3>
-          <p class="pub-id" title="PUB-DOOMSDAY-CLOCK-0009">PUB-DOOMSDAY-CLOCK-0009</p>
-          <p class="meta" title="Seq 000009">Seq 000009</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Publication alias: PUB-DOOMSDAY-CLOCK-0009; Collection sheet: Batman row 599">Publication alias: PUB-DOOMSDAY-CLOCK-0009; Collection sheet: Batman row 599</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -281,10 +255,7 @@
             
           </div>
           <h3 title="Doomsday Clock #10">Doomsday Clock #10</h3>
-          <p class="pub-id" title="PUB-DOOMSDAY-CLOCK-0010">PUB-DOOMSDAY-CLOCK-0010</p>
-          <p class="meta" title="Seq 000010">Seq 000010</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Publication alias: PUB-DOOMSDAY-CLOCK-0010; Collection sheet: Batman row 600">Publication alias: PUB-DOOMSDAY-CLOCK-0010; Collection sheet: Batman row 600</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -298,10 +269,7 @@
             
           </div>
           <h3 title="Doomsday Clock #11">Doomsday Clock #11</h3>
-          <p class="pub-id" title="PUB-DOOMSDAY-CLOCK-0011">PUB-DOOMSDAY-CLOCK-0011</p>
-          <p class="meta" title="Seq 000011">Seq 000011</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Publication alias: PUB-DOOMSDAY-CLOCK-0011; Collection sheet: Batman row 601">Publication alias: PUB-DOOMSDAY-CLOCK-0011; Collection sheet: Batman row 601</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -315,10 +283,7 @@
             
           </div>
           <h3 title="Doomsday Clock #12">Doomsday Clock #12</h3>
-          <p class="pub-id" title="PUB-DOOMSDAY-CLOCK-0012">PUB-DOOMSDAY-CLOCK-0012</p>
-          <p class="meta" title="Seq 000012">Seq 000012</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Publication alias: PUB-DOOMSDAY-CLOCK-0012; Collection sheet: Batman row 602">Publication alias: PUB-DOOMSDAY-CLOCK-0012; Collection sheet: Batman row 602</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     </section>
@@ -414,9 +379,7 @@
       });
     });
     document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
-    lightbox.addEventListener('click', event => {
-      if (event.target === lightbox) closeLightbox();
-    });
+    lightbox.addEventListener('click', closeLightbox);
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape') closeLightbox();
     });

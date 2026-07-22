@@ -53,11 +53,12 @@
     .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
     .comic-card.cover-needs_review { border-color: #a46a00; }
     .comic-card.cover-rejected_auto { border-color: #b42318; }
-    .card-body { padding: 10px 11px 12px; height: 205px; display: flex; flex-direction: column; overflow: hidden; }
+    .card-body { padding: 10px 11px 12px; min-height: 86px; display: flex; flex-direction: column; overflow: hidden; }
     .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
     .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
     .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
     h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .publication-date { margin: auto 0 0; color: var(--muted); font-size: 12px; line-height: 1.3; }
     .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
     .pub-id { -webkit-line-clamp: 1; }
     .meta, .continuity { -webkit-line-clamp: 2; }
@@ -70,8 +71,8 @@
     .hidden { display: none; }
     .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
     .lightbox.open { display: flex; }
-    .lightbox-panel { max-width: min(92vw, 980px); max-height: 94vh; display: grid; gap: 10px; }
-    .lightbox img { max-width: 100%; max-height: calc(94vh - 56px); object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-panel { width: min(92vw, 980px); height: 94vh; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; align-items: center; justify-items: center; }
+    .lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; align-self: center; }
     .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
     .lightbox-title { font-weight: 750; }
     .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
@@ -106,7 +107,7 @@
     <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="viewer-filters"><span>Filters and order</span></button>
     <div class="control-content" id="viewer-filters">
       <div class="control-row"><b>Order</b><button class="chip active" data-filter="order" data-value="all">All orders</button>
-<button class="chip" data-filter="order" data-value="reading">reading</button></div>
+<button class="chip" data-filter="order" data-value="issue">issue</button></div>
       <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button>
 <button class="chip" data-filter="scope" data-value="Hardcover">Hardcover</button>
 <button class="chip" data-filter="scope" data-value="Original Graphic Novel">Original Graphic Novel</button>
@@ -123,7 +124,7 @@
   </section>
   <main>
     <section class="grid">
-      <article class="comic-card owned cover-unchecked" data-order="reading" data-scope="Hardcover" data-project="" data-status="owned" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000001">
+      <article class="comic-card owned cover-unchecked" data-order="issue" data-scope="Hardcover" data-project="" data-status="owned" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000001">
         <div class="status-strip">Owned</div>
         <div class="cover-wrap"><div class="cover-placeholder"><span>Batgirl: Year One</span><strong>#1</strong></div></div>
         <div class="card-body">
@@ -132,15 +133,12 @@
             
           </div>
           <h3 title="Batgirl: Year One">Batgirl: Year One</h3>
-          <p class="pub-id" title="PUB-BATGIRL-YEAR-ONE-HC">PUB-BATGIRL-YEAR-ONE-HC</p>
-          <p class="meta" title="Seq 000001 | Collected Edition">Seq 000001 | Collected Edition</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Owned hardback added from user note; contained issues to confirm before counting original issue coverage.">Owned hardback added from user note; contained issues to confirm before counting original issue coverage.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Original Graphic Novel" data-project="" data-status="owned" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000002">
+      <article class="comic-card owned cover-approved_auto" data-order="issue" data-scope="Original Graphic Novel" data-project="" data-status="owned" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000002">
         <div class="status-strip">Owned</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-JUDGE-DREDD-JUDGEMENT-GOTHAM.jpg" data-full-title="Batman/Judge Dredd: Judgment on Gotham" data-full-detail="PUB-BAT-JUDGE-DREDD-JUDGEMENT-GOTHAM | Seq 000002 | Original Graphic Novel | Owned graphic novel added from user note; contents/edition details to confirm. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-JUDGE-DREDD-JUDGEMENT-GOTHAM.jpg" alt="Batman/Judge Dredd: Judgment on Gotham cover"></button></div>
         <div class="card-body">
@@ -149,15 +147,12 @@
             
           </div>
           <h3 title="Batman/Judge Dredd: Judgment on Gotham">Batman/Judge Dredd: Judgment on Gotham</h3>
-          <p class="pub-id" title="PUB-BAT-JUDGE-DREDD-JUDGEMENT-GOTHAM">PUB-BAT-JUDGE-DREDD-JUDGEMENT-GOTHAM</p>
-          <p class="meta" title="Seq 000002 | Original Graphic Novel">Seq 000002 | Original Graphic Novel</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Owned graphic novel added from user note; contents/edition details to confirm.">Owned graphic novel added from user note; contents/edition details to confirm.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Trade Paperback" data-project="" data-status="owned" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000003">
+      <article class="comic-card owned cover-approved_auto" data-order="issue" data-scope="Trade Paperback" data-project="" data-status="owned" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000003">
         <div class="status-strip">Owned</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-LONELY-PLACE-DYING.jpg" data-full-title="Batman: A Lonely Place of Dying" data-full-detail="PUB-BAT-LONELY-PLACE-DYING | Seq 000003 | Collected Edition | Collected edition containing Batman #440-442 and New Titans #60-61. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-LONELY-PLACE-DYING.jpg" alt="Batman: A Lonely Place of Dying cover"></button></div>
         <div class="card-body">
@@ -166,15 +161,12 @@
             
           </div>
           <h3 title="Batman: A Lonely Place of Dying">Batman: A Lonely Place of Dying</h3>
-          <p class="pub-id" title="PUB-BAT-LONELY-PLACE-DYING">PUB-BAT-LONELY-PLACE-DYING</p>
-          <p class="meta" title="Seq 000003 | Collected Edition">Seq 000003 | Collected Edition</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Collected edition containing Batman #440-442 and New Titans #60-61.">Collected edition containing Batman #440-442 and New Titans #60-61.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Original Graphic Novel" data-project="" data-status="owned" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000004">
+      <article class="comic-card owned cover-approved_auto" data-order="issue" data-scope="Original Graphic Novel" data-project="" data-status="owned" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000004">
         <div class="status-strip">Owned</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-JOKER-DEVILS-ADVOCATE.jpg" data-full-title="Batman: Joker - Devil&#x27;s Advocate" data-full-detail="PUB-BAT-JOKER-DEVILS-ADVOCATE | Seq 000004 | Original Graphic Novel | Owned seed; treat as first-published publication unless publication_contents.csv later records contained issues. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-JOKER-DEVILS-ADVOCATE.jpg" alt="Batman: Joker - Devil&#x27;s Advocate cover"></button></div>
         <div class="card-body">
@@ -183,32 +175,26 @@
             
           </div>
           <h3 title="Batman: Joker - Devil&#x27;s Advocate">Batman: Joker - Devil&#x27;s Advocate</h3>
-          <p class="pub-id" title="PUB-BAT-JOKER-DEVILS-ADVOCATE">PUB-BAT-JOKER-DEVILS-ADVOCATE</p>
-          <p class="meta" title="Seq 000004 | Original Graphic Novel">Seq 000004 | Original Graphic Novel</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Owned seed; treat as first-published publication unless publication_contents.csv later records contained issues.">Owned seed; treat as first-published publication unless publication_contents.csv later records contained issues.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Original Graphic Novel" data-project="" data-status="owned" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000005">
+      <article class="comic-card owned cover-approved_auto" data-order="issue" data-scope="Original Graphic Novel" data-project="" data-status="owned" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000005">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-SCOTTISH-CONNECTION.jpg" data-full-title="Batman: Scottish Connection" data-full-detail="PUB-BAT-SCOTTISH-CONNECTION | Seq 000005 | Original Graphic Novel | Owned seed; treat as first-published publication unless publication_contents.csv later records contained issues. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-SCOTTISH-CONNECTION.jpg" alt="Batman: Scottish Connection cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-SCOTTISH-CONNECTION.jpg" data-full-title="Batman: Scottish Connection" data-full-detail="Published 1998 | PUB-BAT-SCOTTISH-CONNECTION | Seq 000005 | Original Graphic Novel | Owned seed; treat as first-published publication unless publication_contents.csv later records contained issues. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-SCOTTISH-CONNECTION.jpg" alt="Batman: Scottish Connection cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Original Graphic Novel</span>
             
           </div>
           <h3 title="Batman: Scottish Connection">Batman: Scottish Connection</h3>
-          <p class="pub-id" title="PUB-BAT-SCOTTISH-CONNECTION">PUB-BAT-SCOTTISH-CONNECTION</p>
-          <p class="meta" title="Seq 000005 | Original Graphic Novel">Seq 000005 | Original Graphic Novel</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Owned seed; treat as first-published publication unless publication_contents.csv later records contained issues.">Owned seed; treat as first-published publication unless publication_contents.csv later records contained issues.</p>
+          <p class="publication-date">Published 1998</p>
         </div>
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Original Graphic Novel" data-project="" data-status="owned" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000006">
+      <article class="comic-card owned cover-approved_auto" data-order="issue" data-scope="Original Graphic Novel" data-project="" data-status="owned" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000006">
         <div class="status-strip">Owned</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-CHALICE.jpg" data-full-title="Batman: The Chalice" data-full-detail="PUB-BAT-CHALICE | Seq 000006 | Original Graphic Novel | Owned seed; treat as first-published publication unless publication_contents.csv later records contained issues. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-CHALICE.jpg" alt="Batman: The Chalice cover"></button></div>
         <div class="card-body">
@@ -217,15 +203,12 @@
             
           </div>
           <h3 title="Batman: The Chalice">Batman: The Chalice</h3>
-          <p class="pub-id" title="PUB-BAT-CHALICE">PUB-BAT-CHALICE</p>
-          <p class="meta" title="Seq 000006 | Original Graphic Novel">Seq 000006 | Original Graphic Novel</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Owned seed; treat as first-published publication unless publication_contents.csv later records contained issues.">Owned seed; treat as first-published publication unless publication_contents.csv later records contained issues.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Hardcover" data-project="" data-status="owned" data-sequence="000007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000007">
+      <article class="comic-card owned cover-approved_auto" data-order="issue" data-scope="Hardcover" data-project="" data-status="owned" data-sequence="000007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000007">
         <div class="status-strip">Owned</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-KILLING-JOKE-DELUXE-HC.jpg" data-full-title="Batman: The Killing Joke Deluxe Edition" data-full-detail="PUB-BAT-KILLING-JOKE-DELUXE-HC | Seq 000007 | Collected Edition | Owned hardback added from user note; deluxe contents to confirm before counting contained issue coverage. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-KILLING-JOKE-DELUXE-HC.jpg" alt="Batman: The Killing Joke Deluxe Edition cover"></button></div>
         <div class="card-body">
@@ -234,32 +217,26 @@
             
           </div>
           <h3 title="Batman: The Killing Joke Deluxe Edition">Batman: The Killing Joke Deluxe Edition</h3>
-          <p class="pub-id" title="PUB-BAT-KILLING-JOKE-DELUXE-HC">PUB-BAT-KILLING-JOKE-DELUXE-HC</p>
-          <p class="meta" title="Seq 000007 | Collected Edition">Seq 000007 | Collected Edition</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Owned hardback added from user note; deluxe contents to confirm before counting contained issue coverage.">Owned hardback added from user note; deluxe contents to confirm before counting contained issue coverage.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Collection" data-project="" data-status="owned" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000008">
+      <article class="comic-card owned cover-approved_auto" data-order="issue" data-scope="Collection" data-project="" data-status="owned" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000008">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-MAN-WHO-LAUGHS.jpg" data-full-title="Batman: The Man Who Laughs" data-full-detail="PUB-BAT-MAN-WHO-LAUGHS | Seq 000008 | Collected Edition | Owned graphic novel added from user note; contained stories/issues to confirm before counting original issue coverage. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-MAN-WHO-LAUGHS.jpg" alt="Batman: The Man Who Laughs cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-MAN-WHO-LAUGHS.jpg" data-full-title="Batman: The Man Who Laughs" data-full-detail="Published 2005-02-09 | PUB-BAT-MAN-WHO-LAUGHS | Seq 000008 | Collected Edition | Owned graphic novel added from user note; contained stories/issues to confirm before counting original issue coverage. | https://dc.fandom.com/wiki/Batman:_The_Man_Who_Laughs | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-MAN-WHO-LAUGHS.jpg" alt="Batman: The Man Who Laughs cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Collection</span>
             
           </div>
           <h3 title="Batman: The Man Who Laughs">Batman: The Man Who Laughs</h3>
-          <p class="pub-id" title="PUB-BAT-MAN-WHO-LAUGHS">PUB-BAT-MAN-WHO-LAUGHS</p>
-          <p class="meta" title="Seq 000008 | Collected Edition">Seq 000008 | Collected Edition</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Owned graphic novel added from user note; contained stories/issues to confirm before counting original issue coverage.">Owned graphic novel added from user note; contained stories/issues to confirm before counting original issue coverage.</p>
+          <p class="publication-date">Published 2005-02-09</p>
         </div>
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Trade Paperback" data-project="" data-status="owned" data-sequence="000009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000009">
+      <article class="comic-card owned cover-approved_auto" data-order="issue" data-scope="Trade Paperback" data-project="" data-status="owned" data-sequence="000009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000009">
         <div class="status-strip">Owned</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-YEAR-TWO.jpg" data-full-title="Batman: Year Two" data-full-detail="PUB-BAT-YEAR-TWO | Seq 000009 | Collected Edition | Collected edition containing Detective Comics #575-578. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-YEAR-TWO.jpg" alt="Batman: Year Two cover"></button></div>
         <div class="card-body">
@@ -268,15 +245,12 @@
             
           </div>
           <h3 title="Batman: Year Two">Batman: Year Two</h3>
-          <p class="pub-id" title="PUB-BAT-YEAR-TWO">PUB-BAT-YEAR-TWO</p>
-          <p class="meta" title="Seq 000009 | Collected Edition">Seq 000009 | Collected Edition</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Collected edition containing Detective Comics #575-578.">Collected edition containing Detective Comics #575-578.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card owned cover-unchecked" data-order="reading" data-scope="Collection" data-project="" data-status="owned" data-sequence="000010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000010">
+      <article class="comic-card owned cover-unchecked" data-order="issue" data-scope="Collection" data-project="" data-status="owned" data-sequence="000010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000010">
         <div class="status-strip">Owned</div>
         <div class="cover-wrap"><div class="cover-placeholder"><span>Grifter/Midnighter</span><strong>#1</strong></div></div>
         <div class="card-body">
@@ -285,15 +259,12 @@
             
           </div>
           <h3 title="Grifter/Midnighter">Grifter/Midnighter</h3>
-          <p class="pub-id" title="PUB-GRIFTER-MIDNIGHTER">PUB-GRIFTER-MIDNIGHTER</p>
-          <p class="meta" title="Seq 000010 | Collected Edition">Seq 000010 | Collected Edition</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Owned graphic novel added from user note typed as &quot;griftwer midnight&quot;; exact title/edition and contents to confirm.">Owned graphic novel added from user note typed as &quot;griftwer midnight&quot;; exact title/edition and contents to confirm.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Collection" data-project="" data-status="owned" data-sequence="000011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000011">
+      <article class="comic-card owned cover-approved_auto" data-order="issue" data-scope="Collection" data-project="" data-status="owned" data-sequence="000011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000011">
         <div class="status-strip">Owned</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-JOKER-CLOWN-PRINCE-CRIME.jpg" data-full-title="The Joker: The Clown Prince of Crime" data-full-detail="PUB-JOKER-CLOWN-PRINCE-CRIME | Seq 000011 | Collected Edition | Owned graphic novel added from user note; contained issues to confirm before counting original issue coverage. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-JOKER-CLOWN-PRINCE-CRIME.jpg" alt="The Joker: The Clown Prince of Crime cover"></button></div>
         <div class="card-body">
@@ -302,10 +273,7 @@
             
           </div>
           <h3 title="The Joker: The Clown Prince of Crime">The Joker: The Clown Prince of Crime</h3>
-          <p class="pub-id" title="PUB-JOKER-CLOWN-PRINCE-CRIME">PUB-JOKER-CLOWN-PRINCE-CRIME</p>
-          <p class="meta" title="Seq 000011 | Collected Edition">Seq 000011 | Collected Edition</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Owned graphic novel added from user note; contained issues to confirm before counting original issue coverage.">Owned graphic novel added from user note; contained issues to confirm before counting original issue coverage.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     </section>
@@ -401,9 +369,7 @@
       });
     });
     document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
-    lightbox.addEventListener('click', event => {
-      if (event.target === lightbox) closeLightbox();
-    });
+    lightbox.addEventListener('click', closeLightbox);
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape') closeLightbox();
     });

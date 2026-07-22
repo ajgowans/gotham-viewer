@@ -53,11 +53,12 @@
     .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
     .comic-card.cover-needs_review { border-color: #a46a00; }
     .comic-card.cover-rejected_auto { border-color: #b42318; }
-    .card-body { padding: 10px 11px 12px; height: 205px; display: flex; flex-direction: column; overflow: hidden; }
+    .card-body { padding: 10px 11px 12px; min-height: 86px; display: flex; flex-direction: column; overflow: hidden; }
     .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
     .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
     .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
     h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .publication-date { margin: auto 0 0; color: var(--muted); font-size: 12px; line-height: 1.3; }
     .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
     .pub-id { -webkit-line-clamp: 1; }
     .meta, .continuity { -webkit-line-clamp: 2; }
@@ -70,8 +71,8 @@
     .hidden { display: none; }
     .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
     .lightbox.open { display: flex; }
-    .lightbox-panel { max-width: min(92vw, 980px); max-height: 94vh; display: grid; gap: 10px; }
-    .lightbox img { max-width: 100%; max-height: calc(94vh - 56px); object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-panel { width: min(92vw, 980px); height: 94vh; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; align-items: center; justify-items: center; }
+    .lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; align-self: center; }
     .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
     .lightbox-title { font-weight: 750; }
     .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
@@ -133,102 +134,84 @@
     <section class="grid">
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="core_weekly_series" data-project="countdown_weekly_series" data-status="owned" data-sequence="001000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000001">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0051.jpg" data-full-title="Countdown to Final Crisis #51" data-full-detail="PUB-COUNTDOWN-FINAL-CRISIS-0051 | Seq 001000001 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0051.jpg" alt="Countdown to Final Crisis #51 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0051.jpg" data-full-title="Countdown to Final Crisis #51" data-full-detail="Published 2007-05-09 | PUB-COUNTDOWN-FINAL-CRISIS-0051 | Seq 001000001 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | https://dc.fandom.com/wiki/Countdown_Vol_1_51 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0051.jpg" alt="Countdown to Final Crisis #51 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core weekly series</span>
             
           </div>
           <h3 title="Countdown to Final Crisis #51">Countdown to Final Crisis #51</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0051">PUB-COUNTDOWN-FINAL-CRISIS-0051</p>
-          <p class="meta" title="Seq 001000001 | core | verified">Seq 001000001 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date">Published 2007-05-09</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="core_weekly_series" data-project="countdown_weekly_series" data-status="owned" data-sequence="001000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000002">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0050.jpg" data-full-title="Countdown to Final Crisis #50" data-full-detail="PUB-COUNTDOWN-FINAL-CRISIS-0050 | Seq 001000002 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0050.jpg" alt="Countdown to Final Crisis #50 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0050.jpg" data-full-title="Countdown to Final Crisis #50" data-full-detail="Published 2007-05-16 | PUB-COUNTDOWN-FINAL-CRISIS-0050 | Seq 001000002 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | https://dc.fandom.com/wiki/Countdown_Vol_1_50 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0050.jpg" alt="Countdown to Final Crisis #50 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core weekly series</span>
             
           </div>
           <h3 title="Countdown to Final Crisis #50">Countdown to Final Crisis #50</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0050">PUB-COUNTDOWN-FINAL-CRISIS-0050</p>
-          <p class="meta" title="Seq 001000002 | core | verified">Seq 001000002 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date">Published 2007-05-16</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="core_weekly_series" data-project="countdown_weekly_series" data-status="owned" data-sequence="001000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000003">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0049.jpg" data-full-title="Countdown to Final Crisis #49" data-full-detail="PUB-COUNTDOWN-FINAL-CRISIS-0049 | Seq 001000003 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0049.jpg" alt="Countdown to Final Crisis #49 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0049.jpg" data-full-title="Countdown to Final Crisis #49" data-full-detail="Published 2007-05-23 | PUB-COUNTDOWN-FINAL-CRISIS-0049 | Seq 001000003 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | https://dc.fandom.com/wiki/Countdown_Vol_1_49 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0049.jpg" alt="Countdown to Final Crisis #49 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core weekly series</span>
             
           </div>
           <h3 title="Countdown to Final Crisis #49">Countdown to Final Crisis #49</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0049">PUB-COUNTDOWN-FINAL-CRISIS-0049</p>
-          <p class="meta" title="Seq 001000003 | core | verified">Seq 001000003 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date">Published 2007-05-23</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="core_weekly_series" data-project="countdown_weekly_series" data-status="owned" data-sequence="001000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000004">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0048.jpg" data-full-title="Countdown to Final Crisis #48" data-full-detail="PUB-COUNTDOWN-FINAL-CRISIS-0048 | Seq 001000004 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0048.jpg" alt="Countdown to Final Crisis #48 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0048.jpg" data-full-title="Countdown to Final Crisis #48" data-full-detail="Published 2007-05-30 | PUB-COUNTDOWN-FINAL-CRISIS-0048 | Seq 001000004 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | https://dc.fandom.com/wiki/Countdown_Vol_1_48 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0048.jpg" alt="Countdown to Final Crisis #48 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core weekly series</span>
             
           </div>
           <h3 title="Countdown to Final Crisis #48">Countdown to Final Crisis #48</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0048">PUB-COUNTDOWN-FINAL-CRISIS-0048</p>
-          <p class="meta" title="Seq 001000004 | core | verified">Seq 001000004 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date">Published 2007-05-30</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="core_weekly_series" data-project="countdown_weekly_series" data-status="owned" data-sequence="001000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000005">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0047.jpg" data-full-title="Countdown to Final Crisis #47" data-full-detail="PUB-COUNTDOWN-FINAL-CRISIS-0047 | Seq 001000005 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0047.jpg" alt="Countdown to Final Crisis #47 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0047.jpg" data-full-title="Countdown to Final Crisis #47" data-full-detail="Published 2007-06-06 | PUB-COUNTDOWN-FINAL-CRISIS-0047 | Seq 001000005 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | https://dc.fandom.com/wiki/Countdown_Vol_1_47 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0047.jpg" alt="Countdown to Final Crisis #47 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core weekly series</span>
             
           </div>
           <h3 title="Countdown to Final Crisis #47">Countdown to Final Crisis #47</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0047">PUB-COUNTDOWN-FINAL-CRISIS-0047</p>
-          <p class="meta" title="Seq 001000005 | core | verified">Seq 001000005 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date">Published 2007-06-06</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="core_weekly_series" data-project="countdown_weekly_series" data-status="owned" data-sequence="001000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000006">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0046.jpg" data-full-title="Countdown to Final Crisis #46" data-full-detail="PUB-COUNTDOWN-FINAL-CRISIS-0046 | Seq 001000006 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0046.jpg" alt="Countdown to Final Crisis #46 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0046.jpg" data-full-title="Countdown to Final Crisis #46" data-full-detail="Published 2007-06-13 | PUB-COUNTDOWN-FINAL-CRISIS-0046 | Seq 001000006 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | https://dc.fandom.com/wiki/Countdown_Vol_1_46 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0046.jpg" alt="Countdown to Final Crisis #46 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core weekly series</span>
             
           </div>
           <h3 title="Countdown to Final Crisis #46">Countdown to Final Crisis #46</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0046">PUB-COUNTDOWN-FINAL-CRISIS-0046</p>
-          <p class="meta" title="Seq 001000006 | core | verified">Seq 001000006 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date">Published 2007-06-13</p>
         </div>
       </article>
     
@@ -242,10 +225,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #45">Countdown to Final Crisis #45</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0045">PUB-COUNTDOWN-FINAL-CRISIS-0045</p>
-          <p class="meta" title="Seq 001000007 | core | verified">Seq 001000007 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -259,10 +239,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #44">Countdown to Final Crisis #44</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0044">PUB-COUNTDOWN-FINAL-CRISIS-0044</p>
-          <p class="meta" title="Seq 001000008 | core | verified">Seq 001000008 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -276,10 +253,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #43">Countdown to Final Crisis #43</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0043">PUB-COUNTDOWN-FINAL-CRISIS-0043</p>
-          <p class="meta" title="Seq 001000009 | core | verified">Seq 001000009 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -293,10 +267,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #42">Countdown to Final Crisis #42</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0042">PUB-COUNTDOWN-FINAL-CRISIS-0042</p>
-          <p class="meta" title="Seq 001000010 | core | verified">Seq 001000010 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -310,10 +281,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #41">Countdown to Final Crisis #41</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0041">PUB-COUNTDOWN-FINAL-CRISIS-0041</p>
-          <p class="meta" title="Seq 001000011 | core | verified">Seq 001000011 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -327,10 +295,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #40">Countdown to Final Crisis #40</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0040">PUB-COUNTDOWN-FINAL-CRISIS-0040</p>
-          <p class="meta" title="Seq 001000012 | core | verified">Seq 001000012 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -344,10 +309,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #39">Countdown to Final Crisis #39</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0039">PUB-COUNTDOWN-FINAL-CRISIS-0039</p>
-          <p class="meta" title="Seq 001000013 | core | verified">Seq 001000013 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -361,10 +323,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #38">Countdown to Final Crisis #38</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0038">PUB-COUNTDOWN-FINAL-CRISIS-0038</p>
-          <p class="meta" title="Seq 001000014 | core | verified">Seq 001000014 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -378,10 +337,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #37">Countdown to Final Crisis #37</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0037">PUB-COUNTDOWN-FINAL-CRISIS-0037</p>
-          <p class="meta" title="Seq 001000015 | core | verified">Seq 001000015 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -395,10 +351,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #36">Countdown to Final Crisis #36</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0036">PUB-COUNTDOWN-FINAL-CRISIS-0036</p>
-          <p class="meta" title="Seq 001000016 | core | verified">Seq 001000016 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -412,10 +365,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #35">Countdown to Final Crisis #35</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0035">PUB-COUNTDOWN-FINAL-CRISIS-0035</p>
-          <p class="meta" title="Seq 001000017 | core | verified">Seq 001000017 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -429,10 +379,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #34">Countdown to Final Crisis #34</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0034">PUB-COUNTDOWN-FINAL-CRISIS-0034</p>
-          <p class="meta" title="Seq 001000018 | core | verified">Seq 001000018 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -446,10 +393,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #33">Countdown to Final Crisis #33</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0033">PUB-COUNTDOWN-FINAL-CRISIS-0033</p>
-          <p class="meta" title="Seq 001000019 | core | verified">Seq 001000019 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -463,10 +407,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #32">Countdown to Final Crisis #32</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0032">PUB-COUNTDOWN-FINAL-CRISIS-0032</p>
-          <p class="meta" title="Seq 001000020 | core | verified">Seq 001000020 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -480,95 +421,77 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #31">Countdown to Final Crisis #31</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0031">PUB-COUNTDOWN-FINAL-CRISIS-0031</p>
-          <p class="meta" title="Seq 001000021 | core | verified">Seq 001000021 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="core_weekly_series" data-project="countdown_weekly_series" data-status="owned" data-sequence="001000022" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000022">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0030.jpg" data-full-title="Countdown to Final Crisis #30" data-full-detail="PUB-COUNTDOWN-FINAL-CRISIS-0030 | Seq 001000022 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0030.jpg" alt="Countdown to Final Crisis #30 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0030.jpg" data-full-title="Countdown to Final Crisis #30" data-full-detail="Published 2007-08 | PUB-COUNTDOWN-FINAL-CRISIS-0030 | Seq 001000022 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | https://dc.fandom.com/wiki/Countdown_Vol_1_30 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0030.jpg" alt="Countdown to Final Crisis #30 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core weekly series</span>
             
           </div>
           <h3 title="Countdown to Final Crisis #30">Countdown to Final Crisis #30</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0030">PUB-COUNTDOWN-FINAL-CRISIS-0030</p>
-          <p class="meta" title="Seq 001000022 | core | verified">Seq 001000022 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date">Published 2007-08</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="core_weekly_series" data-project="countdown_weekly_series" data-status="owned" data-sequence="001000023" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000023">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0029.jpg" data-full-title="Countdown to Final Crisis #29" data-full-detail="PUB-COUNTDOWN-FINAL-CRISIS-0029 | Seq 001000023 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0029.jpg" alt="Countdown to Final Crisis #29 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0029.jpg" data-full-title="Countdown to Final Crisis #29" data-full-detail="Published 2007-08 | PUB-COUNTDOWN-FINAL-CRISIS-0029 | Seq 001000023 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | https://dc.fandom.com/wiki/Countdown_Vol_1_29 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0029.jpg" alt="Countdown to Final Crisis #29 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core weekly series</span>
             
           </div>
           <h3 title="Countdown to Final Crisis #29">Countdown to Final Crisis #29</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0029">PUB-COUNTDOWN-FINAL-CRISIS-0029</p>
-          <p class="meta" title="Seq 001000023 | core | verified">Seq 001000023 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date">Published 2007-08</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="core_weekly_series" data-project="countdown_weekly_series" data-status="owned" data-sequence="001000024" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000024">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0028.jpg" data-full-title="Countdown to Final Crisis #28" data-full-detail="PUB-COUNTDOWN-FINAL-CRISIS-0028 | Seq 001000024 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0028.jpg" alt="Countdown to Final Crisis #28 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0028.jpg" data-full-title="Countdown to Final Crisis #28" data-full-detail="Published 2007-08 | PUB-COUNTDOWN-FINAL-CRISIS-0028 | Seq 001000024 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | https://dc.fandom.com/wiki/Countdown_Vol_1_28 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0028.jpg" alt="Countdown to Final Crisis #28 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core weekly series</span>
             
           </div>
           <h3 title="Countdown to Final Crisis #28">Countdown to Final Crisis #28</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0028">PUB-COUNTDOWN-FINAL-CRISIS-0028</p>
-          <p class="meta" title="Seq 001000024 | core | verified">Seq 001000024 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date">Published 2007-08</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="core_weekly_series" data-project="countdown_weekly_series" data-status="owned" data-sequence="001000025" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000025">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0027.jpg" data-full-title="Countdown to Final Crisis #27" data-full-detail="PUB-COUNTDOWN-FINAL-CRISIS-0027 | Seq 001000025 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0027.jpg" alt="Countdown to Final Crisis #27 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0027.jpg" data-full-title="Countdown to Final Crisis #27" data-full-detail="Published 2007-08 | PUB-COUNTDOWN-FINAL-CRISIS-0027 | Seq 001000025 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | https://dc.fandom.com/wiki/Countdown_Vol_1_27 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0027.jpg" alt="Countdown to Final Crisis #27 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core weekly series</span>
             
           </div>
           <h3 title="Countdown to Final Crisis #27">Countdown to Final Crisis #27</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0027">PUB-COUNTDOWN-FINAL-CRISIS-0027</p>
-          <p class="meta" title="Seq 001000025 | core | verified">Seq 001000025 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date">Published 2007-08</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="core_weekly_series" data-project="countdown_weekly_series" data-status="owned" data-sequence="001000026" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000026">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0026.jpg" data-full-title="Countdown to Final Crisis #26" data-full-detail="PUB-COUNTDOWN-FINAL-CRISIS-0026 | Seq 001000026 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0026.jpg" alt="Countdown to Final Crisis #26 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0026.jpg" data-full-title="Countdown to Final Crisis #26" data-full-detail="Published 2007-08 | PUB-COUNTDOWN-FINAL-CRISIS-0026 | Seq 001000026 | core | verified | Countdown | Core weekly series counted backwards #51 to #1. | https://dc.fandom.com/wiki/Countdown_to_Final_Crisis_Vol_1_26 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-FINAL-CRISIS-0026.jpg" alt="Countdown to Final Crisis #26 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core weekly series</span>
             
           </div>
           <h3 title="Countdown to Final Crisis #26">Countdown to Final Crisis #26</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0026">PUB-COUNTDOWN-FINAL-CRISIS-0026</p>
-          <p class="meta" title="Seq 001000026 | core | verified">Seq 001000026 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date">Published 2007-08</p>
         </div>
       </article>
     
@@ -582,10 +505,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #25">Countdown to Final Crisis #25</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0025">PUB-COUNTDOWN-FINAL-CRISIS-0025</p>
-          <p class="meta" title="Seq 001000027 | core | verified">Seq 001000027 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -599,10 +519,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #24">Countdown to Final Crisis #24</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0024">PUB-COUNTDOWN-FINAL-CRISIS-0024</p>
-          <p class="meta" title="Seq 001000028 | core | verified">Seq 001000028 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -616,10 +533,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #23">Countdown to Final Crisis #23</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0023">PUB-COUNTDOWN-FINAL-CRISIS-0023</p>
-          <p class="meta" title="Seq 001000029 | core | verified">Seq 001000029 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -633,10 +547,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #22">Countdown to Final Crisis #22</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0022">PUB-COUNTDOWN-FINAL-CRISIS-0022</p>
-          <p class="meta" title="Seq 001000030 | core | verified">Seq 001000030 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -650,10 +561,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #21">Countdown to Final Crisis #21</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0021">PUB-COUNTDOWN-FINAL-CRISIS-0021</p>
-          <p class="meta" title="Seq 001000031 | core | verified">Seq 001000031 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -667,10 +575,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #20">Countdown to Final Crisis #20</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0020">PUB-COUNTDOWN-FINAL-CRISIS-0020</p>
-          <p class="meta" title="Seq 001000032 | core | verified">Seq 001000032 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -684,10 +589,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #19">Countdown to Final Crisis #19</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0019">PUB-COUNTDOWN-FINAL-CRISIS-0019</p>
-          <p class="meta" title="Seq 001000033 | core | verified">Seq 001000033 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -701,10 +603,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #18">Countdown to Final Crisis #18</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0018">PUB-COUNTDOWN-FINAL-CRISIS-0018</p>
-          <p class="meta" title="Seq 001000034 | core | verified">Seq 001000034 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -718,10 +617,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #17">Countdown to Final Crisis #17</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0017">PUB-COUNTDOWN-FINAL-CRISIS-0017</p>
-          <p class="meta" title="Seq 001000035 | core | verified">Seq 001000035 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -735,10 +631,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #16">Countdown to Final Crisis #16</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0016">PUB-COUNTDOWN-FINAL-CRISIS-0016</p>
-          <p class="meta" title="Seq 001000036 | core | verified">Seq 001000036 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -752,10 +645,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #15">Countdown to Final Crisis #15</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0015">PUB-COUNTDOWN-FINAL-CRISIS-0015</p>
-          <p class="meta" title="Seq 001000037 | core | verified">Seq 001000037 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -769,10 +659,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #14">Countdown to Final Crisis #14</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0014">PUB-COUNTDOWN-FINAL-CRISIS-0014</p>
-          <p class="meta" title="Seq 001000038 | core | verified">Seq 001000038 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -786,10 +673,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #13">Countdown to Final Crisis #13</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0013">PUB-COUNTDOWN-FINAL-CRISIS-0013</p>
-          <p class="meta" title="Seq 001000039 | core | verified">Seq 001000039 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -803,10 +687,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #12">Countdown to Final Crisis #12</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0012">PUB-COUNTDOWN-FINAL-CRISIS-0012</p>
-          <p class="meta" title="Seq 001000040 | core | verified">Seq 001000040 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -820,10 +701,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #11">Countdown to Final Crisis #11</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0011">PUB-COUNTDOWN-FINAL-CRISIS-0011</p>
-          <p class="meta" title="Seq 001000041 | core | verified">Seq 001000041 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -837,10 +715,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #10">Countdown to Final Crisis #10</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0010">PUB-COUNTDOWN-FINAL-CRISIS-0010</p>
-          <p class="meta" title="Seq 001000042 | core | verified">Seq 001000042 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -854,10 +729,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #9">Countdown to Final Crisis #9</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0009">PUB-COUNTDOWN-FINAL-CRISIS-0009</p>
-          <p class="meta" title="Seq 001000043 | core | verified">Seq 001000043 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -871,10 +743,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #8">Countdown to Final Crisis #8</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0008">PUB-COUNTDOWN-FINAL-CRISIS-0008</p>
-          <p class="meta" title="Seq 001000044 | core | verified">Seq 001000044 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -888,10 +757,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #7">Countdown to Final Crisis #7</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0007">PUB-COUNTDOWN-FINAL-CRISIS-0007</p>
-          <p class="meta" title="Seq 001000045 | core | verified">Seq 001000045 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -905,10 +771,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #6">Countdown to Final Crisis #6</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0006">PUB-COUNTDOWN-FINAL-CRISIS-0006</p>
-          <p class="meta" title="Seq 001000046 | core | verified">Seq 001000046 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -922,10 +785,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #5">Countdown to Final Crisis #5</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0005">PUB-COUNTDOWN-FINAL-CRISIS-0005</p>
-          <p class="meta" title="Seq 001000047 | core | verified">Seq 001000047 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -939,10 +799,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #4">Countdown to Final Crisis #4</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0004">PUB-COUNTDOWN-FINAL-CRISIS-0004</p>
-          <p class="meta" title="Seq 001000048 | core | verified">Seq 001000048 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -956,10 +813,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #3">Countdown to Final Crisis #3</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0003">PUB-COUNTDOWN-FINAL-CRISIS-0003</p>
-          <p class="meta" title="Seq 001000049 | core | verified">Seq 001000049 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -973,10 +827,7 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #2">Countdown to Final Crisis #2</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0002">PUB-COUNTDOWN-FINAL-CRISIS-0002</p>
-          <p class="meta" title="Seq 001000050 | core | verified">Seq 001000050 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -990,27 +841,21 @@
             
           </div>
           <h3 title="Countdown to Final Crisis #1">Countdown to Final Crisis #1</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-FINAL-CRISIS-0001">PUB-COUNTDOWN-FINAL-CRISIS-0001</p>
-          <p class="meta" title="Seq 001000051 | core | verified">Seq 001000051 | core | verified</p>
-          <p class="continuity" title="Countdown">Countdown</p>
-          <p class="notes" title="Core weekly series counted backwards #51 to #1.">Core weekly series counted backwards #51 to #1.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="verified_membership" data-project="countdown_to_adventure" data-status="missing" data-sequence="002000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002000001">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-TO-ADVENTURE-0001.jpg" data-full-title="Countdown to Adventure #1" data-full-detail="PUB-COUNTDOWN-TO-ADVENTURE-0001 | Seq 002000001 | companion | verified | Countdown to Adventure | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-TO-ADVENTURE-0001.jpg" alt="Countdown to Adventure #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-TO-ADVENTURE-0001.jpg" data-full-title="Countdown to Adventure #1" data-full-detail="Published 2007-08 | PUB-COUNTDOWN-TO-ADVENTURE-0001 | Seq 002000001 | companion | verified | Countdown to Adventure | https://dc.fandom.com/wiki/Countdown_to_Adventure_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-TO-ADVENTURE-0001.jpg" alt="Countdown to Adventure #1 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">verified membership</span>
             
           </div>
           <h3 title="Countdown to Adventure #1">Countdown to Adventure #1</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-TO-ADVENTURE-0001">PUB-COUNTDOWN-TO-ADVENTURE-0001</p>
-          <p class="meta" title="Seq 002000001 | companion | verified">Seq 002000001 | companion | verified</p>
-          <p class="continuity" title="Countdown to Adventure">Countdown to Adventure</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date">Published 2007-08</p>
         </div>
       </article>
     
@@ -1024,10 +869,7 @@
             
           </div>
           <h3 title="Countdown to Adventure #2">Countdown to Adventure #2</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-TO-ADVENTURE-0002">PUB-COUNTDOWN-TO-ADVENTURE-0002</p>
-          <p class="meta" title="Seq 002000002 | companion | verified">Seq 002000002 | companion | verified</p>
-          <p class="continuity" title="Countdown to Adventure">Countdown to Adventure</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1041,10 +883,7 @@
             
           </div>
           <h3 title="Countdown to Adventure #3">Countdown to Adventure #3</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-TO-ADVENTURE-0003">PUB-COUNTDOWN-TO-ADVENTURE-0003</p>
-          <p class="meta" title="Seq 002000003 | companion | verified">Seq 002000003 | companion | verified</p>
-          <p class="continuity" title="Countdown to Adventure">Countdown to Adventure</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1058,10 +897,7 @@
             
           </div>
           <h3 title="Countdown to Adventure #4">Countdown to Adventure #4</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-TO-ADVENTURE-0004">PUB-COUNTDOWN-TO-ADVENTURE-0004</p>
-          <p class="meta" title="Seq 002000004 | companion | verified">Seq 002000004 | companion | verified</p>
-          <p class="continuity" title="Countdown to Adventure">Countdown to Adventure</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1075,10 +911,7 @@
             
           </div>
           <h3 title="Countdown to Adventure #5">Countdown to Adventure #5</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-TO-ADVENTURE-0005">PUB-COUNTDOWN-TO-ADVENTURE-0005</p>
-          <p class="meta" title="Seq 002000005 | companion | verified">Seq 002000005 | companion | verified</p>
-          <p class="continuity" title="Countdown to Adventure">Countdown to Adventure</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1092,10 +925,7 @@
             
           </div>
           <h3 title="Countdown to Adventure #6">Countdown to Adventure #6</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-TO-ADVENTURE-0006">PUB-COUNTDOWN-TO-ADVENTURE-0006</p>
-          <p class="meta" title="Seq 002000006 | companion | verified">Seq 002000006 | companion | verified</p>
-          <p class="continuity" title="Countdown to Adventure">Countdown to Adventure</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1109,10 +939,7 @@
             
           </div>
           <h3 title="Countdown to Adventure #7">Countdown to Adventure #7</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-TO-ADVENTURE-0007">PUB-COUNTDOWN-TO-ADVENTURE-0007</p>
-          <p class="meta" title="Seq 002000007 | companion | verified">Seq 002000007 | companion | verified</p>
-          <p class="continuity" title="Countdown to Adventure">Countdown to Adventure</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1126,27 +953,21 @@
             
           </div>
           <h3 title="Countdown to Adventure #8">Countdown to Adventure #8</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-TO-ADVENTURE-0008">PUB-COUNTDOWN-TO-ADVENTURE-0008</p>
-          <p class="meta" title="Seq 002000008 | companion | verified">Seq 002000008 | companion | verified</p>
-          <p class="continuity" title="Countdown to Adventure">Countdown to Adventure</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="verified_membership" data-project="countdown_to_mystery" data-status="missing" data-sequence="003000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003000001">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-TO-MYSTERY-0001.jpg" data-full-title="Countdown to Mystery #1" data-full-detail="PUB-COUNTDOWN-TO-MYSTERY-0001 | Seq 003000001 | companion | verified | Countdown to Mystery | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-TO-MYSTERY-0001.jpg" alt="Countdown to Mystery #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-TO-MYSTERY-0001.jpg" data-full-title="Countdown to Mystery #1" data-full-detail="Published 2007-09-19 | PUB-COUNTDOWN-TO-MYSTERY-0001 | Seq 003000001 | companion | verified | Countdown to Mystery | https://dc.fandom.com/wiki/Countdown_to_Mystery_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-TO-MYSTERY-0001.jpg" alt="Countdown to Mystery #1 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">verified membership</span>
             
           </div>
           <h3 title="Countdown to Mystery #1">Countdown to Mystery #1</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-TO-MYSTERY-0001">PUB-COUNTDOWN-TO-MYSTERY-0001</p>
-          <p class="meta" title="Seq 003000001 | companion | verified">Seq 003000001 | companion | verified</p>
-          <p class="continuity" title="Countdown to Mystery">Countdown to Mystery</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date">Published 2007-09-19</p>
         </div>
       </article>
     
@@ -1160,10 +981,7 @@
             
           </div>
           <h3 title="Countdown to Mystery #2">Countdown to Mystery #2</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-TO-MYSTERY-0002">PUB-COUNTDOWN-TO-MYSTERY-0002</p>
-          <p class="meta" title="Seq 003000002 | companion | verified">Seq 003000002 | companion | verified</p>
-          <p class="continuity" title="Countdown to Mystery">Countdown to Mystery</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1177,10 +995,7 @@
             
           </div>
           <h3 title="Countdown to Mystery #3">Countdown to Mystery #3</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-TO-MYSTERY-0003">PUB-COUNTDOWN-TO-MYSTERY-0003</p>
-          <p class="meta" title="Seq 003000003 | companion | verified">Seq 003000003 | companion | verified</p>
-          <p class="continuity" title="Countdown to Mystery">Countdown to Mystery</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1194,10 +1009,7 @@
             
           </div>
           <h3 title="Countdown to Mystery #4">Countdown to Mystery #4</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-TO-MYSTERY-0004">PUB-COUNTDOWN-TO-MYSTERY-0004</p>
-          <p class="meta" title="Seq 003000004 | companion | verified">Seq 003000004 | companion | verified</p>
-          <p class="continuity" title="Countdown to Mystery">Countdown to Mystery</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1211,10 +1023,7 @@
             
           </div>
           <h3 title="Countdown to Mystery #5">Countdown to Mystery #5</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-TO-MYSTERY-0005">PUB-COUNTDOWN-TO-MYSTERY-0005</p>
-          <p class="meta" title="Seq 003000005 | companion | verified">Seq 003000005 | companion | verified</p>
-          <p class="continuity" title="Countdown to Mystery">Countdown to Mystery</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1228,10 +1037,7 @@
             
           </div>
           <h3 title="Countdown to Mystery #6">Countdown to Mystery #6</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-TO-MYSTERY-0006">PUB-COUNTDOWN-TO-MYSTERY-0006</p>
-          <p class="meta" title="Seq 003000006 | companion | verified">Seq 003000006 | companion | verified</p>
-          <p class="continuity" title="Countdown to Mystery">Countdown to Mystery</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1245,10 +1051,7 @@
             
           </div>
           <h3 title="Countdown to Mystery #7">Countdown to Mystery #7</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-TO-MYSTERY-0007">PUB-COUNTDOWN-TO-MYSTERY-0007</p>
-          <p class="meta" title="Seq 003000007 | companion | verified">Seq 003000007 | companion | verified</p>
-          <p class="continuity" title="Countdown to Mystery">Countdown to Mystery</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1262,10 +1065,7 @@
             
           </div>
           <h3 title="Countdown to Mystery #8">Countdown to Mystery #8</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-TO-MYSTERY-0008">PUB-COUNTDOWN-TO-MYSTERY-0008</p>
-          <p class="meta" title="Seq 003000008 | companion | verified">Seq 003000008 | companion | verified</p>
-          <p class="continuity" title="Countdown to Mystery">Countdown to Mystery</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1279,10 +1079,7 @@
             
           </div>
           <h3 title="Countdown Presents: Lord Havok and the Extremists #1">Countdown Presents: Lord Havok and the Extremists #1</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-LORD-HAVOK-0001">PUB-COUNTDOWN-LORD-HAVOK-0001</p>
-          <p class="meta" title="Seq 004000001 | companion | verified">Seq 004000001 | companion | verified</p>
-          <p class="continuity" title="Lord Havok">Lord Havok</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1296,10 +1093,7 @@
             
           </div>
           <h3 title="Countdown Presents: Lord Havok and the Extremists #2">Countdown Presents: Lord Havok and the Extremists #2</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-LORD-HAVOK-0002">PUB-COUNTDOWN-LORD-HAVOK-0002</p>
-          <p class="meta" title="Seq 004000002 | companion | verified">Seq 004000002 | companion | verified</p>
-          <p class="continuity" title="Lord Havok">Lord Havok</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1313,10 +1107,7 @@
             
           </div>
           <h3 title="Countdown Presents: Lord Havok and the Extremists #3">Countdown Presents: Lord Havok and the Extremists #3</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-LORD-HAVOK-0003">PUB-COUNTDOWN-LORD-HAVOK-0003</p>
-          <p class="meta" title="Seq 004000003 | companion | verified">Seq 004000003 | companion | verified</p>
-          <p class="continuity" title="Lord Havok">Lord Havok</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1330,10 +1121,7 @@
             
           </div>
           <h3 title="Countdown Presents: Lord Havok and the Extremists #4">Countdown Presents: Lord Havok and the Extremists #4</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-LORD-HAVOK-0004">PUB-COUNTDOWN-LORD-HAVOK-0004</p>
-          <p class="meta" title="Seq 004000004 | companion | verified">Seq 004000004 | companion | verified</p>
-          <p class="continuity" title="Lord Havok">Lord Havok</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1347,10 +1135,7 @@
             
           </div>
           <h3 title="Countdown Presents: Lord Havok and the Extremists #5">Countdown Presents: Lord Havok and the Extremists #5</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-LORD-HAVOK-0005">PUB-COUNTDOWN-LORD-HAVOK-0005</p>
-          <p class="meta" title="Seq 004000005 | companion | verified">Seq 004000005 | companion | verified</p>
-          <p class="continuity" title="Lord Havok">Lord Havok</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1364,129 +1149,105 @@
             
           </div>
           <h3 title="Countdown Presents: Lord Havok and the Extremists #6">Countdown Presents: Lord Havok and the Extremists #6</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-LORD-HAVOK-0006">PUB-COUNTDOWN-LORD-HAVOK-0006</p>
-          <p class="meta" title="Seq 004000006 | companion | verified">Seq 004000006 | companion | verified</p>
-          <p class="continuity" title="Lord Havok">Lord Havok</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="verified_membership" data-project="countdown_arena" data-status="owned" data-sequence="005000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:005000001">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-ARENA-0001.jpg" data-full-title="Countdown: Arena #1" data-full-detail="PUB-COUNTDOWN-ARENA-0001 | Seq 005000001 | companion | verified | Arena | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-ARENA-0001.jpg" alt="Countdown: Arena #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-ARENA-0001.jpg" data-full-title="Countdown: Arena #1" data-full-detail="Published 2007-12 | PUB-COUNTDOWN-ARENA-0001 | Seq 005000001 | companion | verified | Arena | https://dc.fandom.com/wiki/Countdown:_Arena_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-ARENA-0001.jpg" alt="Countdown: Arena #1 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">verified membership</span>
             
           </div>
           <h3 title="Countdown: Arena #1">Countdown: Arena #1</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-ARENA-0001">PUB-COUNTDOWN-ARENA-0001</p>
-          <p class="meta" title="Seq 005000001 | companion | verified">Seq 005000001 | companion | verified</p>
-          <p class="continuity" title="Arena">Arena</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date">Published 2007-12</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="verified_membership" data-project="countdown_arena" data-status="owned" data-sequence="005000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:005000002">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-ARENA-0002.jpg" data-full-title="Countdown: Arena #2" data-full-detail="PUB-COUNTDOWN-ARENA-0002 | Seq 005000002 | companion | verified | Arena | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-ARENA-0002.jpg" alt="Countdown: Arena #2 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-ARENA-0002.jpg" data-full-title="Countdown: Arena #2" data-full-detail="Published 2007-12 | PUB-COUNTDOWN-ARENA-0002 | Seq 005000002 | companion | verified | Arena | https://dc.fandom.com/wiki/Countdown:_Arena_Vol_1_2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-ARENA-0002.jpg" alt="Countdown: Arena #2 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">verified membership</span>
             
           </div>
           <h3 title="Countdown: Arena #2">Countdown: Arena #2</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-ARENA-0002">PUB-COUNTDOWN-ARENA-0002</p>
-          <p class="meta" title="Seq 005000002 | companion | verified">Seq 005000002 | companion | verified</p>
-          <p class="continuity" title="Arena">Arena</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date">Published 2007-12</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="verified_membership" data-project="countdown_arena" data-status="owned" data-sequence="005000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:005000003">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-ARENA-0003.jpg" data-full-title="Countdown: Arena #3" data-full-detail="PUB-COUNTDOWN-ARENA-0003 | Seq 005000003 | companion | verified | Arena | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-ARENA-0003.jpg" alt="Countdown: Arena #3 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-ARENA-0003.jpg" data-full-title="Countdown: Arena #3" data-full-detail="Published 2007-12 | PUB-COUNTDOWN-ARENA-0003 | Seq 005000003 | companion | verified | Arena | https://dc.fandom.com/wiki/Countdown:_Arena_Vol_1_3 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-ARENA-0003.jpg" alt="Countdown: Arena #3 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">verified membership</span>
             
           </div>
           <h3 title="Countdown: Arena #3">Countdown: Arena #3</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-ARENA-0003">PUB-COUNTDOWN-ARENA-0003</p>
-          <p class="meta" title="Seq 005000003 | companion | verified">Seq 005000003 | companion | verified</p>
-          <p class="continuity" title="Arena">Arena</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date">Published 2007-12</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="verified_membership" data-project="countdown_arena" data-status="owned" data-sequence="005000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:005000004">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-ARENA-0004.jpg" data-full-title="Countdown: Arena #4" data-full-detail="PUB-COUNTDOWN-ARENA-0004 | Seq 005000004 | companion | verified | Arena | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-ARENA-0004.jpg" alt="Countdown: Arena #4 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-COUNTDOWN-ARENA-0004.jpg" data-full-title="Countdown: Arena #4" data-full-detail="Published 2007-12 | PUB-COUNTDOWN-ARENA-0004 | Seq 005000004 | companion | verified | Arena | https://dc.fandom.com/wiki/Countdown:_Arena_Vol_1_4 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-COUNTDOWN-ARENA-0004.jpg" alt="Countdown: Arena #4 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">verified membership</span>
             
           </div>
           <h3 title="Countdown: Arena #4">Countdown: Arena #4</h3>
-          <p class="pub-id" title="PUB-COUNTDOWN-ARENA-0004">PUB-COUNTDOWN-ARENA-0004</p>
-          <p class="meta" title="Seq 005000004 | companion | verified">Seq 005000004 | companion | verified</p>
-          <p class="continuity" title="Arena">Arena</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date">Published 2007-12</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="verified_specials" data-project="countdown_search_ray_palmer" data-status="missing" data-sequence="006000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:006000001">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SEARCH-RAY-PALMER-CRIME-SOCIETY-0001.jpg" data-full-title="Countdown Presents: The Search for Ray Palmer: Crime Society #1" data-full-detail="PUB-SEARCH-RAY-PALMER-CRIME-SOCIETY-0001 | Seq 006000001 | companion special | verified | Search for Ray Palmer | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SEARCH-RAY-PALMER-CRIME-SOCIETY-0001.jpg" alt="Countdown Presents: The Search for Ray Palmer: Crime Society #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SEARCH-RAY-PALMER-CRIME-SOCIETY-0001.jpg" data-full-title="Countdown Presents: The Search for Ray Palmer: Crime Society #1" data-full-detail="Published 2007-10 | PUB-SEARCH-RAY-PALMER-CRIME-SOCIETY-0001 | Seq 006000001 | companion special | verified | Search for Ray Palmer | https://dc.fandom.com/wiki/Countdown_Presents:_The_Search_for_Ray_Palmer:_Crime_Society_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SEARCH-RAY-PALMER-CRIME-SOCIETY-0001.jpg" alt="Countdown Presents: The Search for Ray Palmer: Crime Society #1 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">verified specials</span>
             
           </div>
           <h3 title="Countdown Presents: The Search for Ray Palmer: Crime Society #1">Countdown Presents: The Search for Ray Palmer: Crime Society #1</h3>
-          <p class="pub-id" title="PUB-SEARCH-RAY-PALMER-CRIME-SOCIETY-0001">PUB-SEARCH-RAY-PALMER-CRIME-SOCIETY-0001</p>
-          <p class="meta" title="Seq 006000001 | companion special | verified">Seq 006000001 | companion special | verified</p>
-          <p class="continuity" title="Search for Ray Palmer">Search for Ray Palmer</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date">Published 2007-10</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="verified_specials|special_format_universe|complete_special_format_universe" data-project="countdown_search_ray_palmer|countdown_final_crisis" data-status="owned" data-sequence="006000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:006000002">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SEARCH-RAY-PALMER-GOTHAM-BY-GASLIGHT-0001.jpg" data-full-title="Countdown Presents: The Search for Ray Palmer: Gotham by Gaslight #1" data-full-detail="PUB-SEARCH-RAY-PALMER-GOTHAM-BY-GASLIGHT-0001 | Seq 006000002 | companion special; ONE_SHOT | verified | Search for Ray Palmer; ELSEWORLDS_REVISIT | Owned Countdown Presents multiverse special; not the same publication as Gotham by Gaslight. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SEARCH-RAY-PALMER-GOTHAM-BY-GASLIGHT-0001.jpg" alt="Countdown Presents: The Search for Ray Palmer: Gotham by Gaslight #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SEARCH-RAY-PALMER-GOTHAM-BY-GASLIGHT-0001.jpg" data-full-title="Countdown Presents: The Search for Ray Palmer: Gotham by Gaslight #1" data-full-detail="Published 2007 | PUB-SEARCH-RAY-PALMER-GOTHAM-BY-GASLIGHT-0001 | Seq 006000002 | companion special; ONE_SHOT | verified | Search for Ray Palmer; ELSEWORLDS_REVISIT | Owned Countdown Presents multiverse special; not the same publication as Gotham by Gaslight. | https://en.wikipedia.org/wiki/Countdown_to_Final_Crisis | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SEARCH-RAY-PALMER-GOTHAM-BY-GASLIGHT-0001.jpg" alt="Countdown Presents: The Search for Ray Palmer: Gotham by Gaslight #1 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">verified specials +2</span>
             
           </div>
           <h3 title="Countdown Presents: The Search for Ray Palmer: Gotham by Gaslight #1">Countdown Presents: The Search for Ray Palmer: Gotham by Gaslight #1</h3>
-          <p class="pub-id" title="PUB-SEARCH-RAY-PALMER-GOTHAM-BY-GASLIGHT-0001">PUB-SEARCH-RAY-PALMER-GOTHAM-BY-GASLIGHT-0001</p>
-          <p class="meta" title="Seq 006000002 | companion special; ONE_SHOT | verified">Seq 006000002 | companion special; ONE_SHOT | verified</p>
-          <p class="continuity" title="Search for Ray Palmer; ELSEWORLDS_REVISIT">Search for Ray Palmer; ELSEWORLDS_REVISIT</p>
-          <p class="notes" title="Owned Countdown Presents multiverse special; not the same publication as Gotham by Gaslight.">Owned Countdown Presents multiverse special; not the same publication as Gotham by Gaslight.</p>
+          <p class="publication-date">Published 2007</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="verified_specials" data-project="countdown_search_ray_palmer" data-status="owned" data-sequence="006000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:006000003">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SEARCH-RAY-PALMER-RED-RAIN-0001.jpg" data-full-title="Countdown Presents: The Search for Ray Palmer: Red Rain #1" data-full-detail="PUB-SEARCH-RAY-PALMER-RED-RAIN-0001 | Seq 006000003 | companion special | verified | Search for Ray Palmer | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SEARCH-RAY-PALMER-RED-RAIN-0001.jpg" alt="Countdown Presents: The Search for Ray Palmer: Red Rain #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SEARCH-RAY-PALMER-RED-RAIN-0001.jpg" data-full-title="Countdown Presents: The Search for Ray Palmer: Red Rain #1" data-full-detail="Published 2007-11 | PUB-SEARCH-RAY-PALMER-RED-RAIN-0001 | Seq 006000003 | companion special | verified | Search for Ray Palmer | https://dc.fandom.com/wiki/Countdown_Presents:_The_Search_for_Ray_Palmer:_Red_Rain_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SEARCH-RAY-PALMER-RED-RAIN-0001.jpg" alt="Countdown Presents: The Search for Ray Palmer: Red Rain #1 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">verified specials</span>
             
           </div>
           <h3 title="Countdown Presents: The Search for Ray Palmer: Red Rain #1">Countdown Presents: The Search for Ray Palmer: Red Rain #1</h3>
-          <p class="pub-id" title="PUB-SEARCH-RAY-PALMER-RED-RAIN-0001">PUB-SEARCH-RAY-PALMER-RED-RAIN-0001</p>
-          <p class="meta" title="Seq 006000003 | companion special | verified">Seq 006000003 | companion special | verified</p>
-          <p class="continuity" title="Search for Ray Palmer">Search for Ray Palmer</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date">Published 2007-11</p>
         </div>
       </article>
     
@@ -1500,44 +1261,35 @@
             
           </div>
           <h3 title="Countdown Presents: The Search for Ray Palmer: Red Son #1">Countdown Presents: The Search for Ray Palmer: Red Son #1</h3>
-          <p class="pub-id" title="PUB-SEARCH-RAY-PALMER-RED-SON-0001">PUB-SEARCH-RAY-PALMER-RED-SON-0001</p>
-          <p class="meta" title="Seq 006000004 | companion special | verified">Seq 006000004 | companion special | verified</p>
-          <p class="continuity" title="Search for Ray Palmer">Search for Ray Palmer</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="verified_specials" data-project="countdown_search_ray_palmer" data-status="missing" data-sequence="006000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:006000005">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SEARCH-RAY-PALMER-SUPERWOMAN-BATWOMAN-0001.jpg" data-full-title="Countdown Presents: The Search for Ray Palmer: Superwoman/Batwoman #1" data-full-detail="PUB-SEARCH-RAY-PALMER-SUPERWOMAN-BATWOMAN-0001 | Seq 006000005 | companion special | verified | Search for Ray Palmer | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SEARCH-RAY-PALMER-SUPERWOMAN-BATWOMAN-0001.jpg" alt="Countdown Presents: The Search for Ray Palmer: Superwoman/Batwoman #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SEARCH-RAY-PALMER-SUPERWOMAN-BATWOMAN-0001.jpg" data-full-title="Countdown Presents: The Search for Ray Palmer: Superwoman/Batwoman #1" data-full-detail="Published 2007-12 | PUB-SEARCH-RAY-PALMER-SUPERWOMAN-BATWOMAN-0001 | Seq 006000005 | companion special | verified | Search for Ray Palmer | https://dc.fandom.com/wiki/Countdown_Presents:_The_Search_for_Ray_Palmer:_Superwoman/Batwoman_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SEARCH-RAY-PALMER-SUPERWOMAN-BATWOMAN-0001.jpg" alt="Countdown Presents: The Search for Ray Palmer: Superwoman/Batwoman #1 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">verified specials</span>
             
           </div>
           <h3 title="Countdown Presents: The Search for Ray Palmer: Superwoman/Batwoman #1">Countdown Presents: The Search for Ray Palmer: Superwoman/Batwoman #1</h3>
-          <p class="pub-id" title="PUB-SEARCH-RAY-PALMER-SUPERWOMAN-BATWOMAN-0001">PUB-SEARCH-RAY-PALMER-SUPERWOMAN-BATWOMAN-0001</p>
-          <p class="meta" title="Seq 006000005 | companion special | verified">Seq 006000005 | companion special | verified</p>
-          <p class="continuity" title="Search for Ray Palmer">Search for Ray Palmer</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date">Published 2007-12</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="verified_specials" data-project="countdown_search_ray_palmer" data-status="missing" data-sequence="006000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:006000006">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SEARCH-RAY-PALMER-WILDSTORM-0001.jpg" data-full-title="Countdown Presents: The Search for Ray Palmer: Wildstorm #1" data-full-detail="PUB-SEARCH-RAY-PALMER-WILDSTORM-0001 | Seq 006000006 | companion special | verified | Search for Ray Palmer | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SEARCH-RAY-PALMER-WILDSTORM-0001.jpg" alt="Countdown Presents: The Search for Ray Palmer: Wildstorm #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SEARCH-RAY-PALMER-WILDSTORM-0001.jpg" data-full-title="Countdown Presents: The Search for Ray Palmer: Wildstorm #1" data-full-detail="Published 2007-09 | PUB-SEARCH-RAY-PALMER-WILDSTORM-0001 | Seq 006000006 | companion special | verified | Search for Ray Palmer | https://dc.fandom.com/wiki/Countdown_Presents:_The_Search_for_Ray_Palmer:_Wildstorm_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SEARCH-RAY-PALMER-WILDSTORM-0001.jpg" alt="Countdown Presents: The Search for Ray Palmer: Wildstorm #1 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">verified specials</span>
             
           </div>
           <h3 title="Countdown Presents: The Search for Ray Palmer: Wildstorm #1">Countdown Presents: The Search for Ray Palmer: Wildstorm #1</h3>
-          <p class="pub-id" title="PUB-SEARCH-RAY-PALMER-WILDSTORM-0001">PUB-SEARCH-RAY-PALMER-WILDSTORM-0001</p>
-          <p class="meta" title="Seq 006000006 | companion special | verified">Seq 006000006 | companion special | verified</p>
-          <p class="continuity" title="Search for Ray Palmer">Search for Ray Palmer</p>
-          <p class="notes" title=""></p>
+          <p class="publication-date">Published 2007-09</p>
         </div>
       </article>
     </section>
@@ -1633,9 +1385,7 @@
       });
     });
     document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
-    lightbox.addEventListener('click', event => {
-      if (event.target === lightbox) closeLightbox();
-    });
+    lightbox.addEventListener('click', closeLightbox);
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape') closeLightbox();
     });

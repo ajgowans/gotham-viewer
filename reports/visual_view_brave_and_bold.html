@@ -53,11 +53,12 @@
     .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
     .comic-card.cover-needs_review { border-color: #a46a00; }
     .comic-card.cover-rejected_auto { border-color: #b42318; }
-    .card-body { padding: 10px 11px 12px; height: 205px; display: flex; flex-direction: column; overflow: hidden; }
+    .card-body { padding: 10px 11px 12px; min-height: 86px; display: flex; flex-direction: column; overflow: hidden; }
     .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
     .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
     .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
     h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .publication-date { margin: auto 0 0; color: var(--muted); font-size: 12px; line-height: 1.3; }
     .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
     .pub-id { -webkit-line-clamp: 1; }
     .meta, .continuity { -webkit-line-clamp: 2; }
@@ -70,8 +71,8 @@
     .hidden { display: none; }
     .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
     .lightbox.open { display: flex; }
-    .lightbox-panel { max-width: min(92vw, 980px); max-height: 94vh; display: grid; gap: 10px; }
-    .lightbox img { max-width: 100%; max-height: calc(94vh - 56px); object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-panel { width: min(92vw, 980px); height: 94vh; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; align-items: center; justify-items: center; }
+    .lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; align-self: center; }
     .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
     .lightbox-title { font-weight: 750; }
     .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
@@ -130,10 +131,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #74">The Brave and the Bold #74</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0074">PUB-BRAVE-BOLD-0074</p>
-          <p class="meta" title="Seq 001000001 | team-up issue | verified">Seq 001000001 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -147,10 +145,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #75">The Brave and the Bold #75</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0075">PUB-BRAVE-BOLD-0075</p>
-          <p class="meta" title="Seq 001000002 | team-up issue | verified">Seq 001000002 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -164,10 +159,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #76">The Brave and the Bold #76</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0076">PUB-BRAVE-BOLD-0076</p>
-          <p class="meta" title="Seq 001000003 | team-up issue | verified">Seq 001000003 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -181,27 +173,21 @@
             
           </div>
           <h3 title="The Brave and the Bold #77">The Brave and the Bold #77</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0077">PUB-BRAVE-BOLD-0077</p>
-          <p class="meta" title="Seq 001000004 | team-up issue | verified">Seq 001000004 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000005">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0078.jpg" data-full-title="The Brave and the Bold #78" data-full-detail="PUB-BRAVE-BOLD-0078 | Seq 001000005 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0078.jpg" alt="The Brave and the Bold #78 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0078.jpg" data-full-title="The Brave and the Bold #78" data-full-detail="Published 1968-05-22 | PUB-BRAVE-BOLD-0078 | Seq 001000005 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_78 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0078.jpg" alt="The Brave and the Bold #78 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #78">The Brave and the Bold #78</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0078">PUB-BRAVE-BOLD-0078</p>
-          <p class="meta" title="Seq 001000005 | team-up issue | verified">Seq 001000005 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1968-05-22</p>
         </div>
       </article>
     
@@ -215,10 +201,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #79">The Brave and the Bold #79</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0079">PUB-BRAVE-BOLD-0079</p>
-          <p class="meta" title="Seq 001000006 | team-up issue | verified">Seq 001000006 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -232,10 +215,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #80">The Brave and the Bold #80</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0080">PUB-BRAVE-BOLD-0080</p>
-          <p class="meta" title="Seq 001000007 | team-up issue | verified">Seq 001000007 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -249,10 +229,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #81">The Brave and the Bold #81</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0081">PUB-BRAVE-BOLD-0081</p>
-          <p class="meta" title="Seq 001000008 | team-up issue | verified">Seq 001000008 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -266,10 +243,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #82">The Brave and the Bold #82</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0082">PUB-BRAVE-BOLD-0082</p>
-          <p class="meta" title="Seq 001000009 | team-up issue | verified">Seq 001000009 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -283,10 +257,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #83">The Brave and the Bold #83</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0083">PUB-BRAVE-BOLD-0083</p>
-          <p class="meta" title="Seq 001000010 | team-up issue | verified">Seq 001000010 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -300,10 +271,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #84">The Brave and the Bold #84</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0084">PUB-BRAVE-BOLD-0084</p>
-          <p class="meta" title="Seq 001000011 | team-up issue | verified">Seq 001000011 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -317,10 +285,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #85">The Brave and the Bold #85</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0085">PUB-BRAVE-BOLD-0085</p>
-          <p class="meta" title="Seq 001000012 | team-up issue | verified">Seq 001000012 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -334,10 +299,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #86">The Brave and the Bold #86</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0086">PUB-BRAVE-BOLD-0086</p>
-          <p class="meta" title="Seq 001000013 | team-up issue | verified">Seq 001000013 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -351,10 +313,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #87">The Brave and the Bold #87</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0087">PUB-BRAVE-BOLD-0087</p>
-          <p class="meta" title="Seq 001000014 | team-up issue | verified">Seq 001000014 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -368,10 +327,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #88">The Brave and the Bold #88</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0088">PUB-BRAVE-BOLD-0088</p>
-          <p class="meta" title="Seq 001000015 | team-up issue | verified">Seq 001000015 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -385,10 +341,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #89">The Brave and the Bold #89</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0089">PUB-BRAVE-BOLD-0089</p>
-          <p class="meta" title="Seq 001000016 | team-up issue | verified">Seq 001000016 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -402,10 +355,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #90">The Brave and the Bold #90</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0090">PUB-BRAVE-BOLD-0090</p>
-          <p class="meta" title="Seq 001000017 | team-up issue | verified">Seq 001000017 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -419,10 +369,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #91">The Brave and the Bold #91</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0091">PUB-BRAVE-BOLD-0091</p>
-          <p class="meta" title="Seq 001000018 | team-up issue | verified">Seq 001000018 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -436,231 +383,189 @@
             
           </div>
           <h3 title="The Brave and the Bold #92">The Brave and the Bold #92</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0092">PUB-BRAVE-BOLD-0092</p>
-          <p class="meta" title="Seq 001000019 | team-up issue | verified">Seq 001000019 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000020">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0093.jpg" data-full-title="The Brave and the Bold #93" data-full-detail="PUB-BRAVE-BOLD-0093 | Seq 001000020 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0093.jpg" alt="The Brave and the Bold #93 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0093.jpg" data-full-title="The Brave and the Bold #93" data-full-detail="Published 1970-10-28 | PUB-BRAVE-BOLD-0093 | Seq 001000020 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_93 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0093.jpg" alt="The Brave and the Bold #93 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #93">The Brave and the Bold #93</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0093">PUB-BRAVE-BOLD-0093</p>
-          <p class="meta" title="Seq 001000020 | team-up issue | verified">Seq 001000020 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1970-10-28</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000021">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0094.jpg" data-full-title="The Brave and the Bold #94" data-full-detail="PUB-BRAVE-BOLD-0094 | Seq 001000021 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0094.jpg" alt="The Brave and the Bold #94 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0094.jpg" data-full-title="The Brave and the Bold #94" data-full-detail="Published 1971-01 | PUB-BRAVE-BOLD-0094 | Seq 001000021 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_94 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0094.jpg" alt="The Brave and the Bold #94 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #94">The Brave and the Bold #94</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0094">PUB-BRAVE-BOLD-0094</p>
-          <p class="meta" title="Seq 001000021 | team-up issue | verified">Seq 001000021 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1971-01</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000022" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000022">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0095.jpg" data-full-title="The Brave and the Bold #95" data-full-detail="PUB-BRAVE-BOLD-0095 | Seq 001000022 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0095.jpg" alt="The Brave and the Bold #95 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0095.jpg" data-full-title="The Brave and the Bold #95" data-full-detail="Published 1971-03 | PUB-BRAVE-BOLD-0095 | Seq 001000022 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_95 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0095.jpg" alt="The Brave and the Bold #95 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #95">The Brave and the Bold #95</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0095">PUB-BRAVE-BOLD-0095</p>
-          <p class="meta" title="Seq 001000022 | team-up issue | verified">Seq 001000022 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1971-03</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000023" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000023">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0096.jpg" data-full-title="The Brave and the Bold #96" data-full-detail="PUB-BRAVE-BOLD-0096 | Seq 001000023 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0096.jpg" alt="The Brave and the Bold #96 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0096.jpg" data-full-title="The Brave and the Bold #96" data-full-detail="Published 1971-05 | PUB-BRAVE-BOLD-0096 | Seq 001000023 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_96 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0096.jpg" alt="The Brave and the Bold #96 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #96">The Brave and the Bold #96</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0096">PUB-BRAVE-BOLD-0096</p>
-          <p class="meta" title="Seq 001000023 | team-up issue | verified">Seq 001000023 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1971-05</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000024" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000024">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0097.jpg" data-full-title="The Brave and the Bold #97" data-full-detail="PUB-BRAVE-BOLD-0097 | Seq 001000024 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0097.jpg" alt="The Brave and the Bold #97 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0097.jpg" data-full-title="The Brave and the Bold #97" data-full-detail="Published 1971-07 | PUB-BRAVE-BOLD-0097 | Seq 001000024 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_97 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0097.jpg" alt="The Brave and the Bold #97 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #97">The Brave and the Bold #97</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0097">PUB-BRAVE-BOLD-0097</p>
-          <p class="meta" title="Seq 001000024 | team-up issue | verified">Seq 001000024 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1971-07</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000025" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000025">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0098.jpg" data-full-title="The Brave and the Bold #98" data-full-detail="PUB-BRAVE-BOLD-0098 | Seq 001000025 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0098.jpg" alt="The Brave and the Bold #98 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0098.jpg" data-full-title="The Brave and the Bold #98" data-full-detail="Published 1971-08-11 | PUB-BRAVE-BOLD-0098 | Seq 001000025 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_98 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0098.jpg" alt="The Brave and the Bold #98 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #98">The Brave and the Bold #98</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0098">PUB-BRAVE-BOLD-0098</p>
-          <p class="meta" title="Seq 001000025 | team-up issue | verified">Seq 001000025 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1971-08-11</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000026" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000026">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0099.jpg" data-full-title="The Brave and the Bold #99" data-full-detail="PUB-BRAVE-BOLD-0099 | Seq 001000026 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0099.jpg" alt="The Brave and the Bold #99 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0099.jpg" data-full-title="The Brave and the Bold #99" data-full-detail="Published 1971-11 | PUB-BRAVE-BOLD-0099 | Seq 001000026 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_99 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0099.jpg" alt="The Brave and the Bold #99 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #99">The Brave and the Bold #99</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0099">PUB-BRAVE-BOLD-0099</p>
-          <p class="meta" title="Seq 001000026 | team-up issue | verified">Seq 001000026 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1971-11</p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000027" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000027">
+      <article class="comic-card missing cover-needs_review" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000027" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000027">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0100.jpg" data-full-title="The Brave and the Bold #100" data-full-detail="PUB-BRAVE-BOLD-0100 | Seq 001000027 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0100.jpg" alt="The Brave and the Bold #100 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0100.jpg" data-full-title="The Brave and the Bold #100" data-full-detail="Published 1972-01 | PUB-BRAVE-BOLD-0100 | Seq 001000027 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_100 | embedded_black_border | Most outer-edge pixels are black while the cover interior is brighter; the image may contain a scanned black frame."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0100.jpg" alt="The Brave and the Bold #100 cover"></button><span class="cover-review-badge warning">Cover check</span></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
-            
+            <span class="badge review" title="Most outer-edge pixels are black while the cover interior is brighter; the image may contain a scanned black frame.">needs review</span>
           </div>
           <h3 title="The Brave and the Bold #100">The Brave and the Bold #100</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0100">PUB-BRAVE-BOLD-0100</p>
-          <p class="meta" title="Seq 001000027 | team-up issue | verified">Seq 001000027 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1972-01</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000028" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000028">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0101.jpg" data-full-title="The Brave and the Bold #101" data-full-detail="PUB-BRAVE-BOLD-0101 | Seq 001000028 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0101.jpg" alt="The Brave and the Bold #101 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0101.jpg" data-full-title="The Brave and the Bold #101" data-full-detail="Published 1972-03 | PUB-BRAVE-BOLD-0101 | Seq 001000028 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_101 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0101.jpg" alt="The Brave and the Bold #101 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #101">The Brave and the Bold #101</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0101">PUB-BRAVE-BOLD-0101</p>
-          <p class="meta" title="Seq 001000028 | team-up issue | verified">Seq 001000028 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1972-03</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000029" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000029">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0102.jpg" data-full-title="The Brave and the Bold #102" data-full-detail="PUB-BRAVE-BOLD-0102 | Seq 001000029 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0102.jpg" alt="The Brave and the Bold #102 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0102.jpg" data-full-title="The Brave and the Bold #102" data-full-detail="Published 1972-04-05 | PUB-BRAVE-BOLD-0102 | Seq 001000029 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_102 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0102.jpg" alt="The Brave and the Bold #102 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #102">The Brave and the Bold #102</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0102">PUB-BRAVE-BOLD-0102</p>
-          <p class="meta" title="Seq 001000029 | team-up issue | verified">Seq 001000029 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1972-04-05</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000030" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000030">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0103.jpg" data-full-title="The Brave and the Bold #103" data-full-detail="PUB-BRAVE-BOLD-0103 | Seq 001000030 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0103.jpg" alt="The Brave and the Bold #103 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0103.jpg" data-full-title="The Brave and the Bold #103" data-full-detail="Published 1972-08 | PUB-BRAVE-BOLD-0103 | Seq 001000030 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_103 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0103.jpg" alt="The Brave and the Bold #103 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #103">The Brave and the Bold #103</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0103">PUB-BRAVE-BOLD-0103</p>
-          <p class="meta" title="Seq 001000030 | team-up issue | verified">Seq 001000030 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1972-08</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000031" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000031">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0104.jpg" data-full-title="The Brave and the Bold #104" data-full-detail="PUB-BRAVE-BOLD-0104 | Seq 001000031 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0104.jpg" alt="The Brave and the Bold #104 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0104.jpg" data-full-title="The Brave and the Bold #104" data-full-detail="Published 1972-10 | PUB-BRAVE-BOLD-0104 | Seq 001000031 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_104 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0104.jpg" alt="The Brave and the Bold #104 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #104">The Brave and the Bold #104</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0104">PUB-BRAVE-BOLD-0104</p>
-          <p class="meta" title="Seq 001000031 | team-up issue | verified">Seq 001000031 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1972-10</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000032" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000032">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0105.jpg" data-full-title="The Brave and the Bold #105" data-full-detail="PUB-BRAVE-BOLD-0105 | Seq 001000032 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0105.jpg" alt="The Brave and the Bold #105 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0105.jpg" data-full-title="The Brave and the Bold #105" data-full-detail="Published 1972-12 | PUB-BRAVE-BOLD-0105 | Seq 001000032 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_105 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0105.jpg" alt="The Brave and the Bold #105 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #105">The Brave and the Bold #105</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0105">PUB-BRAVE-BOLD-0105</p>
-          <p class="meta" title="Seq 001000032 | team-up issue | verified">Seq 001000032 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1972-12</p>
         </div>
       </article>
     
@@ -674,10 +579,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #106">The Brave and the Bold #106</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0106">PUB-BRAVE-BOLD-0106</p>
-          <p class="meta" title="Seq 001000033 | team-up issue | verified">Seq 001000033 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -691,10 +593,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #107">The Brave and the Bold #107</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0107">PUB-BRAVE-BOLD-0107</p>
-          <p class="meta" title="Seq 001000034 | team-up issue | verified">Seq 001000034 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -708,10 +607,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #108">The Brave and the Bold #108</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0108">PUB-BRAVE-BOLD-0108</p>
-          <p class="meta" title="Seq 001000035 | team-up issue | verified">Seq 001000035 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -725,10 +621,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #109">The Brave and the Bold #109</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0109">PUB-BRAVE-BOLD-0109</p>
-          <p class="meta" title="Seq 001000036 | team-up issue | verified">Seq 001000036 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -742,10 +635,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #110">The Brave and the Bold #110</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0110">PUB-BRAVE-BOLD-0110</p>
-          <p class="meta" title="Seq 001000037 | team-up issue | verified">Seq 001000037 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -759,10 +649,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #111">The Brave and the Bold #111</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0111">PUB-BRAVE-BOLD-0111</p>
-          <p class="meta" title="Seq 001000038 | team-up issue | verified">Seq 001000038 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -776,27 +663,21 @@
             
           </div>
           <h3 title="The Brave and the Bold #112">The Brave and the Bold #112</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0112">PUB-BRAVE-BOLD-0112</p>
-          <p class="meta" title="Seq 001000039 | team-up issue | verified">Seq 001000039 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000040" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000040">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0113.jpg" data-full-title="The Brave and the Bold #113" data-full-detail="PUB-BRAVE-BOLD-0113 | Seq 001000040 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0113.jpg" alt="The Brave and the Bold #113 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0113.jpg" data-full-title="The Brave and the Bold #113" data-full-detail="Published 1974-05 | PUB-BRAVE-BOLD-0113 | Seq 001000040 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_113 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0113.jpg" alt="The Brave and the Bold #113 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #113">The Brave and the Bold #113</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0113">PUB-BRAVE-BOLD-0113</p>
-          <p class="meta" title="Seq 001000040 | team-up issue | verified">Seq 001000040 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1974-05</p>
         </div>
       </article>
     
@@ -810,10 +691,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #114">The Brave and the Bold #114</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0114">PUB-BRAVE-BOLD-0114</p>
-          <p class="meta" title="Seq 001000041 | team-up issue | verified">Seq 001000041 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -827,10 +705,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #115">The Brave and the Bold #115</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0115">PUB-BRAVE-BOLD-0115</p>
-          <p class="meta" title="Seq 001000042 | team-up issue | verified">Seq 001000042 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -844,10 +719,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #116">The Brave and the Bold #116</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0116">PUB-BRAVE-BOLD-0116</p>
-          <p class="meta" title="Seq 001000043 | team-up issue | verified">Seq 001000043 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -861,10 +733,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #117">The Brave and the Bold #117</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0117">PUB-BRAVE-BOLD-0117</p>
-          <p class="meta" title="Seq 001000044 | team-up issue | verified">Seq 001000044 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -878,10 +747,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #118">The Brave and the Bold #118</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0118">PUB-BRAVE-BOLD-0118</p>
-          <p class="meta" title="Seq 001000045 | team-up issue | verified">Seq 001000045 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -895,10 +761,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #119">The Brave and the Bold #119</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0119">PUB-BRAVE-BOLD-0119</p>
-          <p class="meta" title="Seq 001000046 | team-up issue | verified">Seq 001000046 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -912,10 +775,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #120">The Brave and the Bold #120</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0120">PUB-BRAVE-BOLD-0120</p>
-          <p class="meta" title="Seq 001000047 | team-up issue | verified">Seq 001000047 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -929,10 +789,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #121">The Brave and the Bold #121</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0121">PUB-BRAVE-BOLD-0121</p>
-          <p class="meta" title="Seq 001000048 | team-up issue | verified">Seq 001000048 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -946,10 +803,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #122">The Brave and the Bold #122</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0122">PUB-BRAVE-BOLD-0122</p>
-          <p class="meta" title="Seq 001000049 | team-up issue | verified">Seq 001000049 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -963,10 +817,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #123">The Brave and the Bold #123</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0123">PUB-BRAVE-BOLD-0123</p>
-          <p class="meta" title="Seq 001000050 | team-up issue | verified">Seq 001000050 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -980,10 +831,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #124">The Brave and the Bold #124</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0124">PUB-BRAVE-BOLD-0124</p>
-          <p class="meta" title="Seq 001000051 | team-up issue | verified">Seq 001000051 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -997,10 +845,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #125">The Brave and the Bold #125</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0125">PUB-BRAVE-BOLD-0125</p>
-          <p class="meta" title="Seq 001000052 | team-up issue | verified">Seq 001000052 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1014,10 +859,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #126">The Brave and the Bold #126</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0126">PUB-BRAVE-BOLD-0126</p>
-          <p class="meta" title="Seq 001000053 | team-up issue | verified">Seq 001000053 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1031,10 +873,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #127">The Brave and the Bold #127</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0127">PUB-BRAVE-BOLD-0127</p>
-          <p class="meta" title="Seq 001000054 | team-up issue | verified">Seq 001000054 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1048,10 +887,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #128">The Brave and the Bold #128</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0128">PUB-BRAVE-BOLD-0128</p>
-          <p class="meta" title="Seq 001000055 | team-up issue | verified">Seq 001000055 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1065,10 +901,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #129">The Brave and the Bold #129</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0129">PUB-BRAVE-BOLD-0129</p>
-          <p class="meta" title="Seq 001000056 | team-up issue | verified">Seq 001000056 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1082,10 +915,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #130">The Brave and the Bold #130</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0130">PUB-BRAVE-BOLD-0130</p>
-          <p class="meta" title="Seq 001000057 | team-up issue | verified">Seq 001000057 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1099,10 +929,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #131">The Brave and the Bold #131</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0131">PUB-BRAVE-BOLD-0131</p>
-          <p class="meta" title="Seq 001000058 | team-up issue | verified">Seq 001000058 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1116,282 +943,231 @@
             
           </div>
           <h3 title="The Brave and the Bold #132">The Brave and the Bold #132</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0132">PUB-BRAVE-BOLD-0132</p>
-          <p class="meta" title="Seq 001000059 | team-up issue | verified">Seq 001000059 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000060" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000060">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0133.jpg" data-full-title="The Brave and the Bold #133" data-full-detail="PUB-BRAVE-BOLD-0133 | Seq 001000060 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0133.jpg" alt="The Brave and the Bold #133 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0133.jpg" data-full-title="The Brave and the Bold #133" data-full-detail="Published 1977-02 | PUB-BRAVE-BOLD-0133 | Seq 001000060 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_133 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0133.jpg" alt="The Brave and the Bold #133 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #133">The Brave and the Bold #133</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0133">PUB-BRAVE-BOLD-0133</p>
-          <p class="meta" title="Seq 001000060 | team-up issue | verified">Seq 001000060 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1977-02</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000061" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000061">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0134.jpg" data-full-title="The Brave and the Bold #134" data-full-detail="PUB-BRAVE-BOLD-0134 | Seq 001000061 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0134.jpg" alt="The Brave and the Bold #134 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0134.jpg" data-full-title="The Brave and the Bold #134" data-full-detail="Published 1977-02-16 | PUB-BRAVE-BOLD-0134 | Seq 001000061 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_134 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0134.jpg" alt="The Brave and the Bold #134 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #134">The Brave and the Bold #134</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0134">PUB-BRAVE-BOLD-0134</p>
-          <p class="meta" title="Seq 001000061 | team-up issue | verified">Seq 001000061 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1977-02-16</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000062" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000062">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0135.jpg" data-full-title="The Brave and the Bold #135" data-full-detail="PUB-BRAVE-BOLD-0135 | Seq 001000062 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0135.jpg" alt="The Brave and the Bold #135 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0135.jpg" data-full-title="The Brave and the Bold #135" data-full-detail="Published 1977-05 | PUB-BRAVE-BOLD-0135 | Seq 001000062 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_135 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0135.jpg" alt="The Brave and the Bold #135 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #135">The Brave and the Bold #135</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0135">PUB-BRAVE-BOLD-0135</p>
-          <p class="meta" title="Seq 001000062 | team-up issue | verified">Seq 001000062 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1977-05</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000063" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000063">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0136.jpg" data-full-title="The Brave and the Bold #136" data-full-detail="PUB-BRAVE-BOLD-0136 | Seq 001000063 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0136.jpg" alt="The Brave and the Bold #136 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0136.jpg" data-full-title="The Brave and the Bold #136" data-full-detail="Published 1977-07 | PUB-BRAVE-BOLD-0136 | Seq 001000063 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_136 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0136.jpg" alt="The Brave and the Bold #136 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #136">The Brave and the Bold #136</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0136">PUB-BRAVE-BOLD-0136</p>
-          <p class="meta" title="Seq 001000063 | team-up issue | verified">Seq 001000063 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1977-07</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000064" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000064">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0137.jpg" data-full-title="The Brave and the Bold #137" data-full-detail="PUB-BRAVE-BOLD-0137 | Seq 001000064 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0137.jpg" alt="The Brave and the Bold #137 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0137.jpg" data-full-title="The Brave and the Bold #137" data-full-detail="Published 1977-08 | PUB-BRAVE-BOLD-0137 | Seq 001000064 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_137 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0137.jpg" alt="The Brave and the Bold #137 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #137">The Brave and the Bold #137</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0137">PUB-BRAVE-BOLD-0137</p>
-          <p class="meta" title="Seq 001000064 | team-up issue | verified">Seq 001000064 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1977-08</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000065" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000065">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0138.jpg" data-full-title="The Brave and the Bold #138" data-full-detail="PUB-BRAVE-BOLD-0138 | Seq 001000065 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0138.jpg" alt="The Brave and the Bold #138 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0138.jpg" data-full-title="The Brave and the Bold #138" data-full-detail="Published 1977-09 | PUB-BRAVE-BOLD-0138 | Seq 001000065 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_138 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0138.jpg" alt="The Brave and the Bold #138 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #138">The Brave and the Bold #138</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0138">PUB-BRAVE-BOLD-0138</p>
-          <p class="meta" title="Seq 001000065 | team-up issue | verified">Seq 001000065 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1977-09</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000066" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000066">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0139.jpg" data-full-title="The Brave and the Bold #139" data-full-detail="PUB-BRAVE-BOLD-0139 | Seq 001000066 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0139.jpg" alt="The Brave and the Bold #139 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0139.jpg" data-full-title="The Brave and the Bold #139" data-full-detail="Published 1977-10-19 | PUB-BRAVE-BOLD-0139 | Seq 001000066 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_139 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0139.jpg" alt="The Brave and the Bold #139 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #139">The Brave and the Bold #139</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0139">PUB-BRAVE-BOLD-0139</p>
-          <p class="meta" title="Seq 001000066 | team-up issue | verified">Seq 001000066 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1977-10-19</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000067" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000067">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0140.jpg" data-full-title="The Brave and the Bold #140" data-full-detail="PUB-BRAVE-BOLD-0140 | Seq 001000067 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0140.jpg" alt="The Brave and the Bold #140 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0140.jpg" data-full-title="The Brave and the Bold #140" data-full-detail="Published 1977-12-14 | PUB-BRAVE-BOLD-0140 | Seq 001000067 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_140 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0140.jpg" alt="The Brave and the Bold #140 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #140">The Brave and the Bold #140</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0140">PUB-BRAVE-BOLD-0140</p>
-          <p class="meta" title="Seq 001000067 | team-up issue | verified">Seq 001000067 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1977-12-14</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000068" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000068">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0141.jpg" data-full-title="The Brave and the Bold #141" data-full-detail="PUB-BRAVE-BOLD-0141 | Seq 001000068 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0141.jpg" alt="The Brave and the Bold #141 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0141.jpg" data-full-title="The Brave and the Bold #141" data-full-detail="Published 1978-04 | PUB-BRAVE-BOLD-0141 | Seq 001000068 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_141 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0141.jpg" alt="The Brave and the Bold #141 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #141">The Brave and the Bold #141</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0141">PUB-BRAVE-BOLD-0141</p>
-          <p class="meta" title="Seq 001000068 | team-up issue | verified">Seq 001000068 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1978-04</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="owned" data-sequence="001000069" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000069">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0142.jpg" data-full-title="The Brave and the Bold #142" data-full-detail="PUB-BRAVE-BOLD-0142 | Seq 001000069 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0142.jpg" alt="The Brave and the Bold #142 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0142.jpg" data-full-title="The Brave and the Bold #142" data-full-detail="Published 1978-04-12 | PUB-BRAVE-BOLD-0142 | Seq 001000069 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_142 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0142.jpg" alt="The Brave and the Bold #142 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #142">The Brave and the Bold #142</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0142">PUB-BRAVE-BOLD-0142</p>
-          <p class="meta" title="Seq 001000069 | team-up issue | verified">Seq 001000069 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1978-04-12</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000070" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000070">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0143.jpg" data-full-title="The Brave and the Bold #143" data-full-detail="PUB-BRAVE-BOLD-0143 | Seq 001000070 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0143.jpg" alt="The Brave and the Bold #143 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0143.jpg" data-full-title="The Brave and the Bold #143" data-full-detail="Published 1978-06-21 | PUB-BRAVE-BOLD-0143 | Seq 001000070 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_143 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0143.jpg" alt="The Brave and the Bold #143 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #143">The Brave and the Bold #143</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0143">PUB-BRAVE-BOLD-0143</p>
-          <p class="meta" title="Seq 001000070 | team-up issue | verified">Seq 001000070 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1978-06-21</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000071" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000071">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0144.jpg" data-full-title="The Brave and the Bold #144" data-full-detail="PUB-BRAVE-BOLD-0144 | Seq 001000071 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0144.jpg" alt="The Brave and the Bold #144 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0144.jpg" data-full-title="The Brave and the Bold #144" data-full-detail="Published 1978-08-09 | PUB-BRAVE-BOLD-0144 | Seq 001000071 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_144 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0144.jpg" alt="The Brave and the Bold #144 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #144">The Brave and the Bold #144</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0144">PUB-BRAVE-BOLD-0144</p>
-          <p class="meta" title="Seq 001000071 | team-up issue | verified">Seq 001000071 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1978-08-09</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000072" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000072">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0145.jpg" data-full-title="The Brave and the Bold #145" data-full-detail="PUB-BRAVE-BOLD-0145 | Seq 001000072 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0145.jpg" alt="The Brave and the Bold #145 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0145.jpg" data-full-title="The Brave and the Bold #145" data-full-detail="Published 1978-10-11 | PUB-BRAVE-BOLD-0145 | Seq 001000072 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_145 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0145.jpg" alt="The Brave and the Bold #145 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #145">The Brave and the Bold #145</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0145">PUB-BRAVE-BOLD-0145</p>
-          <p class="meta" title="Seq 001000072 | team-up issue | verified">Seq 001000072 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1978-10-11</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000073" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000073">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0146.jpg" data-full-title="The Brave and the Bold #146" data-full-detail="PUB-BRAVE-BOLD-0146 | Seq 001000073 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0146.jpg" alt="The Brave and the Bold #146 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0146.jpg" data-full-title="The Brave and the Bold #146" data-full-detail="Published 1978-10-25 | PUB-BRAVE-BOLD-0146 | Seq 001000073 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_146 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0146.jpg" alt="The Brave and the Bold #146 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #146">The Brave and the Bold #146</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0146">PUB-BRAVE-BOLD-0146</p>
-          <p class="meta" title="Seq 001000073 | team-up issue | verified">Seq 001000073 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1978-10-25</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000074" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000074">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0147.jpg" data-full-title="The Brave and the Bold #147" data-full-detail="PUB-BRAVE-BOLD-0147 | Seq 001000074 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0147.jpg" alt="The Brave and the Bold #147 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0147.jpg" data-full-title="The Brave and the Bold #147" data-full-detail="Published 1978-11-29 | PUB-BRAVE-BOLD-0147 | Seq 001000074 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_147 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0147.jpg" alt="The Brave and the Bold #147 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #147">The Brave and the Bold #147</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0147">PUB-BRAVE-BOLD-0147</p>
-          <p class="meta" title="Seq 001000074 | team-up issue | verified">Seq 001000074 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1978-11-29</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000075" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000075">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0148.jpg" data-full-title="The Brave and the Bold #148" data-full-detail="PUB-BRAVE-BOLD-0148 | Seq 001000075 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0148.jpg" alt="The Brave and the Bold #148 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0148.jpg" data-full-title="The Brave and the Bold #148" data-full-detail="Published 1978-12-27 | PUB-BRAVE-BOLD-0148 | Seq 001000075 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_148 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0148.jpg" alt="The Brave and the Bold #148 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #148">The Brave and the Bold #148</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0148">PUB-BRAVE-BOLD-0148</p>
-          <p class="meta" title="Seq 001000075 | team-up issue | verified">Seq 001000075 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1978-12-27</p>
         </div>
       </article>
     
@@ -1405,10 +1181,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #149">The Brave and the Bold #149</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0149">PUB-BRAVE-BOLD-0149</p>
-          <p class="meta" title="Seq 001000076 | team-up issue | verified">Seq 001000076 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1422,10 +1195,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #150">The Brave and the Bold #150</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0150">PUB-BRAVE-BOLD-0150</p>
-          <p class="meta" title="Seq 001000077 | team-up issue | verified">Seq 001000077 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1439,10 +1209,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #151">The Brave and the Bold #151</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0151">PUB-BRAVE-BOLD-0151</p>
-          <p class="meta" title="Seq 001000078 | team-up issue | verified">Seq 001000078 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1456,10 +1223,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #152">The Brave and the Bold #152</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0152">PUB-BRAVE-BOLD-0152</p>
-          <p class="meta" title="Seq 001000079 | team-up issue | verified">Seq 001000079 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1473,10 +1237,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #153">The Brave and the Bold #153</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0153">PUB-BRAVE-BOLD-0153</p>
-          <p class="meta" title="Seq 001000080 | team-up issue | verified">Seq 001000080 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1490,10 +1251,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #154">The Brave and the Bold #154</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0154">PUB-BRAVE-BOLD-0154</p>
-          <p class="meta" title="Seq 001000081 | team-up issue | verified">Seq 001000081 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1507,10 +1265,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #155">The Brave and the Bold #155</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0155">PUB-BRAVE-BOLD-0155</p>
-          <p class="meta" title="Seq 001000082 | team-up issue | verified">Seq 001000082 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1524,27 +1279,21 @@
             
           </div>
           <h3 title="The Brave and the Bold #156">The Brave and the Bold #156</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0156">PUB-BRAVE-BOLD-0156</p>
-          <p class="meta" title="Seq 001000083 | team-up issue | verified">Seq 001000083 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000084" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000084">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0157.jpg" data-full-title="The Brave and the Bold #157" data-full-detail="PUB-BRAVE-BOLD-0157 | Seq 001000084 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0157.jpg" alt="The Brave and the Bold #157 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0157.jpg" data-full-title="The Brave and the Bold #157" data-full-detail="Published 1979-09-26 | PUB-BRAVE-BOLD-0157 | Seq 001000084 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_157 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0157.jpg" alt="The Brave and the Bold #157 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #157">The Brave and the Bold #157</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0157">PUB-BRAVE-BOLD-0157</p>
-          <p class="meta" title="Seq 001000084 | team-up issue | verified">Seq 001000084 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1979-09-26</p>
         </div>
       </article>
     
@@ -1558,10 +1307,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #158">The Brave and the Bold #158</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0158">PUB-BRAVE-BOLD-0158</p>
-          <p class="meta" title="Seq 001000085 | team-up issue | verified">Seq 001000085 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1575,10 +1321,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #159">The Brave and the Bold #159</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0159">PUB-BRAVE-BOLD-0159</p>
-          <p class="meta" title="Seq 001000086 | team-up issue | verified">Seq 001000086 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1592,10 +1335,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #160">The Brave and the Bold #160</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0160">PUB-BRAVE-BOLD-0160</p>
-          <p class="meta" title="Seq 001000087 | team-up issue | verified">Seq 001000087 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1609,10 +1349,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #161">The Brave and the Bold #161</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0161">PUB-BRAVE-BOLD-0161</p>
-          <p class="meta" title="Seq 001000088 | team-up issue | verified">Seq 001000088 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1626,10 +1363,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #162">The Brave and the Bold #162</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0162">PUB-BRAVE-BOLD-0162</p>
-          <p class="meta" title="Seq 001000089 | team-up issue | verified">Seq 001000089 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1643,10 +1377,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #163">The Brave and the Bold #163</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0163">PUB-BRAVE-BOLD-0163</p>
-          <p class="meta" title="Seq 001000090 | team-up issue | verified">Seq 001000090 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1660,10 +1391,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #164">The Brave and the Bold #164</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0164">PUB-BRAVE-BOLD-0164</p>
-          <p class="meta" title="Seq 001000091 | team-up issue | verified">Seq 001000091 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1677,10 +1405,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #165">The Brave and the Bold #165</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0165">PUB-BRAVE-BOLD-0165</p>
-          <p class="meta" title="Seq 001000092 | team-up issue | verified">Seq 001000092 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1694,10 +1419,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #166">The Brave and the Bold #166</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0166">PUB-BRAVE-BOLD-0166</p>
-          <p class="meta" title="Seq 001000093 | team-up issue | verified">Seq 001000093 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1711,10 +1433,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #167">The Brave and the Bold #167</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0167">PUB-BRAVE-BOLD-0167</p>
-          <p class="meta" title="Seq 001000094 | team-up issue | verified">Seq 001000094 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1728,10 +1447,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #168">The Brave and the Bold #168</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0168">PUB-BRAVE-BOLD-0168</p>
-          <p class="meta" title="Seq 001000095 | team-up issue | verified">Seq 001000095 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1745,10 +1461,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #169">The Brave and the Bold #169</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0169">PUB-BRAVE-BOLD-0169</p>
-          <p class="meta" title="Seq 001000096 | team-up issue | verified">Seq 001000096 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1762,10 +1475,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #170">The Brave and the Bold #170</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0170">PUB-BRAVE-BOLD-0170</p>
-          <p class="meta" title="Seq 001000097 | team-up issue | verified">Seq 001000097 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1779,10 +1489,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #171">The Brave and the Bold #171</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0171">PUB-BRAVE-BOLD-0171</p>
-          <p class="meta" title="Seq 001000098 | team-up issue | verified">Seq 001000098 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1796,61 +1503,49 @@
             
           </div>
           <h3 title="The Brave and the Bold #172">The Brave and the Bold #172</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0172">PUB-BRAVE-BOLD-0172</p>
-          <p class="meta" title="Seq 001000099 | team-up issue | verified">Seq 001000099 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000100" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000100">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0173.jpg" data-full-title="The Brave and the Bold #173" data-full-detail="PUB-BRAVE-BOLD-0173 | Seq 001000100 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0173.jpg" alt="The Brave and the Bold #173 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0173.jpg" data-full-title="The Brave and the Bold #173" data-full-detail="Published 1981-02 | PUB-BRAVE-BOLD-0173 | Seq 001000100 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_173 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0173.jpg" alt="The Brave and the Bold #173 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #173">The Brave and the Bold #173</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0173">PUB-BRAVE-BOLD-0173</p>
-          <p class="meta" title="Seq 001000100 | team-up issue | verified">Seq 001000100 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1981-02</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="owned" data-sequence="001000101" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000101">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0174.jpg" data-full-title="The Brave and the Bold #174" data-full-detail="PUB-BRAVE-BOLD-0174 | Seq 001000101 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0174.jpg" alt="The Brave and the Bold #174 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0174.jpg" data-full-title="The Brave and the Bold #174" data-full-detail="Published 1981-03 | PUB-BRAVE-BOLD-0174 | Seq 001000101 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_174 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0174.jpg" alt="The Brave and the Bold #174 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #174">The Brave and the Bold #174</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0174">PUB-BRAVE-BOLD-0174</p>
-          <p class="meta" title="Seq 001000101 | team-up issue | verified">Seq 001000101 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1981-03</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="owned" data-sequence="001000102" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000102">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0175.jpg" data-full-title="The Brave and the Bold #175" data-full-detail="PUB-BRAVE-BOLD-0175 | Seq 001000102 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0175.jpg" alt="The Brave and the Bold #175 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0175.jpg" data-full-title="The Brave and the Bold #175" data-full-detail="Published 1981-04 | PUB-BRAVE-BOLD-0175 | Seq 001000102 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_175 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0175.jpg" alt="The Brave and the Bold #175 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #175">The Brave and the Bold #175</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0175">PUB-BRAVE-BOLD-0175</p>
-          <p class="meta" title="Seq 001000102 | team-up issue | verified">Seq 001000102 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1981-04</p>
         </div>
       </article>
     
@@ -1864,10 +1559,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #176">The Brave and the Bold #176</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0176">PUB-BRAVE-BOLD-0176</p>
-          <p class="meta" title="Seq 001000103 | team-up issue | verified">Seq 001000103 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1881,27 +1573,21 @@
             
           </div>
           <h3 title="The Brave and the Bold #177">The Brave and the Bold #177</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0177">PUB-BRAVE-BOLD-0177</p>
-          <p class="meta" title="Seq 001000104 | team-up issue | verified">Seq 001000104 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000105" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000105">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0178.jpg" data-full-title="The Brave and the Bold #178" data-full-detail="PUB-BRAVE-BOLD-0178 | Seq 001000105 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0178.jpg" alt="The Brave and the Bold #178 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0178.jpg" data-full-title="The Brave and the Bold #178" data-full-detail="Published 1981-07 | PUB-BRAVE-BOLD-0178 | Seq 001000105 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_178 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0178.jpg" alt="The Brave and the Bold #178 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #178">The Brave and the Bold #178</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0178">PUB-BRAVE-BOLD-0178</p>
-          <p class="meta" title="Seq 001000105 | team-up issue | verified">Seq 001000105 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1981-07</p>
         </div>
       </article>
     
@@ -1915,10 +1601,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #179">The Brave and the Bold #179</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0179">PUB-BRAVE-BOLD-0179</p>
-          <p class="meta" title="Seq 001000106 | team-up issue | verified">Seq 001000106 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -1932,44 +1615,35 @@
             
           </div>
           <h3 title="The Brave and the Bold #180">The Brave and the Bold #180</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0180">PUB-BRAVE-BOLD-0180</p>
-          <p class="meta" title="Seq 001000107 | team-up issue | verified">Seq 001000107 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000108" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000108">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0181.jpg" data-full-title="The Brave and the Bold #181" data-full-detail="PUB-BRAVE-BOLD-0181 | Seq 001000108 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0181.jpg" alt="The Brave and the Bold #181 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0181.jpg" data-full-title="The Brave and the Bold #181" data-full-detail="Published 1981-10 | PUB-BRAVE-BOLD-0181 | Seq 001000108 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_181 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0181.jpg" alt="The Brave and the Bold #181 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #181">The Brave and the Bold #181</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0181">PUB-BRAVE-BOLD-0181</p>
-          <p class="meta" title="Seq 001000108 | team-up issue | verified">Seq 001000108 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1981-10</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000109" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000109">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0182.jpg" data-full-title="The Brave and the Bold #182" data-full-detail="PUB-BRAVE-BOLD-0182 | Seq 001000109 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0182.jpg" alt="The Brave and the Bold #182 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0182.jpg" data-full-title="The Brave and the Bold #182" data-full-detail="Published 1981-11 | PUB-BRAVE-BOLD-0182 | Seq 001000109 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_182 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0182.jpg" alt="The Brave and the Bold #182 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #182">The Brave and the Bold #182</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0182">PUB-BRAVE-BOLD-0182</p>
-          <p class="meta" title="Seq 001000109 | team-up issue | verified">Seq 001000109 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1981-11</p>
         </div>
       </article>
     
@@ -1983,10 +1657,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #183">The Brave and the Bold #183</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0183">PUB-BRAVE-BOLD-0183</p>
-          <p class="meta" title="Seq 001000110 | team-up issue | verified">Seq 001000110 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -2000,10 +1671,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #184">The Brave and the Bold #184</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0184">PUB-BRAVE-BOLD-0184</p>
-          <p class="meta" title="Seq 001000111 | team-up issue | verified">Seq 001000111 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -2017,10 +1685,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #185">The Brave and the Bold #185</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0185">PUB-BRAVE-BOLD-0185</p>
-          <p class="meta" title="Seq 001000112 | team-up issue | verified">Seq 001000112 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -2034,10 +1699,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #186">The Brave and the Bold #186</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0186">PUB-BRAVE-BOLD-0186</p>
-          <p class="meta" title="Seq 001000113 | team-up issue | verified">Seq 001000113 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -2051,10 +1713,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #187">The Brave and the Bold #187</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0187">PUB-BRAVE-BOLD-0187</p>
-          <p class="meta" title="Seq 001000114 | team-up issue | verified">Seq 001000114 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -2068,10 +1727,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #188">The Brave and the Bold #188</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0188">PUB-BRAVE-BOLD-0188</p>
-          <p class="meta" title="Seq 001000115 | team-up issue | verified">Seq 001000115 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -2085,10 +1741,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #189">The Brave and the Bold #189</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0189">PUB-BRAVE-BOLD-0189</p>
-          <p class="meta" title="Seq 001000116 | team-up issue | verified">Seq 001000116 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -2102,10 +1755,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #190">The Brave and the Bold #190</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0190">PUB-BRAVE-BOLD-0190</p>
-          <p class="meta" title="Seq 001000117 | team-up issue | verified">Seq 001000117 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -2119,10 +1769,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #191">The Brave and the Bold #191</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0191">PUB-BRAVE-BOLD-0191</p>
-          <p class="meta" title="Seq 001000118 | team-up issue | verified">Seq 001000118 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -2136,10 +1783,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #192">The Brave and the Bold #192</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0192">PUB-BRAVE-BOLD-0192</p>
-          <p class="meta" title="Seq 001000119 | team-up issue | verified">Seq 001000119 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -2153,10 +1797,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #193">The Brave and the Bold #193</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0193">PUB-BRAVE-BOLD-0193</p>
-          <p class="meta" title="Seq 001000120 | team-up issue | verified">Seq 001000120 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -2170,10 +1811,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #194">The Brave and the Bold #194</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0194">PUB-BRAVE-BOLD-0194</p>
-          <p class="meta" title="Seq 001000121 | team-up issue | verified">Seq 001000121 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -2187,10 +1825,7 @@
             
           </div>
           <h3 title="The Brave and the Bold #195">The Brave and the Bold #195</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0195">PUB-BRAVE-BOLD-0195</p>
-          <p class="meta" title="Seq 001000122 | team-up issue | verified">Seq 001000122 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -2204,78 +1839,63 @@
             
           </div>
           <h3 title="The Brave and the Bold #196">The Brave and the Bold #196</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0196">PUB-BRAVE-BOLD-0196</p>
-          <p class="meta" title="Seq 001000123 | team-up issue | verified">Seq 001000123 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000124" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000124">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0197.jpg" data-full-title="The Brave and the Bold #197" data-full-detail="PUB-BRAVE-BOLD-0197 | Seq 001000124 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0197.jpg" alt="The Brave and the Bold #197 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0197.jpg" data-full-title="The Brave and the Bold #197" data-full-detail="Published 1983-02 | PUB-BRAVE-BOLD-0197 | Seq 001000124 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_197 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0197.jpg" alt="The Brave and the Bold #197 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #197">The Brave and the Bold #197</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0197">PUB-BRAVE-BOLD-0197</p>
-          <p class="meta" title="Seq 001000124 | team-up issue | verified">Seq 001000124 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1983-02</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000125" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000125">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0198.jpg" data-full-title="The Brave and the Bold #198" data-full-detail="PUB-BRAVE-BOLD-0198 | Seq 001000125 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0198.jpg" alt="The Brave and the Bold #198 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0198.jpg" data-full-title="The Brave and the Bold #198" data-full-detail="Published 1983-02-16 | PUB-BRAVE-BOLD-0198 | Seq 001000125 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_198 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0198.jpg" alt="The Brave and the Bold #198 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #198">The Brave and the Bold #198</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0198">PUB-BRAVE-BOLD-0198</p>
-          <p class="meta" title="Seq 001000125 | team-up issue | verified">Seq 001000125 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1983-02-16</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000126" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000126">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0199.jpg" data-full-title="The Brave and the Bold #199" data-full-detail="PUB-BRAVE-BOLD-0199 | Seq 001000126 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0199.jpg" alt="The Brave and the Bold #199 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0199.jpg" data-full-title="The Brave and the Bold #199" data-full-detail="Published 1983-04 | PUB-BRAVE-BOLD-0199 | Seq 001000126 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_199 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0199.jpg" alt="The Brave and the Bold #199 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #199">The Brave and the Bold #199</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0199">PUB-BRAVE-BOLD-0199</p>
-          <p class="meta" title="Seq 001000126 | team-up issue | verified">Seq 001000126 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1983-04</p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="batman_team_up_run" data-project="brave_and_bold_batman_bronze" data-status="missing" data-sequence="001000127" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000127">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0200.jpg" data-full-title="The Brave and the Bold #200" data-full-detail="PUB-BRAVE-BOLD-0200 | Seq 001000127 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0200.jpg" alt="The Brave and the Bold #200 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BRAVE-BOLD-0200.jpg" data-full-title="The Brave and the Bold #200" data-full-detail="Published 1983-04-20 | PUB-BRAVE-BOLD-0200 | Seq 001000127 | team-up issue | verified | Bronze Age Batman | Batman team-up physical run; buying priority can remain opportunistic. | https://dc.fandom.com/wiki/The_Brave_and_the_Bold_Vol_1_200 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BRAVE-BOLD-0200.jpg" alt="The Brave and the Bold #200 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batman team up run</span>
             
           </div>
           <h3 title="The Brave and the Bold #200">The Brave and the Bold #200</h3>
-          <p class="pub-id" title="PUB-BRAVE-BOLD-0200">PUB-BRAVE-BOLD-0200</p>
-          <p class="meta" title="Seq 001000127 | team-up issue | verified">Seq 001000127 | team-up issue | verified</p>
-          <p class="continuity" title="Bronze Age Batman">Bronze Age Batman</p>
-          <p class="notes" title="Batman team-up physical run; buying priority can remain opportunistic.">Batman team-up physical run; buying priority can remain opportunistic.</p>
+          <p class="publication-date">Published 1983-04-20</p>
         </div>
       </article>
     </section>
@@ -2371,9 +1991,7 @@
       });
     });
     document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
-    lightbox.addEventListener('click', event => {
-      if (event.target === lightbox) closeLightbox();
-    });
+    lightbox.addEventListener('click', closeLightbox);
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape') closeLightbox();
     });

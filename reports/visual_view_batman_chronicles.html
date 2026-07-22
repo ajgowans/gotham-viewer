@@ -53,11 +53,12 @@
     .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
     .comic-card.cover-needs_review { border-color: #a46a00; }
     .comic-card.cover-rejected_auto { border-color: #b42318; }
-    .card-body { padding: 10px 11px 12px; height: 205px; display: flex; flex-direction: column; overflow: hidden; }
+    .card-body { padding: 10px 11px 12px; min-height: 86px; display: flex; flex-direction: column; overflow: hidden; }
     .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
     .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
     .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
     h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .publication-date { margin: auto 0 0; color: var(--muted); font-size: 12px; line-height: 1.3; }
     .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
     .pub-id { -webkit-line-clamp: 1; }
     .meta, .continuity { -webkit-line-clamp: 2; }
@@ -70,8 +71,8 @@
     .hidden { display: none; }
     .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
     .lightbox.open { display: flex; }
-    .lightbox-panel { max-width: min(92vw, 980px); max-height: 94vh; display: grid; gap: 10px; }
-    .lightbox img { max-width: 100%; max-height: calc(94vh - 56px); object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-panel { width: min(92vw, 980px); height: 94vh; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; align-items: center; justify-items: center; }
+    .lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; align-self: center; }
     .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
     .lightbox-title { font-weight: 750; }
     .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
@@ -107,405 +108,338 @@
     <div class="control-content" id="viewer-filters">
       <div class="control-row"><b>Order</b><button class="chip" data-filter="order" data-value="all">All orders</button>
 <button class="chip active" data-filter="order" data-value="series">series</button></div>
-      <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button></div>
+      <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button>
+<button class="chip" data-filter="scope" data-value="batman_chronicles_1_23">batman chronicles 1 23</button></div>
       <div class="control-row"><b>Status</b><button class="chip active" data-filter="status" data-value="all">All statuses</button>
 <button class="chip" data-filter="status" data-value="owned">owned</button>
 <button class="chip" data-filter="status" data-value="facsimile">facsimile</button>
 <button class="chip" data-filter="status" data-value="ordered">ordered</button>
 <button class="chip" data-filter="status" data-value="readable">readable</button>
 <button class="chip" data-filter="status" data-value="missing">missing</button></div>
-      <div class="control-row"><b>Work</b><button class="chip active" data-filter="project" data-value="all">All works</button></div>
+      <div class="control-row"><b>Work</b><button class="chip active" data-filter="project" data-value="all">All works</button>
+<button class="chip" data-filter="project" data-value="Batman Chronicles">Batman Chronicles</button></div>
     </div>
   </section>
   <main>
     <section class="grid">
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000001">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000001">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-1.jpg" data-full-title="Batman Chronicles #1" data-full-detail="VIEW-batman-chronicles-1 | Seq 000001 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-1.jpg" alt="Batman Chronicles #1 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #1">Batman Chronicles #1</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-1">VIEW-batman-chronicles-1</p>
-          <p class="meta" title="Seq 000001">Seq 000001</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000002">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000002">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-2.jpg" data-full-title="Batman Chronicles #2" data-full-detail="VIEW-batman-chronicles-2 | Seq 000002 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-2.jpg" alt="Batman Chronicles #2 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #2">Batman Chronicles #2</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-2">VIEW-batman-chronicles-2</p>
-          <p class="meta" title="Seq 000002">Seq 000002</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000003">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000003">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-3.jpg" data-full-title="Batman Chronicles #3" data-full-detail="VIEW-batman-chronicles-3 | Seq 000003 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-3.jpg" alt="Batman Chronicles #3 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #3">Batman Chronicles #3</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-3">VIEW-batman-chronicles-3</p>
-          <p class="meta" title="Seq 000003">Seq 000003</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000004">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000004">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-4.jpg" data-full-title="Batman Chronicles #4" data-full-detail="VIEW-batman-chronicles-4 | Seq 000004 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-4.jpg" alt="Batman Chronicles #4 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #4">Batman Chronicles #4</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-4">VIEW-batman-chronicles-4</p>
-          <p class="meta" title="Seq 000004">Seq 000004</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000005">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000005">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-5.jpg" data-full-title="Batman Chronicles #5" data-full-detail="VIEW-batman-chronicles-5 | Seq 000005 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-5.jpg" alt="Batman Chronicles #5 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #5">Batman Chronicles #5</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-5">VIEW-batman-chronicles-5</p>
-          <p class="meta" title="Seq 000005">Seq 000005</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000006">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000006">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-6.jpg" data-full-title="Batman Chronicles #6" data-full-detail="VIEW-batman-chronicles-6 | Seq 000006 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-6.jpg" alt="Batman Chronicles #6 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #6">Batman Chronicles #6</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-6">VIEW-batman-chronicles-6</p>
-          <p class="meta" title="Seq 000006">Seq 000006</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000007">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000007">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-7.jpg" data-full-title="Batman Chronicles #7" data-full-detail="VIEW-batman-chronicles-7 | Seq 000007 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-7.jpg" alt="Batman Chronicles #7 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #7">Batman Chronicles #7</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-7">VIEW-batman-chronicles-7</p>
-          <p class="meta" title="Seq 000007">Seq 000007</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000008">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000008">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-8.jpg" data-full-title="Batman Chronicles #8" data-full-detail="VIEW-batman-chronicles-8 | Seq 000008 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-8.jpg" alt="Batman Chronicles #8 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #8">Batman Chronicles #8</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-8">VIEW-batman-chronicles-8</p>
-          <p class="meta" title="Seq 000008">Seq 000008</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000009">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000009">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-9.jpg" data-full-title="Batman Chronicles #9" data-full-detail="VIEW-batman-chronicles-9 | Seq 000009 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-9.jpg" alt="Batman Chronicles #9 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #9">Batman Chronicles #9</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-9">VIEW-batman-chronicles-9</p>
-          <p class="meta" title="Seq 000009">Seq 000009</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000010">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000010">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-10.jpg" data-full-title="Batman Chronicles #10" data-full-detail="VIEW-batman-chronicles-10 | Seq 000010 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-10.jpg" alt="Batman Chronicles #10 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #10">Batman Chronicles #10</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-10">VIEW-batman-chronicles-10</p>
-          <p class="meta" title="Seq 000010">Seq 000010</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000011">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000011">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-11.jpg" data-full-title="Batman Chronicles #11" data-full-detail="VIEW-batman-chronicles-11 | Seq 000011 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-11.jpg" alt="Batman Chronicles #11 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-11.jpg" data-full-title="Batman Chronicles #11" data-full-detail="Published 1997-10 | VIEW-batman-chronicles-11 | Seq 000011 | https://dc.fandom.com/wiki/Batman_Chronicles_Vol_1_11 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-11.jpg" alt="Batman Chronicles #11 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #11">Batman Chronicles #11</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-11">VIEW-batman-chronicles-11</p>
-          <p class="meta" title="Seq 000011">Seq 000011</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date">Published 1997-10</p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000012">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000012">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-12.jpg" data-full-title="Batman Chronicles #12" data-full-detail="VIEW-batman-chronicles-12 | Seq 000012 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-12.jpg" alt="Batman Chronicles #12 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #12">Batman Chronicles #12</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-12">VIEW-batman-chronicles-12</p>
-          <p class="meta" title="Seq 000012">Seq 000012</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000013" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000013">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000013" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000013">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-13.jpg" data-full-title="Batman Chronicles #13" data-full-detail="VIEW-batman-chronicles-13 | Seq 000013 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-13.jpg" alt="Batman Chronicles #13 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #13">Batman Chronicles #13</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-13">VIEW-batman-chronicles-13</p>
-          <p class="meta" title="Seq 000013">Seq 000013</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000014" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000014">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000014" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000014">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-14.jpg" data-full-title="Batman Chronicles #14" data-full-detail="VIEW-batman-chronicles-14 | Seq 000014 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-14.jpg" alt="Batman Chronicles #14 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #14">Batman Chronicles #14</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-14">VIEW-batman-chronicles-14</p>
-          <p class="meta" title="Seq 000014">Seq 000014</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000015" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000015">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000015" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000015">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-15.jpg" data-full-title="Batman Chronicles #15" data-full-detail="VIEW-batman-chronicles-15 | Seq 000015 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-15.jpg" alt="Batman Chronicles #15 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #15">Batman Chronicles #15</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-15">VIEW-batman-chronicles-15</p>
-          <p class="meta" title="Seq 000015">Seq 000015</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000016" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000016">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000016" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000016">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-16.jpg" data-full-title="Batman Chronicles #16" data-full-detail="VIEW-batman-chronicles-16 | Seq 000016 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-16.jpg" alt="Batman Chronicles #16 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #16">Batman Chronicles #16</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-16">VIEW-batman-chronicles-16</p>
-          <p class="meta" title="Seq 000016">Seq 000016</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000017" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000017">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000017" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000017">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-17.jpg" data-full-title="Batman Chronicles #17" data-full-detail="VIEW-batman-chronicles-17 | Seq 000017 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-17.jpg" alt="Batman Chronicles #17 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #17">Batman Chronicles #17</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-17">VIEW-batman-chronicles-17</p>
-          <p class="meta" title="Seq 000017">Seq 000017</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000018" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000018">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000018" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000018">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-18.jpg" data-full-title="Batman Chronicles #18" data-full-detail="VIEW-batman-chronicles-18 | Seq 000018 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-18.jpg" alt="Batman Chronicles #18 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #18">Batman Chronicles #18</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-18">VIEW-batman-chronicles-18</p>
-          <p class="meta" title="Seq 000018">Seq 000018</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000019" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000019">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000019" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000019">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-19.jpg" data-full-title="Batman Chronicles #19" data-full-detail="VIEW-batman-chronicles-19 | Seq 000019 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-19.jpg" alt="Batman Chronicles #19 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #19">Batman Chronicles #19</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-19">VIEW-batman-chronicles-19</p>
-          <p class="meta" title="Seq 000019">Seq 000019</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000020">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000020">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-20.jpg" data-full-title="Batman Chronicles #20" data-full-detail="VIEW-batman-chronicles-20 | Seq 000020 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-20.jpg" alt="Batman Chronicles #20 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #20">Batman Chronicles #20</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-20">VIEW-batman-chronicles-20</p>
-          <p class="meta" title="Seq 000020">Seq 000020</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000021">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000021">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-21.jpg" data-full-title="Batman Chronicles #21" data-full-detail="VIEW-batman-chronicles-21 | Seq 000021 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-21.jpg" alt="Batman Chronicles #21 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #21">Batman Chronicles #21</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-21">VIEW-batman-chronicles-21</p>
-          <p class="meta" title="Seq 000021">Seq 000021</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000022" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000022">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000022" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000022">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-22.jpg" data-full-title="Batman Chronicles #22" data-full-detail="VIEW-batman-chronicles-22 | Seq 000022 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-22.jpg" alt="Batman Chronicles #22 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #22">Batman Chronicles #22</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-22">VIEW-batman-chronicles-22</p>
-          <p class="meta" title="Seq 000022">Seq 000022</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000023" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000023">
+      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batman_chronicles_1_23" data-project="Batman Chronicles" data-status="missing" data-sequence="000023" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000023">
         <div class="status-strip">Missing</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-chronicles-23.jpg" data-full-title="Batman Chronicles #23" data-full-detail="VIEW-batman-chronicles-23 | Seq 000023 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-chronicles-23.jpg" alt="Batman Chronicles #23 cover"></button></div>
         <div class="card-body">
           <div class="badges">
-            <span class="badge"></span>
+            <span class="badge">batman chronicles 1 23</span>
             
           </div>
           <h3 title="Batman Chronicles #23">Batman Chronicles #23</h3>
-          <p class="pub-id" title="VIEW-batman-chronicles-23">VIEW-batman-chronicles-23</p>
-          <p class="meta" title="Seq 000023">Seq 000023</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title=""></p>
+          <p class="publication-date"></p>
         </div>
       </article>
     </section>
@@ -601,9 +535,7 @@
       });
     });
     document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
-    lightbox.addEventListener('click', event => {
-      if (event.target === lightbox) closeLightbox();
-    });
+    lightbox.addEventListener('click', closeLightbox);
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape') closeLightbox();
     });

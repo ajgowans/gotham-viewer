@@ -53,11 +53,12 @@
     .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
     .comic-card.cover-needs_review { border-color: #a46a00; }
     .comic-card.cover-rejected_auto { border-color: #b42318; }
-    .card-body { padding: 10px 11px 12px; height: 205px; display: flex; flex-direction: column; overflow: hidden; }
+    .card-body { padding: 10px 11px 12px; min-height: 86px; display: flex; flex-direction: column; overflow: hidden; }
     .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
     .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
     .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
     h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .publication-date { margin: auto 0 0; color: var(--muted); font-size: 12px; line-height: 1.3; }
     .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
     .pub-id { -webkit-line-clamp: 1; }
     .meta, .continuity { -webkit-line-clamp: 2; }
@@ -70,8 +71,8 @@
     .hidden { display: none; }
     .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
     .lightbox.open { display: flex; }
-    .lightbox-panel { max-width: min(92vw, 980px); max-height: 94vh; display: grid; gap: 10px; }
-    .lightbox img { max-width: 100%; max-height: calc(94vh - 56px); object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-panel { width: min(92vw, 980px); height: 94vh; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; align-items: center; justify-items: center; }
+    .lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; align-self: center; }
     .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
     .lightbox-title { font-weight: 750; }
     .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
@@ -131,85 +132,70 @@
     <section class="grid">
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: The Cult" data-project="batman_miniseries" data-status="owned" data-sequence="000100" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000100">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-CULT-0001.jpg" data-full-title="Batman: The Cult #1" data-full-detail="PUB-BAT-CULT-0001 | Seq 000100 | core | Four-issue prestige miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-CULT-0001.jpg" alt="Batman: The Cult #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-CULT-0001.jpg" data-full-title="Batman: The Cult #1" data-full-detail="Published 1988-05-18 | PUB-BAT-CULT-0001 | Seq 000100 | core | Four-issue prestige miniseries. | https://dc.fandom.com/wiki/Batman%3A_The_Cult_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-CULT-0001.jpg" alt="Batman: The Cult #1 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Batman: The Cult</span>
             
           </div>
           <h3 title="Batman: The Cult #1">Batman: The Cult #1</h3>
-          <p class="pub-id" title="PUB-BAT-CULT-0001">PUB-BAT-CULT-0001</p>
-          <p class="meta" title="Seq 000100 | core">Seq 000100 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Four-issue prestige miniseries.">Four-issue prestige miniseries.</p>
+          <p class="publication-date">Published 1988-05-18</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: The Cult" data-project="batman_miniseries" data-status="owned" data-sequence="000101" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000101">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-CULT-0002.jpg" data-full-title="Batman: The Cult #2" data-full-detail="PUB-BAT-CULT-0002 | Seq 000101 | core | Four-issue prestige miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-CULT-0002.jpg" alt="Batman: The Cult #2 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-CULT-0002.jpg" data-full-title="Batman: The Cult #2" data-full-detail="Published 1988-07 | PUB-BAT-CULT-0002 | Seq 000101 | core | Four-issue prestige miniseries. | https://dc.fandom.com/wiki/Batman%3A_The_Cult_Vol_1_2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-CULT-0002.jpg" alt="Batman: The Cult #2 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Batman: The Cult</span>
             
           </div>
           <h3 title="Batman: The Cult #2">Batman: The Cult #2</h3>
-          <p class="pub-id" title="PUB-BAT-CULT-0002">PUB-BAT-CULT-0002</p>
-          <p class="meta" title="Seq 000101 | core">Seq 000101 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Four-issue prestige miniseries.">Four-issue prestige miniseries.</p>
+          <p class="publication-date">Published 1988-07</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: The Cult" data-project="batman_miniseries" data-status="owned" data-sequence="000102" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000102">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-CULT-0003.jpg" data-full-title="Batman: The Cult #3" data-full-detail="PUB-BAT-CULT-0003 | Seq 000102 | core | Four-issue prestige miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-CULT-0003.jpg" alt="Batman: The Cult #3 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-CULT-0003.jpg" data-full-title="Batman: The Cult #3" data-full-detail="Published 1988-08 | PUB-BAT-CULT-0003 | Seq 000102 | core | Four-issue prestige miniseries. | https://dc.fandom.com/wiki/Batman%3A_The_Cult_Vol_1_3 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-CULT-0003.jpg" alt="Batman: The Cult #3 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Batman: The Cult</span>
             
           </div>
           <h3 title="Batman: The Cult #3">Batman: The Cult #3</h3>
-          <p class="pub-id" title="PUB-BAT-CULT-0003">PUB-BAT-CULT-0003</p>
-          <p class="meta" title="Seq 000102 | core">Seq 000102 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Four-issue prestige miniseries.">Four-issue prestige miniseries.</p>
+          <p class="publication-date">Published 1988-08</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: The Cult" data-project="batman_miniseries" data-status="owned" data-sequence="000103" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000103">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-CULT-0004.jpg" data-full-title="Batman: The Cult #4" data-full-detail="PUB-BAT-CULT-0004 | Seq 000103 | core | Four-issue prestige miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-CULT-0004.jpg" alt="Batman: The Cult #4 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-CULT-0004.jpg" data-full-title="Batman: The Cult #4" data-full-detail="Published 1988-09 | PUB-BAT-CULT-0004 | Seq 000103 | core | Four-issue prestige miniseries. | https://dc.fandom.com/wiki/Batman%3A_The_Cult_Vol_1_4 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-CULT-0004.jpg" alt="Batman: The Cult #4 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Batman: The Cult</span>
             
           </div>
           <h3 title="Batman: The Cult #4">Batman: The Cult #4</h3>
-          <p class="pub-id" title="PUB-BAT-CULT-0004">PUB-BAT-CULT-0004</p>
-          <p class="meta" title="Seq 000103 | core">Seq 000103 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Four-issue prestige miniseries.">Four-issue prestige miniseries.</p>
+          <p class="publication-date">Published 1988-09</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="The Untold Legend of the Batman" data-project="batman_miniseries" data-status="owned" data-sequence="000200" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000200">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-UNTOLD-LEGEND-0001.jpg" data-full-title="The Untold Legend of the Batman #1" data-full-detail="PUB-UNTOLD-LEGEND-0001 | Seq 000200 | core | Three-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-UNTOLD-LEGEND-0001.jpg" alt="The Untold Legend of the Batman #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-UNTOLD-LEGEND-0001.jpg" data-full-title="The Untold Legend of the Batman #1" data-full-detail="Published 1980-04-23 | PUB-UNTOLD-LEGEND-0001 | Seq 000200 | core | Three-issue miniseries. | https://dc.fandom.com/wiki/Untold_Legend_of_the_Batman_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-UNTOLD-LEGEND-0001.jpg" alt="The Untold Legend of the Batman #1 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">The Untold Legend of the Batman</span>
             
           </div>
           <h3 title="The Untold Legend of the Batman #1">The Untold Legend of the Batman #1</h3>
-          <p class="pub-id" title="PUB-UNTOLD-LEGEND-0001">PUB-UNTOLD-LEGEND-0001</p>
-          <p class="meta" title="Seq 000200 | core">Seq 000200 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Three-issue miniseries.">Three-issue miniseries.</p>
+          <p class="publication-date">Published 1980-04-23</p>
         </div>
       </article>
     
@@ -223,10 +209,7 @@
             
           </div>
           <h3 title="The Untold Legend of the Batman #2">The Untold Legend of the Batman #2</h3>
-          <p class="pub-id" title="PUB-UNTOLD-LEGEND-0002">PUB-UNTOLD-LEGEND-0002</p>
-          <p class="meta" title="Seq 000201 | core">Seq 000201 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Three-issue miniseries.">Three-issue miniseries.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -240,27 +223,21 @@
             
           </div>
           <h3 title="The Untold Legend of the Batman #3">The Untold Legend of the Batman #3</h3>
-          <p class="pub-id" title="PUB-UNTOLD-LEGEND-0003">PUB-UNTOLD-LEGEND-0003</p>
-          <p class="meta" title="Seq 000202 | core">Seq 000202 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Three-issue miniseries.">Three-issue miniseries.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Batman: Book of the Dead" data-project="batman_miniseries" data-status="missing" data-sequence="000300" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000300">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-book-of-the-dead-1.jpg" data-full-title="Batman: Book of the Dead #1" data-full-detail="VIEW-batman-book-of-the-dead-1 | Seq 000300 | core | Two-issue Elseworlds miniseries; also remains in Elseworlds. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-book-of-the-dead-1.jpg" alt="Batman: Book of the Dead #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-book-of-the-dead-1.jpg" data-full-title="Batman: Book of the Dead #1" data-full-detail="Published 1999-04 | VIEW-batman-book-of-the-dead-1 | Seq 000300 | core | Two-issue Elseworlds miniseries; also remains in Elseworlds. | https://dc.fandom.com/wiki/Batman:_Book_of_the_Dead_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-book-of-the-dead-1.jpg" alt="Batman: Book of the Dead #1 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Batman: Book of the Dead</span>
             
           </div>
           <h3 title="Batman: Book of the Dead #1">Batman: Book of the Dead #1</h3>
-          <p class="pub-id" title="VIEW-batman-book-of-the-dead-1">VIEW-batman-book-of-the-dead-1</p>
-          <p class="meta" title="Seq 000300 | core">Seq 000300 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Two-issue Elseworlds miniseries; also remains in Elseworlds.">Two-issue Elseworlds miniseries; also remains in Elseworlds.</p>
+          <p class="publication-date">Published 1999-04</p>
         </div>
       </article>
     
@@ -274,180 +251,147 @@
             
           </div>
           <h3 title="Batman: Book of the Dead #2">Batman: Book of the Dead #2</h3>
-          <p class="pub-id" title="VIEW-batman-book-of-the-dead-2">VIEW-batman-book-of-the-dead-2</p>
-          <p class="meta" title="Seq 000301 | core">Seq 000301 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Two-issue Elseworlds miniseries; also remains in Elseworlds.">Two-issue Elseworlds miniseries; also remains in Elseworlds.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: Toyman" data-project="batman_miniseries" data-status="owned" data-sequence="000400" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000400">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-TOYMAN-0001.jpg" data-full-title="Batman: Toyman #1" data-full-detail="PUB-BAT-TOYMAN-0001 | Seq 000400 | core | Four-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-TOYMAN-0001.jpg" alt="Batman: Toyman #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-TOYMAN-0001.jpg" data-full-title="Batman: Toyman #1" data-full-detail="Published 1998 | PUB-BAT-TOYMAN-0001 | Seq 000400 | core | Four-issue miniseries. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-TOYMAN-0001.jpg" alt="Batman: Toyman #1 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Batman: Toyman</span>
             
           </div>
           <h3 title="Batman: Toyman #1">Batman: Toyman #1</h3>
-          <p class="pub-id" title="PUB-BAT-TOYMAN-0001">PUB-BAT-TOYMAN-0001</p>
-          <p class="meta" title="Seq 000400 | core">Seq 000400 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Four-issue miniseries.">Four-issue miniseries.</p>
+          <p class="publication-date">Published 1998</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: Toyman" data-project="batman_miniseries" data-status="owned" data-sequence="000401" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000401">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-TOYMAN-0002.jpg" data-full-title="Batman: Toyman #2" data-full-detail="PUB-BAT-TOYMAN-0002 | Seq 000401 | core | Four-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-TOYMAN-0002.jpg" alt="Batman: Toyman #2 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-TOYMAN-0002.jpg" data-full-title="Batman: Toyman #2" data-full-detail="Published 1998 | PUB-BAT-TOYMAN-0002 | Seq 000401 | core | Four-issue miniseries. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-TOYMAN-0002.jpg" alt="Batman: Toyman #2 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Batman: Toyman</span>
             
           </div>
           <h3 title="Batman: Toyman #2">Batman: Toyman #2</h3>
-          <p class="pub-id" title="PUB-BAT-TOYMAN-0002">PUB-BAT-TOYMAN-0002</p>
-          <p class="meta" title="Seq 000401 | core">Seq 000401 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Four-issue miniseries.">Four-issue miniseries.</p>
+          <p class="publication-date">Published 1998</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: Toyman" data-project="batman_miniseries" data-status="owned" data-sequence="000402" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000402">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-TOYMAN-0003.jpg" data-full-title="Batman: Toyman #3" data-full-detail="PUB-BAT-TOYMAN-0003 | Seq 000402 | core | Four-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-TOYMAN-0003.jpg" alt="Batman: Toyman #3 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-TOYMAN-0003.jpg" data-full-title="Batman: Toyman #3" data-full-detail="Published 1998 | PUB-BAT-TOYMAN-0003 | Seq 000402 | core | Four-issue miniseries. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-TOYMAN-0003.jpg" alt="Batman: Toyman #3 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Batman: Toyman</span>
             
           </div>
           <h3 title="Batman: Toyman #3">Batman: Toyman #3</h3>
-          <p class="pub-id" title="PUB-BAT-TOYMAN-0003">PUB-BAT-TOYMAN-0003</p>
-          <p class="meta" title="Seq 000402 | core">Seq 000402 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Four-issue miniseries.">Four-issue miniseries.</p>
+          <p class="publication-date">Published 1998</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: Toyman" data-project="batman_miniseries" data-status="owned" data-sequence="000403" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000403">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-TOYMAN-0004.jpg" data-full-title="Batman: Toyman #4" data-full-detail="PUB-BAT-TOYMAN-0004 | Seq 000403 | core | Four-issue miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-TOYMAN-0004.jpg" alt="Batman: Toyman #4 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-TOYMAN-0004.jpg" data-full-title="Batman: Toyman #4" data-full-detail="Published 1998 | PUB-BAT-TOYMAN-0004 | Seq 000403 | core | Four-issue miniseries. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-TOYMAN-0004.jpg" alt="Batman: Toyman #4 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Batman: Toyman</span>
             
           </div>
           <h3 title="Batman: Toyman #4">Batman: Toyman #4</h3>
-          <p class="pub-id" title="PUB-BAT-TOYMAN-0004">PUB-BAT-TOYMAN-0004</p>
-          <p class="meta" title="Seq 000403 | core">Seq 000403 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Four-issue miniseries.">Four-issue miniseries.</p>
+          <p class="publication-date">Published 1998</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: Jazz" data-project="batman_miniseries" data-status="owned" data-sequence="000500" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000500">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-JAZZ-0001.jpg" data-full-title="Batman: Jazz #1" data-full-detail="PUB-BAT-JAZZ-0001 | Seq 000500 | core | Standalone three-issue miniseries; not a Legends of the Dark Knight special. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-JAZZ-0001.jpg" alt="Batman: Jazz #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-JAZZ-0001.jpg" data-full-title="Batman: Jazz #1" data-full-detail="Published 1995 | PUB-BAT-JAZZ-0001 | Seq 000500 | core | Standalone three-issue miniseries; not a Legends of the Dark Knight special. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-JAZZ-0001.jpg" alt="Batman: Jazz #1 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Batman: Jazz</span>
             
           </div>
           <h3 title="Batman: Jazz #1">Batman: Jazz #1</h3>
-          <p class="pub-id" title="PUB-BAT-JAZZ-0001">PUB-BAT-JAZZ-0001</p>
-          <p class="meta" title="Seq 000500 | core">Seq 000500 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Standalone three-issue miniseries; not a Legends of the Dark Knight special.">Standalone three-issue miniseries; not a Legends of the Dark Knight special.</p>
+          <p class="publication-date">Published 1995</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: Jazz" data-project="batman_miniseries" data-status="owned" data-sequence="000501" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000501">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-JAZZ-0002.jpg" data-full-title="Batman: Jazz #2" data-full-detail="PUB-BAT-JAZZ-0002 | Seq 000501 | core | Standalone three-issue miniseries; not a Legends of the Dark Knight special. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-JAZZ-0002.jpg" alt="Batman: Jazz #2 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-JAZZ-0002.jpg" data-full-title="Batman: Jazz #2" data-full-detail="Published 1995 | PUB-BAT-JAZZ-0002 | Seq 000501 | core | Standalone three-issue miniseries; not a Legends of the Dark Knight special. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-JAZZ-0002.jpg" alt="Batman: Jazz #2 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Batman: Jazz</span>
             
           </div>
           <h3 title="Batman: Jazz #2">Batman: Jazz #2</h3>
-          <p class="pub-id" title="PUB-BAT-JAZZ-0002">PUB-BAT-JAZZ-0002</p>
-          <p class="meta" title="Seq 000501 | core">Seq 000501 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Standalone three-issue miniseries; not a Legends of the Dark Knight special.">Standalone three-issue miniseries; not a Legends of the Dark Knight special.</p>
+          <p class="publication-date">Published 1995</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman: Jazz" data-project="batman_miniseries" data-status="owned" data-sequence="000502" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000502">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-JAZZ-0003.jpg" data-full-title="Batman: Jazz #3" data-full-detail="PUB-BAT-JAZZ-0003 | Seq 000502 | core | Standalone three-issue miniseries; not a Legends of the Dark Knight special. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-JAZZ-0003.jpg" alt="Batman: Jazz #3 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-JAZZ-0003.jpg" data-full-title="Batman: Jazz #3" data-full-detail="Published 1995 | PUB-BAT-JAZZ-0003 | Seq 000502 | core | Standalone three-issue miniseries; not a Legends of the Dark Knight special. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-JAZZ-0003.jpg" alt="Batman: Jazz #3 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Batman: Jazz</span>
             
           </div>
           <h3 title="Batman: Jazz #3">Batman: Jazz #3</h3>
-          <p class="pub-id" title="PUB-BAT-JAZZ-0003">PUB-BAT-JAZZ-0003</p>
-          <p class="meta" title="Seq 000502 | core">Seq 000502 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Standalone three-issue miniseries; not a Legends of the Dark Knight special.">Standalone three-issue miniseries; not a Legends of the Dark Knight special.</p>
+          <p class="publication-date">Published 1995</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman/Wildcat" data-project="batman_miniseries" data-status="owned" data-sequence="000600" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000600">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-WILDCAT-0001.jpg" data-full-title="Batman/Wildcat #1" data-full-detail="PUB-BAT-WILDCAT-0001 | Seq 000600 | core | Three-issue crossover miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-WILDCAT-0001.jpg" alt="Batman/Wildcat #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-WILDCAT-0001.jpg" data-full-title="Batman/Wildcat #1" data-full-detail="Published 1997 | PUB-BAT-WILDCAT-0001 | Seq 000600 | core | Three-issue crossover miniseries. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-WILDCAT-0001.jpg" alt="Batman/Wildcat #1 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Batman/Wildcat</span>
             
           </div>
           <h3 title="Batman/Wildcat #1">Batman/Wildcat #1</h3>
-          <p class="pub-id" title="PUB-BAT-WILDCAT-0001">PUB-BAT-WILDCAT-0001</p>
-          <p class="meta" title="Seq 000600 | core">Seq 000600 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Three-issue crossover miniseries.">Three-issue crossover miniseries.</p>
+          <p class="publication-date">Published 1997</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman/Wildcat" data-project="batman_miniseries" data-status="owned" data-sequence="000601" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000601">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-WILDCAT-0002.jpg" data-full-title="Batman/Wildcat #2" data-full-detail="PUB-BAT-WILDCAT-0002 | Seq 000601 | core | Three-issue crossover miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-WILDCAT-0002.jpg" alt="Batman/Wildcat #2 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-WILDCAT-0002.jpg" data-full-title="Batman/Wildcat #2" data-full-detail="Published 1997 | PUB-BAT-WILDCAT-0002 | Seq 000601 | core | Three-issue crossover miniseries. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-WILDCAT-0002.jpg" alt="Batman/Wildcat #2 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Batman/Wildcat</span>
             
           </div>
           <h3 title="Batman/Wildcat #2">Batman/Wildcat #2</h3>
-          <p class="pub-id" title="PUB-BAT-WILDCAT-0002">PUB-BAT-WILDCAT-0002</p>
-          <p class="meta" title="Seq 000601 | core">Seq 000601 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Three-issue crossover miniseries.">Three-issue crossover miniseries.</p>
+          <p class="publication-date">Published 1997</p>
         </div>
       </article>
     
 
       <article class="comic-card owned cover-approved_auto" data-order="reading" data-scope="Batman/Wildcat" data-project="batman_miniseries" data-status="owned" data-sequence="000602" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000602">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-WILDCAT-0003.jpg" data-full-title="Batman/Wildcat #3" data-full-detail="PUB-BAT-WILDCAT-0003 | Seq 000602 | core | Three-issue crossover miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-WILDCAT-0003.jpg" alt="Batman/Wildcat #3 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-WILDCAT-0003.jpg" data-full-title="Batman/Wildcat #3" data-full-detail="Published 1997 | PUB-BAT-WILDCAT-0003 | Seq 000602 | core | Three-issue crossover miniseries. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-WILDCAT-0003.jpg" alt="Batman/Wildcat #3 cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Batman/Wildcat</span>
             
           </div>
           <h3 title="Batman/Wildcat #3">Batman/Wildcat #3</h3>
-          <p class="pub-id" title="PUB-BAT-WILDCAT-0003">PUB-BAT-WILDCAT-0003</p>
-          <p class="meta" title="Seq 000602 | core">Seq 000602 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Three-issue crossover miniseries.">Three-issue crossover miniseries.</p>
+          <p class="publication-date">Published 1997</p>
         </div>
       </article>
     
@@ -461,10 +405,7 @@
             
           </div>
           <h3 title="Batman: Death and the Maidens #1">Batman: Death and the Maidens #1</h3>
-          <p class="pub-id" title="VIEW-batman-death-and-the-maidens-1">VIEW-batman-death-and-the-maidens-1</p>
-          <p class="meta" title="Seq 000700 | core">Seq 000700 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Complete nine-issue miniseries.">Complete nine-issue miniseries.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -478,10 +419,7 @@
             
           </div>
           <h3 title="Batman: Death and the Maidens #2">Batman: Death and the Maidens #2</h3>
-          <p class="pub-id" title="VIEW-batman-death-and-the-maidens-2">VIEW-batman-death-and-the-maidens-2</p>
-          <p class="meta" title="Seq 000701 | core">Seq 000701 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Complete nine-issue miniseries.">Complete nine-issue miniseries.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -495,10 +433,7 @@
             
           </div>
           <h3 title="Batman: Death and the Maidens #3">Batman: Death and the Maidens #3</h3>
-          <p class="pub-id" title="VIEW-batman-death-and-the-maidens-3">VIEW-batman-death-and-the-maidens-3</p>
-          <p class="meta" title="Seq 000702 | core">Seq 000702 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Complete nine-issue miniseries.">Complete nine-issue miniseries.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -512,10 +447,7 @@
             
           </div>
           <h3 title="Batman: Death and the Maidens #4">Batman: Death and the Maidens #4</h3>
-          <p class="pub-id" title="VIEW-batman-death-and-the-maidens-4">VIEW-batman-death-and-the-maidens-4</p>
-          <p class="meta" title="Seq 000703 | core">Seq 000703 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Complete nine-issue miniseries.">Complete nine-issue miniseries.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -529,10 +461,7 @@
             
           </div>
           <h3 title="Batman: Death and the Maidens #5">Batman: Death and the Maidens #5</h3>
-          <p class="pub-id" title="VIEW-batman-death-and-the-maidens-5">VIEW-batman-death-and-the-maidens-5</p>
-          <p class="meta" title="Seq 000704 | core">Seq 000704 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Complete nine-issue miniseries.">Complete nine-issue miniseries.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -546,10 +475,7 @@
             
           </div>
           <h3 title="Batman: Death and the Maidens #6">Batman: Death and the Maidens #6</h3>
-          <p class="pub-id" title="VIEW-batman-death-and-the-maidens-6">VIEW-batman-death-and-the-maidens-6</p>
-          <p class="meta" title="Seq 000705 | core">Seq 000705 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Complete nine-issue miniseries.">Complete nine-issue miniseries.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -563,10 +489,7 @@
             
           </div>
           <h3 title="Batman: Death and the Maidens #7">Batman: Death and the Maidens #7</h3>
-          <p class="pub-id" title="VIEW-batman-death-and-the-maidens-7">VIEW-batman-death-and-the-maidens-7</p>
-          <p class="meta" title="Seq 000706 | core">Seq 000706 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Complete nine-issue miniseries.">Complete nine-issue miniseries.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -580,10 +503,7 @@
             
           </div>
           <h3 title="Batman: Death and the Maidens #8">Batman: Death and the Maidens #8</h3>
-          <p class="pub-id" title="VIEW-batman-death-and-the-maidens-8">VIEW-batman-death-and-the-maidens-8</p>
-          <p class="meta" title="Seq 000707 | core">Seq 000707 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Complete nine-issue miniseries.">Complete nine-issue miniseries.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
@@ -597,78 +517,63 @@
             
           </div>
           <h3 title="Batman: Death and the Maidens #9">Batman: Death and the Maidens #9</h3>
-          <p class="pub-id" title="VIEW-batman-death-and-the-maidens-9">VIEW-batman-death-and-the-maidens-9</p>
-          <p class="meta" title="Seq 000708 | core">Seq 000708 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Complete nine-issue miniseries.">Complete nine-issue miniseries.</p>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="Demon Trilogy" data-project="batman_miniseries" data-status="missing" data-sequence="010001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:010001">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-SON-OF-DEMON.jpg" data-full-title="Batman: Son of the Demon #1" data-full-detail="PUB-BAT-SON-OF-DEMON | Seq 010001 | core | Original graphic novel; one physical publication rather than a numbered miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-SON-OF-DEMON.jpg" alt="Batman: Son of the Demon #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-SON-OF-DEMON.jpg" data-full-title="Batman: Son of the Demon" data-full-detail="PUB-BAT-SON-OF-DEMON | Seq 010001 | core | Original graphic novel; one physical publication rather than a numbered miniseries. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-SON-OF-DEMON.jpg" alt="Batman: Son of the Demon cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Demon Trilogy</span>
             
           </div>
-          <h3 title="Batman: Son of the Demon #1">Batman: Son of the Demon #1</h3>
-          <p class="pub-id" title="PUB-BAT-SON-OF-DEMON">PUB-BAT-SON-OF-DEMON</p>
-          <p class="meta" title="Seq 010001 | core">Seq 010001 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Original graphic novel; one physical publication rather than a numbered miniseries.">Original graphic novel; one physical publication rather than a numbered miniseries.</p>
+          <h3 title="Batman: Son of the Demon">Batman: Son of the Demon</h3>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_manual" data-order="reading" data-scope="Demon Trilogy" data-project="batman_miniseries" data-status="missing" data-sequence="010002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:010002">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-BRIDE-OF-DEMON.jpg" data-full-title="Batman: Bride of the Demon #1" data-full-detail="PUB-BAT-BRIDE-OF-DEMON | Seq 010002 | core | Original graphic novel; one physical publication rather than a numbered miniseries. | Verified unnumbered prestige one-shot; absence of issue number in source URL is expected."><img src="../assets/covers/display/PUB-BAT-BRIDE-OF-DEMON.jpg" alt="Batman: Bride of the Demon #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-BRIDE-OF-DEMON.jpg" data-full-title="Batman: Bride of the Demon" data-full-detail="PUB-BAT-BRIDE-OF-DEMON | Seq 010002 | core | Original graphic novel; one physical publication rather than a numbered miniseries. | Verified unnumbered prestige one-shot; absence of issue number in source URL is expected."><img src="../assets/covers/display/PUB-BAT-BRIDE-OF-DEMON.jpg" alt="Batman: Bride of the Demon cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Demon Trilogy</span>
             <span class="badge review" title="Verified unnumbered prestige one-shot; absence of issue number in source URL is expected.">approved manual</span>
           </div>
-          <h3 title="Batman: Bride of the Demon #1">Batman: Bride of the Demon #1</h3>
-          <p class="pub-id" title="PUB-BAT-BRIDE-OF-DEMON">PUB-BAT-BRIDE-OF-DEMON</p>
-          <p class="meta" title="Seq 010002 | core">Seq 010002 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Original graphic novel; one physical publication rather than a numbered miniseries.">Original graphic novel; one physical publication rather than a numbered miniseries.</p>
+          <h3 title="Batman: Bride of the Demon">Batman: Bride of the Demon</h3>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_manual" data-order="reading" data-scope="Demon Trilogy" data-project="batman_miniseries" data-status="missing" data-sequence="010003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:010003">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-BIRTH-OF-DEMON.jpg" data-full-title="Batman: Birth of the Demon #1" data-full-detail="PUB-BAT-BIRTH-OF-DEMON | Seq 010003 | core | Original graphic novel; one physical publication rather than a numbered miniseries. | Verified unnumbered prestige one-shot; absence of issue number in source URL is expected."><img src="../assets/covers/display/PUB-BAT-BIRTH-OF-DEMON.jpg" alt="Batman: Birth of the Demon #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-BIRTH-OF-DEMON.jpg" data-full-title="Batman: Birth of the Demon" data-full-detail="PUB-BAT-BIRTH-OF-DEMON | Seq 010003 | core | Original graphic novel; one physical publication rather than a numbered miniseries. | Verified unnumbered prestige one-shot; absence of issue number in source URL is expected."><img src="../assets/covers/display/PUB-BAT-BIRTH-OF-DEMON.jpg" alt="Batman: Birth of the Demon cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Demon Trilogy</span>
             <span class="badge review" title="Verified unnumbered prestige one-shot; absence of issue number in source URL is expected.">approved manual</span>
           </div>
-          <h3 title="Batman: Birth of the Demon #1">Batman: Birth of the Demon #1</h3>
-          <p class="pub-id" title="PUB-BAT-BIRTH-OF-DEMON">PUB-BAT-BIRTH-OF-DEMON</p>
-          <p class="meta" title="Seq 010003 | core">Seq 010003 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Original graphic novel; one physical publication rather than a numbered miniseries.">Original graphic novel; one physical publication rather than a numbered miniseries.</p>
+          <h3 title="Batman: Birth of the Demon">Batman: Birth of the Demon</h3>
+          <p class="publication-date"></p>
         </div>
       </article>
     
 
       <article class="comic-card missing cover-approved_manual" data-order="reading" data-scope="Prestige one-shot" data-project="batman_miniseries" data-status="missing" data-sequence="030001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:030001">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-TWOFACE-CRIME-PUNISHMENT.jpg" data-full-title="Batman: Two-Face - Crime and Punishment #1" data-full-detail="PUB-BAT-TWOFACE-CRIME-PUNISHMENT | Seq 030001 | core | Prestige one-shot; not a miniseries despite inclusion in this collector-facing grouping. | Verified cover for the unnumbered Batman: Two-Face - Crime and Punishment prestige one-shot; omission of issue number from the source filename is expected."><img src="../assets/covers/display/PUB-BAT-TWOFACE-CRIME-PUNISHMENT.jpg" alt="Batman: Two-Face - Crime and Punishment #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-TWOFACE-CRIME-PUNISHMENT.jpg" data-full-title="Batman: Two-Face - Crime and Punishment" data-full-detail="Published 1995-05 | PUB-BAT-TWOFACE-CRIME-PUNISHMENT | Seq 030001 | core | Prestige one-shot; not a miniseries despite inclusion in this collector-facing grouping. | https://dc.fandom.com/wiki/Batman:_Two-Face | Verified cover for the unnumbered Batman: Two-Face - Crime and Punishment prestige one-shot; omission of issue number from the source filename is expected."><img src="../assets/covers/display/PUB-BAT-TWOFACE-CRIME-PUNISHMENT.jpg" alt="Batman: Two-Face - Crime and Punishment cover"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Prestige one-shot</span>
             <span class="badge review" title="Verified cover for the unnumbered Batman: Two-Face - Crime and Punishment prestige one-shot; omission of issue number from the source filename is expected.">approved manual</span>
           </div>
-          <h3 title="Batman: Two-Face - Crime and Punishment #1">Batman: Two-Face - Crime and Punishment #1</h3>
-          <p class="pub-id" title="PUB-BAT-TWOFACE-CRIME-PUNISHMENT">PUB-BAT-TWOFACE-CRIME-PUNISHMENT</p>
-          <p class="meta" title="Seq 030001 | core">Seq 030001 | core</p>
-          <p class="continuity" title=""></p>
-          <p class="notes" title="Prestige one-shot; not a miniseries despite inclusion in this collector-facing grouping.">Prestige one-shot; not a miniseries despite inclusion in this collector-facing grouping.</p>
+          <h3 title="Batman: Two-Face - Crime and Punishment">Batman: Two-Face - Crime and Punishment</h3>
+          <p class="publication-date">Published 1995-05</p>
         </div>
       </article>
     </section>
@@ -764,9 +669,7 @@
       });
     });
     document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
-    lightbox.addEventListener('click', event => {
-      if (event.target === lightbox) closeLightbox();
-    });
+    lightbox.addEventListener('click', closeLightbox);
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape') closeLightbox();
     });

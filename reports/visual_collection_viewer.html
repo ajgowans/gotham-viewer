@@ -100,16 +100,16 @@
               <em>100 cards from 100 rows</em>
             </a>
             
-            <a class="view-card" href="visual_view_batman_600_699.html">
-              <strong>Batman #600-699</strong>
-              <span>Batman numbered run from #600 through #699 with ownership and cover status.</span>
-              <em>100 cards from 100 rows</em>
+            <a class="view-card" href="visual_view_batman_600_714.html">
+              <strong>Batman #600-714</strong>
+              <span>Batman numbered run from #600 through the end of the original volume at #713 plus legacy boundary #714.</span>
+              <em>115 cards from 115 rows</em>
             </a>
             
-            <a class="view-card" href="visual_view_batman_700_799.html">
-              <strong>Batman #700-799</strong>
-              <span>Batman numbered run from #700 through #799 with ownership and cover status.</span>
-              <em>100 cards from 100 rows</em>
+            <a class="view-card" href="visual_view_batman_715_799.html">
+              <strong>Batman #715-799</strong>
+              <span>Batman legacy-numbered viewer continuation after the #600-714 page.</span>
+              <em>85 cards from 85 rows</em>
             </a>
             
             <a class="view-card" href="visual_view_batman_and_the_outsiders_complete.html">
@@ -154,6 +154,12 @@
               <em>23 cards from 23 rows</em>
             </a>
             
+            <a class="view-card" href="visual_view_batman_vol2.html">
+              <strong>Batman Vol. 2: The New 52</strong>
+              <span>Complete Batman Vol. 2 #1-52 plus catalogued New 52 annuals and specials.</span>
+              <em>62 cards from 62 rows</em>
+            </a>
+            
             <a class="view-card" href="visual_view_legends_of_the_dark_knight.html">
               <strong>Batman: Legends of the Dark Knight</strong>
               <span>Complete numbered run first, followed by annuals, then Halloween specials.</span>
@@ -184,28 +190,28 @@
               <em>25 cards from 25 rows</em>
             </a>
             
-            <a class="view-card" href="visual_view_cataclysm.html">
-              <strong>Cataclysm</strong>
-              <span>Verified issue-level Cataclysm reading checklist.</span>
-              <em>18 cards from 21 rows</em>
-            </a>
-            
             <a class="view-card" href="visual_view_catwoman_vol2.html">
               <strong>Catwoman</strong>
               <span>Catwoman Vol. 1 followed by the complete Catwoman Vol. 2 run and catalogued annuals and specials.</span>
               <em>111 cards from 111 rows</em>
             </a>
             
-            <a class="view-card" href="visual_view_contagion.html">
-              <strong>Contagion</strong>
-              <span>Issue-level Contagion project checklist from canonical project data.</span>
-              <em>20 cards from 20 rows</em>
-            </a>
-            
             <a class="view-card" href="visual_view_countdown_expanded.html">
               <strong>Countdown to Final Crisis Expanded</strong>
               <span>The weekly Countdown run plus catalogued companion and related projects.</span>
               <em>83 cards from 85 rows</em>
+            </a>
+            
+            <a class="view-card" href="visual_view_court_of_owls.html">
+              <strong>Court of Owls</strong>
+              <span>Core Batman Vol. 2 story plus an expanded Night of the Owls tie-in scope.</span>
+              <em>23 cards from 23 rows</em>
+            </a>
+            
+            <a class="view-card" href="visual_view_crisis_on_infinite_earths.html">
+              <strong>Crisis on Infinite Earths</strong>
+              <span>Core twelve-issue event with a separate Batman-context scope.</span>
+              <em>19 cards from 19 rows</em>
             </a>
             
             <a class="view-card" href="visual_view_dkr_saga.html">
@@ -342,8 +348,8 @@
             
             <a class="view-card" href="visual_view_no_mans_land_extended.html">
               <strong>No Man&#x27;s Land Saga Extended</strong>
-              <span>Cataclysm through the catalogued extended No Man&#x27;s Land projects.</span>
-              <em>134 cards from 142 rows</em>
+              <span>Road to No Man&#x27;s Land and the extended No Man&#x27;s Land project; Cataclysm and Aftershock remain in Post-KnightsEnd Story Arcs.</span>
+              <em>100 cards from 105 rows</em>
             </a>
             
             <a class="view-card" href="visual_view_non_dc_owned_unviewed.html">
@@ -447,7 +453,7 @@
 <!-- VISUAL_INDEX_SECTIONS_START -->
 <style>
 .visual-index-section { margin: 0 0 2rem; }
-.visual-index-section > h2 { margin: 0 0 .8rem; }
+.visual-index-section > h2 { margin: 0 0 .8rem .75rem; }
 </style>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -455,8 +461,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!links.length) return;
   const original = links[0].parentElement;
   if (!original || original.dataset.sectioned === "yes") return;
-  const configuredSections = {"american_psycho": "Other", "bane_conquest": "Story Collections", "batman_miniseries": "Batman", "beowulf_dragon_slayer": "Other", "bloodlines_extended": "Story Collections", "cataclysm": "Story Collections", "citadel_journal": "Other", "contagion": "Story Collections", "countdown_expanded": "Story Collections", "dc_graphic_novels_owned": "DC Graphic Novels Owned", "dc_owned_unviewed": "DC Comics Owned", "dkr_saga": "Story Collections", "doomsday_clock": "Story Collections", "facsimiles": "Facsimiles", "gotham_city": "Story Collections", "heavy_metal": "Other", "hush_extended": "Story Collections", "infinite_crisis_buildup_expanded": "Story Collections", "knightfall_to_knightsend": "Story Collections", "long_halloween_universe": "Story Collections", "no_mans_land_extended": "Story Collections", "non_dc_owned_unviewed": "Non-DC Comics Owned", "ordered_comics": "Ordered Comics", "post_knightsend_arcs": "Story Collections", "richard_dragon_complete": "Other", "rom_spaceknight_complete": "Other", "secret_origins_files": "Batman", "showcase_93_95": "Other", "spike_journal": "Other", "the_guild": "Other", "the_nam_complete": "Other", "warhammer_monthly": "Other", "zero_hour_expanded": "Story Collections"};
-  const configuredOrder = {"american_psycho": 70, "bane_conquest": 125, "batman_miniseries": 900, "beowulf_dragon_slayer": 60, "bloodlines_extended": 40, "cataclysm": 70, "citadel_journal": 47, "contagion": 60, "countdown_expanded": 110, "dc_graphic_novels_owned": 10, "dc_owned_unviewed": 10, "dkr_saga": 10, "doomsday_clock": 120, "facsimiles": 10, "gotham_city": 45, "heavy_metal": 45, "hush_extended": 130, "infinite_crisis_buildup_expanded": 100, "knightfall_to_knightsend": 30, "long_halloween_universe": 20, "no_mans_land_extended": 80, "non_dc_owned_unviewed": 10, "ordered_comics": 10, "post_knightsend_arcs": 50, "richard_dragon_complete": 20, "rom_spaceknight_complete": 10, "secret_origins_files": 910, "showcase_93_95": 50, "spike_journal": 48, "the_guild": 80, "the_nam_complete": 30, "warhammer_monthly": 40, "zero_hour_expanded": 35};
+  const configuredSections = {"american_psycho": "Other", "bane_conquest": "Story Collections", "batman_miniseries": "Batman", "batman_vol2": "Batman", "beowulf_dragon_slayer": "Other", "bloodlines_extended": "Story Collections", "citadel_journal": "Other", "countdown_expanded": "Story Collections", "court_of_owls": "Story Collections", "crisis_on_infinite_earths": "Story Collections", "dc_graphic_novels_owned": "DC Graphic Novels Owned", "dc_owned_unviewed": "DC Comics Owned", "dkr_saga": "Story Collections", "doomsday_clock": "Story Collections", "facsimiles": "Facsimiles", "gotham_city": "Story Collections", "heavy_metal": "Other", "hush_extended": "Story Collections", "infinite_crisis_buildup_expanded": "Story Collections", "knightfall_to_knightsend": "Story Collections", "long_halloween_universe": "Story Collections", "no_mans_land_extended": "Story Collections", "non_dc_owned_unviewed": "Non-DC Comics Owned", "ordered_comics": "Ordered Comics", "post_knightsend_arcs": "Story Collections", "richard_dragon_complete": "Other", "rom_spaceknight_complete": "Other", "secret_origins_files": "Batman", "showcase_93_95": "Other", "spike_journal": "Other", "the_guild": "Other", "the_nam_complete": "Other", "warhammer_monthly": "Other", "zero_hour_expanded": "Story Collections"};
+  const configuredOrder = {"american_psycho": 70, "bane_conquest": 125, "batman_miniseries": 900, "batman_vol2": 650, "beowulf_dragon_slayer": 60, "bloodlines_extended": 40, "citadel_journal": 47, "countdown_expanded": 110, "court_of_owls": 115, "crisis_on_infinite_earths": 5, "dc_graphic_novels_owned": 10, "dc_owned_unviewed": 10, "dkr_saga": 10, "doomsday_clock": 120, "facsimiles": 10, "gotham_city": 45, "heavy_metal": 45, "hush_extended": 130, "infinite_crisis_buildup_expanded": 100, "knightfall_to_knightsend": 30, "long_halloween_universe": 20, "no_mans_land_extended": 80, "non_dc_owned_unviewed": 10, "ordered_comics": 10, "post_knightsend_arcs": 50, "richard_dragon_complete": 20, "rom_spaceknight_complete": 10, "secret_origins_files": 910, "showcase_93_95": 50, "spike_journal": 48, "the_guild": 80, "the_nam_complete": 30, "warhammer_monthly": 40, "zero_hour_expanded": 35};
   const sectionFor = href => {
     const id = href.replace(/^.*visual_view_/, "").replace(/\.html.*$/, "");
     return configuredSections[id] || "Batman";
