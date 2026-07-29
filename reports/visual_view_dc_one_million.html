@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="../assets/site/batman-favicon.png">
+  <title>DC One Million - Visual Viewer</title>
+  <style>
+    :root { color-scheme: light; --ink:#172026; --muted:#5c6670; --line:#d9dee4; --paper:#f6f7f8; --panel:#ffffff; --owned:#0f7b4f; --fac:#6b4bb8; --ordered:#2166ad; --readable:#a46a00; --missing:#b42318; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); }
+    header { padding: 28px 32px 18px; background: #111820; color: white; }
+    .header-top { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .back-link { color: white; border: 1px solid rgba(255,255,255,.32); border-radius: 999px; padding: 7px 11px; text-decoration: none; font-size: 13px; background: rgba(255,255,255,.08); }
+    .back-link:hover { background: rgba(255,255,255,.16); }
+    h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; }
+    header p { margin: 0; color: #c8d0d8; max-width: 900px; }
+    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; padding: 18px 32px; background: #e9edf1; border-bottom: 1px solid var(--line); }
+    .metric { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+    .metric strong { display: block; font-size: 24px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    .controls { padding: 18px 32px; display: grid; gap: 12px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
+    .filter-toggle { display: none; width: 100%; border: 1px solid var(--line); background: #172026; color: white; border-radius: 6px; padding: 9px 12px; font-weight: 750; cursor: pointer; align-items: center; justify-content: space-between; }
+    .filter-toggle::after { content: "+"; font-size: 18px; line-height: 1; }
+    .controls.open .filter-toggle::after { content: "−"; }
+    .control-content { display: grid; gap: 12px; }
+    .control-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .control-row b { margin-right: 4px; font-size: 13px; color: var(--muted); min-width: 70px; }
+    .chip { border: 1px solid var(--line); background: #f8fafb; color: var(--ink); border-radius: 999px; padding: 7px 11px; cursor: pointer; text-transform: capitalize; }
+    .chip.active { background: #172026; border-color: #172026; color: white; }
+    main { padding: 24px 32px 40px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 16px; align-items: start; }
+    .comic-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05); min-width: 0; display: flex; flex-direction: column; position: relative; }
+    .comic-card.owned { background: #f2fbf6; }
+    .comic-card.facsimile { background: #f6f2ff; }
+    .comic-card.ordered { background: #f1f7ff; }
+    .comic-card.readable { background: #fff8ec; }
+    .status-strip { background: var(--missing); color: white; min-height: 30px; display: grid; place-items: center; padding: 7px 8px; font-size: 12px; line-height: 1; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; }
+    .comic-card.owned .status-strip { background: var(--owned); }
+    .comic-card.facsimile .status-strip { background: var(--fac); }
+    .comic-card.ordered .status-strip { background: var(--ordered); }
+    .comic-card.readable .status-strip { background: var(--readable); }
+    .cover-wrap { aspect-ratio: 2 / 3; background: #242a31; display: grid; place-items: center; overflow: hidden; position: relative; }
+    .cover-button { appearance: none; border: 0; background: #111820; padding: 0; margin: 0; width: 100%; height: 100%; display: block; cursor: zoom-in; }
+    .cover-button:focus-visible { outline: 3px solid #f4c430; outline-offset: -3px; }
+    .cover-wrap img { width: 100%; height: 100%; object-fit: contain; background: #111820; display: block; }
+    .cover-placeholder { width: 100%; height: 100%; padding: 14px; color: white; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(145deg, #18212a, #39424c); }
+    .cover-placeholder span { font-weight: 700; line-height: 1.1; overflow-wrap: anywhere; }
+    .cover-placeholder strong { font-size: 42px; align-self: flex-end; }
+    .cover-review-badge { position: absolute; left: 8px; right: 8px; top: 8px; border-radius: 6px; padding: 6px 7px; color: white; font-size: 11px; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.22); pointer-events: none; }
+    .cover-review-badge.warning { background: rgba(164,106,0,.92); }
+    .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
+    .comic-card.cover-needs_review { border-color: #a46a00; }
+    .comic-card.cover-rejected_auto { border-color: #b42318; }
+    .card-body { padding: 10px 11px 12px; min-height: 86px; display: flex; flex-direction: column; overflow: hidden; }
+    .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
+    .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
+    .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
+    h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .publication-date { margin: auto 0 0; color: var(--muted); font-size: 12px; line-height: 1.3; }
+    .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id { -webkit-line-clamp: 1; }
+    .meta, .continuity { -webkit-line-clamp: 2; }
+    .notes { -webkit-line-clamp: 2; position: relative; }
+    .notes::after { content: ""; position: absolute; inset: auto 0 0 0; height: 1.2em; background: linear-gradient(to bottom, rgba(255,255,255,0), var(--panel)); pointer-events: none; }
+    .comic-card.owned .notes::after { background: linear-gradient(to bottom, rgba(242,251,246,0), #f2fbf6); }
+    .comic-card.facsimile .notes::after { background: linear-gradient(to bottom, rgba(246,242,255,0), #f6f2ff); }
+    .comic-card.ordered .notes::after { background: linear-gradient(to bottom, rgba(241,247,255,0), #f1f7ff); }
+    .comic-card.readable .notes::after { background: linear-gradient(to bottom, rgba(255,248,236,0), #fff8ec); }
+    .hidden { display: none; }
+    .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
+    .lightbox.open { display: flex; }
+    .lightbox-panel { width: min(92vw, 980px); height: 94vh; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; align-items: center; justify-items: center; }
+    .lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; align-self: center; }
+    .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
+    .lightbox-title { font-weight: 750; }
+    .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
+    .lightbox-close { border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: white; border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+    @media (max-width: 700px) {
+      header, .summary, main { padding-left: 14px; padding-right: 14px; }
+      .controls { padding: 8px 14px; gap: 8px; }
+      .filter-toggle { display: flex; }
+      .control-content { display: none; max-height: 58vh; overflow-y: auto; padding: 4px 0 8px; }
+      .controls.open .control-content { display: grid; }
+      .control-row b { flex-basis: 100%; min-width: 0; }
+      .chip { padding: 6px 9px; font-size: 13px; }
+      .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; }
+    }
+    </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <h1>DC One Million</h1>
+      <a class="back-link" href="visual_collection_viewer.html">All visual views</a>
+    </div>
+    <p>Prelude core event complete 1998 tie-in chronology and the later 80-Page Giant epilogue.</p>
+  </header>
+  <section class="summary">
+    <div class="metric"><strong>40</strong><span>unique publications</span></div>
+    <div class="metric"><strong>0</strong><span>owned/readable</span></div>
+    <div class="metric"><strong>0</strong><span>facsimiles</span></div>
+    <div class="metric"><strong>40</strong><span>missing</span></div>
+  </section>
+  <section class="controls">
+    <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="viewer-filters"><span>Filters and order</span></button>
+    <div class="control-content" id="viewer-filters">
+      <div class="control-row"><b>Order</b><button class="chip" data-filter="order" data-value="all">All orders</button>
+<button class="chip active" data-filter="order" data-value="reading">reading</button></div>
+      <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button>
+<button class="chip" data-filter="scope" data-value="complete_event">complete event</button>
+<button class="chip" data-filter="scope" data-value="core_event">core event</button>
+<button class="chip" data-filter="scope" data-value="epilogue">epilogue</button></div>
+      <div class="control-row"><b>Status</b><button class="chip active" data-filter="status" data-value="all">All statuses</button>
+<button class="chip" data-filter="status" data-value="owned">owned</button>
+<button class="chip" data-filter="status" data-value="facsimile">facsimile</button>
+<button class="chip" data-filter="status" data-value="ordered">ordered</button>
+<button class="chip" data-filter="status" data-value="readable">readable</button>
+<button class="chip" data-filter="status" data-value="missing">missing</button></div>
+      <div class="control-row"><b>Work</b><button class="chip active" data-filter="project" data-value="all">All works</button>
+<button class="chip" data-filter="project" data-value="dc_one_million">dc one million</button></div>
+    </div>
+  </section>
+  <main>
+    <section class="grid">
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000001">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>JLA</span><strong>#23</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="JLA #23">JLA #23</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="core_event" data-project="dc_one_million" data-status="missing" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000002">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>DC One Million</span><strong>#1</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">core event</span>
+            
+          </div>
+          <h3 title="DC One Million #1">DC One Million #1</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000003">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Action Comics</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Action Comics #1,000,000">Action Comics #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000004">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Batman: Shadow of the Bat</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Batman: Shadow of the Bat #1,000,000">Batman: Shadow of the Bat #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000005">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Nightwing (Vol. 2)</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Nightwing (Vol. 2) #1,000,000">Nightwing (Vol. 2) #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000006">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Green Lantern (Vol. 3)</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Green Lantern (Vol. 3) #1,000,000">Green Lantern (Vol. 3) #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000007">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>The Power of Shazam!</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="The Power of Shazam! #1,000,000">The Power of Shazam! #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000008">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Young Justice</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Young Justice #1,000,000">Young Justice #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="core_event" data-project="dc_one_million" data-status="missing" data-sequence="000009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000009">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>DC One Million</span><strong>#2</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">core event</span>
+            
+          </div>
+          <h3 title="DC One Million #2">DC One Million #2</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000010">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-1000000.jpg" data-full-title="Batman #1,000,000" data-full-detail="Published 1998-11 | PUB-BAT-1000000 | Seq 000010 | tie_in | DC One Million tie-in. | https://dc.fandom.com/wiki/Batman_Vol_1_1000000 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-1000000.jpg" alt="Batman #1,000,000 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Batman #1,000,000">Batman #1,000,000</h3>
+          <p class="publication-date">Published 1998-11</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000011">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Superman: The Man of Steel</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Superman: The Man of Steel #1,000,000">Superman: The Man of Steel #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000012">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Starman (Vol. 2)</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Starman (Vol. 2) #1,000,000">Starman (Vol. 2) #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000013" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000013">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Impulse</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Impulse #1,000,000">Impulse #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000014" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000014">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Green Arrow (Vol. 2)</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Green Arrow (Vol. 2) #1,000,000">Green Arrow (Vol. 2) #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000015" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000015">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Legionnaires</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Legionnaires #1,000,000">Legionnaires #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000016" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000016">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Azrael</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Azrael #1,000,000">Azrael #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000017" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000017">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Superman (Vol. 2)</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Superman (Vol. 2) #1,000,000">Superman (Vol. 2) #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000018" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000018">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Superboy (Vol. 3)</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Superboy (Vol. 3) #1,000,000">Superboy (Vol. 3) #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000019" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000019">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DET-1000000.jpg" data-full-title="Detective Comics #1,000,000" data-full-detail="Published 1998-11 | PUB-DET-1000000 | Seq 000019 | tie_in | DC One Million tie-in. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_1000000 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DET-1000000.jpg" alt="Detective Comics #1,000,000 cover"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Detective Comics #1,000,000">Detective Comics #1,000,000</h3>
+          <p class="publication-date">Published 1998-11</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000020">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>JLA</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="JLA #1,000,000">JLA #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000021">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Aquaman (Vol. 5)</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Aquaman (Vol. 5) #1,000,000">Aquaman (Vol. 5) #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000022" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000022">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Wonder Woman (Vol. 2)</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Wonder Woman (Vol. 2) #1,000,000">Wonder Woman (Vol. 2) #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000023" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000023">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Chase</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Chase #1,000,000">Chase #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000024" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000024">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>The Creeper</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="The Creeper #1,000,000">The Creeper #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="core_event" data-project="dc_one_million" data-status="missing" data-sequence="000025" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000025">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>DC One Million</span><strong>#3</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">core event</span>
+            
+          </div>
+          <h3 title="DC One Million #3">DC One Million #3</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000026" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000026">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Martian Manhunter (Vol. 2)</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Martian Manhunter (Vol. 2) #1,000,000">Martian Manhunter (Vol. 2) #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000027" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000027">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Adventures of Superman</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Adventures of Superman #1,000,000">Adventures of Superman #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000028" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000028">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Resurrection Man</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Resurrection Man #1,000,000">Resurrection Man #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000029" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000029">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Catwoman (Vol.2)</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Catwoman (Vol.2) #1,000,000">Catwoman (Vol.2) #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000030" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000030">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Robin (Vol. 2)</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Robin (Vol. 2) #1,000,000">Robin (Vol. 2) #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000031" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000031">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>The Flash (Vol. 2)</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="The Flash (Vol. 2) #1,000,000">The Flash (Vol. 2) #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000032" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000032">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Supergirl (Vol. 4)</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Supergirl (Vol. 4) #1,000,000">Supergirl (Vol. 4) #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000033" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000033">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Superman: The Man of Tomorrow</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Superman: The Man of Tomorrow #1,000,000">Superman: The Man of Tomorrow #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000034" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000034">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Chronos</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Chronos #1,000,000">Chronos #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="core_event" data-project="dc_one_million" data-status="missing" data-sequence="000035" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000035">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>DC One Million</span><strong>#4</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">core event</span>
+            
+          </div>
+          <h3 title="DC One Million #4">DC One Million #4</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000036" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000036">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Young Heroes in Love</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Young Heroes in Love #1,000,000">Young Heroes in Love #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000037" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000037">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Lobo (Vol. 2)</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Lobo (Vol. 2) #1,000,000">Lobo (Vol. 2) #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000038" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000038">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Hitman</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Hitman #1,000,000">Hitman #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="complete_event" data-project="dc_one_million" data-status="missing" data-sequence="000039" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000039">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>Legion of Super-Heroes (Vol. 4)</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">complete event</span>
+            
+          </div>
+          <h3 title="Legion of Super-Heroes (Vol. 4) #1,000,000">Legion of Super-Heroes (Vol. 4) #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-unchecked" data-order="reading" data-scope="epilogue" data-project="dc_one_million" data-status="missing" data-sequence="000040" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000040">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><div class="cover-placeholder"><span>DC One Million 80-Page Giant</span><strong>#1000000</strong></div></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">epilogue</span>
+            
+          </div>
+          <h3 title="DC One Million 80-Page Giant #1,000,000">DC One Million 80-Page Giant #1,000,000</h3>
+          <p class="publication-date"></p>
+        </div>
+      </article>
+    </section>
+  </main>
+  <div class="lightbox" aria-modal="true" role="dialog" aria-label="Cover preview">
+    <div class="lightbox-panel">
+      <img src="" alt="">
+      <div class="lightbox-caption">
+        <div>
+          <div class="lightbox-title"></div>
+          <div class="lightbox-detail"></div>
+        </div>
+        <button class="lightbox-close" type="button" data-lightbox-close>Close</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const state = { order: 'reading', scope: 'all', project: 'all', status: 'all' };
+    const grid = document.querySelector('.grid');
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImage = document.querySelector('.lightbox img');
+    const lightboxTitle = document.querySelector('.lightbox-title');
+    const lightboxDetail = document.querySelector('.lightbox-detail');
+    const controls = document.querySelector('.controls');
+    const filterToggle = document.querySelector('.filter-toggle');
+    filterToggle.addEventListener('click', () => {
+      const open = controls.classList.toggle('open');
+      filterToggle.setAttribute('aria-expanded', String(open));
+    });
+    document.querySelectorAll('.chip').forEach(button => {
+      button.addEventListener('click', () => {
+        const group = button.dataset.filter;
+        state[group] = button.dataset.value;
+        document.querySelectorAll(`.chip[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item === button));
+        applyFilters();
+      });
+    });
+    function applyFilters() {
+      document.querySelectorAll('.comic-card').forEach(card => {
+        const visible = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]));
+        card.classList.toggle('hidden', !visible);
+      });
+      sortCards();
+    }
+    function sortCards() {
+      [...document.querySelectorAll('.comic-card')]
+        .sort((left, right) => sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent))
+        .forEach(card => grid.appendChild(card));
+    }
+    function sequenceForCard(card) {
+      const order = state.order === 'all' ? 'reading' : state.order;
+      if (order === 'publication') {
+        return scopedSequence(card, 'publicationSequence');
+      }
+      if (order === 'chronological') {
+        return scopedSequence(card, 'chronologicalSequence');
+      }
+      const byOrder = sequenceMap(card.dataset.orderSequences);
+      if (byOrder[order]) {
+        return sortValue(byOrder[order]);
+      }
+      const chronological = scopedSequence(card, 'chronologicalSequence');
+      return chronological < 999999 ? chronological : sortValue(card.dataset.sequence);
+    }
+    function scopedSequence(card, orderKey) {
+      const scoped = sequenceMap(card.dataset[`${orderKey}s`]);
+      if (state.scope !== 'all' && scoped[state.scope]) {
+        return sortValue(scoped[state.scope]);
+      }
+      return sortValue(card.dataset[orderKey]);
+    }
+    function sequenceMap(value) {
+      return Object.fromEntries((value || '').split('|').filter(Boolean).map(item => {
+        const [scope, sequence] = item.split(':');
+        return [scope, sequence];
+      }));
+    }
+    function sortValue(value) {
+      const parsed = Number.parseFloat(value || '999999');
+      if (Number.isFinite(parsed)) {
+        return parsed;
+      }
+        const embedded = String(value || '').match(/\d+(\.\d+)?/);
+      return embedded ? Number.parseFloat(embedded[0]) : 999999;
+    }
+    document.querySelectorAll('.cover-button').forEach(button => {
+      button.addEventListener('click', () => {
+        lightboxImage.src = button.dataset.fullSrc;
+        lightboxImage.alt = `${button.dataset.fullTitle} cover`;
+        lightboxTitle.textContent = button.dataset.fullTitle;
+        lightboxDetail.textContent = button.dataset.fullDetail || '';
+        lightbox.classList.add('open');
+      });
+    });
+    document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
+    lightbox.addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeLightbox();
+    });
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightboxImage.removeAttribute('src');
+      lightboxImage.removeAttribute('alt');
+      lightboxTitle.textContent = '';
+      lightboxDetail.textContent = '';
+    }
+    applyFilters();
+    </script>
+</body>
+</html>

@@ -160,6 +160,12 @@
               <em>62 cards from 62 rows</em>
             </a>
             
+            <a class="view-card" href="visual_view_batman_black_white.html">
+              <strong>Batman: Black and White</strong>
+              <span>Original anthology miniseries, Gotham Knights backup-story publications, and the 2013 and 2020 anthology revivals.</span>
+              <em>65 cards from 65 rows</em>
+            </a>
+            
             <a class="view-card" href="visual_view_legends_of_the_dark_knight.html">
               <strong>Batman: Legends of the Dark Knight</strong>
               <span>Complete numbered run first, followed by annuals, then Halloween specials.</span>
@@ -230,6 +236,12 @@
               <strong>DC Graphic Novels Owned</strong>
               <span>Owned DC and WildStorm graphic novels hardcovers trades and collected editions from the publication model.</span>
               <em>11 cards from 11 rows</em>
+            </a>
+            
+            <a class="view-card" href="visual_view_dc_one_million.html">
+              <strong>DC One Million</strong>
+              <span>Prelude core event complete 1998 tie-in chronology and the later 80-Page Giant epilogue.</span>
+              <em>40 cards from 40 rows</em>
             </a>
             
             <a class="view-card" href="visual_view_detective_comics_0_99.html">
@@ -461,8 +473,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!links.length) return;
   const original = links[0].parentElement;
   if (!original || original.dataset.sectioned === "yes") return;
-  const configuredSections = {"american_psycho": "Other", "bane_conquest": "Story Collections", "batman_miniseries": "Batman", "batman_vol2": "Batman", "beowulf_dragon_slayer": "Other", "bloodlines_extended": "Story Collections", "citadel_journal": "Other", "countdown_expanded": "Story Collections", "court_of_owls": "Story Collections", "crisis_on_infinite_earths": "Story Collections", "dc_graphic_novels_owned": "DC Graphic Novels Owned", "dc_owned_unviewed": "DC Comics Owned", "dkr_saga": "Story Collections", "doomsday_clock": "Story Collections", "facsimiles": "Facsimiles", "gotham_city": "Story Collections", "heavy_metal": "Other", "hush_extended": "Story Collections", "infinite_crisis_buildup_expanded": "Story Collections", "knightfall_to_knightsend": "Story Collections", "long_halloween_universe": "Story Collections", "no_mans_land_extended": "Story Collections", "non_dc_owned_unviewed": "Non-DC Comics Owned", "ordered_comics": "Ordered Comics", "post_knightsend_arcs": "Story Collections", "richard_dragon_complete": "Other", "rom_spaceknight_complete": "Other", "secret_origins_files": "Batman", "showcase_93_95": "Other", "spike_journal": "Other", "the_guild": "Other", "the_nam_complete": "Other", "warhammer_monthly": "Other", "zero_hour_expanded": "Story Collections"};
-  const configuredOrder = {"american_psycho": 70, "bane_conquest": 125, "batman_miniseries": 900, "batman_vol2": 650, "beowulf_dragon_slayer": 60, "bloodlines_extended": 40, "citadel_journal": 47, "countdown_expanded": 110, "court_of_owls": 115, "crisis_on_infinite_earths": 5, "dc_graphic_novels_owned": 10, "dc_owned_unviewed": 10, "dkr_saga": 10, "doomsday_clock": 120, "facsimiles": 10, "gotham_city": 45, "heavy_metal": 45, "hush_extended": 130, "infinite_crisis_buildup_expanded": 100, "knightfall_to_knightsend": 30, "long_halloween_universe": 20, "no_mans_land_extended": 80, "non_dc_owned_unviewed": 10, "ordered_comics": 10, "post_knightsend_arcs": 50, "richard_dragon_complete": 20, "rom_spaceknight_complete": 10, "secret_origins_files": 910, "showcase_93_95": 50, "spike_journal": 48, "the_guild": 80, "the_nam_complete": 30, "warhammer_monthly": 40, "zero_hour_expanded": 35};
+  const configuredSections = {"american_psycho": "Other", "bane_conquest": "Story Collections", "batman_black_white": "Batman", "batman_miniseries": "Batman", "batman_vol2": "Batman", "beowulf_dragon_slayer": "Other", "bloodlines_extended": "Story Collections", "citadel_journal": "Other", "countdown_expanded": "Story Collections", "court_of_owls": "Story Collections", "crisis_on_infinite_earths": "Story Collections", "dc_graphic_novels_owned": "DC Graphic Novels Owned", "dc_one_million": "Story Collections", "dc_owned_unviewed": "DC Comics Owned", "dkr_saga": "Story Collections", "doomsday_clock": "Story Collections", "facsimiles": "Facsimiles", "gotham_city": "Story Collections", "heavy_metal": "Other", "hush_extended": "Story Collections", "infinite_crisis_buildup_expanded": "Story Collections", "knightfall_to_knightsend": "Story Collections", "long_halloween_universe": "Story Collections", "no_mans_land_extended": "Story Collections", "non_dc_owned_unviewed": "Non-DC Comics Owned", "ordered_comics": "Ordered Comics", "post_knightsend_arcs": "Story Collections", "richard_dragon_complete": "Other", "rom_spaceknight_complete": "Other", "secret_origins_files": "Batman", "showcase_93_95": "Other", "spike_journal": "Other", "the_guild": "Other", "the_nam_complete": "Other", "warhammer_monthly": "Other", "zero_hour_expanded": "Story Collections"};
+  const configuredOrder = {"american_psycho": 70, "bane_conquest": 125, "batman_black_white": 890, "batman_miniseries": 900, "batman_vol2": 650, "beowulf_dragon_slayer": 60, "bloodlines_extended": 40, "citadel_journal": 47, "countdown_expanded": 110, "court_of_owls": 115, "crisis_on_infinite_earths": 5, "dc_graphic_novels_owned": 10, "dc_one_million": 60, "dc_owned_unviewed": 10, "dkr_saga": 10, "doomsday_clock": 120, "facsimiles": 10, "gotham_city": 45, "heavy_metal": 45, "hush_extended": 130, "infinite_crisis_buildup_expanded": 100, "knightfall_to_knightsend": 30, "long_halloween_universe": 20, "no_mans_land_extended": 80, "non_dc_owned_unviewed": 10, "ordered_comics": 10, "post_knightsend_arcs": 50, "richard_dragon_complete": 20, "rom_spaceknight_complete": 10, "secret_origins_files": 910, "showcase_93_95": 50, "spike_journal": 48, "the_guild": 80, "the_nam_complete": 30, "warhammer_monthly": 40, "zero_hour_expanded": 35};
   const sectionFor = href => {
     const id = href.replace(/^.*visual_view_/, "").replace(/\.html.*$/, "");
     return configuredSections[id] || "Batman";
