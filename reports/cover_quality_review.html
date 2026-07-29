@@ -13,6 +13,9 @@
     header { background:#111820; color:white; padding:28px 32px 18px; }
     h1 { margin:0 0 8px; font-size:28px; }
     header p { margin:0; color:#c8d0d8; max-width:900px; line-height:1.4; }
+    .review-nav { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+    .review-nav a { display:inline-flex; align-items:center; min-height:36px; padding:8px 11px; border:1px solid #59636d; border-radius:6px; color:white; text-decoration:none; font-weight:700; font-size:13px; }
+    .review-nav a:hover { background:#26313b; }
     .summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; padding:18px 32px; background:#e9edf1; border-bottom:1px solid var(--line); }
     .metric { background:white; border:1px solid var(--line); border-radius:8px; padding:12px; }
     .metric strong { display:block; font-size:24px; }
@@ -33,12 +36,18 @@
     .id { color:#33404c; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
     a { color:#1f6feb; }
     .load-more { display:block; margin:24px auto 0; border:0; border-radius:6px; padding:11px 16px; background:#172026; color:white; font-weight:750; cursor:pointer; }
+    .load-more[hidden] { display:none; }
     </style>
 </head>
 <body>
   <header>
     <h1>Cover Quality Review</h1>
     <p>Automatic cover-source checks. This page only shows covers that need attention or were rejected automatically; clean rows are kept out of the way.</p>
+    <nav class="review-nav">
+      <a href="visual_collection_viewer.html">All visual views</a>
+      <a href="viewer_cover_validation.html">Missing &amp; duplicate covers</a>
+      <a href="unused_local_covers.html">Unused local covers</a>
+    </nav>
   </header>
   <section class="summary">
     <div class="metric"><strong>5714</strong><span>manifest rows checked</span></div>
