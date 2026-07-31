@@ -16,15 +16,25 @@
     .back-link:hover { background: rgba(255,255,255,.16); }
     h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; }
     header p { margin: 0; color: #c8d0d8; max-width: 900px; }
-    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; padding: 18px 32px; background: #e9edf1; border-bottom: 1px solid var(--line); }
-    .metric { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+    .summary { display: grid; grid-template-columns: repeat(5, minmax(90px, 1fr)); gap: 8px; padding: 12px 32px; background: #e9edf1; border-bottom: 1px solid var(--line); }
+    .metric { appearance: none; text-align: left; color: inherit; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; cursor: pointer; }
+    .metric:hover, .metric.active { border-color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,.08); }
     .metric strong { display: block; font-size: 24px; }
     .metric span { color: var(--muted); font-size: 13px; }
-    .controls { padding: 18px 32px; display: grid; gap: 12px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
-    .filter-toggle { display: none; width: 100%; border: 1px solid var(--line); background: #172026; color: white; border-radius: 6px; padding: 9px 12px; font-weight: 750; cursor: pointer; align-items: center; justify-content: space-between; }
+    .controls { padding: 8px 32px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
+    .filter-toggle { display: flex; width: auto; max-width: 100%; border: 1px solid var(--line); background: #172026; color: white; border-radius: 6px; padding: 8px 11px; font-weight: 750; cursor: pointer; align-items: center; gap: 10px; }
+    .filter-toggle small { color: #c8d0d8; font-size: 11px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .filter-toggle::after { content: "+"; font-size: 18px; line-height: 1; }
     .controls.open .filter-toggle::after { content: "−"; }
-    .control-content { display: grid; gap: 12px; }
+    .control-content { display: none; gap: 12px; margin-top: 10px; }
+    .controls.open .control-content { display: grid; }
+    .viewer-tools { display: grid; grid-template-columns: minmax(180px, 1fr) minmax(160px, auto) auto auto; gap: 8px; align-items: center; }
+    .search-wrap { position: relative; min-width: 0; }
+    .viewer-search, .section-jump { width: 100%; height: 38px; border: 1px solid var(--line); border-radius: 6px; background: white; color: var(--ink); padding: 0 36px 0 11px; font: inherit; }
+    .search-clear { position: absolute; right: 5px; top: 5px; width: 28px; height: 28px; border: 0; border-radius: 5px; background: transparent; color: var(--muted); font-size: 18px; cursor: pointer; }
+    .tool-button { height: 38px; border: 1px solid var(--line); border-radius: 6px; background: #f8fafb; color: var(--ink); padding: 0 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .tool-button.active { background: var(--ink); color: white; border-color: var(--ink); }
+    .visible-count { color: var(--muted); font-size: 12px; font-weight: 700; white-space: nowrap; text-align: right; }
     .control-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
     .control-row b { margin-right: 4px; font-size: 13px; color: var(--muted); min-width: 70px; }
     .chip { border: 1px solid var(--line); background: #f8fafb; color: var(--ink); border-radius: 999px; padding: 7px 11px; cursor: pointer; text-transform: capitalize; }
@@ -53,6 +63,13 @@
     .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
     .comic-card.cover-needs_review { border-color: #a46a00; }
     .comic-card.cover-rejected_auto { border-color: #b42318; }
+    .comic-card.keyboard-selected { outline: 4px solid #f4c430; outline-offset: 3px; box-shadow: 0 0 0 7px rgba(255,255,255,.92), 0 10px 26px rgba(0,0,0,.28); transform: translateY(-2px); }
+    body.compact-view .grid { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 10px; }
+    body.compact-view .card-body { min-height: 58px; padding: 7px 8px 9px; }
+    body.compact-view .badges, body.compact-view .publication-date { display: none; }
+    body.compact-view h3 { font-size: 13px; margin: 0; -webkit-line-clamp: 2; }
+    body.compact-view .status-strip { min-height: 25px; padding: 5px; font-size: 10px; }
+    .chapter-divider { grid-column: 1 / -1; margin: 10px 0 0; padding: 9px 2px 7px; border-bottom: 2px solid var(--line); font-size: 16px; font-weight: 850; text-transform: capitalize; }
     .card-body { padding: 10px 11px 12px; min-height: 86px; display: flex; flex-direction: column; overflow: hidden; }
     .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
     .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
@@ -71,21 +88,47 @@
     .hidden { display: none; }
     .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
     .lightbox.open { display: flex; }
-    .lightbox-panel { width: min(92vw, 980px); height: 94vh; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; align-items: center; justify-items: center; }
+    .lightbox-panel { width: min(96vw, 1100px); height: 94vh; display: grid; grid-template-columns: 48px minmax(0,1fr) 48px; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; align-items: center; justify-items: center; }
     .lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; align-self: center; }
-    .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
+    .lightbox-image-wrap { min-width: 0; min-height: 0; width: 100%; height: 100%; display: grid; place-items: center; }
+    .lightbox-caption { grid-column: 1 / -1; width: min(92vw, 900px); display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
     .lightbox-title { font-weight: 750; }
     .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
     .lightbox-close { border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: white; border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+    .lightbox-nav { width: 46px; height: 64px; border: 1px solid rgba(255,255,255,.35); border-radius: 7px; background: rgba(255,255,255,.12); color: white; font-size: 30px; cursor: pointer; }
+    .lightbox-nav:disabled { opacity: .3; cursor: default; }
+    .lightbox-position { color: #c8d0d8; font-size: 12px; white-space: nowrap; }
+    .keyboard-help { position: fixed; inset: 0; z-index: 30; display: none; place-items: center; padding: 20px; background: rgba(12,17,22,.78); }
+    .keyboard-help.open { display: grid; }
+    .keyboard-help-panel { width: min(92vw, 520px); max-height: 80vh; overflow: auto; background: white; border-radius: 8px; padding: 18px; box-shadow: 0 20px 60px rgba(0,0,0,.4); }
+    .keyboard-help-panel h2 { margin: 0 0 12px; font-size: 20px; }
+    .shortcut-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 12px; align-items: center; }
+    kbd { min-width: 34px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 3px 7px; background: #f4f6f8; text-align: center; font: 700 12px ui-monospace, monospace; }
+    .mobile-tools { display: none; }
     @media (max-width: 700px) {
       header, .summary, main { padding-left: 14px; padding-right: 14px; }
+      header { padding-top: 18px; }
+      .summary { grid-template-columns: repeat(5, 1fr); gap: 5px; padding-top: 7px; padding-bottom: 7px; }
+      .metric { padding: 6px; text-align: center; }
+      .metric strong { font-size: 17px; }
+      .metric span { font-size: 9px; line-height: 1.05; }
       .controls { padding: 8px 14px; gap: 8px; }
-      .filter-toggle { display: flex; }
-      .control-content { display: none; max-height: 58vh; overflow-y: auto; padding: 4px 0 8px; }
-      .controls.open .control-content { display: grid; }
+      .filter-toggle { width: 100%; justify-content: space-between; }
+      .control-content { max-height: 58vh; overflow-y: auto; padding: 4px 0 8px; }
       .control-row b { flex-basis: 100%; min-width: 0; }
       .chip { padding: 6px 9px; font-size: 13px; }
       .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; }
+      .viewer-tools { grid-template-columns: 1fr; }
+      .visible-count { text-align: left; }
+      .tool-button.keyboard-only { display: none; }
+      .lightbox { padding: 8px; }
+      .lightbox-panel { width: 100%; height: 96vh; grid-template-columns: 42px minmax(0,1fr) 42px; gap: 4px; }
+      .lightbox-nav { width: 40px; height: 56px; }
+      .lightbox-caption { width: 100%; align-items: flex-end; padding: 0 4px; }
+      .lightbox-detail { max-height: 3.8em; overflow: hidden; }
+      .mobile-tools { position: fixed; z-index: 8; left: 50%; bottom: max(8px, env(safe-area-inset-bottom)); transform: translateX(-50%); display: flex; gap: 5px; padding: 5px; border: 1px solid var(--line); border-radius: 8px; background: rgba(255,255,255,.95); box-shadow: 0 8px 24px rgba(0,0,0,.2); backdrop-filter: blur(10px); }
+      .mobile-tools button { width: 42px; height: 38px; border: 0; border-radius: 5px; background: #eef1f4; color: var(--ink); font-size: 18px; }
+      main { padding-bottom: 84px; }
     }
     </style>
 </head>
@@ -98,14 +141,24 @@
     <p>Batgirl #1-73 followed by catalogued annuals and specials.</p>
   </header>
   <section class="summary">
-    <div class="metric"><strong>75</strong><span>unique publications</span></div>
-    <div class="metric"><strong>1</strong><span>owned/readable</span></div>
-    <div class="metric"><strong>0</strong><span>facsimiles</span></div>
-    <div class="metric"><strong>74</strong><span>missing</span></div>
+    <button class="metric" type="button" data-status="all"><strong>75</strong><span>publications</span></button>
+    <button class="metric" type="button" data-status="owned"><strong>1</strong><span>owned originals</span></button>
+    <button class="metric" type="button" data-status="facsimile"><strong>0</strong><span>facsimiles</span></button>
+    <button class="metric" type="button" data-status="ordered"><strong>0</strong><span>ordered</span></button>
+    <button class="metric" type="button" data-status="missing"><strong>74</strong><span>missing</span></button>
   </section>
   <section class="controls">
-    <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="viewer-filters"><span>Filters and order</span></button>
+    <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="viewer-filters"><span>Filters &amp; order</span><small class="filter-summary">series</small></button>
     <div class="control-content" id="viewer-filters">
+      <div class="viewer-tools">
+        <div class="search-wrap"><input class="viewer-search" type="search" placeholder="Search title, issue or story" aria-label="Search comics"><button class="search-clear" type="button" title="Clear search" aria-label="Clear search">&times;</button></div>
+        <select class="section-jump" aria-label="Jump to section"><option value="">Jump to section</option><option value="Batgirl">Batgirl</option><option value="Batgirl Special">Batgirl Special</option><option value="Batgirl Annual">Batgirl Annual</option></select>
+        <button class="tool-button" type="button" data-toggle-density>Covers</button>
+        <button class="tool-button" type="button" data-toggle-stories>Stories</button>
+        <button class="tool-button keyboard-only" type="button" data-toggle-browse>Browse</button>
+        <span class="visible-count">75 of 75</span>
+        <button class="tool-button keyboard-only" type="button" data-open-help aria-label="Keyboard shortcuts">Shortcuts</button>
+      </div>
       <div class="control-row"><b>Order</b><button class="chip" data-filter="order" data-value="all">All orders</button>
 <button class="chip active" data-filter="order" data-value="series">series</button></div>
       <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button>
@@ -122,9 +175,9 @@
   </section>
   <main>
     <section class="grid">
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0001">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-1" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #1 view-batgirl-1 batgirl 1 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0001">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-1.jpg" data-full-title="Batgirl #1" data-full-detail="Published 2000-02-02 | VIEW-batgirl-1 | Seq 0001 | https://dc.fandom.com/wiki/Batgirl_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-1.jpg" alt="Batgirl #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-1.jpg" data-full-title="Batgirl #1" data-full-detail="Published 2000-02-02 | VIEW-batgirl-1 | Seq 0001 | https://dc.fandom.com/wiki/Batgirl_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-1.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-1.jpg" alt="Batgirl #1 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -136,9 +189,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0002">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-2" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #2 view-batgirl-2 batgirl 2 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0002">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-2.jpg" data-full-title="Batgirl #2" data-full-detail="Published 2000-03-01 | VIEW-batgirl-2 | Seq 0002 | https://dc.fandom.com/wiki/Batgirl_Vol_1_2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-2.jpg" alt="Batgirl #2 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-2.jpg" data-full-title="Batgirl #2" data-full-detail="Published 2000-03-01 | VIEW-batgirl-2 | Seq 0002 | https://dc.fandom.com/wiki/Batgirl_Vol_1_2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-2.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-2.jpg" alt="Batgirl #2 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -150,9 +203,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0003">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-3" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #3 view-batgirl-3 batgirl 3 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0003">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-3.jpg" data-full-title="Batgirl #3" data-full-detail="Published 2000-04-05 | VIEW-batgirl-3 | Seq 0003 | https://dc.fandom.com/wiki/Batgirl_Vol_1_3 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-3.jpg" alt="Batgirl #3 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-3.jpg" data-full-title="Batgirl #3" data-full-detail="Published 2000-04-05 | VIEW-batgirl-3 | Seq 0003 | https://dc.fandom.com/wiki/Batgirl_Vol_1_3 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-3.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-3.jpg" alt="Batgirl #3 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -164,9 +217,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0004">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-4" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #4 view-batgirl-4 batgirl 4 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0004">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-4.jpg" data-full-title="Batgirl #4" data-full-detail="Published 2000-05-03 | VIEW-batgirl-4 | Seq 0004 | https://dc.fandom.com/wiki/Batgirl_Vol_1_4 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-4.jpg" alt="Batgirl #4 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-4.jpg" data-full-title="Batgirl #4" data-full-detail="Published 2000-05-03 | VIEW-batgirl-4 | Seq 0004 | https://dc.fandom.com/wiki/Batgirl_Vol_1_4 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-4.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-4.jpg" alt="Batgirl #4 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -178,9 +231,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0005">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-5" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #5 view-batgirl-5 batgirl 5 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0005">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-5.jpg" data-full-title="Batgirl #5" data-full-detail="Published 2000-06-07 | VIEW-batgirl-5 | Seq 0005 | https://dc.fandom.com/wiki/Batgirl_Vol_1_5 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-5.jpg" alt="Batgirl #5 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-5.jpg" data-full-title="Batgirl #5" data-full-detail="Published 2000-06-07 | VIEW-batgirl-5 | Seq 0005 | https://dc.fandom.com/wiki/Batgirl_Vol_1_5 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-5.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-5.jpg" alt="Batgirl #5 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -192,9 +245,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0006">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-6" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #6 view-batgirl-6 batgirl 6 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0006">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-6.jpg" data-full-title="Batgirl #6" data-full-detail="Published 2000-07-05 | VIEW-batgirl-6 | Seq 0006 | https://dc.fandom.com/wiki/Batgirl_Vol_1_6 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-6.jpg" alt="Batgirl #6 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-6.jpg" data-full-title="Batgirl #6" data-full-detail="Published 2000-07-05 | VIEW-batgirl-6 | Seq 0006 | https://dc.fandom.com/wiki/Batgirl_Vol_1_6 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-6.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-6.jpg" alt="Batgirl #6 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -206,9 +259,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0007">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-7" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #7 view-batgirl-7 batgirl 7 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0007">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-7.jpg" data-full-title="Batgirl #7" data-full-detail="Published 2000-08-02 | VIEW-batgirl-7 | Seq 0007 | https://dc.fandom.com/wiki/Batgirl_Vol_1_7 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-7.jpg" alt="Batgirl #7 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-7.jpg" data-full-title="Batgirl #7" data-full-detail="Published 2000-08-02 | VIEW-batgirl-7 | Seq 0007 | https://dc.fandom.com/wiki/Batgirl_Vol_1_7 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-7.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-7.jpg" alt="Batgirl #7 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -220,9 +273,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0008">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-8" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #8 view-batgirl-8 batgirl 8 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0008">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-8.jpg" data-full-title="Batgirl #8" data-full-detail="Published 2000-09-06 | VIEW-batgirl-8 | Seq 0008 | https://dc.fandom.com/wiki/Batgirl_Vol_1_8 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-8.jpg" alt="Batgirl #8 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-8.jpg" data-full-title="Batgirl #8" data-full-detail="Published 2000-09-06 | VIEW-batgirl-8 | Seq 0008 | https://dc.fandom.com/wiki/Batgirl_Vol_1_8 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-8.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-8.jpg" alt="Batgirl #8 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -234,9 +287,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0009">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-9" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #9 view-batgirl-9 batgirl 9 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0009">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-9.jpg" data-full-title="Batgirl #9" data-full-detail="Published 2000-10-04 | VIEW-batgirl-9 | Seq 0009 | https://dc.fandom.com/wiki/Batgirl_Vol_1_9 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-9.jpg" alt="Batgirl #9 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-9.jpg" data-full-title="Batgirl #9" data-full-detail="Published 2000-10-04 | VIEW-batgirl-9 | Seq 0009 | https://dc.fandom.com/wiki/Batgirl_Vol_1_9 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-9.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-9.jpg" alt="Batgirl #9 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -248,9 +301,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0010">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-10" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #10 view-batgirl-10 batgirl 10 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0010">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-10.jpg" data-full-title="Batgirl #10" data-full-detail="Published 2000-11-01 | VIEW-batgirl-10 | Seq 0010 | https://dc.fandom.com/wiki/Batgirl_Vol_1_10 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-10.jpg" alt="Batgirl #10 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-10.jpg" data-full-title="Batgirl #10" data-full-detail="Published 2000-11-01 | VIEW-batgirl-10 | Seq 0010 | https://dc.fandom.com/wiki/Batgirl_Vol_1_10 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-10.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-10.jpg" alt="Batgirl #10 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -262,9 +315,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0011">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-11" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #11 view-batgirl-11 batgirl 11 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0011">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-11.jpg" data-full-title="Batgirl #11" data-full-detail="Published 2000-12-06 | VIEW-batgirl-11 | Seq 0011 | https://dc.fandom.com/wiki/Batgirl_Vol_1_11 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-11.jpg" alt="Batgirl #11 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-11.jpg" data-full-title="Batgirl #11" data-full-detail="Published 2000-12-06 | VIEW-batgirl-11 | Seq 0011 | https://dc.fandom.com/wiki/Batgirl_Vol_1_11 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-11.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-11.jpg" alt="Batgirl #11 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -276,9 +329,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0012">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-12" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #12 view-batgirl-12 batgirl 12 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0012">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-12.jpg" data-full-title="Batgirl #12" data-full-detail="Published 2001-01-03 | VIEW-batgirl-12 | Seq 0012 | https://dc.fandom.com/wiki/Batgirl_Vol_1_12 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-12.jpg" alt="Batgirl #12 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-12.jpg" data-full-title="Batgirl #12" data-full-detail="Published 2001-01-03 | VIEW-batgirl-12 | Seq 0012 | https://dc.fandom.com/wiki/Batgirl_Vol_1_12 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-12.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-12.jpg" alt="Batgirl #12 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -290,9 +343,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0013" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0013">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-13" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #13 view-batgirl-13 batgirl 13 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0013" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0013">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-13.jpg" data-full-title="Batgirl #13" data-full-detail="Published 2001-02-07 | VIEW-batgirl-13 | Seq 0013 | https://dc.fandom.com/wiki/Batgirl_Vol_1_13 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-13.jpg" alt="Batgirl #13 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-13.jpg" data-full-title="Batgirl #13" data-full-detail="Published 2001-02-07 | VIEW-batgirl-13 | Seq 0013 | https://dc.fandom.com/wiki/Batgirl_Vol_1_13 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-13.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-13.jpg" alt="Batgirl #13 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -304,9 +357,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0014" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0014">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-14" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #14 view-batgirl-14 batgirl 14 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0014" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0014">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-14.jpg" data-full-title="Batgirl #14" data-full-detail="Published 2001-03-07 | VIEW-batgirl-14 | Seq 0014 | https://dc.fandom.com/wiki/Batgirl_Vol_1_14 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-14.jpg" alt="Batgirl #14 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-14.jpg" data-full-title="Batgirl #14" data-full-detail="Published 2001-03-07 | VIEW-batgirl-14 | Seq 0014 | https://dc.fandom.com/wiki/Batgirl_Vol_1_14 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-14.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-14.jpg" alt="Batgirl #14 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -318,9 +371,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0015" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0015">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-15" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #15 view-batgirl-15 batgirl 15 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0015" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0015">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-15.jpg" data-full-title="Batgirl #15" data-full-detail="Published 2001-04-04 | VIEW-batgirl-15 | Seq 0015 | https://dc.fandom.com/wiki/Batgirl_Vol_1_15 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-15.jpg" alt="Batgirl #15 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-15.jpg" data-full-title="Batgirl #15" data-full-detail="Published 2001-04-04 | VIEW-batgirl-15 | Seq 0015 | https://dc.fandom.com/wiki/Batgirl_Vol_1_15 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-15.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-15.jpg" alt="Batgirl #15 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -332,9 +385,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0016" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0016">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-16" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #16 view-batgirl-16 batgirl 16 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0016" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0016">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-16.jpg" data-full-title="Batgirl #16" data-full-detail="Published 2001-05-02 | VIEW-batgirl-16 | Seq 0016 | https://dc.fandom.com/wiki/Batgirl_Vol_1_16 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-16.jpg" alt="Batgirl #16 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-16.jpg" data-full-title="Batgirl #16" data-full-detail="Published 2001-05-02 | VIEW-batgirl-16 | Seq 0016 | https://dc.fandom.com/wiki/Batgirl_Vol_1_16 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-16.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-16.jpg" alt="Batgirl #16 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -346,9 +399,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0017" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0017">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-17" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #17 view-batgirl-17 batgirl 17 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0017" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0017">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-17.jpg" data-full-title="Batgirl #17" data-full-detail="Published 2001-06-06 | VIEW-batgirl-17 | Seq 0017 | https://dc.fandom.com/wiki/Batgirl_Vol_1_17 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-17.jpg" alt="Batgirl #17 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-17.jpg" data-full-title="Batgirl #17" data-full-detail="Published 2001-06-06 | VIEW-batgirl-17 | Seq 0017 | https://dc.fandom.com/wiki/Batgirl_Vol_1_17 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-17.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-17.jpg" alt="Batgirl #17 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -360,9 +413,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0018" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0018">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-18" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #18 view-batgirl-18 batgirl 18 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0018" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0018">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-18.jpg" data-full-title="Batgirl #18" data-full-detail="Published 2001-07-04 | VIEW-batgirl-18 | Seq 0018 | https://dc.fandom.com/wiki/Batgirl_Vol_1_18 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-18.jpg" alt="Batgirl #18 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-18.jpg" data-full-title="Batgirl #18" data-full-detail="Published 2001-07-04 | VIEW-batgirl-18 | Seq 0018 | https://dc.fandom.com/wiki/Batgirl_Vol_1_18 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-18.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-18.jpg" alt="Batgirl #18 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -374,9 +427,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0019" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0019">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-19" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #19 view-batgirl-19 batgirl 19 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0019" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0019">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-19.jpg" data-full-title="Batgirl #19" data-full-detail="Published 2001-08-01 | VIEW-batgirl-19 | Seq 0019 | https://dc.fandom.com/wiki/Batgirl_Vol_1_19 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-19.jpg" alt="Batgirl #19 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-19.jpg" data-full-title="Batgirl #19" data-full-detail="Published 2001-08-01 | VIEW-batgirl-19 | Seq 0019 | https://dc.fandom.com/wiki/Batgirl_Vol_1_19 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-19.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-19.jpg" alt="Batgirl #19 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -388,9 +441,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0020">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-20" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #20 view-batgirl-20 batgirl 20 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0020">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-20.jpg" data-full-title="Batgirl #20" data-full-detail="Published 2001-09 | VIEW-batgirl-20 | Seq 0020 | https://dc.fandom.com/wiki/Batgirl_Vol_1_20 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-20.jpg" alt="Batgirl #20 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-20.jpg" data-full-title="Batgirl #20" data-full-detail="Published 2001-09 | VIEW-batgirl-20 | Seq 0020 | https://dc.fandom.com/wiki/Batgirl_Vol_1_20 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-20.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-20.jpg" alt="Batgirl #20 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -402,9 +455,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0021">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-21" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #21 view-batgirl-21 batgirl 21 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0021">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-21.jpg" data-full-title="Batgirl #21" data-full-detail="Published 2001-10 | VIEW-batgirl-21 | Seq 0021 | https://dc.fandom.com/wiki/Batgirl_Vol_1_21 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-21.jpg" alt="Batgirl #21 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-21.jpg" data-full-title="Batgirl #21" data-full-detail="Published 2001-10 | VIEW-batgirl-21 | Seq 0021 | https://dc.fandom.com/wiki/Batgirl_Vol_1_21 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-21.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-21.jpg" alt="Batgirl #21 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -416,9 +469,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0022" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0022">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-22" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #22 view-batgirl-22 batgirl 22 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0022" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0022">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-22.jpg" data-full-title="Batgirl #22" data-full-detail="Published 2001-11-07 | VIEW-batgirl-22 | Seq 0022 | https://dc.fandom.com/wiki/Batgirl_Vol_1_22 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-22.jpg" alt="Batgirl #22 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-22.jpg" data-full-title="Batgirl #22" data-full-detail="Published 2001-11-07 | VIEW-batgirl-22 | Seq 0022 | https://dc.fandom.com/wiki/Batgirl_Vol_1_22 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-22.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-22.jpg" alt="Batgirl #22 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -430,9 +483,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0023" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0023">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-23" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #23 view-batgirl-23 batgirl 23 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0023" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0023">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-23.jpg" data-full-title="Batgirl #23" data-full-detail="Published 2001-12-05 | VIEW-batgirl-23 | Seq 0023 | https://dc.fandom.com/wiki/Batgirl_Vol_1_23 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-23.jpg" alt="Batgirl #23 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-23.jpg" data-full-title="Batgirl #23" data-full-detail="Published 2001-12-05 | VIEW-batgirl-23 | Seq 0023 | https://dc.fandom.com/wiki/Batgirl_Vol_1_23 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-23.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-23.jpg" alt="Batgirl #23 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -444,9 +497,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0024" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0024">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-24" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #24 view-batgirl-24 batgirl 24 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0024" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0024">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-24.jpg" data-full-title="Batgirl #24" data-full-detail="Published 2002-01-09 | VIEW-batgirl-24 | Seq 0024 | https://dc.fandom.com/wiki/Batgirl_Vol_1_24 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-24.jpg" alt="Batgirl #24 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-24.jpg" data-full-title="Batgirl #24" data-full-detail="Published 2002-01-09 | VIEW-batgirl-24 | Seq 0024 | https://dc.fandom.com/wiki/Batgirl_Vol_1_24 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-24.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-24.jpg" alt="Batgirl #24 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -458,9 +511,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0025" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0025">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-25" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #25 view-batgirl-25 batgirl 25 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0025" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0025">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-25.jpg" data-full-title="Batgirl #25" data-full-detail="Published 2002-02-06 | VIEW-batgirl-25 | Seq 0025 | https://dc.fandom.com/wiki/Batgirl_Vol_1_25 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-25.jpg" alt="Batgirl #25 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-25.jpg" data-full-title="Batgirl #25" data-full-detail="Published 2002-02-06 | VIEW-batgirl-25 | Seq 0025 | https://dc.fandom.com/wiki/Batgirl_Vol_1_25 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-25.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-25.jpg" alt="Batgirl #25 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -472,9 +525,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0026" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0026">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-26" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #26 view-batgirl-26 batgirl 26 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0026" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0026">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-26.jpg" data-full-title="Batgirl #26" data-full-detail="Published 2002-03-06 | VIEW-batgirl-26 | Seq 0026 | https://dc.fandom.com/wiki/Batgirl_Vol_1_26 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-26.jpg" alt="Batgirl #26 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-26.jpg" data-full-title="Batgirl #26" data-full-detail="Published 2002-03-06 | VIEW-batgirl-26 | Seq 0026 | https://dc.fandom.com/wiki/Batgirl_Vol_1_26 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-26.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-26.jpg" alt="Batgirl #26 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -486,9 +539,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0027" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0027">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-27" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #27 view-batgirl-27 batgirl 27 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0027" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0027">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-27.jpg" data-full-title="Batgirl #27" data-full-detail="Published 2002-04-03 | VIEW-batgirl-27 | Seq 0027 | https://dc.fandom.com/wiki/Batgirl_Vol_1_27 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-27.jpg" alt="Batgirl #27 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-27.jpg" data-full-title="Batgirl #27" data-full-detail="Published 2002-04-03 | VIEW-batgirl-27 | Seq 0027 | https://dc.fandom.com/wiki/Batgirl_Vol_1_27 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-27.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-27.jpg" alt="Batgirl #27 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -500,9 +553,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0028" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0028">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-28" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #28 view-batgirl-28 batgirl 28 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0028" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0028">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-28.jpg" data-full-title="Batgirl #28" data-full-detail="Published 2002-05-08 | VIEW-batgirl-28 | Seq 0028 | https://dc.fandom.com/wiki/Batgirl_Vol_1_28 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-28.jpg" alt="Batgirl #28 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-28.jpg" data-full-title="Batgirl #28" data-full-detail="Published 2002-05-08 | VIEW-batgirl-28 | Seq 0028 | https://dc.fandom.com/wiki/Batgirl_Vol_1_28 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-28.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-28.jpg" alt="Batgirl #28 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -514,9 +567,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0029" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0029">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-29" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #29 view-batgirl-29 batgirl 29 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0029" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0029">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-29.jpg" data-full-title="Batgirl #29" data-full-detail="Published 2002-06-12 | VIEW-batgirl-29 | Seq 0029 | https://dc.fandom.com/wiki/Batgirl_Vol_1_29 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-29.jpg" alt="Batgirl #29 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-29.jpg" data-full-title="Batgirl #29" data-full-detail="Published 2002-06-12 | VIEW-batgirl-29 | Seq 0029 | https://dc.fandom.com/wiki/Batgirl_Vol_1_29 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-29.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-29.jpg" alt="Batgirl #29 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -528,9 +581,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0030" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0030">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-30" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #30 view-batgirl-30 batgirl 30 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0030" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0030">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-30.jpg" data-full-title="Batgirl #30" data-full-detail="Published 2002-07-10 | VIEW-batgirl-30 | Seq 0030 | https://dc.fandom.com/wiki/Batgirl_Vol_1_30 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-30.jpg" alt="Batgirl #30 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-30.jpg" data-full-title="Batgirl #30" data-full-detail="Published 2002-07-10 | VIEW-batgirl-30 | Seq 0030 | https://dc.fandom.com/wiki/Batgirl_Vol_1_30 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-30.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-30.jpg" alt="Batgirl #30 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -542,9 +595,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0031" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0031">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-31" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #31 view-batgirl-31 batgirl 31 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0031" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0031">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-31.jpg" data-full-title="Batgirl #31" data-full-detail="Published 2002-08-14 | VIEW-batgirl-31 | Seq 0031 | https://dc.fandom.com/wiki/Batgirl_Vol_1_31 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-31.jpg" alt="Batgirl #31 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-31.jpg" data-full-title="Batgirl #31" data-full-detail="Published 2002-08-14 | VIEW-batgirl-31 | Seq 0031 | https://dc.fandom.com/wiki/Batgirl_Vol_1_31 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-31.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-31.jpg" alt="Batgirl #31 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -556,9 +609,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0032" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0032">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-32" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #32 view-batgirl-32 batgirl 32 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0032" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0032">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-32.jpg" data-full-title="Batgirl #32" data-full-detail="Published 2002-09-11 | VIEW-batgirl-32 | Seq 0032 | https://dc.fandom.com/wiki/Batgirl_Vol_1_32 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-32.jpg" alt="Batgirl #32 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-32.jpg" data-full-title="Batgirl #32" data-full-detail="Published 2002-09-11 | VIEW-batgirl-32 | Seq 0032 | https://dc.fandom.com/wiki/Batgirl_Vol_1_32 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-32.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-32.jpg" alt="Batgirl #32 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -570,9 +623,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0033" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0033">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-33" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #33 view-batgirl-33 batgirl 33 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0033" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0033">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-33.jpg" data-full-title="Batgirl #33" data-full-detail="Published 2002-10-09 | VIEW-batgirl-33 | Seq 0033 | https://dc.fandom.com/wiki/Batgirl_Vol_1_33 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-33.jpg" alt="Batgirl #33 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-33.jpg" data-full-title="Batgirl #33" data-full-detail="Published 2002-10-09 | VIEW-batgirl-33 | Seq 0033 | https://dc.fandom.com/wiki/Batgirl_Vol_1_33 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-33.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-33.jpg" alt="Batgirl #33 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -584,9 +637,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0034" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0034">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-34" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #34 view-batgirl-34 batgirl 34 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0034" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0034">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-34.jpg" data-full-title="Batgirl #34" data-full-detail="Published 2002-11-13 | VIEW-batgirl-34 | Seq 0034 | https://dc.fandom.com/wiki/Batgirl_Vol_1_34 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-34.jpg" alt="Batgirl #34 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-34.jpg" data-full-title="Batgirl #34" data-full-detail="Published 2002-11-13 | VIEW-batgirl-34 | Seq 0034 | https://dc.fandom.com/wiki/Batgirl_Vol_1_34 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-34.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-34.jpg" alt="Batgirl #34 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -598,9 +651,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0035" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0035">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-35" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #35 view-batgirl-35 batgirl 35 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0035" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0035">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-35.jpg" data-full-title="Batgirl #35" data-full-detail="Published 2002-12-11 | VIEW-batgirl-35 | Seq 0035 | https://dc.fandom.com/wiki/Batgirl_Vol_1_35 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-35.jpg" alt="Batgirl #35 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-35.jpg" data-full-title="Batgirl #35" data-full-detail="Published 2002-12-11 | VIEW-batgirl-35 | Seq 0035 | https://dc.fandom.com/wiki/Batgirl_Vol_1_35 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-35.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-35.jpg" alt="Batgirl #35 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -612,9 +665,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0036" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0036">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-36" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #36 view-batgirl-36 batgirl 36 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0036" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0036">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-36.jpg" data-full-title="Batgirl #36" data-full-detail="Published 2003-01-15 | VIEW-batgirl-36 | Seq 0036 | https://dc.fandom.com/wiki/Batgirl_Vol_1_36 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-36.jpg" alt="Batgirl #36 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-36.jpg" data-full-title="Batgirl #36" data-full-detail="Published 2003-01-15 | VIEW-batgirl-36 | Seq 0036 | https://dc.fandom.com/wiki/Batgirl_Vol_1_36 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-36.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-36.jpg" alt="Batgirl #36 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -626,9 +679,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0037" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0037">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-37" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #37 view-batgirl-37 batgirl 37 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0037" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0037">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-37.jpg" data-full-title="Batgirl #37" data-full-detail="Published 2003-02-19 | VIEW-batgirl-37 | Seq 0037 | https://dc.fandom.com/wiki/Batgirl_Vol_1_37 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-37.jpg" alt="Batgirl #37 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-37.jpg" data-full-title="Batgirl #37" data-full-detail="Published 2003-02-19 | VIEW-batgirl-37 | Seq 0037 | https://dc.fandom.com/wiki/Batgirl_Vol_1_37 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-37.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-37.jpg" alt="Batgirl #37 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -640,9 +693,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0038" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0038">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-38" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #38 view-batgirl-38 batgirl 38 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0038" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0038">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-38.jpg" data-full-title="Batgirl #38" data-full-detail="Published 2003-03-19 | VIEW-batgirl-38 | Seq 0038 | https://dc.fandom.com/wiki/Batgirl_Vol_1_38 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-38.jpg" alt="Batgirl #38 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-38.jpg" data-full-title="Batgirl #38" data-full-detail="Published 2003-03-19 | VIEW-batgirl-38 | Seq 0038 | https://dc.fandom.com/wiki/Batgirl_Vol_1_38 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-38.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-38.jpg" alt="Batgirl #38 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -654,9 +707,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0039" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0039">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-39" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #39 view-batgirl-39 batgirl 39 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0039" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0039">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-39.jpg" data-full-title="Batgirl #39" data-full-detail="Published 2003-04-23 | VIEW-batgirl-39 | Seq 0039 | https://dc.fandom.com/wiki/Batgirl_Vol_1_39 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-39.jpg" alt="Batgirl #39 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-39.jpg" data-full-title="Batgirl #39" data-full-detail="Published 2003-04-23 | VIEW-batgirl-39 | Seq 0039 | https://dc.fandom.com/wiki/Batgirl_Vol_1_39 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-39.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-39.jpg" alt="Batgirl #39 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -668,9 +721,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0040" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0040">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-40" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #40 view-batgirl-40 batgirl 40 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0040" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0040">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-40.jpg" data-full-title="Batgirl #40" data-full-detail="Published 2003-05-21 | VIEW-batgirl-40 | Seq 0040 | https://dc.fandom.com/wiki/Batgirl_Vol_1_40 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-40.jpg" alt="Batgirl #40 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-40.jpg" data-full-title="Batgirl #40" data-full-detail="Published 2003-05-21 | VIEW-batgirl-40 | Seq 0040 | https://dc.fandom.com/wiki/Batgirl_Vol_1_40 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-40.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-40.jpg" alt="Batgirl #40 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -682,9 +735,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0041" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0041">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-41" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #41 view-batgirl-41 batgirl 41 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0041" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0041">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-41.jpg" data-full-title="Batgirl #41" data-full-detail="Published 2003-06-18 | VIEW-batgirl-41 | Seq 0041 | https://dc.fandom.com/wiki/Batgirl_Vol_1_41 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-41.jpg" alt="Batgirl #41 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-41.jpg" data-full-title="Batgirl #41" data-full-detail="Published 2003-06-18 | VIEW-batgirl-41 | Seq 0041 | https://dc.fandom.com/wiki/Batgirl_Vol_1_41 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-41.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-41.jpg" alt="Batgirl #41 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -696,9 +749,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0042" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0042">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-42" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #42 view-batgirl-42 batgirl 42 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0042" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0042">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-42.jpg" data-full-title="Batgirl #42" data-full-detail="Published 2003-07-23 | VIEW-batgirl-42 | Seq 0042 | https://dc.fandom.com/wiki/Batgirl_Vol_1_42 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-42.jpg" alt="Batgirl #42 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-42.jpg" data-full-title="Batgirl #42" data-full-detail="Published 2003-07-23 | VIEW-batgirl-42 | Seq 0042 | https://dc.fandom.com/wiki/Batgirl_Vol_1_42 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-42.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-42.jpg" alt="Batgirl #42 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -710,9 +763,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0043" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0043">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-43" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #43 view-batgirl-43 batgirl 43 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0043" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0043">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-43.jpg" data-full-title="Batgirl #43" data-full-detail="Published 2003-08-20 | VIEW-batgirl-43 | Seq 0043 | https://dc.fandom.com/wiki/Batgirl_Vol_1_43 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-43.jpg" alt="Batgirl #43 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-43.jpg" data-full-title="Batgirl #43" data-full-detail="Published 2003-08-20 | VIEW-batgirl-43 | Seq 0043 | https://dc.fandom.com/wiki/Batgirl_Vol_1_43 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-43.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-43.jpg" alt="Batgirl #43 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -724,9 +777,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0044" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0044">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-44" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #44 view-batgirl-44 batgirl 44 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0044" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0044">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-44.jpg" data-full-title="Batgirl #44" data-full-detail="Published 2003-09-17 | VIEW-batgirl-44 | Seq 0044 | https://dc.fandom.com/wiki/Batgirl_Vol_1_44 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-44.jpg" alt="Batgirl #44 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-44.jpg" data-full-title="Batgirl #44" data-full-detail="Published 2003-09-17 | VIEW-batgirl-44 | Seq 0044 | https://dc.fandom.com/wiki/Batgirl_Vol_1_44 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-44.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-44.jpg" alt="Batgirl #44 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -738,9 +791,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0045" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0045">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-45" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #45 view-batgirl-45 batgirl 45 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0045" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0045">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-45.jpg" data-full-title="Batgirl #45" data-full-detail="Published 2003-10-22 | VIEW-batgirl-45 | Seq 0045 | https://dc.fandom.com/wiki/Batgirl_Vol_1_45 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-45.jpg" alt="Batgirl #45 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-45.jpg" data-full-title="Batgirl #45" data-full-detail="Published 2003-10-22 | VIEW-batgirl-45 | Seq 0045 | https://dc.fandom.com/wiki/Batgirl_Vol_1_45 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-45.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-45.jpg" alt="Batgirl #45 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -752,9 +805,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0046" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0046">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-46" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #46 view-batgirl-46 batgirl 46 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0046" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0046">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-46.jpg" data-full-title="Batgirl #46" data-full-detail="Published 2003-11-19 | VIEW-batgirl-46 | Seq 0046 | https://dc.fandom.com/wiki/Batgirl_Vol_1_46 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-46.jpg" alt="Batgirl #46 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-46.jpg" data-full-title="Batgirl #46" data-full-detail="Published 2003-11-19 | VIEW-batgirl-46 | Seq 0046 | https://dc.fandom.com/wiki/Batgirl_Vol_1_46 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-46.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-46.jpg" alt="Batgirl #46 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -766,9 +819,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0047" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0047">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-47" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #47 view-batgirl-47 batgirl 47 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0047" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0047">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-47.jpg" data-full-title="Batgirl #47" data-full-detail="Published 2003-12-17 | VIEW-batgirl-47 | Seq 0047 | https://dc.fandom.com/wiki/Batgirl_Vol_1_47 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-47.jpg" alt="Batgirl #47 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-47.jpg" data-full-title="Batgirl #47" data-full-detail="Published 2003-12-17 | VIEW-batgirl-47 | Seq 0047 | https://dc.fandom.com/wiki/Batgirl_Vol_1_47 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-47.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-47.jpg" alt="Batgirl #47 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -780,9 +833,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0048" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0048">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-48" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #48 view-batgirl-48 batgirl 48 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0048" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0048">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-48.jpg" data-full-title="Batgirl #48" data-full-detail="Published 2004-01-28 | VIEW-batgirl-48 | Seq 0048 | https://dc.fandom.com/wiki/Batgirl_Vol_1_48 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-48.jpg" alt="Batgirl #48 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-48.jpg" data-full-title="Batgirl #48" data-full-detail="Published 2004-01-28 | VIEW-batgirl-48 | Seq 0048 | https://dc.fandom.com/wiki/Batgirl_Vol_1_48 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-48.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-48.jpg" alt="Batgirl #48 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -794,9 +847,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0049" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0049">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-49" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #49 view-batgirl-49 batgirl 49 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0049" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0049">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-49.jpg" data-full-title="Batgirl #49" data-full-detail="Published 2004-02-25 | VIEW-batgirl-49 | Seq 0049 | https://dc.fandom.com/wiki/Batgirl_Vol_1_49 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-49.jpg" alt="Batgirl #49 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-49.jpg" data-full-title="Batgirl #49" data-full-detail="Published 2004-02-25 | VIEW-batgirl-49 | Seq 0049 | https://dc.fandom.com/wiki/Batgirl_Vol_1_49 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-49.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-49.jpg" alt="Batgirl #49 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -808,9 +861,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0050" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0050">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-50" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #50 view-batgirl-50 batgirl 50 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0050" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0050">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-50.jpg" data-full-title="Batgirl #50" data-full-detail="Published 2004-03-24 | VIEW-batgirl-50 | Seq 0050 | https://dc.fandom.com/wiki/Batgirl_Vol_1_50 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-50.jpg" alt="Batgirl #50 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-50.jpg" data-full-title="Batgirl #50" data-full-detail="Published 2004-03-24 | VIEW-batgirl-50 | Seq 0050 | https://dc.fandom.com/wiki/Batgirl_Vol_1_50 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-50.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-50.jpg" alt="Batgirl #50 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -822,9 +875,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0051" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0051">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-51" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #51 view-batgirl-51 batgirl 51 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0051" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0051">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-51.jpg" data-full-title="Batgirl #51" data-full-detail="Published 2004-04-28 | VIEW-batgirl-51 | Seq 0051 | https://dc.fandom.com/wiki/Batgirl_Vol_1_51 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-51.jpg" alt="Batgirl #51 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-51.jpg" data-full-title="Batgirl #51" data-full-detail="Published 2004-04-28 | VIEW-batgirl-51 | Seq 0051 | https://dc.fandom.com/wiki/Batgirl_Vol_1_51 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-51.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-51.jpg" alt="Batgirl #51 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -836,9 +889,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0052" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0052">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-52" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #52 view-batgirl-52 batgirl 52 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0052" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0052">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-52.jpg" data-full-title="Batgirl #52" data-full-detail="Published 2004-05-26 | VIEW-batgirl-52 | Seq 0052 | https://dc.fandom.com/wiki/Batgirl_Vol_1_52 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-52.jpg" alt="Batgirl #52 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-52.jpg" data-full-title="Batgirl #52" data-full-detail="Published 2004-05-26 | VIEW-batgirl-52 | Seq 0052 | https://dc.fandom.com/wiki/Batgirl_Vol_1_52 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-52.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-52.jpg" alt="Batgirl #52 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -850,9 +903,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0053" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0053">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-53" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #53 view-batgirl-53 batgirl 53 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0053" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0053">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-53.jpg" data-full-title="Batgirl #53" data-full-detail="Published 2004-06-30 | VIEW-batgirl-53 | Seq 0053 | https://dc.fandom.com/wiki/Batgirl_Vol_1_53 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-53.jpg" alt="Batgirl #53 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-53.jpg" data-full-title="Batgirl #53" data-full-detail="Published 2004-06-30 | VIEW-batgirl-53 | Seq 0053 | https://dc.fandom.com/wiki/Batgirl_Vol_1_53 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-53.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-53.jpg" alt="Batgirl #53 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -864,9 +917,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0054" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0054">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-54" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #54 view-batgirl-54 batgirl 54 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0054" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0054">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-54.jpg" data-full-title="Batgirl #54" data-full-detail="Published 2004-07-28 | VIEW-batgirl-54 | Seq 0054 | https://dc.fandom.com/wiki/Batgirl_Vol_1_54 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-54.jpg" alt="Batgirl #54 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-54.jpg" data-full-title="Batgirl #54" data-full-detail="Published 2004-07-28 | VIEW-batgirl-54 | Seq 0054 | https://dc.fandom.com/wiki/Batgirl_Vol_1_54 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-54.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-54.jpg" alt="Batgirl #54 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -878,9 +931,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0055" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0055">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-55" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #55 view-batgirl-55 batgirl 55 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0055" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0055">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-55.jpg" data-full-title="Batgirl #55" data-full-detail="Published 2004-08-18 | VIEW-batgirl-55 | Seq 0055 | https://dc.fandom.com/wiki/Batgirl_Vol_1_55 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-55.jpg" alt="Batgirl #55 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-55.jpg" data-full-title="Batgirl #55" data-full-detail="Published 2004-08-18 | VIEW-batgirl-55 | Seq 0055 | https://dc.fandom.com/wiki/Batgirl_Vol_1_55 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-55.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-55.jpg" alt="Batgirl #55 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -892,9 +945,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0056" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0056">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-56" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #56 view-batgirl-56 batgirl 56 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0056" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0056">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-56.jpg" data-full-title="Batgirl #56" data-full-detail="Published 2004-09-22 | VIEW-batgirl-56 | Seq 0056 | https://dc.fandom.com/wiki/Batgirl_Vol_1_56 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-56.jpg" alt="Batgirl #56 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-56.jpg" data-full-title="Batgirl #56" data-full-detail="Published 2004-09-22 | VIEW-batgirl-56 | Seq 0056 | https://dc.fandom.com/wiki/Batgirl_Vol_1_56 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-56.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-56.jpg" alt="Batgirl #56 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -906,9 +959,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0057" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0057">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-57" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #57 view-batgirl-57 batgirl 57 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0057" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0057">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-57.jpg" data-full-title="Batgirl #57" data-full-detail="Published 2004-10-20 | VIEW-batgirl-57 | Seq 0057 | https://dc.fandom.com/wiki/Batgirl_Vol_1_57 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-57.jpg" alt="Batgirl #57 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-57.jpg" data-full-title="Batgirl #57" data-full-detail="Published 2004-10-20 | VIEW-batgirl-57 | Seq 0057 | https://dc.fandom.com/wiki/Batgirl_Vol_1_57 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-57.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-57.jpg" alt="Batgirl #57 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -920,9 +973,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0058" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0058">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-58" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #58 view-batgirl-58 batgirl 58 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0058" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0058">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-58.jpg" data-full-title="Batgirl #58" data-full-detail="Published 2004-11-24 | VIEW-batgirl-58 | Seq 0058 | https://dc.fandom.com/wiki/Batgirl_Vol_1_58 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-58.jpg" alt="Batgirl #58 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-58.jpg" data-full-title="Batgirl #58" data-full-detail="Published 2004-11-24 | VIEW-batgirl-58 | Seq 0058 | https://dc.fandom.com/wiki/Batgirl_Vol_1_58 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-58.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-58.jpg" alt="Batgirl #58 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -934,9 +987,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0059" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0059">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-59" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #59 view-batgirl-59 batgirl 59 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0059" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0059">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-59.jpg" data-full-title="Batgirl #59" data-full-detail="Published 2004-12-29 | VIEW-batgirl-59 | Seq 0059 | https://dc.fandom.com/wiki/Batgirl_Vol_1_59 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-59.jpg" alt="Batgirl #59 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-59.jpg" data-full-title="Batgirl #59" data-full-detail="Published 2004-12-29 | VIEW-batgirl-59 | Seq 0059 | https://dc.fandom.com/wiki/Batgirl_Vol_1_59 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-59.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-59.jpg" alt="Batgirl #59 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -948,9 +1001,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0060" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0060">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-60" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #60 view-batgirl-60 batgirl 60 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0060" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0060">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-60.jpg" data-full-title="Batgirl #60" data-full-detail="Published 2005-01-26 | VIEW-batgirl-60 | Seq 0060 | https://dc.fandom.com/wiki/Batgirl_Vol_1_60 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-60.jpg" alt="Batgirl #60 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-60.jpg" data-full-title="Batgirl #60" data-full-detail="Published 2005-01-26 | VIEW-batgirl-60 | Seq 0060 | https://dc.fandom.com/wiki/Batgirl_Vol_1_60 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-60.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-60.jpg" alt="Batgirl #60 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -962,9 +1015,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0061" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0061">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-61" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #61 view-batgirl-61 batgirl 61 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0061" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0061">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-61.jpg" data-full-title="Batgirl #61" data-full-detail="Published 2005-02-23 | VIEW-batgirl-61 | Seq 0061 | https://dc.fandom.com/wiki/Batgirl_Vol_1_61 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-61.jpg" alt="Batgirl #61 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-61.jpg" data-full-title="Batgirl #61" data-full-detail="Published 2005-02-23 | VIEW-batgirl-61 | Seq 0061 | https://dc.fandom.com/wiki/Batgirl_Vol_1_61 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-61.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-61.jpg" alt="Batgirl #61 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -976,9 +1029,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0062" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0062">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-62" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #62 view-batgirl-62 batgirl 62 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0062" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0062">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-62.jpg" data-full-title="Batgirl #62" data-full-detail="Published 2005-03-30 | VIEW-batgirl-62 | Seq 0062 | https://dc.fandom.com/wiki/Batgirl_Vol_1_62 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-62.jpg" alt="Batgirl #62 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-62.jpg" data-full-title="Batgirl #62" data-full-detail="Published 2005-03-30 | VIEW-batgirl-62 | Seq 0062 | https://dc.fandom.com/wiki/Batgirl_Vol_1_62 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-62.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-62.jpg" alt="Batgirl #62 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -990,9 +1043,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0063" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0063">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-63" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #63 view-batgirl-63 batgirl 63 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0063" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0063">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-63.jpg" data-full-title="Batgirl #63" data-full-detail="Published 2005-04-27 | VIEW-batgirl-63 | Seq 0063 | https://dc.fandom.com/wiki/Batgirl_Vol_1_63 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-63.jpg" alt="Batgirl #63 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-63.jpg" data-full-title="Batgirl #63" data-full-detail="Published 2005-04-27 | VIEW-batgirl-63 | Seq 0063 | https://dc.fandom.com/wiki/Batgirl_Vol_1_63 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-63.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-63.jpg" alt="Batgirl #63 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -1004,9 +1057,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0064" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0064">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-64" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #64 view-batgirl-64 batgirl 64 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0064" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0064">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-64.jpg" data-full-title="Batgirl #64" data-full-detail="Published 2005-05-25 | VIEW-batgirl-64 | Seq 0064 | https://dc.fandom.com/wiki/Batgirl_Vol_1_64 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-64.jpg" alt="Batgirl #64 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-64.jpg" data-full-title="Batgirl #64" data-full-detail="Published 2005-05-25 | VIEW-batgirl-64 | Seq 0064 | https://dc.fandom.com/wiki/Batgirl_Vol_1_64 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-64.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-64.jpg" alt="Batgirl #64 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -1018,9 +1071,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0065" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0065">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-65" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #65 view-batgirl-65 batgirl 65 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0065" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0065">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-65.jpg" data-full-title="Batgirl #65" data-full-detail="Published 2005-06-29 | VIEW-batgirl-65 | Seq 0065 | https://dc.fandom.com/wiki/Batgirl_Vol_1_65 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-65.jpg" alt="Batgirl #65 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-65.jpg" data-full-title="Batgirl #65" data-full-detail="Published 2005-06-29 | VIEW-batgirl-65 | Seq 0065 | https://dc.fandom.com/wiki/Batgirl_Vol_1_65 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-65.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-65.jpg" alt="Batgirl #65 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -1032,9 +1085,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0066" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0066">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-66" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #66 view-batgirl-66 batgirl 66 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0066" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0066">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-66.jpg" data-full-title="Batgirl #66" data-full-detail="Published 2005-07-20 | VIEW-batgirl-66 | Seq 0066 | https://dc.fandom.com/wiki/Batgirl_Vol_1_66 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-66.jpg" alt="Batgirl #66 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-66.jpg" data-full-title="Batgirl #66" data-full-detail="Published 2005-07-20 | VIEW-batgirl-66 | Seq 0066 | https://dc.fandom.com/wiki/Batgirl_Vol_1_66 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-66.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-66.jpg" alt="Batgirl #66 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -1046,9 +1099,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0067" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0067">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-67" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #67 view-batgirl-67 batgirl 67 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0067" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0067">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-67.jpg" data-full-title="Batgirl #67" data-full-detail="Published 2005-08-17 | VIEW-batgirl-67 | Seq 0067 | https://dc.fandom.com/wiki/Batgirl_Vol_1_67 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-67.jpg" alt="Batgirl #67 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-67.jpg" data-full-title="Batgirl #67" data-full-detail="Published 2005-08-17 | VIEW-batgirl-67 | Seq 0067 | https://dc.fandom.com/wiki/Batgirl_Vol_1_67 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-67.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-67.jpg" alt="Batgirl #67 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -1060,9 +1113,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0068" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0068">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-68" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #68 view-batgirl-68 batgirl 68 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0068" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0068">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-68.jpg" data-full-title="Batgirl #68" data-full-detail="VIEW-batgirl-68 | Seq 0068 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-68.jpg" alt="Batgirl #68 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-68.jpg" data-full-title="Batgirl #68" data-full-detail="VIEW-batgirl-68 | Seq 0068 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-68.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-68.jpg" alt="Batgirl #68 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -1074,9 +1127,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0069" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0069">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-69" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #69 view-batgirl-69 batgirl 69 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0069" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0069">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-69.jpg" data-full-title="Batgirl #69" data-full-detail="VIEW-batgirl-69 | Seq 0069 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-69.jpg" alt="Batgirl #69 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-69.jpg" data-full-title="Batgirl #69" data-full-detail="VIEW-batgirl-69 | Seq 0069 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-69.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-69.jpg" alt="Batgirl #69 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -1088,9 +1141,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0070" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0070">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-70" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #70 view-batgirl-70 batgirl 70 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0070" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0070">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-70.jpg" data-full-title="Batgirl #70" data-full-detail="VIEW-batgirl-70 | Seq 0070 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-70.jpg" alt="Batgirl #70 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-70.jpg" data-full-title="Batgirl #70" data-full-detail="VIEW-batgirl-70 | Seq 0070 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-70.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-70.jpg" alt="Batgirl #70 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -1102,9 +1155,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0071" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0071">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-71" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #71 view-batgirl-71 batgirl 71 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0071" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0071">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-71.jpg" data-full-title="Batgirl #71" data-full-detail="VIEW-batgirl-71 | Seq 0071 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-71.jpg" alt="Batgirl #71 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-71.jpg" data-full-title="Batgirl #71" data-full-detail="VIEW-batgirl-71 | Seq 0071 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-71.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-71.jpg" alt="Batgirl #71 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -1116,9 +1169,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0072" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0072">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-72" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #72 view-batgirl-72 batgirl 72 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0072" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0072">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-72.jpg" data-full-title="Batgirl #72" data-full-detail="VIEW-batgirl-72 | Seq 0072 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-72.jpg" alt="Batgirl #72 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-72.jpg" data-full-title="Batgirl #72" data-full-detail="VIEW-batgirl-72 | Seq 0072 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-72.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-72.jpg" alt="Batgirl #72 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -1130,9 +1183,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0073" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0073">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batgirl-73" data-work="Batgirl" data-section="Batgirl" data-search="batgirl #73 view-batgirl-73 batgirl 73 batgirl_vol1_1_73 batgirl" data-order="series" data-scope="batgirl_vol1_1_73" data-project="Batgirl" data-status="missing" data-sequence="0073" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0073">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-73.jpg" data-full-title="Batgirl #73" data-full-detail="VIEW-batgirl-73 | Seq 0073 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-73.jpg" alt="Batgirl #73 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batgirl-73.jpg" data-full-title="Batgirl #73" data-full-detail="VIEW-batgirl-73 | Seq 0073 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batgirl-73.jpg" data-display-src="../assets/covers/display/VIEW-batgirl-73.jpg" alt="Batgirl #73 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">batgirl vol1 1 73</span>
@@ -1144,9 +1197,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="owned" data-sequence="0074" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0074">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-BATGIRL-SPECIAL-0001" data-work="Batgirl Special" data-section="Batgirl Special" data-search="batgirl special #1 pub-batgirl-special-0001 batgirl special 1 collection sheet: other row 139; copy-ord-batgirl-special-001=owned/original issue/mike mignola cover; received 2026-07-17; 1988 first solo batgirl special; mike mignola cover." data-order="series" data-scope="" data-project="" data-status="owned" data-sequence="0074" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0074">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATGIRL-SPECIAL-0001.jpg" data-full-title="Batgirl Special #1" data-full-detail="Published 1988 | PUB-BATGIRL-SPECIAL-0001 | Seq 0074 | Collection sheet: Other row 139; COPY-ORD-BATGIRL-SPECIAL-001=Owned/Original Issue/Mike Mignola cover; 1988 first solo Batgirl special; eBay item 206376909411; listed VF; price not captured. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATGIRL-SPECIAL-0001.jpg" alt="Batgirl Special #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATGIRL-SPECIAL-0001.jpg" data-full-title="Batgirl Special #1" data-full-detail="Published 1988 | PUB-BATGIRL-SPECIAL-0001 | Seq 0074 | Collection sheet: Other row 139; COPY-ORD-BATGIRL-SPECIAL-001=Owned/Original Issue/Mike Mignola cover; Received 2026-07-17; 1988 first solo Batgirl special; Mike Mignola cover. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATGIRL-SPECIAL-0001.jpg" data-display-src="../assets/covers/display/PUB-BATGIRL-SPECIAL-0001.jpg" alt="Batgirl Special #1 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -1158,9 +1211,9 @@
       </article>
     
 
-      <article class="comic-card missing cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0075" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0075">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BATGIRL-ANN-0001" data-work="Batgirl Annual" data-section="Batgirl Annual" data-search="batgirl annual #1 pub-batgirl-ann-0001 batgirl annual 1 annual publication reference: pub-batgirl-ann-0001" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="0075" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:0075">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATGIRL-ANN-0001.jpg" data-full-title="Batgirl Annual #1" data-full-detail="Published 2000 | PUB-BATGIRL-ANN-0001 | Seq 0075 | Annual publication reference: PUB-BATGIRL-ANN-0001 | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATGIRL-ANN-0001.jpg" alt="Batgirl Annual #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATGIRL-ANN-0001.jpg" data-full-title="Batgirl Annual #1" data-full-detail="Published 2000 | PUB-BATGIRL-ANN-0001 | Seq 0075 | Annual publication reference: PUB-BATGIRL-ANN-0001 | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BATGIRL-ANN-0001.jpg" data-display-src="../assets/covers/display/PUB-BATGIRL-ANN-0001.jpg" alt="Batgirl Annual #1 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -1174,48 +1227,142 @@
   </main>
   <div class="lightbox" aria-modal="true" role="dialog" aria-label="Cover preview">
     <div class="lightbox-panel">
-      <img src="" alt="">
+      <button class="lightbox-nav" type="button" data-lightbox-previous aria-label="Previous cover">&#8249;</button>
+      <div class="lightbox-image-wrap"><img src="" alt=""></div>
+      <button class="lightbox-nav" type="button" data-lightbox-next aria-label="Next cover">&#8250;</button>
       <div class="lightbox-caption">
         <div>
           <div class="lightbox-title"></div>
           <div class="lightbox-detail"></div>
         </div>
+        <span class="lightbox-position"></span>
         <button class="lightbox-close" type="button" data-lightbox-close>Close</button>
       </div>
     </div>
   </div>
+  <div class="keyboard-help" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
+    <div class="keyboard-help-panel">
+      <h2>Keyboard shortcuts</h2>
+      <div class="shortcut-grid"><kbd>/</kbd><span>Search</span><kbd>F</kbd><span>Filters</span><kbd>B</kbd><span>Browse cards</span><kbd>Arrow keys</kbd><span>Move selection or preview</span><kbd>Enter</kbd><span>Open selected cover</span><kbd>M</kbd><span>Missing</span><kbd>O</kbd><span>Owned</span><kbd>A</kbd><span>All statuses</span><kbd>C</kbd><span>Cover/detail density</span><kbd>Esc</kbd><span>Close or clear</span></div>
+      <button class="tool-button" type="button" data-close-help>Close</button>
+    </div>
+  </div>
+  <nav class="mobile-tools" aria-label="Viewer tools"><button type="button" data-mobile-search title="Search" aria-label="Search">S</button><button type="button" data-mobile-filter title="Filters" aria-label="Filters">F</button><button type="button" data-mobile-density title="Cover density" aria-label="Cover density">C</button><button type="button" data-mobile-top title="Back to top" aria-label="Back to top">&uarr;</button></nav>
   <script>
-    const state = { order: 'series', scope: 'all', project: 'all', status: 'all' };
+    const state = { order: 'series', scope: 'all', project: 'all', status: 'all', query: '' };
     const grid = document.querySelector('.grid');
+    const cards = [...document.querySelectorAll('.comic-card')];
     const lightbox = document.querySelector('.lightbox');
     const lightboxImage = document.querySelector('.lightbox img');
     const lightboxTitle = document.querySelector('.lightbox-title');
     const lightboxDetail = document.querySelector('.lightbox-detail');
+    const lightboxPosition = document.querySelector('.lightbox-position');
+    const previousButton = document.querySelector('[data-lightbox-previous]');
+    const nextButton = document.querySelector('[data-lightbox-next]');
     const controls = document.querySelector('.controls');
     const filterToggle = document.querySelector('.filter-toggle');
+    const filterSummary = document.querySelector('.filter-summary');
+    const search = document.querySelector('.viewer-search');
+    const searchClear = document.querySelector('.search-clear');
+    const visibleCount = document.querySelector('.visible-count');
+    const sectionJump = document.querySelector('.section-jump');
+    const densityButton = document.querySelector('[data-toggle-density]');
+    const storiesButton = document.querySelector('[data-toggle-stories]');
+    const browseButton = document.querySelector('[data-toggle-browse]');
+    const help = document.querySelector('.keyboard-help');
+    const filterStorageKey = 'gothamViewerFiltersOpen';
+    const stateStorageKey = `gothamViewerState:${location.pathname}`;
+    let currentPreviewButton = null;
+    let selectedCard = null;
+    let browseMode = false;
+    let storiesVisible = false;
+    let touchStartX = 0;
+    let swipedPreview = false;
+    let savedViewState = {};
+
+    function safeStore(key, value) { try { localStorage.setItem(key, value); } catch (error) {} }
+    function safeRead(key) { try { return localStorage.getItem(key); } catch (error) { return null; } }
+    function humanize(value) { return String(value || '').replaceAll('_', ' '); }
+    function validFilter(key, value) {
+      return value === 'all' || !!document.querySelector(`.chip[data-filter="${key}"][data-value="${CSS.escape(value)}"]`);
+    }
+    try {
+      const saved = JSON.parse(safeRead(stateStorageKey) || '{}');
+      savedViewState = saved;
+      ['order', 'scope', 'project', 'status'].forEach(key => {
+        if (saved[key] && validFilter(key, saved[key])) state[key] = saved[key];
+      });
+      if (saved.density === 'compact') document.body.classList.add('compact-view');
+      storiesVisible = saved.stories === true;
+    } catch (error) {}
+    if (safeRead(filterStorageKey) === 'true') {
+      controls.classList.add('open');
+      filterToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function saveState() {
+      safeStore(stateStorageKey, JSON.stringify({ ...state, query: '', density: document.body.classList.contains('compact-view') ? 'compact' : 'details', stories: storiesVisible, scrollY: window.scrollY, lastPublication: selectedCard?.dataset.publicationId || '' }));
+    }
+    function setFilter(group, value) {
+      state[group] = value;
+      document.querySelectorAll(`.chip[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item.dataset.value === value));
+      document.querySelectorAll(`.metric[data-status]`).forEach(item => item.classList.toggle('active', group === 'status' && item.dataset.status === value));
+      applyFilters();
+      updateFilterSummary();
+      saveState();
+    }
     filterToggle.addEventListener('click', () => {
       const open = controls.classList.toggle('open');
       filterToggle.setAttribute('aria-expanded', String(open));
+      safeStore(filterStorageKey, String(open));
     });
-    document.querySelectorAll('.chip').forEach(button => {
-      button.addEventListener('click', () => {
-        const group = button.dataset.filter;
-        state[group] = button.dataset.value;
-        document.querySelectorAll(`.chip[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item === button));
-        applyFilters();
-      });
-    });
+    document.querySelectorAll('.chip').forEach(button => button.addEventListener('click', () => setFilter(button.dataset.filter, button.dataset.value)));
+    document.querySelectorAll('.metric[data-status]').forEach(button => button.addEventListener('click', () => setFilter('status', button.dataset.status)));
+    search.addEventListener('input', () => { state.query = search.value.trim().toLocaleLowerCase(); applyFilters(); });
+    searchClear.addEventListener('click', () => { search.value = ''; state.query = ''; applyFilters(); search.focus(); });
+    densityButton.addEventListener('click', toggleDensity);
+    storiesButton.addEventListener('click', toggleStories);
+    browseButton.addEventListener('click', () => setBrowseMode(!browseMode));
+    document.querySelector('[data-open-help]').addEventListener('click', openHelp);
+    document.querySelector('[data-close-help]').addEventListener('click', closeHelp);
+    help.addEventListener('click', event => { if (event.target === help) closeHelp(); });
+
+    function updateFilterSummary() {
+      const selected = ['order', 'scope', 'project', 'status'].map(key => state[key]).filter(value => value && value !== 'all').map(humanize);
+      filterSummary.textContent = selected.length ? selected.join(' · ') : 'All';
+    }
     function applyFilters() {
-      document.querySelectorAll('.comic-card').forEach(card => {
-        const visible = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]));
-        card.classList.toggle('hidden', !visible);
+      cards.forEach(card => {
+        const matches = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]));
+        const searched = !state.query || card.dataset.search.includes(state.query);
+        card.classList.toggle('hidden', !(matches && searched));
       });
       sortCards();
+      const visible = visibleCards();
+      visibleCount.textContent = `${visible.length} of ${cards.length}`;
+      if (browseMode && (!selectedCard || selectedCard.classList.contains('hidden'))) selectCard(visible[0] || null);
     }
     function sortCards() {
-      [...document.querySelectorAll('.comic-card')]
-        .sort((left, right) => sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent))
-        .forEach(card => grid.appendChild(card));
+      grid.querySelectorAll('.chapter-divider').forEach(item => item.remove());
+      cards.sort((left, right) => sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent)).forEach(card => grid.appendChild(card));
+      renderChapterDividers();
+    }
+    function renderChapterDividers() {
+      if (!storiesVisible) return;
+      const visible = visibleCards();
+      const sections = [...new Set(visible.map(card => card.dataset.section).filter(Boolean))];
+      if (sections.length < 2 || sections.length > 18) return;
+      let previous = '';
+      visible.forEach(card => {
+        const section = card.dataset.section;
+        if (section && section !== previous) {
+          const divider = document.createElement('div');
+          divider.className = 'chapter-divider';
+          divider.textContent = humanize(section);
+          grid.insertBefore(divider, card);
+          previous = section;
+        }
+      });
     }
     function sequenceForCard(card) {
       const order = state.order === 'all' ? 'series' : state.order;
@@ -1253,28 +1400,111 @@
         const embedded = String(value || '').match(/\d+(\.\d+)?/);
       return embedded ? Number.parseFloat(embedded[0]) : 999999;
     }
-    document.querySelectorAll('.cover-button').forEach(button => {
-      button.addEventListener('click', () => {
-        lightboxImage.src = button.dataset.fullSrc;
-        lightboxImage.alt = `${button.dataset.fullTitle} cover`;
-        lightboxTitle.textContent = button.dataset.fullTitle;
-        lightboxDetail.textContent = button.dataset.fullDetail || '';
-        lightbox.classList.add('open');
-      });
-    });
+    function visibleCards() { return cards.filter(card => !card.classList.contains('hidden')); }
+    function visibleCoverButtons() { return visibleCards().map(card => card.querySelector('.cover-button')).filter(Boolean); }
+    function openLightbox(button) { currentPreviewButton = button; renderPreview(button); lightbox.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function renderPreview(button) {
+      if (!button) return;
+      currentPreviewButton = button;
+      lightboxImage.src = button.dataset.fullSrc;
+      lightboxImage.alt = `${button.dataset.fullTitle} cover`;
+      lightboxTitle.textContent = button.dataset.fullTitle;
+      lightboxDetail.textContent = button.dataset.fullDetail || '';
+      const sequence = visibleCoverButtons();
+      const index = sequence.indexOf(button);
+      lightboxPosition.textContent = index >= 0 ? `${index + 1} / ${sequence.length}` : '';
+      previousButton.disabled = sequence.length < 2;
+      nextButton.disabled = sequence.length < 2;
+      [-1, 1].forEach(direction => { if (sequence.length > 1) { const adjacent = sequence[(index + direction + sequence.length) % sequence.length]; const preload = new Image(); preload.src = adjacent.dataset.fullSrc; } });
+    }
+    function movePreview(direction) {
+      const sequence = visibleCoverButtons();
+      if (sequence.length < 2) return;
+      const index = sequence.indexOf(currentPreviewButton);
+      renderPreview(sequence[(Math.max(index, 0) + direction + sequence.length) % sequence.length]);
+    }
+    document.querySelectorAll('.cover-button').forEach(button => button.addEventListener('click', event => { event.stopPropagation(); openLightbox(button); }));
+    previousButton.addEventListener('click', event => { event.stopPropagation(); movePreview(-1); });
+    nextButton.addEventListener('click', event => { event.stopPropagation(); movePreview(1); });
     document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
-    lightbox.addEventListener('click', closeLightbox);
-    document.addEventListener('keydown', event => {
-      if (event.key === 'Escape') closeLightbox();
-    });
+    lightbox.addEventListener('click', () => { if (swipedPreview) { swipedPreview = false; return; } closeLightbox(); });
+    lightbox.addEventListener('touchstart', event => { touchStartX = event.changedTouches[0].clientX; }, { passive: true });
+    lightbox.addEventListener('touchend', event => { const delta = event.changedTouches[0].clientX - touchStartX; if (Math.abs(delta) > 45) { swipedPreview = true; movePreview(delta > 0 ? -1 : 1); } }, { passive: true });
     function closeLightbox() {
+      if (!lightbox.classList.contains('open')) return;
       lightbox.classList.remove('open');
+      document.body.style.overflow = '';
       lightboxImage.removeAttribute('src');
       lightboxImage.removeAttribute('alt');
       lightboxTitle.textContent = '';
       lightboxDetail.textContent = '';
+      const returnCard = currentPreviewButton?.closest('.comic-card');
+      currentPreviewButton = null;
+      if (returnCard) returnCard.focus({ preventScroll: true });
     }
+    function toggleDensity() {
+      document.body.classList.toggle('compact-view');
+      densityButton.classList.toggle('active', document.body.classList.contains('compact-view'));
+      densityButton.textContent = document.body.classList.contains('compact-view') ? 'Details' : 'Covers';
+      saveState();
+    }
+    function toggleStories() {
+      storiesVisible = !storiesVisible;
+      storiesButton.classList.toggle('active', storiesVisible);
+      storiesButton.textContent = storiesVisible ? 'Grid' : 'Stories';
+      sortCards();
+      saveState();
+    }
+    function selectCard(card, centre = false) {
+      if (selectedCard) selectedCard.classList.remove('keyboard-selected');
+      selectedCard = card;
+      if (card) { card.classList.add('keyboard-selected'); card.scrollIntoView({ block: centre ? 'center' : 'nearest', inline: 'nearest', behavior: 'smooth' }); }
+    }
+    function setBrowseMode(enabled) { browseMode = enabled; browseButton.classList.toggle('active', enabled); if (enabled) selectCard(selectedCard && !selectedCard.classList.contains('hidden') ? selectedCard : visibleCards()[0] || null, true); else selectCard(null); }
+    function moveCardSelection(direction) {
+      const available = visibleCards();
+      if (!available.length) return;
+      if (!selectedCard || !available.includes(selectedCard)) { selectCard(available[0]); return; }
+      const source = selectedCard.getBoundingClientRect();
+      const sx = source.left + source.width / 2, sy = source.top + source.height / 2;
+      const horizontal = direction === 'left' || direction === 'right';
+      const candidates = available.filter(card => card !== selectedCard).map(card => { const rect = card.getBoundingClientRect(); const dx = rect.left + rect.width / 2 - sx, dy = rect.top + rect.height / 2 - sy; const forward = direction === 'left' ? dx < -2 : direction === 'right' ? dx > 2 : direction === 'up' ? dy < -2 : dy > 2; return { card, forward, score: Math.abs(horizontal ? dx : dy) + Math.abs(horizontal ? dy : dx) * 3 }; }).filter(item => item.forward).sort((a, b) => a.score - b.score);
+      if (candidates.length) selectCard(candidates[0].card);
+    }
+    function openHelp() { help.classList.add('open'); }
+    function closeHelp() { help.classList.remove('open'); }
+    function resetFilters() { search.value = ''; state.query = ''; ['scope', 'project', 'status'].forEach(key => setFilter(key, 'all')); }
+    sectionJump?.addEventListener('change', () => { const target = visibleCards().find(card => card.dataset.section.split('|').includes(sectionJump.value) || card.dataset.work === sectionJump.value); if (target) target.scrollIntoView({ block: 'center', behavior: 'smooth' }); sectionJump.value = ''; });
+    document.querySelector('[data-mobile-search]').addEventListener('click', () => { controls.classList.add('open'); filterToggle.setAttribute('aria-expanded', 'true'); search.focus(); });
+    document.querySelector('[data-mobile-filter]').addEventListener('click', () => filterToggle.click());
+    document.querySelector('[data-mobile-density]').addEventListener('click', toggleDensity);
+    document.querySelector('[data-mobile-top]').addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+    document.addEventListener('keydown', event => {
+      const typing = event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLTextAreaElement;
+      if (help.classList.contains('open')) { if (event.key === 'Escape' || event.key === '?') { event.preventDefault(); closeHelp(); } return; }
+      if (lightbox.classList.contains('open')) { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); movePreview(event.key === 'ArrowLeft' ? -1 : 1); } else if (event.key === 'Escape' || event.code === 'Space') { event.preventDefault(); closeLightbox(); } return; }
+      if (event.key === 'Escape' && typing) { search.value = ''; state.query = ''; applyFilters(); search.blur(); return; }
+      if (typing) return;
+      if (browseMode && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); moveCardSelection(event.key.replace('Arrow', '').toLowerCase()); return; }
+      if (browseMode && (event.key === 'Enter' || event.code === 'Space')) { event.preventDefault(); const button = selectedCard?.querySelector('.cover-button'); if (button) openLightbox(button); return; }
+      if (event.key === '/') { event.preventDefault(); controls.classList.add('open'); filterToggle.setAttribute('aria-expanded', 'true'); search.focus(); }
+      else if (event.key.toLowerCase() === 'f') filterToggle.click();
+      else if (event.key.toLowerCase() === 'b') setBrowseMode(!browseMode);
+      else if (event.key === '?') openHelp();
+      else if (event.key.toLowerCase() === 'm') setFilter('status', 'missing');
+      else if (event.key.toLowerCase() === 'o') setFilter('status', 'owned');
+      else if (event.key.toLowerCase() === 'a') setFilter('status', 'all');
+      else if (event.key.toLowerCase() === 'c') toggleDensity();
+    });
+    ['order', 'scope', 'project', 'status'].forEach(key => document.querySelectorAll(`.chip[data-filter="${key}"]`).forEach(item => item.classList.toggle('active', item.dataset.value === state[key])));
+    densityButton.classList.toggle('active', document.body.classList.contains('compact-view'));
+    densityButton.textContent = document.body.classList.contains('compact-view') ? 'Details' : 'Covers';
+    storiesButton.classList.toggle('active', storiesVisible);
+    storiesButton.textContent = storiesVisible ? 'Grid' : 'Stories';
     applyFilters();
+    updateFilterSummary();
+    window.addEventListener('pagehide', saveState);
+    if (savedViewState.scrollY) requestAnimationFrame(() => scrollTo({ top: savedViewState.scrollY }));
     </script>
 </body>
 </html>

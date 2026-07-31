@@ -16,15 +16,25 @@
     .back-link:hover { background: rgba(255,255,255,.16); }
     h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; }
     header p { margin: 0; color: #c8d0d8; max-width: 900px; }
-    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; padding: 18px 32px; background: #e9edf1; border-bottom: 1px solid var(--line); }
-    .metric { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+    .summary { display: grid; grid-template-columns: repeat(5, minmax(90px, 1fr)); gap: 8px; padding: 12px 32px; background: #e9edf1; border-bottom: 1px solid var(--line); }
+    .metric { appearance: none; text-align: left; color: inherit; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; cursor: pointer; }
+    .metric:hover, .metric.active { border-color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,.08); }
     .metric strong { display: block; font-size: 24px; }
     .metric span { color: var(--muted); font-size: 13px; }
-    .controls { padding: 18px 32px; display: grid; gap: 12px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
-    .filter-toggle { display: none; width: 100%; border: 1px solid var(--line); background: #172026; color: white; border-radius: 6px; padding: 9px 12px; font-weight: 750; cursor: pointer; align-items: center; justify-content: space-between; }
+    .controls { padding: 8px 32px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
+    .filter-toggle { display: flex; width: auto; max-width: 100%; border: 1px solid var(--line); background: #172026; color: white; border-radius: 6px; padding: 8px 11px; font-weight: 750; cursor: pointer; align-items: center; gap: 10px; }
+    .filter-toggle small { color: #c8d0d8; font-size: 11px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .filter-toggle::after { content: "+"; font-size: 18px; line-height: 1; }
     .controls.open .filter-toggle::after { content: "−"; }
-    .control-content { display: grid; gap: 12px; }
+    .control-content { display: none; gap: 12px; margin-top: 10px; }
+    .controls.open .control-content { display: grid; }
+    .viewer-tools { display: grid; grid-template-columns: minmax(180px, 1fr) minmax(160px, auto) auto auto; gap: 8px; align-items: center; }
+    .search-wrap { position: relative; min-width: 0; }
+    .viewer-search, .section-jump { width: 100%; height: 38px; border: 1px solid var(--line); border-radius: 6px; background: white; color: var(--ink); padding: 0 36px 0 11px; font: inherit; }
+    .search-clear { position: absolute; right: 5px; top: 5px; width: 28px; height: 28px; border: 0; border-radius: 5px; background: transparent; color: var(--muted); font-size: 18px; cursor: pointer; }
+    .tool-button { height: 38px; border: 1px solid var(--line); border-radius: 6px; background: #f8fafb; color: var(--ink); padding: 0 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .tool-button.active { background: var(--ink); color: white; border-color: var(--ink); }
+    .visible-count { color: var(--muted); font-size: 12px; font-weight: 700; white-space: nowrap; text-align: right; }
     .control-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
     .control-row b { margin-right: 4px; font-size: 13px; color: var(--muted); min-width: 70px; }
     .chip { border: 1px solid var(--line); background: #f8fafb; color: var(--ink); border-radius: 999px; padding: 7px 11px; cursor: pointer; text-transform: capitalize; }
@@ -53,6 +63,13 @@
     .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
     .comic-card.cover-needs_review { border-color: #a46a00; }
     .comic-card.cover-rejected_auto { border-color: #b42318; }
+    .comic-card.keyboard-selected { outline: 4px solid #f4c430; outline-offset: 3px; box-shadow: 0 0 0 7px rgba(255,255,255,.92), 0 10px 26px rgba(0,0,0,.28); transform: translateY(-2px); }
+    body.compact-view .grid { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 10px; }
+    body.compact-view .card-body { min-height: 58px; padding: 7px 8px 9px; }
+    body.compact-view .badges, body.compact-view .publication-date { display: none; }
+    body.compact-view h3 { font-size: 13px; margin: 0; -webkit-line-clamp: 2; }
+    body.compact-view .status-strip { min-height: 25px; padding: 5px; font-size: 10px; }
+    .chapter-divider { grid-column: 1 / -1; margin: 10px 0 0; padding: 9px 2px 7px; border-bottom: 2px solid var(--line); font-size: 16px; font-weight: 850; text-transform: capitalize; }
     .card-body { padding: 10px 11px 12px; min-height: 86px; display: flex; flex-direction: column; overflow: hidden; }
     .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
     .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
@@ -71,21 +88,47 @@
     .hidden { display: none; }
     .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
     .lightbox.open { display: flex; }
-    .lightbox-panel { width: min(92vw, 980px); height: 94vh; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; align-items: center; justify-items: center; }
+    .lightbox-panel { width: min(96vw, 1100px); height: 94vh; display: grid; grid-template-columns: 48px minmax(0,1fr) 48px; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; align-items: center; justify-items: center; }
     .lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; align-self: center; }
-    .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
+    .lightbox-image-wrap { min-width: 0; min-height: 0; width: 100%; height: 100%; display: grid; place-items: center; }
+    .lightbox-caption { grid-column: 1 / -1; width: min(92vw, 900px); display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
     .lightbox-title { font-weight: 750; }
     .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
     .lightbox-close { border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: white; border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+    .lightbox-nav { width: 46px; height: 64px; border: 1px solid rgba(255,255,255,.35); border-radius: 7px; background: rgba(255,255,255,.12); color: white; font-size: 30px; cursor: pointer; }
+    .lightbox-nav:disabled { opacity: .3; cursor: default; }
+    .lightbox-position { color: #c8d0d8; font-size: 12px; white-space: nowrap; }
+    .keyboard-help { position: fixed; inset: 0; z-index: 30; display: none; place-items: center; padding: 20px; background: rgba(12,17,22,.78); }
+    .keyboard-help.open { display: grid; }
+    .keyboard-help-panel { width: min(92vw, 520px); max-height: 80vh; overflow: auto; background: white; border-radius: 8px; padding: 18px; box-shadow: 0 20px 60px rgba(0,0,0,.4); }
+    .keyboard-help-panel h2 { margin: 0 0 12px; font-size: 20px; }
+    .shortcut-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 12px; align-items: center; }
+    kbd { min-width: 34px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 3px 7px; background: #f4f6f8; text-align: center; font: 700 12px ui-monospace, monospace; }
+    .mobile-tools { display: none; }
     @media (max-width: 700px) {
       header, .summary, main { padding-left: 14px; padding-right: 14px; }
+      header { padding-top: 18px; }
+      .summary { grid-template-columns: repeat(5, 1fr); gap: 5px; padding-top: 7px; padding-bottom: 7px; }
+      .metric { padding: 6px; text-align: center; }
+      .metric strong { font-size: 17px; }
+      .metric span { font-size: 9px; line-height: 1.05; }
       .controls { padding: 8px 14px; gap: 8px; }
-      .filter-toggle { display: flex; }
-      .control-content { display: none; max-height: 58vh; overflow-y: auto; padding: 4px 0 8px; }
-      .controls.open .control-content { display: grid; }
+      .filter-toggle { width: 100%; justify-content: space-between; }
+      .control-content { max-height: 58vh; overflow-y: auto; padding: 4px 0 8px; }
       .control-row b { flex-basis: 100%; min-width: 0; }
       .chip { padding: 6px 9px; font-size: 13px; }
       .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; }
+      .viewer-tools { grid-template-columns: 1fr; }
+      .visible-count { text-align: left; }
+      .tool-button.keyboard-only { display: none; }
+      .lightbox { padding: 8px; }
+      .lightbox-panel { width: 100%; height: 96vh; grid-template-columns: 42px minmax(0,1fr) 42px; gap: 4px; }
+      .lightbox-nav { width: 40px; height: 56px; }
+      .lightbox-caption { width: 100%; align-items: flex-end; padding: 0 4px; }
+      .lightbox-detail { max-height: 3.8em; overflow: hidden; }
+      .mobile-tools { position: fixed; z-index: 8; left: 50%; bottom: max(8px, env(safe-area-inset-bottom)); transform: translateX(-50%); display: flex; gap: 5px; padding: 5px; border: 1px solid var(--line); border-radius: 8px; background: rgba(255,255,255,.95); box-shadow: 0 8px 24px rgba(0,0,0,.2); backdrop-filter: blur(10px); }
+      .mobile-tools button { width: 42px; height: 38px; border: 0; border-radius: 5px; background: #eef1f4; color: var(--ink); font-size: 18px; }
+      main { padding-bottom: 84px; }
     }
     </style>
 </head>
@@ -98,14 +141,24 @@
     <p>DKR pilot view from the dedicated reading-order export.</p>
   </header>
   <section class="summary">
-    <div class="metric"><strong>36</strong><span>unique publications</span></div>
-    <div class="metric"><strong>36</strong><span>owned/readable</span></div>
-    <div class="metric"><strong>4</strong><span>facsimiles</span></div>
-    <div class="metric"><strong>0</strong><span>missing</span></div>
+    <button class="metric" type="button" data-status="all"><strong>36</strong><span>publications</span></button>
+    <button class="metric" type="button" data-status="owned"><strong>32</strong><span>owned originals</span></button>
+    <button class="metric" type="button" data-status="facsimile"><strong>4</strong><span>facsimiles</span></button>
+    <button class="metric" type="button" data-status="ordered"><strong>0</strong><span>ordered</span></button>
+    <button class="metric" type="button" data-status="missing"><strong>0</strong><span>missing</span></button>
   </section>
   <section class="controls">
-    <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="viewer-filters"><span>Filters and order</span></button>
+    <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="viewer-filters"><span>Filters &amp; order</span><small class="filter-summary">chronological · extended frank miller batman chronology</small></button>
     <div class="control-content" id="viewer-filters">
+      <div class="viewer-tools">
+        <div class="search-wrap"><input class="viewer-search" type="search" placeholder="Search title, issue or story" aria-label="Search comics"><button class="search-clear" type="button" title="Clear search" aria-label="Clear search">&times;</button></div>
+        <select class="section-jump" aria-label="Jump to section"><option value="">Jump to section</option><option value="year_one">year one</option><option value="spawn_batman_miller">spawn batman miller</option><option value="superman_year_one_dkr">superman year one dkr</option><option value="all_star_batman_robin">all star batman robin</option><option value="dark_knight_last_crusade">dark knight last crusade</option><option value="dark_knight_returns">dark knight returns</option><option value="dark_knight_strikes_again">dark knight strikes again</option><option value="dark_knight_master_race">dark knight master race</option><option value="dark_knight_golden_child">dark knight golden child</option></select>
+        <button class="tool-button" type="button" data-toggle-density>Covers</button>
+        <button class="tool-button" type="button" data-toggle-stories>Stories</button>
+        <button class="tool-button keyboard-only" type="button" data-toggle-browse>Browse</button>
+        <span class="visible-count">36 of 36</span>
+        <button class="tool-button keyboard-only" type="button" data-open-help aria-label="Keyboard shortcuts">Shortcuts</button>
+      </div>
       <div class="control-row"><b>Order</b><button class="chip" data-filter="order" data-value="all">All orders</button>
 <button class="chip active" data-filter="order" data-value="chronological">chronological</button>
 <button class="chip" data-filter="order" data-value="publication">publication</button></div>
@@ -134,9 +187,9 @@
   </section>
   <main>
     <section class="grid">
-      <article class="comic-card facsimile cover-approved_auto" data-order="publication|chronological" data-scope="extended_frank_miller_batman_chronology" data-project="year_one" data-status="facsimile" data-sequence="001" data-publication-sequence="110" data-chronological-sequence="001" data-publication-sequences="extended_frank_miller_batman_chronology:110" data-chronological-sequences="extended_frank_miller_batman_chronology:001" data-order-sequences="chronological:001|publication:110">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0404" data-work="Batman: Year One" data-section="year_one" data-search="batman: year one #404 pub-bat-0404 batman: year one 404 mainstream post-crisis batman origin by frank miller and david mazzucchelli; included here without making it strict core dkr saga.; mainstream post-crisis batman origin; included in extended frank miller batman chronology without forcing perfect dkr continuity consistency. extended_frank_miller_batman_chronology year_one" data-order="publication|chronological" data-scope="extended_frank_miller_batman_chronology" data-project="year_one" data-status="facsimile" data-sequence="001" data-publication-sequence="110" data-chronological-sequence="001" data-publication-sequences="extended_frank_miller_batman_chronology:110" data-chronological-sequences="extended_frank_miller_batman_chronology:001" data-order-sequences="chronological:001|publication:110">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0404.jpg" data-full-title="Batman: Year One #404" data-full-detail="Published 1986-10-22 | PUB-BAT-0404 | Seq 001 | origin | review | mainstream post-Crisis / Miller Batman chronology | Mainstream post-Crisis Batman origin by Frank Miller and David Mazzucchelli; included here without making it strict Core DKR Saga.; Mainstream post-Crisis Batman origin; included in extended Frank Miller Batman chronology without forcing perfect DKR continuity consistency. | https://dc.fandom.com/wiki/Batman_Vol_1_404 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0404.jpg" alt="Batman: Year One #404 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0404.jpg" data-full-title="Batman: Year One #404" data-full-detail="Published 1986-10-22 | PUB-BAT-0404 | Seq 001 | origin | review | mainstream post-Crisis / Miller Batman chronology | Mainstream post-Crisis Batman origin by Frank Miller and David Mazzucchelli; included here without making it strict Core DKR Saga.; Mainstream post-Crisis Batman origin; included in extended Frank Miller Batman chronology without forcing perfect DKR continuity consistency. | https://dc.fandom.com/wiki/Batman_Vol_1_404 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0404.jpg" data-display-src="../assets/covers/display/PUB-BAT-0404.jpg" alt="Batman: Year One #404 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">extended frank miller batman chronology</span>
@@ -148,9 +201,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication" data-scope="extended_miller_dkr_related" data-project="spawn_batman_miller" data-status="owned" data-sequence="001" data-publication-sequence="001" data-chronological-sequence="999999" data-publication-sequences="extended_miller_dkr_related:001" data-chronological-sequences="" data-order-sequences="publication:001">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-SPAWN-BATMAN-0001" data-work="Spawn/Batman" data-section="spawn_batman_miller" data-search="spawn/batman #1 pub-spawn-batman-0001 spawn/batman 1 published in 1994; cited as dkr-universe related but not necessary to the saga. extended_miller_dkr_related spawn_batman_miller" data-order="publication" data-scope="extended_miller_dkr_related" data-project="spawn_batman_miller" data-status="owned" data-sequence="001" data-publication-sequence="001" data-chronological-sequence="999999" data-publication-sequences="extended_miller_dkr_related:001" data-chronological-sequences="" data-order-sequences="publication:001">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SPAWN-BATMAN-0001.jpg" data-full-title="Spawn/Batman #1" data-full-detail="Published 1994 | PUB-SPAWN-BATMAN-0001 | Seq 001 | optional_related | review | related/disputed | Published in 1994; cited as DKR-universe related but not necessary to the saga. | https://en.wikipedia.org/wiki/Spawn/Batman | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SPAWN-BATMAN-0001.jpg" alt="Spawn/Batman #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SPAWN-BATMAN-0001.jpg" data-full-title="Spawn/Batman #1" data-full-detail="Published 1994 | PUB-SPAWN-BATMAN-0001 | Seq 001 | optional_related | review | related/disputed | Published in 1994; cited as DKR-universe related but not necessary to the saga. | https://en.wikipedia.org/wiki/Spawn/Batman | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SPAWN-BATMAN-0001.jpg" data-display-src="../assets/covers/display/PUB-SPAWN-BATMAN-0001.jpg" alt="Spawn/Batman #1 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">extended miller dkr related</span>
@@ -162,9 +215,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="publication|chronological" data-scope="extended_frank_miller_batman_chronology" data-project="year_one" data-status="facsimile" data-sequence="002" data-publication-sequence="111" data-chronological-sequence="002" data-publication-sequences="extended_frank_miller_batman_chronology:111" data-chronological-sequences="extended_frank_miller_batman_chronology:002" data-order-sequences="chronological:002|publication:111">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0405" data-work="Batman: Year One" data-section="year_one" data-search="batman: year one #405 pub-bat-0405 batman: year one 405 mainstream post-crisis batman origin by frank miller and david mazzucchelli; included here without making it strict core dkr saga.; mainstream post-crisis batman origin; included in extended frank miller batman chronology without forcing perfect dkr continuity consistency. extended_frank_miller_batman_chronology year_one" data-order="publication|chronological" data-scope="extended_frank_miller_batman_chronology" data-project="year_one" data-status="facsimile" data-sequence="002" data-publication-sequence="111" data-chronological-sequence="002" data-publication-sequences="extended_frank_miller_batman_chronology:111" data-chronological-sequences="extended_frank_miller_batman_chronology:002" data-order-sequences="chronological:002|publication:111">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0405.jpg" data-full-title="Batman: Year One #405" data-full-detail="Published 1986-11-19 | PUB-BAT-0405 | Seq 002 | origin | review | mainstream post-Crisis / Miller Batman chronology | Mainstream post-Crisis Batman origin by Frank Miller and David Mazzucchelli; included here without making it strict Core DKR Saga.; Mainstream post-Crisis Batman origin; included in extended Frank Miller Batman chronology without forcing perfect DKR continuity consistency. | https://dc.fandom.com/wiki/Batman_Vol_1_405 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0405.jpg" alt="Batman: Year One #405 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0405.jpg" data-full-title="Batman: Year One #405" data-full-detail="Published 1986-11-19 | PUB-BAT-0405 | Seq 002 | origin | review | mainstream post-Crisis / Miller Batman chronology | Mainstream post-Crisis Batman origin by Frank Miller and David Mazzucchelli; included here without making it strict Core DKR Saga.; Mainstream post-Crisis Batman origin; included in extended Frank Miller Batman chronology without forcing perfect DKR continuity consistency. | https://dc.fandom.com/wiki/Batman_Vol_1_405 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0405.jpg" data-display-src="../assets/covers/display/PUB-BAT-0405.jpg" alt="Batman: Year One #405 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">extended frank miller batman chronology</span>
@@ -176,9 +229,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="publication|chronological" data-scope="extended_frank_miller_batman_chronology" data-project="year_one" data-status="facsimile" data-sequence="003" data-publication-sequence="112" data-chronological-sequence="003" data-publication-sequences="extended_frank_miller_batman_chronology:112" data-chronological-sequences="extended_frank_miller_batman_chronology:003" data-order-sequences="chronological:003|publication:112">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0406" data-work="Batman: Year One" data-section="year_one" data-search="batman: year one #406 pub-bat-0406 batman: year one 406 mainstream post-crisis batman origin by frank miller and david mazzucchelli; included here without making it strict core dkr saga.; mainstream post-crisis batman origin; included in extended frank miller batman chronology without forcing perfect dkr continuity consistency. extended_frank_miller_batman_chronology year_one" data-order="publication|chronological" data-scope="extended_frank_miller_batman_chronology" data-project="year_one" data-status="facsimile" data-sequence="003" data-publication-sequence="112" data-chronological-sequence="003" data-publication-sequences="extended_frank_miller_batman_chronology:112" data-chronological-sequences="extended_frank_miller_batman_chronology:003" data-order-sequences="chronological:003|publication:112">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0406.jpg" data-full-title="Batman: Year One #406" data-full-detail="Published 1986-12-17 | PUB-BAT-0406 | Seq 003 | origin | review | mainstream post-Crisis / Miller Batman chronology | Mainstream post-Crisis Batman origin by Frank Miller and David Mazzucchelli; included here without making it strict Core DKR Saga.; Mainstream post-Crisis Batman origin; included in extended Frank Miller Batman chronology without forcing perfect DKR continuity consistency. | https://dc.fandom.com/wiki/Batman_Vol_1_406 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0406.jpg" alt="Batman: Year One #406 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0406.jpg" data-full-title="Batman: Year One #406" data-full-detail="Published 1986-12-17 | PUB-BAT-0406 | Seq 003 | origin | review | mainstream post-Crisis / Miller Batman chronology | Mainstream post-Crisis Batman origin by Frank Miller and David Mazzucchelli; included here without making it strict Core DKR Saga.; Mainstream post-Crisis Batman origin; included in extended Frank Miller Batman chronology without forcing perfect DKR continuity consistency. | https://dc.fandom.com/wiki/Batman_Vol_1_406 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0406.jpg" data-display-src="../assets/covers/display/PUB-BAT-0406.jpg" alt="Batman: Year One #406 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">extended frank miller batman chronology</span>
@@ -190,9 +243,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_manual" data-order="publication|chronological" data-scope="extended_frank_miller_batman_chronology" data-project="year_one" data-status="facsimile" data-sequence="004" data-publication-sequence="113" data-chronological-sequence="004" data-publication-sequences="extended_frank_miller_batman_chronology:113" data-chronological-sequences="extended_frank_miller_batman_chronology:004" data-order-sequences="chronological:004|publication:113">
+      <article class="comic-card facsimile cover-approved_manual" tabindex="-1" data-publication-id="PUB-BAT-0407" data-work="Batman: Year One" data-section="year_one" data-search="batman: year one #407 pub-bat-0407 batman: year one 407 mainstream post-crisis batman origin by frank miller and david mazzucchelli; included here without making it strict core dkr saga.; mainstream post-crisis batman origin; included in extended frank miller batman chronology without forcing perfect dkr continuity consistency. extended_frank_miller_batman_chronology year_one" data-order="publication|chronological" data-scope="extended_frank_miller_batman_chronology" data-project="year_one" data-status="facsimile" data-sequence="004" data-publication-sequence="113" data-chronological-sequence="004" data-publication-sequences="extended_frank_miller_batman_chronology:113" data-chronological-sequences="extended_frank_miller_batman_chronology:004" data-order-sequences="chronological:004|publication:113">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0407.jpg" data-full-title="Batman: Year One #407" data-full-detail="Published 1987-01-21 | PUB-BAT-0407 | Seq 004 | origin | review | mainstream post-Crisis / Miller Batman chronology | Mainstream post-Crisis Batman origin by Frank Miller and David Mazzucchelli; included here without making it strict Core DKR Saga.; Mainstream post-Crisis Batman origin; included in extended Frank Miller Batman chronology without forcing perfect DKR continuity consistency. | https://dc.fandom.com/wiki/Batman_Vol_1_407 | Collector confirmed the detected black edge is acceptable."><img src="../assets/covers/display/PUB-BAT-0407.jpg" alt="Batman: Year One #407 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0407.jpg" data-full-title="Batman: Year One #407" data-full-detail="Published 1987-01-21 | PUB-BAT-0407 | Seq 004 | origin | review | mainstream post-Crisis / Miller Batman chronology | Mainstream post-Crisis Batman origin by Frank Miller and David Mazzucchelli; included here without making it strict Core DKR Saga.; Mainstream post-Crisis Batman origin; included in extended Frank Miller Batman chronology without forcing perfect DKR continuity consistency. | https://dc.fandom.com/wiki/Batman_Vol_1_407 | Collector confirmed the detected black edge is acceptable."><img src="../assets/covers/display/PUB-BAT-0407.jpg" data-display-src="../assets/covers/display/PUB-BAT-0407.jpg" alt="Batman: Year One #407 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">extended frank miller batman chronology</span>
@@ -204,9 +257,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="complete_dkr_continuity|extended_frank_miller_batman_chronology" data-project="superman_year_one_dkr" data-status="owned" data-sequence="005" data-publication-sequence="060" data-chronological-sequence="001" data-publication-sequences="complete_dkr_continuity:060|extended_frank_miller_batman_chronology:170" data-chronological-sequences="complete_dkr_continuity:001|extended_frank_miller_batman_chronology:005" data-order-sequences="chronological:001|publication:060">
-        <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SUPERMAN-YEAR-ONE-0001.jpg" data-full-title="Superman: Year One #1" data-full-detail="PUB-SUPERMAN-YEAR-ONE-0001 | Seq 005 | extended_continuity | review | extended DKR continuity | Same-universe per source; not Batman-centred core.; Same-universe per source; exact placement relative to Batman early years is review-grade.; Superman origin placement is broadly before Batman&#x27;s late-career DKR material; exact relationship to Batman Year One and ASBAR is review-grade.; Origin placement is broadly before Batman&#x27;s late-career DKR material but exact relationship is review-grade. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SUPERMAN-YEAR-ONE-0001.jpg" alt="Superman: Year One #1 cover"></button></div>
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-SUPERMAN-YEAR-ONE-0001" data-work="Superman: Year One" data-section="superman_year_one_dkr" data-search="superman: year one #1 pub-superman-year-one-0001 superman: year one 1 same-universe per source; not batman-centred core.; same-universe per source; exact placement relative to batman early years is review-grade.; superman origin placement is broadly before batman&#x27;s late-career dkr material; exact relationship to batman year one and asbar is review-grade.; origin placement is broadly before batman&#x27;s late-career dkr material but exact relationship is review-grade. complete_dkr_continuity|extended_frank_miller_batman_chronology superman_year_one_dkr" data-order="publication|chronological" data-scope="complete_dkr_continuity|extended_frank_miller_batman_chronology" data-project="superman_year_one_dkr" data-status="owned" data-sequence="005" data-publication-sequence="060" data-chronological-sequence="001" data-publication-sequences="complete_dkr_continuity:060|extended_frank_miller_batman_chronology:170" data-chronological-sequences="complete_dkr_continuity:001|extended_frank_miller_batman_chronology:005" data-order-sequences="chronological:001|publication:060">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SUPERMAN-YEAR-ONE-0001.jpg" data-full-title="Superman: Year One #1" data-full-detail="PUB-SUPERMAN-YEAR-ONE-0001 | Seq 005 | extended_continuity | review | extended DKR continuity | Same-universe per source; not Batman-centred core.; Same-universe per source; exact placement relative to Batman early years is review-grade.; Superman origin placement is broadly before Batman&#x27;s late-career DKR material; exact relationship to Batman Year One and ASBAR is review-grade.; Origin placement is broadly before Batman&#x27;s late-career DKR material but exact relationship is review-grade. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SUPERMAN-YEAR-ONE-0001.jpg" data-display-src="../assets/covers/display/PUB-SUPERMAN-YEAR-ONE-0001.jpg" alt="Superman: Year One #1 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">complete dkr continuity +1</span>
@@ -218,9 +271,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="complete_dkr_continuity|extended_frank_miller_batman_chronology" data-project="superman_year_one_dkr" data-status="owned" data-sequence="006" data-publication-sequence="061" data-chronological-sequence="002" data-publication-sequences="complete_dkr_continuity:061|extended_frank_miller_batman_chronology:171" data-chronological-sequences="complete_dkr_continuity:002|extended_frank_miller_batman_chronology:006" data-order-sequences="chronological:002|publication:061">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-SUPERMAN-YEAR-ONE-0002" data-work="Superman: Year One" data-section="superman_year_one_dkr" data-search="superman: year one #2 pub-superman-year-one-0002 superman: year one 2 same-universe per source; not batman-centred core.; same-universe per source; exact placement relative to batman early years is review-grade.; superman origin placement is broadly before batman&#x27;s late-career dkr material; exact relationship to batman year one and asbar is review-grade.; origin placement is broadly before batman&#x27;s late-career dkr material but exact relationship is review-grade. complete_dkr_continuity|extended_frank_miller_batman_chronology superman_year_one_dkr" data-order="publication|chronological" data-scope="complete_dkr_continuity|extended_frank_miller_batman_chronology" data-project="superman_year_one_dkr" data-status="owned" data-sequence="006" data-publication-sequence="061" data-chronological-sequence="002" data-publication-sequences="complete_dkr_continuity:061|extended_frank_miller_batman_chronology:171" data-chronological-sequences="complete_dkr_continuity:002|extended_frank_miller_batman_chronology:006" data-order-sequences="chronological:002|publication:061">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SUPERMAN-YEAR-ONE-0002.jpg" data-full-title="Superman: Year One #2" data-full-detail="PUB-SUPERMAN-YEAR-ONE-0002 | Seq 006 | extended_continuity | review | extended DKR continuity | Same-universe per source; not Batman-centred core.; Same-universe per source; exact placement relative to Batman early years is review-grade.; Superman origin placement is broadly before Batman&#x27;s late-career DKR material; exact relationship to Batman Year One and ASBAR is review-grade.; Origin placement is broadly before Batman&#x27;s late-career DKR material but exact relationship is review-grade. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SUPERMAN-YEAR-ONE-0002.jpg" alt="Superman: Year One #2 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SUPERMAN-YEAR-ONE-0002.jpg" data-full-title="Superman: Year One #2" data-full-detail="PUB-SUPERMAN-YEAR-ONE-0002 | Seq 006 | extended_continuity | review | extended DKR continuity | Same-universe per source; not Batman-centred core.; Same-universe per source; exact placement relative to Batman early years is review-grade.; Superman origin placement is broadly before Batman&#x27;s late-career DKR material; exact relationship to Batman Year One and ASBAR is review-grade.; Origin placement is broadly before Batman&#x27;s late-career DKR material but exact relationship is review-grade. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SUPERMAN-YEAR-ONE-0002.jpg" data-display-src="../assets/covers/display/PUB-SUPERMAN-YEAR-ONE-0002.jpg" alt="Superman: Year One #2 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">complete dkr continuity +1</span>
@@ -232,9 +285,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="complete_dkr_continuity|extended_frank_miller_batman_chronology" data-project="superman_year_one_dkr" data-status="owned" data-sequence="007" data-publication-sequence="062" data-chronological-sequence="003" data-publication-sequences="complete_dkr_continuity:062|extended_frank_miller_batman_chronology:172" data-chronological-sequences="complete_dkr_continuity:003|extended_frank_miller_batman_chronology:007" data-order-sequences="chronological:003|publication:062">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-SUPERMAN-YEAR-ONE-0003" data-work="Superman: Year One" data-section="superman_year_one_dkr" data-search="superman: year one #3 pub-superman-year-one-0003 superman: year one 3 same-universe per source; not batman-centred core.; same-universe per source; exact placement relative to batman early years is review-grade.; superman origin placement is broadly before batman&#x27;s late-career dkr material; exact relationship to batman year one and asbar is review-grade.; origin placement is broadly before batman&#x27;s late-career dkr material but exact relationship is review-grade. complete_dkr_continuity|extended_frank_miller_batman_chronology superman_year_one_dkr" data-order="publication|chronological" data-scope="complete_dkr_continuity|extended_frank_miller_batman_chronology" data-project="superman_year_one_dkr" data-status="owned" data-sequence="007" data-publication-sequence="062" data-chronological-sequence="003" data-publication-sequences="complete_dkr_continuity:062|extended_frank_miller_batman_chronology:172" data-chronological-sequences="complete_dkr_continuity:003|extended_frank_miller_batman_chronology:007" data-order-sequences="chronological:003|publication:062">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SUPERMAN-YEAR-ONE-0003.jpg" data-full-title="Superman: Year One #3" data-full-detail="PUB-SUPERMAN-YEAR-ONE-0003 | Seq 007 | extended_continuity | review | extended DKR continuity | Same-universe per source; not Batman-centred core.; Same-universe per source; exact placement relative to Batman early years is review-grade.; Superman origin placement is broadly before Batman&#x27;s late-career DKR material; exact relationship to Batman Year One and ASBAR is review-grade.; Origin placement is broadly before Batman&#x27;s late-career DKR material but exact relationship is review-grade. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SUPERMAN-YEAR-ONE-0003.jpg" alt="Superman: Year One #3 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-SUPERMAN-YEAR-ONE-0003.jpg" data-full-title="Superman: Year One #3" data-full-detail="PUB-SUPERMAN-YEAR-ONE-0003 | Seq 007 | extended_continuity | review | extended DKR continuity | Same-universe per source; not Batman-centred core.; Same-universe per source; exact placement relative to Batman early years is review-grade.; Superman origin placement is broadly before Batman&#x27;s late-career DKR material; exact relationship to Batman Year One and ASBAR is review-grade.; Origin placement is broadly before Batman&#x27;s late-career DKR material but exact relationship is review-grade. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-SUPERMAN-YEAR-ONE-0003.jpg" data-display-src="../assets/covers/display/PUB-SUPERMAN-YEAR-ONE-0003.jpg" alt="Superman: Year One #3 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">complete dkr continuity +1</span>
@@ -246,9 +299,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="extended_miller_dkr_related|extended_frank_miller_batman_chronology" data-project="all_star_batman_robin" data-status="owned" data-sequence="010" data-publication-sequence="010" data-chronological-sequence="010" data-publication-sequences="extended_frank_miller_batman_chronology:130|extended_miller_dkr_related:010" data-chronological-sequences="extended_frank_miller_batman_chronology:010|extended_miller_dkr_related:010" data-order-sequences="chronological:010|publication:010">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-ASBAR-0001" data-work="All Star Batman &amp; Robin the Boy Wonder" data-section="all_star_batman_robin" data-search="all star batman &amp; robin the boy wonder #1 pub-asbar-0001 all star batman &amp; robin the boy wonder 1 published #1 of 10.; published #1 of 10; narrative unfinished.; young batman/dick grayson material; miller-supported dkr relation but contradictions exist.; young batman/dick grayson origin material; miller-supported dkr relation but contradictions exist. extended_miller_dkr_related|extended_frank_miller_batman_chronology all_star_batman_robin" data-order="publication|chronological" data-scope="extended_miller_dkr_related|extended_frank_miller_batman_chronology" data-project="all_star_batman_robin" data-status="owned" data-sequence="010" data-publication-sequence="010" data-chronological-sequence="010" data-publication-sequences="extended_frank_miller_batman_chronology:130|extended_miller_dkr_related:010" data-chronological-sequences="extended_frank_miller_batman_chronology:010|extended_miller_dkr_related:010" data-order-sequences="chronological:010|publication:010">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ASBAR-0001.jpg" data-full-title="All Star Batman &amp; Robin the Boy Wonder #1" data-full-detail="PUB-ASBAR-0001 | Seq 010 | extended_related | review | unfinished extended continuity | Published #1 of 10.; Published #1 of 10; narrative unfinished.; Young Batman/Dick Grayson material; Miller-supported DKR relation but contradictions exist.; Young Batman/Dick Grayson origin material; Miller-supported DKR relation but contradictions exist. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ASBAR-0001.jpg" alt="All Star Batman &amp; Robin the Boy Wonder #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ASBAR-0001.jpg" data-full-title="All Star Batman &amp; Robin the Boy Wonder #1" data-full-detail="PUB-ASBAR-0001 | Seq 010 | extended_related | review | unfinished extended continuity | Published #1 of 10.; Published #1 of 10; narrative unfinished.; Young Batman/Dick Grayson material; Miller-supported DKR relation but contradictions exist.; Young Batman/Dick Grayson origin material; Miller-supported DKR relation but contradictions exist. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ASBAR-0001.jpg" data-display-src="../assets/covers/display/PUB-ASBAR-0001.jpg" alt="All Star Batman &amp; Robin the Boy Wonder #1 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">extended miller dkr related +1</span>
@@ -260,9 +313,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="extended_miller_dkr_related|extended_frank_miller_batman_chronology" data-project="all_star_batman_robin" data-status="owned" data-sequence="011" data-publication-sequence="011" data-chronological-sequence="011" data-publication-sequences="extended_frank_miller_batman_chronology:131|extended_miller_dkr_related:011" data-chronological-sequences="extended_frank_miller_batman_chronology:011|extended_miller_dkr_related:011" data-order-sequences="chronological:011|publication:011">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-ASBAR-0002" data-work="All Star Batman &amp; Robin the Boy Wonder" data-section="all_star_batman_robin" data-search="all star batman &amp; robin the boy wonder #2 pub-asbar-0002 all star batman &amp; robin the boy wonder 2 published #2 of 10.; published #2 of 10; narrative unfinished.; young batman/dick grayson material; miller-supported dkr relation but contradictions exist.; young batman/dick grayson origin material; miller-supported dkr relation but contradictions exist. extended_miller_dkr_related|extended_frank_miller_batman_chronology all_star_batman_robin" data-order="publication|chronological" data-scope="extended_miller_dkr_related|extended_frank_miller_batman_chronology" data-project="all_star_batman_robin" data-status="owned" data-sequence="011" data-publication-sequence="011" data-chronological-sequence="011" data-publication-sequences="extended_frank_miller_batman_chronology:131|extended_miller_dkr_related:011" data-chronological-sequences="extended_frank_miller_batman_chronology:011|extended_miller_dkr_related:011" data-order-sequences="chronological:011|publication:011">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ASBAR-0002.jpg" data-full-title="All Star Batman &amp; Robin the Boy Wonder #2" data-full-detail="PUB-ASBAR-0002 | Seq 011 | extended_related | review | unfinished extended continuity | Published #2 of 10.; Published #2 of 10; narrative unfinished.; Young Batman/Dick Grayson material; Miller-supported DKR relation but contradictions exist.; Young Batman/Dick Grayson origin material; Miller-supported DKR relation but contradictions exist. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ASBAR-0002.jpg" alt="All Star Batman &amp; Robin the Boy Wonder #2 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ASBAR-0002.jpg" data-full-title="All Star Batman &amp; Robin the Boy Wonder #2" data-full-detail="PUB-ASBAR-0002 | Seq 011 | extended_related | review | unfinished extended continuity | Published #2 of 10.; Published #2 of 10; narrative unfinished.; Young Batman/Dick Grayson material; Miller-supported DKR relation but contradictions exist.; Young Batman/Dick Grayson origin material; Miller-supported DKR relation but contradictions exist. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ASBAR-0002.jpg" data-display-src="../assets/covers/display/PUB-ASBAR-0002.jpg" alt="All Star Batman &amp; Robin the Boy Wonder #2 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">extended miller dkr related +1</span>
@@ -274,9 +327,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="extended_miller_dkr_related|extended_frank_miller_batman_chronology" data-project="all_star_batman_robin" data-status="owned" data-sequence="012" data-publication-sequence="012" data-chronological-sequence="012" data-publication-sequences="extended_frank_miller_batman_chronology:132|extended_miller_dkr_related:012" data-chronological-sequences="extended_frank_miller_batman_chronology:012|extended_miller_dkr_related:012" data-order-sequences="chronological:012|publication:012">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-ASBAR-0003" data-work="All Star Batman &amp; Robin the Boy Wonder" data-section="all_star_batman_robin" data-search="all star batman &amp; robin the boy wonder #3 pub-asbar-0003 all star batman &amp; robin the boy wonder 3 published #3 of 10.; published #3 of 10; narrative unfinished.; young batman/dick grayson material; miller-supported dkr relation but contradictions exist.; young batman/dick grayson origin material; miller-supported dkr relation but contradictions exist. extended_miller_dkr_related|extended_frank_miller_batman_chronology all_star_batman_robin" data-order="publication|chronological" data-scope="extended_miller_dkr_related|extended_frank_miller_batman_chronology" data-project="all_star_batman_robin" data-status="owned" data-sequence="012" data-publication-sequence="012" data-chronological-sequence="012" data-publication-sequences="extended_frank_miller_batman_chronology:132|extended_miller_dkr_related:012" data-chronological-sequences="extended_frank_miller_batman_chronology:012|extended_miller_dkr_related:012" data-order-sequences="chronological:012|publication:012">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ASBAR-0003.jpg" data-full-title="All Star Batman &amp; Robin the Boy Wonder #3" data-full-detail="PUB-ASBAR-0003 | Seq 012 | extended_related | review | unfinished extended continuity | Published #3 of 10.; Published #3 of 10; narrative unfinished.; Young Batman/Dick Grayson material; Miller-supported DKR relation but contradictions exist.; Young Batman/Dick Grayson origin material; Miller-supported DKR relation but contradictions exist. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ASBAR-0003.jpg" alt="All Star Batman &amp; Robin the Boy Wonder #3 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ASBAR-0003.jpg" data-full-title="All Star Batman &amp; Robin the Boy Wonder #3" data-full-detail="PUB-ASBAR-0003 | Seq 012 | extended_related | review | unfinished extended continuity | Published #3 of 10.; Published #3 of 10; narrative unfinished.; Young Batman/Dick Grayson material; Miller-supported DKR relation but contradictions exist.; Young Batman/Dick Grayson origin material; Miller-supported DKR relation but contradictions exist. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ASBAR-0003.jpg" data-display-src="../assets/covers/display/PUB-ASBAR-0003.jpg" alt="All Star Batman &amp; Robin the Boy Wonder #3 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">extended miller dkr related +1</span>
@@ -288,9 +341,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="extended_miller_dkr_related|extended_frank_miller_batman_chronology" data-project="all_star_batman_robin" data-status="owned" data-sequence="013" data-publication-sequence="013" data-chronological-sequence="013" data-publication-sequences="extended_frank_miller_batman_chronology:133|extended_miller_dkr_related:013" data-chronological-sequences="extended_frank_miller_batman_chronology:013|extended_miller_dkr_related:013" data-order-sequences="chronological:013|publication:013">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-ASBAR-0004" data-work="All Star Batman &amp; Robin the Boy Wonder" data-section="all_star_batman_robin" data-search="all star batman &amp; robin the boy wonder #4 pub-asbar-0004 all star batman &amp; robin the boy wonder 4 published #4 of 10.; published #4 of 10; narrative unfinished.; young batman/dick grayson material; miller-supported dkr relation but contradictions exist.; young batman/dick grayson origin material; miller-supported dkr relation but contradictions exist. extended_miller_dkr_related|extended_frank_miller_batman_chronology all_star_batman_robin" data-order="publication|chronological" data-scope="extended_miller_dkr_related|extended_frank_miller_batman_chronology" data-project="all_star_batman_robin" data-status="owned" data-sequence="013" data-publication-sequence="013" data-chronological-sequence="013" data-publication-sequences="extended_frank_miller_batman_chronology:133|extended_miller_dkr_related:013" data-chronological-sequences="extended_frank_miller_batman_chronology:013|extended_miller_dkr_related:013" data-order-sequences="chronological:013|publication:013">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ASBAR-0004.jpg" data-full-title="All Star Batman &amp; Robin the Boy Wonder #4" data-full-detail="PUB-ASBAR-0004 | Seq 013 | extended_related | review | unfinished extended continuity | Published #4 of 10.; Published #4 of 10; narrative unfinished.; Young Batman/Dick Grayson material; Miller-supported DKR relation but contradictions exist.; Young Batman/Dick Grayson origin material; Miller-supported DKR relation but contradictions exist. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ASBAR-0004.jpg" alt="All Star Batman &amp; Robin the Boy Wonder #4 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ASBAR-0004.jpg" data-full-title="All Star Batman &amp; Robin the Boy Wonder #4" data-full-detail="PUB-ASBAR-0004 | Seq 013 | extended_related | review | unfinished extended continuity | Published #4 of 10.; Published #4 of 10; narrative unfinished.; Young Batman/Dick Grayson material; Miller-supported DKR relation but contradictions exist.; Young Batman/Dick Grayson origin material; Miller-supported DKR relation but contradictions exist. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ASBAR-0004.jpg" data-display-src="../assets/covers/display/PUB-ASBAR-0004.jpg" alt="All Star Batman &amp; Robin the Boy Wonder #4 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">extended miller dkr related +1</span>
@@ -302,9 +355,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="extended_miller_dkr_related|extended_frank_miller_batman_chronology" data-project="all_star_batman_robin" data-status="owned" data-sequence="014" data-publication-sequence="014" data-chronological-sequence="014" data-publication-sequences="extended_frank_miller_batman_chronology:134|extended_miller_dkr_related:014" data-chronological-sequences="extended_frank_miller_batman_chronology:014|extended_miller_dkr_related:014" data-order-sequences="chronological:014|publication:014">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-ASBAR-0005" data-work="All Star Batman &amp; Robin the Boy Wonder" data-section="all_star_batman_robin" data-search="all star batman &amp; robin the boy wonder #5 pub-asbar-0005 all star batman &amp; robin the boy wonder 5 published #5 of 10.; published #5 of 10; narrative unfinished.; young batman/dick grayson material; miller-supported dkr relation but contradictions exist.; young batman/dick grayson origin material; miller-supported dkr relation but contradictions exist. extended_miller_dkr_related|extended_frank_miller_batman_chronology all_star_batman_robin" data-order="publication|chronological" data-scope="extended_miller_dkr_related|extended_frank_miller_batman_chronology" data-project="all_star_batman_robin" data-status="owned" data-sequence="014" data-publication-sequence="014" data-chronological-sequence="014" data-publication-sequences="extended_frank_miller_batman_chronology:134|extended_miller_dkr_related:014" data-chronological-sequences="extended_frank_miller_batman_chronology:014|extended_miller_dkr_related:014" data-order-sequences="chronological:014|publication:014">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ASBAR-0005.jpg" data-full-title="All Star Batman &amp; Robin the Boy Wonder #5" data-full-detail="PUB-ASBAR-0005 | Seq 014 | extended_related | review | unfinished extended continuity | Published #5 of 10.; Published #5 of 10; narrative unfinished.; Young Batman/Dick Grayson material; Miller-supported DKR relation but contradictions exist.; Young Batman/Dick Grayson origin material; Miller-supported DKR relation but contradictions exist. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ASBAR-0005.jpg" alt="All Star Batman &amp; Robin the Boy Wonder #5 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ASBAR-0005.jpg" data-full-title="All Star Batman &amp; Robin the Boy Wonder #5" data-full-detail="PUB-ASBAR-0005 | Seq 014 | extended_related | review | unfinished extended continuity | Published #5 of 10.; Published #5 of 10; narrative unfinished.; Young Batman/Dick Grayson material; Miller-supported DKR relation but contradictions exist.; Young Batman/Dick Grayson origin material; Miller-supported DKR relation but contradictions exist. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ASBAR-0005.jpg" data-display-src="../assets/covers/display/PUB-ASBAR-0005.jpg" alt="All Star Batman &amp; Robin the Boy Wonder #5 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">extended miller dkr related +1</span>
@@ -316,9 +369,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="extended_miller_dkr_related|extended_frank_miller_batman_chronology" data-project="all_star_batman_robin" data-status="owned" data-sequence="015" data-publication-sequence="015" data-chronological-sequence="015" data-publication-sequences="extended_frank_miller_batman_chronology:135|extended_miller_dkr_related:015" data-chronological-sequences="extended_frank_miller_batman_chronology:015|extended_miller_dkr_related:015" data-order-sequences="chronological:015|publication:015">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-ASBAR-0006" data-work="All Star Batman &amp; Robin the Boy Wonder" data-section="all_star_batman_robin" data-search="all star batman &amp; robin the boy wonder #6 pub-asbar-0006 all star batman &amp; robin the boy wonder 6 published #6 of 10.; published #6 of 10; narrative unfinished.; young batman/dick grayson material; miller-supported dkr relation but contradictions exist.; young batman/dick grayson origin material; miller-supported dkr relation but contradictions exist. extended_miller_dkr_related|extended_frank_miller_batman_chronology all_star_batman_robin" data-order="publication|chronological" data-scope="extended_miller_dkr_related|extended_frank_miller_batman_chronology" data-project="all_star_batman_robin" data-status="owned" data-sequence="015" data-publication-sequence="015" data-chronological-sequence="015" data-publication-sequences="extended_frank_miller_batman_chronology:135|extended_miller_dkr_related:015" data-chronological-sequences="extended_frank_miller_batman_chronology:015|extended_miller_dkr_related:015" data-order-sequences="chronological:015|publication:015">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ASBAR-0006.jpg" data-full-title="All Star Batman &amp; Robin the Boy Wonder #6" data-full-detail="PUB-ASBAR-0006 | Seq 015 | extended_related | review | unfinished extended continuity | Published #6 of 10.; Published #6 of 10; narrative unfinished.; Young Batman/Dick Grayson material; Miller-supported DKR relation but contradictions exist.; Young Batman/Dick Grayson origin material; Miller-supported DKR relation but contradictions exist. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ASBAR-0006.jpg" alt="All Star Batman &amp; Robin the Boy Wonder #6 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ASBAR-0006.jpg" data-full-title="All Star Batman &amp; Robin the Boy Wonder #6" data-full-detail="PUB-ASBAR-0006 | Seq 015 | extended_related | review | unfinished extended continuity | Published #6 of 10.; Published #6 of 10; narrative unfinished.; Young Batman/Dick Grayson material; Miller-supported DKR relation but contradictions exist.; Young Batman/Dick Grayson origin material; Miller-supported DKR relation but contradictions exist. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ASBAR-0006.jpg" data-display-src="../assets/covers/display/PUB-ASBAR-0006.jpg" alt="All Star Batman &amp; Robin the Boy Wonder #6 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">extended miller dkr related +1</span>
@@ -330,9 +383,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="extended_miller_dkr_related|extended_frank_miller_batman_chronology" data-project="all_star_batman_robin" data-status="owned" data-sequence="016" data-publication-sequence="016" data-chronological-sequence="016" data-publication-sequences="extended_frank_miller_batman_chronology:136|extended_miller_dkr_related:016" data-chronological-sequences="extended_frank_miller_batman_chronology:016|extended_miller_dkr_related:016" data-order-sequences="chronological:016|publication:016">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-ASBAR-0007" data-work="All Star Batman &amp; Robin the Boy Wonder" data-section="all_star_batman_robin" data-search="all star batman &amp; robin the boy wonder #7 pub-asbar-0007 all star batman &amp; robin the boy wonder 7 published #7 of 10.; published #7 of 10; narrative unfinished.; young batman/dick grayson material; miller-supported dkr relation but contradictions exist.; young batman/dick grayson origin material; miller-supported dkr relation but contradictions exist. extended_miller_dkr_related|extended_frank_miller_batman_chronology all_star_batman_robin" data-order="publication|chronological" data-scope="extended_miller_dkr_related|extended_frank_miller_batman_chronology" data-project="all_star_batman_robin" data-status="owned" data-sequence="016" data-publication-sequence="016" data-chronological-sequence="016" data-publication-sequences="extended_frank_miller_batman_chronology:136|extended_miller_dkr_related:016" data-chronological-sequences="extended_frank_miller_batman_chronology:016|extended_miller_dkr_related:016" data-order-sequences="chronological:016|publication:016">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ASBAR-0007.jpg" data-full-title="All Star Batman &amp; Robin the Boy Wonder #7" data-full-detail="PUB-ASBAR-0007 | Seq 016 | extended_related | review | unfinished extended continuity | Published #7 of 10.; Published #7 of 10; narrative unfinished.; Young Batman/Dick Grayson material; Miller-supported DKR relation but contradictions exist.; Young Batman/Dick Grayson origin material; Miller-supported DKR relation but contradictions exist. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ASBAR-0007.jpg" alt="All Star Batman &amp; Robin the Boy Wonder #7 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ASBAR-0007.jpg" data-full-title="All Star Batman &amp; Robin the Boy Wonder #7" data-full-detail="PUB-ASBAR-0007 | Seq 016 | extended_related | review | unfinished extended continuity | Published #7 of 10.; Published #7 of 10; narrative unfinished.; Young Batman/Dick Grayson material; Miller-supported DKR relation but contradictions exist.; Young Batman/Dick Grayson origin material; Miller-supported DKR relation but contradictions exist. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ASBAR-0007.jpg" data-display-src="../assets/covers/display/PUB-ASBAR-0007.jpg" alt="All Star Batman &amp; Robin the Boy Wonder #7 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">extended miller dkr related +1</span>
@@ -344,9 +397,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="extended_miller_dkr_related|extended_frank_miller_batman_chronology" data-project="all_star_batman_robin" data-status="owned" data-sequence="017" data-publication-sequence="017" data-chronological-sequence="017" data-publication-sequences="extended_frank_miller_batman_chronology:137|extended_miller_dkr_related:017" data-chronological-sequences="extended_frank_miller_batman_chronology:017|extended_miller_dkr_related:017" data-order-sequences="chronological:017|publication:017">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-ASBAR-0008" data-work="All Star Batman &amp; Robin the Boy Wonder" data-section="all_star_batman_robin" data-search="all star batman &amp; robin the boy wonder #8 pub-asbar-0008 all star batman &amp; robin the boy wonder 8 published #8 of 10.; published #8 of 10; narrative unfinished.; young batman/dick grayson material; miller-supported dkr relation but contradictions exist.; young batman/dick grayson origin material; miller-supported dkr relation but contradictions exist. extended_miller_dkr_related|extended_frank_miller_batman_chronology all_star_batman_robin" data-order="publication|chronological" data-scope="extended_miller_dkr_related|extended_frank_miller_batman_chronology" data-project="all_star_batman_robin" data-status="owned" data-sequence="017" data-publication-sequence="017" data-chronological-sequence="017" data-publication-sequences="extended_frank_miller_batman_chronology:137|extended_miller_dkr_related:017" data-chronological-sequences="extended_frank_miller_batman_chronology:017|extended_miller_dkr_related:017" data-order-sequences="chronological:017|publication:017">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ASBAR-0008.jpg" data-full-title="All Star Batman &amp; Robin the Boy Wonder #8" data-full-detail="PUB-ASBAR-0008 | Seq 017 | extended_related | review | unfinished extended continuity | Published #8 of 10.; Published #8 of 10; narrative unfinished.; Young Batman/Dick Grayson material; Miller-supported DKR relation but contradictions exist.; Young Batman/Dick Grayson origin material; Miller-supported DKR relation but contradictions exist. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ASBAR-0008.jpg" alt="All Star Batman &amp; Robin the Boy Wonder #8 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ASBAR-0008.jpg" data-full-title="All Star Batman &amp; Robin the Boy Wonder #8" data-full-detail="PUB-ASBAR-0008 | Seq 017 | extended_related | review | unfinished extended continuity | Published #8 of 10.; Published #8 of 10; narrative unfinished.; Young Batman/Dick Grayson material; Miller-supported DKR relation but contradictions exist.; Young Batman/Dick Grayson origin material; Miller-supported DKR relation but contradictions exist. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ASBAR-0008.jpg" data-display-src="../assets/covers/display/PUB-ASBAR-0008.jpg" alt="All Star Batman &amp; Robin the Boy Wonder #8 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">extended miller dkr related +1</span>
@@ -358,9 +411,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="extended_miller_dkr_related|extended_frank_miller_batman_chronology" data-project="all_star_batman_robin" data-status="owned" data-sequence="018" data-publication-sequence="018" data-chronological-sequence="018" data-publication-sequences="extended_frank_miller_batman_chronology:138|extended_miller_dkr_related:018" data-chronological-sequences="extended_frank_miller_batman_chronology:018|extended_miller_dkr_related:018" data-order-sequences="chronological:018|publication:018">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-ASBAR-0009" data-work="All Star Batman &amp; Robin the Boy Wonder" data-section="all_star_batman_robin" data-search="all star batman &amp; robin the boy wonder #9 pub-asbar-0009 all star batman &amp; robin the boy wonder 9 published #9 of 10.; published #9 of 10; narrative unfinished.; young batman/dick grayson material; miller-supported dkr relation but contradictions exist.; young batman/dick grayson origin material; miller-supported dkr relation but contradictions exist. extended_miller_dkr_related|extended_frank_miller_batman_chronology all_star_batman_robin" data-order="publication|chronological" data-scope="extended_miller_dkr_related|extended_frank_miller_batman_chronology" data-project="all_star_batman_robin" data-status="owned" data-sequence="018" data-publication-sequence="018" data-chronological-sequence="018" data-publication-sequences="extended_frank_miller_batman_chronology:138|extended_miller_dkr_related:018" data-chronological-sequences="extended_frank_miller_batman_chronology:018|extended_miller_dkr_related:018" data-order-sequences="chronological:018|publication:018">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ASBAR-0009.jpg" data-full-title="All Star Batman &amp; Robin the Boy Wonder #9" data-full-detail="PUB-ASBAR-0009 | Seq 018 | extended_related | review | unfinished extended continuity | Published #9 of 10.; Published #9 of 10; narrative unfinished.; Young Batman/Dick Grayson material; Miller-supported DKR relation but contradictions exist.; Young Batman/Dick Grayson origin material; Miller-supported DKR relation but contradictions exist. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ASBAR-0009.jpg" alt="All Star Batman &amp; Robin the Boy Wonder #9 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ASBAR-0009.jpg" data-full-title="All Star Batman &amp; Robin the Boy Wonder #9" data-full-detail="PUB-ASBAR-0009 | Seq 018 | extended_related | review | unfinished extended continuity | Published #9 of 10.; Published #9 of 10; narrative unfinished.; Young Batman/Dick Grayson material; Miller-supported DKR relation but contradictions exist.; Young Batman/Dick Grayson origin material; Miller-supported DKR relation but contradictions exist. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ASBAR-0009.jpg" data-display-src="../assets/covers/display/PUB-ASBAR-0009.jpg" alt="All Star Batman &amp; Robin the Boy Wonder #9 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">extended miller dkr related +1</span>
@@ -372,9 +425,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="extended_miller_dkr_related|extended_frank_miller_batman_chronology" data-project="all_star_batman_robin" data-status="owned" data-sequence="019" data-publication-sequence="019" data-chronological-sequence="019" data-publication-sequences="extended_frank_miller_batman_chronology:139|extended_miller_dkr_related:019" data-chronological-sequences="extended_frank_miller_batman_chronology:019|extended_miller_dkr_related:019" data-order-sequences="chronological:019|publication:019">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-ASBAR-0010" data-work="All Star Batman &amp; Robin the Boy Wonder" data-section="all_star_batman_robin" data-search="all star batman &amp; robin the boy wonder #10 pub-asbar-0010 all star batman &amp; robin the boy wonder 10 published #10 of 10; planned completion unpublished.; published run ends here; narrative unfinished. extended_miller_dkr_related|extended_frank_miller_batman_chronology all_star_batman_robin" data-order="publication|chronological" data-scope="extended_miller_dkr_related|extended_frank_miller_batman_chronology" data-project="all_star_batman_robin" data-status="owned" data-sequence="019" data-publication-sequence="019" data-chronological-sequence="019" data-publication-sequences="extended_frank_miller_batman_chronology:139|extended_miller_dkr_related:019" data-chronological-sequences="extended_frank_miller_batman_chronology:019|extended_miller_dkr_related:019" data-order-sequences="chronological:019|publication:019">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ASBAR-0010.jpg" data-full-title="All Star Batman &amp; Robin the Boy Wonder #10" data-full-detail="PUB-ASBAR-0010 | Seq 019 | extended_related | review | unfinished extended continuity | Published #10 of 10; planned completion unpublished.; Published run ends here; narrative unfinished. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ASBAR-0010.jpg" alt="All Star Batman &amp; Robin the Boy Wonder #10 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-ASBAR-0010.jpg" data-full-title="All Star Batman &amp; Robin the Boy Wonder #10" data-full-detail="PUB-ASBAR-0010 | Seq 019 | extended_related | review | unfinished extended continuity | Published #10 of 10; planned completion unpublished.; Published run ends here; narrative unfinished. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-ASBAR-0010.jpg" data-display-src="../assets/covers/display/PUB-ASBAR-0010.jpg" alt="All Star Batman &amp; Robin the Boy Wonder #10 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">extended miller dkr related +1</span>
@@ -386,9 +439,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="complete_dkr_continuity|extended_frank_miller_batman_chronology" data-project="dark_knight_last_crusade" data-status="owned" data-sequence="020" data-publication-sequence="040" data-chronological-sequence="020" data-publication-sequences="complete_dkr_continuity:040|extended_frank_miller_batman_chronology:150" data-chronological-sequences="complete_dkr_continuity:020|extended_frank_miller_batman_chronology:020" data-order-sequences="chronological:020|publication:040">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-DKR-LAST-CRUSADE-0001" data-work="Dark Knight Returns: The Last Crusade" data-section="dark_knight_last_crusade" data-search="dark knight returns: the last crusade #1 pub-dkr-last-crusade-0001 dark knight returns: the last crusade 1 prequel one-shot published after dk2.; takes place ten years before dkr. complete_dkr_continuity|extended_frank_miller_batman_chronology dark_knight_last_crusade" data-order="publication|chronological" data-scope="complete_dkr_continuity|extended_frank_miller_batman_chronology" data-project="dark_knight_last_crusade" data-status="owned" data-sequence="020" data-publication-sequence="040" data-chronological-sequence="020" data-publication-sequences="complete_dkr_continuity:040|extended_frank_miller_batman_chronology:150" data-chronological-sequences="complete_dkr_continuity:020|extended_frank_miller_batman_chronology:020" data-order-sequences="chronological:020|publication:040">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKR-LAST-CRUSADE-0001.jpg" data-full-title="Dark Knight Returns: The Last Crusade #1" data-full-detail="PUB-DKR-LAST-CRUSADE-0001 | Seq 020 | prequel | verified | core DKR continuity | Prequel one-shot published after DK2.; Takes place ten years before DKR. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKR-LAST-CRUSADE-0001.jpg" alt="Dark Knight Returns: The Last Crusade #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKR-LAST-CRUSADE-0001.jpg" data-full-title="Dark Knight Returns: The Last Crusade #1" data-full-detail="PUB-DKR-LAST-CRUSADE-0001 | Seq 020 | prequel | verified | core DKR continuity | Prequel one-shot published after DK2.; Takes place ten years before DKR. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKR-LAST-CRUSADE-0001.jpg" data-display-src="../assets/covers/display/PUB-DKR-LAST-CRUSADE-0001.jpg" alt="Dark Knight Returns: The Last Crusade #1 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">complete dkr continuity +1</span>
@@ -400,9 +453,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_returns" data-status="owned" data-sequence="030" data-publication-sequence="020" data-chronological-sequence="030" data-publication-sequences="core_batman_saga:020|extended_frank_miller_batman_chronology:100" data-chronological-sequences="core_batman_saga:030|extended_frank_miller_batman_chronology:030" data-order-sequences="chronological:030|publication:020">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-DKR-0001" data-work="The Dark Knight Returns" data-section="dark_knight_returns" data-search="the dark knight returns #1 pub-dkr-0001 the dark knight returns 1 original miniseries #1.; published before batman: year one; included in cumulative frank miller batman publication chronology. core_batman_saga|extended_frank_miller_batman_chronology dark_knight_returns" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_returns" data-status="owned" data-sequence="030" data-publication-sequence="020" data-chronological-sequence="030" data-publication-sequences="core_batman_saga:020|extended_frank_miller_batman_chronology:100" data-chronological-sequences="core_batman_saga:030|extended_frank_miller_batman_chronology:030" data-order-sequences="chronological:030|publication:020">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKR-0001.jpg" data-full-title="The Dark Knight Returns #1" data-full-detail="PUB-DKR-0001 | Seq 030 | core | verified | core DKR continuity | Original miniseries #1.; Published before Batman: Year One; included in cumulative Frank Miller Batman publication chronology. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKR-0001.jpg" alt="The Dark Knight Returns #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKR-0001.jpg" data-full-title="The Dark Knight Returns #1" data-full-detail="PUB-DKR-0001 | Seq 030 | core | verified | core DKR continuity | Original miniseries #1.; Published before Batman: Year One; included in cumulative Frank Miller Batman publication chronology. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKR-0001.jpg" data-display-src="../assets/covers/display/PUB-DKR-0001.jpg" alt="The Dark Knight Returns #1 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core batman saga +1</span>
@@ -414,9 +467,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_returns" data-status="owned" data-sequence="031" data-publication-sequence="021" data-chronological-sequence="031" data-publication-sequences="core_batman_saga:021|extended_frank_miller_batman_chronology:101" data-chronological-sequences="core_batman_saga:031|extended_frank_miller_batman_chronology:031" data-order-sequences="chronological:031|publication:021">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-DKR-0002" data-work="The Dark Knight Returns" data-section="dark_knight_returns" data-search="the dark knight returns #2 pub-dkr-0002 the dark knight returns 2 original miniseries #2.; published before batman: year one; included in cumulative frank miller batman publication chronology. core_batman_saga|extended_frank_miller_batman_chronology dark_knight_returns" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_returns" data-status="owned" data-sequence="031" data-publication-sequence="021" data-chronological-sequence="031" data-publication-sequences="core_batman_saga:021|extended_frank_miller_batman_chronology:101" data-chronological-sequences="core_batman_saga:031|extended_frank_miller_batman_chronology:031" data-order-sequences="chronological:031|publication:021">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKR-0002.jpg" data-full-title="The Dark Knight Returns #2" data-full-detail="PUB-DKR-0002 | Seq 031 | core | verified | core DKR continuity | Original miniseries #2.; Published before Batman: Year One; included in cumulative Frank Miller Batman publication chronology. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKR-0002.jpg" alt="The Dark Knight Returns #2 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKR-0002.jpg" data-full-title="The Dark Knight Returns #2" data-full-detail="PUB-DKR-0002 | Seq 031 | core | verified | core DKR continuity | Original miniseries #2.; Published before Batman: Year One; included in cumulative Frank Miller Batman publication chronology. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKR-0002.jpg" data-display-src="../assets/covers/display/PUB-DKR-0002.jpg" alt="The Dark Knight Returns #2 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core batman saga +1</span>
@@ -428,9 +481,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_returns" data-status="owned" data-sequence="032" data-publication-sequence="022" data-chronological-sequence="032" data-publication-sequences="core_batman_saga:022|extended_frank_miller_batman_chronology:102" data-chronological-sequences="core_batman_saga:032|extended_frank_miller_batman_chronology:032" data-order-sequences="chronological:032|publication:022">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-DKR-0003" data-work="The Dark Knight Returns" data-section="dark_knight_returns" data-search="the dark knight returns #3 pub-dkr-0003 the dark knight returns 3 original miniseries #3.; published before batman: year one; included in cumulative frank miller batman publication chronology. core_batman_saga|extended_frank_miller_batman_chronology dark_knight_returns" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_returns" data-status="owned" data-sequence="032" data-publication-sequence="022" data-chronological-sequence="032" data-publication-sequences="core_batman_saga:022|extended_frank_miller_batman_chronology:102" data-chronological-sequences="core_batman_saga:032|extended_frank_miller_batman_chronology:032" data-order-sequences="chronological:032|publication:022">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKR-0003.jpg" data-full-title="The Dark Knight Returns #3" data-full-detail="PUB-DKR-0003 | Seq 032 | core | verified | core DKR continuity | Original miniseries #3.; Published before Batman: Year One; included in cumulative Frank Miller Batman publication chronology. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKR-0003.jpg" alt="The Dark Knight Returns #3 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKR-0003.jpg" data-full-title="The Dark Knight Returns #3" data-full-detail="PUB-DKR-0003 | Seq 032 | core | verified | core DKR continuity | Original miniseries #3.; Published before Batman: Year One; included in cumulative Frank Miller Batman publication chronology. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKR-0003.jpg" data-display-src="../assets/covers/display/PUB-DKR-0003.jpg" alt="The Dark Knight Returns #3 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core batman saga +1</span>
@@ -442,9 +495,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_returns" data-status="owned" data-sequence="033" data-publication-sequence="023" data-chronological-sequence="033" data-publication-sequences="core_batman_saga:023|extended_frank_miller_batman_chronology:103" data-chronological-sequences="core_batman_saga:033|extended_frank_miller_batman_chronology:033" data-order-sequences="chronological:033|publication:023">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-DKR-0004" data-work="The Dark Knight Returns" data-section="dark_knight_returns" data-search="the dark knight returns #4 pub-dkr-0004 the dark knight returns 4 original miniseries #4.; published before batman: year one; included in cumulative frank miller batman publication chronology. core_batman_saga|extended_frank_miller_batman_chronology dark_knight_returns" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_returns" data-status="owned" data-sequence="033" data-publication-sequence="023" data-chronological-sequence="033" data-publication-sequences="core_batman_saga:023|extended_frank_miller_batman_chronology:103" data-chronological-sequences="core_batman_saga:033|extended_frank_miller_batman_chronology:033" data-order-sequences="chronological:033|publication:023">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKR-0004.jpg" data-full-title="The Dark Knight Returns #4" data-full-detail="PUB-DKR-0004 | Seq 033 | core | verified | core DKR continuity | Original miniseries #4.; Published before Batman: Year One; included in cumulative Frank Miller Batman publication chronology. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKR-0004.jpg" alt="The Dark Knight Returns #4 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKR-0004.jpg" data-full-title="The Dark Knight Returns #4" data-full-detail="PUB-DKR-0004 | Seq 033 | core | verified | core DKR continuity | Original miniseries #4.; Published before Batman: Year One; included in cumulative Frank Miller Batman publication chronology. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKR-0004.jpg" data-display-src="../assets/covers/display/PUB-DKR-0004.jpg" alt="The Dark Knight Returns #4 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core batman saga +1</span>
@@ -456,9 +509,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_strikes_again" data-status="owned" data-sequence="040" data-publication-sequence="030" data-chronological-sequence="040" data-publication-sequences="core_batman_saga:030|extended_frank_miller_batman_chronology:140" data-chronological-sequences="core_batman_saga:040|extended_frank_miller_batman_chronology:040" data-order-sequences="chronological:040|publication:030">
-        <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DK2-0001.jpg" data-full-title="Batman: The Dark Knight Strikes Again #1" data-full-detail="PUB-DK2-0001 | Seq 040 | core | verified | core DKR continuity | DK2 #1. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DK2-0001.jpg" alt="Batman: The Dark Knight Strikes Again #1 cover"></button></div>
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-DK2-0001" data-work="Batman: The Dark Knight Strikes Again" data-section="dark_knight_strikes_again" data-search="batman: the dark knight strikes again #1 pub-dk2-0001 batman: the dark knight strikes again 1 dk2 #1. core_batman_saga|extended_frank_miller_batman_chronology dark_knight_strikes_again" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_strikes_again" data-status="owned" data-sequence="040" data-publication-sequence="030" data-chronological-sequence="040" data-publication-sequences="core_batman_saga:030|extended_frank_miller_batman_chronology:140" data-chronological-sequences="core_batman_saga:040|extended_frank_miller_batman_chronology:040" data-order-sequences="chronological:040|publication:030">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DK2-0001.jpg" data-full-title="Batman: The Dark Knight Strikes Again #1" data-full-detail="PUB-DK2-0001 | Seq 040 | core | verified | core DKR continuity | DK2 #1. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DK2-0001.jpg" data-display-src="../assets/covers/display/PUB-DK2-0001.jpg" alt="Batman: The Dark Knight Strikes Again #1 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core batman saga +1</span>
@@ -470,9 +523,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_strikes_again" data-status="owned" data-sequence="041" data-publication-sequence="031" data-chronological-sequence="041" data-publication-sequences="core_batman_saga:031|extended_frank_miller_batman_chronology:141" data-chronological-sequences="core_batman_saga:041|extended_frank_miller_batman_chronology:041" data-order-sequences="chronological:041|publication:031">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-DK2-0002" data-work="Batman: The Dark Knight Strikes Again" data-section="dark_knight_strikes_again" data-search="batman: the dark knight strikes again #2 pub-dk2-0002 batman: the dark knight strikes again 2 dk2 #2. core_batman_saga|extended_frank_miller_batman_chronology dark_knight_strikes_again" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_strikes_again" data-status="owned" data-sequence="041" data-publication-sequence="031" data-chronological-sequence="041" data-publication-sequences="core_batman_saga:031|extended_frank_miller_batman_chronology:141" data-chronological-sequences="core_batman_saga:041|extended_frank_miller_batman_chronology:041" data-order-sequences="chronological:041|publication:031">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DK2-0002.jpg" data-full-title="Batman: The Dark Knight Strikes Again #2" data-full-detail="PUB-DK2-0002 | Seq 041 | core | verified | core DKR continuity | DK2 #2. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DK2-0002.jpg" alt="Batman: The Dark Knight Strikes Again #2 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DK2-0002.jpg" data-full-title="Batman: The Dark Knight Strikes Again #2" data-full-detail="PUB-DK2-0002 | Seq 041 | core | verified | core DKR continuity | DK2 #2. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DK2-0002.jpg" data-display-src="../assets/covers/display/PUB-DK2-0002.jpg" alt="Batman: The Dark Knight Strikes Again #2 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core batman saga +1</span>
@@ -484,9 +537,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_strikes_again" data-status="owned" data-sequence="042" data-publication-sequence="032" data-chronological-sequence="042" data-publication-sequences="core_batman_saga:032|extended_frank_miller_batman_chronology:142" data-chronological-sequences="core_batman_saga:042|extended_frank_miller_batman_chronology:042" data-order-sequences="chronological:042|publication:032">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-DK2-0003" data-work="Batman: The Dark Knight Strikes Again" data-section="dark_knight_strikes_again" data-search="batman: the dark knight strikes again #3 pub-dk2-0003 batman: the dark knight strikes again 3 dk2 #3. core_batman_saga|extended_frank_miller_batman_chronology dark_knight_strikes_again" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_strikes_again" data-status="owned" data-sequence="042" data-publication-sequence="032" data-chronological-sequence="042" data-publication-sequences="core_batman_saga:032|extended_frank_miller_batman_chronology:142" data-chronological-sequences="core_batman_saga:042|extended_frank_miller_batman_chronology:042" data-order-sequences="chronological:042|publication:032">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DK2-0003.jpg" data-full-title="Batman: The Dark Knight Strikes Again #3" data-full-detail="PUB-DK2-0003 | Seq 042 | core | verified | core DKR continuity | DK2 #3. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DK2-0003.jpg" alt="Batman: The Dark Knight Strikes Again #3 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DK2-0003.jpg" data-full-title="Batman: The Dark Knight Strikes Again #3" data-full-detail="PUB-DK2-0003 | Seq 042 | core | verified | core DKR continuity | DK2 #3. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DK2-0003.jpg" data-display-src="../assets/covers/display/PUB-DK2-0003.jpg" alt="Batman: The Dark Knight Strikes Again #3 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core batman saga +1</span>
@@ -498,9 +551,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_master_race" data-status="owned" data-sequence="050" data-publication-sequence="050" data-chronological-sequence="050" data-publication-sequences="core_batman_saga:050|extended_frank_miller_batman_chronology:160" data-chronological-sequences="core_batman_saga:050|extended_frank_miller_batman_chronology:050" data-order-sequences="chronological:050|publication:050">
-        <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKIII-0001.jpg" data-full-title="Dark Knight III: The Master Race #1" data-full-detail="PUB-DKIII-0001 | Seq 050 | core | verified | core DKR continuity | DKIII #1. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKIII-0001.jpg" alt="Dark Knight III: The Master Race #1 cover"></button></div>
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-DKIII-0001" data-work="Dark Knight III: The Master Race" data-section="dark_knight_master_race" data-search="dark knight iii: the master race #1 pub-dkiii-0001 dark knight iii: the master race 1 dkiii #1. core_batman_saga|extended_frank_miller_batman_chronology dark_knight_master_race" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_master_race" data-status="owned" data-sequence="050" data-publication-sequence="050" data-chronological-sequence="050" data-publication-sequences="core_batman_saga:050|extended_frank_miller_batman_chronology:160" data-chronological-sequences="core_batman_saga:050|extended_frank_miller_batman_chronology:050" data-order-sequences="chronological:050|publication:050">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKIII-0001.jpg" data-full-title="Dark Knight III: The Master Race #1" data-full-detail="PUB-DKIII-0001 | Seq 050 | core | verified | core DKR continuity | DKIII #1. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKIII-0001.jpg" data-display-src="../assets/covers/display/PUB-DKIII-0001.jpg" alt="Dark Knight III: The Master Race #1 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core batman saga +1</span>
@@ -512,9 +565,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_master_race" data-status="owned" data-sequence="051" data-publication-sequence="051" data-chronological-sequence="051" data-publication-sequences="core_batman_saga:051|extended_frank_miller_batman_chronology:161" data-chronological-sequences="core_batman_saga:051|extended_frank_miller_batman_chronology:051" data-order-sequences="chronological:051|publication:051">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-DKIII-0002" data-work="Dark Knight III: The Master Race" data-section="dark_knight_master_race" data-search="dark knight iii: the master race #2 pub-dkiii-0002 dark knight iii: the master race 2 dkiii #2. core_batman_saga|extended_frank_miller_batman_chronology dark_knight_master_race" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_master_race" data-status="owned" data-sequence="051" data-publication-sequence="051" data-chronological-sequence="051" data-publication-sequences="core_batman_saga:051|extended_frank_miller_batman_chronology:161" data-chronological-sequences="core_batman_saga:051|extended_frank_miller_batman_chronology:051" data-order-sequences="chronological:051|publication:051">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKIII-0002.jpg" data-full-title="Dark Knight III: The Master Race #2" data-full-detail="PUB-DKIII-0002 | Seq 051 | core | verified | core DKR continuity | DKIII #2. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKIII-0002.jpg" alt="Dark Knight III: The Master Race #2 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKIII-0002.jpg" data-full-title="Dark Knight III: The Master Race #2" data-full-detail="PUB-DKIII-0002 | Seq 051 | core | verified | core DKR continuity | DKIII #2. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKIII-0002.jpg" data-display-src="../assets/covers/display/PUB-DKIII-0002.jpg" alt="Dark Knight III: The Master Race #2 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core batman saga +1</span>
@@ -526,9 +579,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_master_race" data-status="owned" data-sequence="052" data-publication-sequence="052" data-chronological-sequence="052" data-publication-sequences="core_batman_saga:052|extended_frank_miller_batman_chronology:162" data-chronological-sequences="core_batman_saga:052|extended_frank_miller_batman_chronology:052" data-order-sequences="chronological:052|publication:052">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-DKIII-0003" data-work="Dark Knight III: The Master Race" data-section="dark_knight_master_race" data-search="dark knight iii: the master race #3 pub-dkiii-0003 dark knight iii: the master race 3 dkiii #3. core_batman_saga|extended_frank_miller_batman_chronology dark_knight_master_race" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_master_race" data-status="owned" data-sequence="052" data-publication-sequence="052" data-chronological-sequence="052" data-publication-sequences="core_batman_saga:052|extended_frank_miller_batman_chronology:162" data-chronological-sequences="core_batman_saga:052|extended_frank_miller_batman_chronology:052" data-order-sequences="chronological:052|publication:052">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKIII-0003.jpg" data-full-title="Dark Knight III: The Master Race #3" data-full-detail="PUB-DKIII-0003 | Seq 052 | core | verified | core DKR continuity | DKIII #3. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKIII-0003.jpg" alt="Dark Knight III: The Master Race #3 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKIII-0003.jpg" data-full-title="Dark Knight III: The Master Race #3" data-full-detail="PUB-DKIII-0003 | Seq 052 | core | verified | core DKR continuity | DKIII #3. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKIII-0003.jpg" data-display-src="../assets/covers/display/PUB-DKIII-0003.jpg" alt="Dark Knight III: The Master Race #3 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core batman saga +1</span>
@@ -540,9 +593,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_master_race" data-status="owned" data-sequence="053" data-publication-sequence="053" data-chronological-sequence="053" data-publication-sequences="core_batman_saga:053|extended_frank_miller_batman_chronology:163" data-chronological-sequences="core_batman_saga:053|extended_frank_miller_batman_chronology:053" data-order-sequences="chronological:053|publication:053">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-DKIII-0004" data-work="Dark Knight III: The Master Race" data-section="dark_knight_master_race" data-search="dark knight iii: the master race #4 pub-dkiii-0004 dark knight iii: the master race 4 dkiii #4. core_batman_saga|extended_frank_miller_batman_chronology dark_knight_master_race" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_master_race" data-status="owned" data-sequence="053" data-publication-sequence="053" data-chronological-sequence="053" data-publication-sequences="core_batman_saga:053|extended_frank_miller_batman_chronology:163" data-chronological-sequences="core_batman_saga:053|extended_frank_miller_batman_chronology:053" data-order-sequences="chronological:053|publication:053">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKIII-0004.jpg" data-full-title="Dark Knight III: The Master Race #4" data-full-detail="PUB-DKIII-0004 | Seq 053 | core | verified | core DKR continuity | DKIII #4. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKIII-0004.jpg" alt="Dark Knight III: The Master Race #4 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKIII-0004.jpg" data-full-title="Dark Knight III: The Master Race #4" data-full-detail="PUB-DKIII-0004 | Seq 053 | core | verified | core DKR continuity | DKIII #4. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKIII-0004.jpg" data-display-src="../assets/covers/display/PUB-DKIII-0004.jpg" alt="Dark Knight III: The Master Race #4 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core batman saga +1</span>
@@ -554,9 +607,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_master_race" data-status="owned" data-sequence="054" data-publication-sequence="054" data-chronological-sequence="054" data-publication-sequences="core_batman_saga:054|extended_frank_miller_batman_chronology:164" data-chronological-sequences="core_batman_saga:054|extended_frank_miller_batman_chronology:054" data-order-sequences="chronological:054|publication:054">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-DKIII-0005" data-work="Dark Knight III: The Master Race" data-section="dark_knight_master_race" data-search="dark knight iii: the master race #5 pub-dkiii-0005 dark knight iii: the master race 5 dkiii #5. core_batman_saga|extended_frank_miller_batman_chronology dark_knight_master_race" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_master_race" data-status="owned" data-sequence="054" data-publication-sequence="054" data-chronological-sequence="054" data-publication-sequences="core_batman_saga:054|extended_frank_miller_batman_chronology:164" data-chronological-sequences="core_batman_saga:054|extended_frank_miller_batman_chronology:054" data-order-sequences="chronological:054|publication:054">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKIII-0005.jpg" data-full-title="Dark Knight III: The Master Race #5" data-full-detail="PUB-DKIII-0005 | Seq 054 | core | verified | core DKR continuity | DKIII #5. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKIII-0005.jpg" alt="Dark Knight III: The Master Race #5 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKIII-0005.jpg" data-full-title="Dark Knight III: The Master Race #5" data-full-detail="PUB-DKIII-0005 | Seq 054 | core | verified | core DKR continuity | DKIII #5. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKIII-0005.jpg" data-display-src="../assets/covers/display/PUB-DKIII-0005.jpg" alt="Dark Knight III: The Master Race #5 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core batman saga +1</span>
@@ -568,9 +621,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_master_race" data-status="owned" data-sequence="055" data-publication-sequence="055" data-chronological-sequence="055" data-publication-sequences="core_batman_saga:055|extended_frank_miller_batman_chronology:165" data-chronological-sequences="core_batman_saga:055|extended_frank_miller_batman_chronology:055" data-order-sequences="chronological:055|publication:055">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-DKIII-0006" data-work="Dark Knight III: The Master Race" data-section="dark_knight_master_race" data-search="dark knight iii: the master race #6 pub-dkiii-0006 dark knight iii: the master race 6 dkiii #6. core_batman_saga|extended_frank_miller_batman_chronology dark_knight_master_race" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_master_race" data-status="owned" data-sequence="055" data-publication-sequence="055" data-chronological-sequence="055" data-publication-sequences="core_batman_saga:055|extended_frank_miller_batman_chronology:165" data-chronological-sequences="core_batman_saga:055|extended_frank_miller_batman_chronology:055" data-order-sequences="chronological:055|publication:055">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKIII-0006.jpg" data-full-title="Dark Knight III: The Master Race #6" data-full-detail="PUB-DKIII-0006 | Seq 055 | core | verified | core DKR continuity | DKIII #6. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKIII-0006.jpg" alt="Dark Knight III: The Master Race #6 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKIII-0006.jpg" data-full-title="Dark Knight III: The Master Race #6" data-full-detail="PUB-DKIII-0006 | Seq 055 | core | verified | core DKR continuity | DKIII #6. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKIII-0006.jpg" data-display-src="../assets/covers/display/PUB-DKIII-0006.jpg" alt="Dark Knight III: The Master Race #6 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core batman saga +1</span>
@@ -582,9 +635,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_master_race" data-status="owned" data-sequence="056" data-publication-sequence="056" data-chronological-sequence="056" data-publication-sequences="core_batman_saga:056|extended_frank_miller_batman_chronology:166" data-chronological-sequences="core_batman_saga:056|extended_frank_miller_batman_chronology:056" data-order-sequences="chronological:056|publication:056">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-DKIII-0007" data-work="Dark Knight III: The Master Race" data-section="dark_knight_master_race" data-search="dark knight iii: the master race #7 pub-dkiii-0007 dark knight iii: the master race 7 dkiii #7. core_batman_saga|extended_frank_miller_batman_chronology dark_knight_master_race" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_master_race" data-status="owned" data-sequence="056" data-publication-sequence="056" data-chronological-sequence="056" data-publication-sequences="core_batman_saga:056|extended_frank_miller_batman_chronology:166" data-chronological-sequences="core_batman_saga:056|extended_frank_miller_batman_chronology:056" data-order-sequences="chronological:056|publication:056">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKIII-0007.jpg" data-full-title="Dark Knight III: The Master Race #7" data-full-detail="PUB-DKIII-0007 | Seq 056 | core | verified | core DKR continuity | DKIII #7. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKIII-0007.jpg" alt="Dark Knight III: The Master Race #7 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKIII-0007.jpg" data-full-title="Dark Knight III: The Master Race #7" data-full-detail="PUB-DKIII-0007 | Seq 056 | core | verified | core DKR continuity | DKIII #7. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKIII-0007.jpg" data-display-src="../assets/covers/display/PUB-DKIII-0007.jpg" alt="Dark Knight III: The Master Race #7 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core batman saga +1</span>
@@ -596,9 +649,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_master_race" data-status="owned" data-sequence="057" data-publication-sequence="057" data-chronological-sequence="057" data-publication-sequences="core_batman_saga:057|extended_frank_miller_batman_chronology:167" data-chronological-sequences="core_batman_saga:057|extended_frank_miller_batman_chronology:057" data-order-sequences="chronological:057|publication:057">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-DKIII-0008" data-work="Dark Knight III: The Master Race" data-section="dark_knight_master_race" data-search="dark knight iii: the master race #8 pub-dkiii-0008 dark knight iii: the master race 8 dkiii #8. core_batman_saga|extended_frank_miller_batman_chronology dark_knight_master_race" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_master_race" data-status="owned" data-sequence="057" data-publication-sequence="057" data-chronological-sequence="057" data-publication-sequences="core_batman_saga:057|extended_frank_miller_batman_chronology:167" data-chronological-sequences="core_batman_saga:057|extended_frank_miller_batman_chronology:057" data-order-sequences="chronological:057|publication:057">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKIII-0008.jpg" data-full-title="Dark Knight III: The Master Race #8" data-full-detail="PUB-DKIII-0008 | Seq 057 | core | verified | core DKR continuity | DKIII #8. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKIII-0008.jpg" alt="Dark Knight III: The Master Race #8 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKIII-0008.jpg" data-full-title="Dark Knight III: The Master Race #8" data-full-detail="PUB-DKIII-0008 | Seq 057 | core | verified | core DKR continuity | DKIII #8. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKIII-0008.jpg" data-display-src="../assets/covers/display/PUB-DKIII-0008.jpg" alt="Dark Knight III: The Master Race #8 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core batman saga +1</span>
@@ -610,9 +663,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_master_race" data-status="owned" data-sequence="058" data-publication-sequence="058" data-chronological-sequence="058" data-publication-sequences="core_batman_saga:058|extended_frank_miller_batman_chronology:168" data-chronological-sequences="core_batman_saga:058|extended_frank_miller_batman_chronology:058" data-order-sequences="chronological:058|publication:058">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-DKIII-0009" data-work="Dark Knight III: The Master Race" data-section="dark_knight_master_race" data-search="dark knight iii: the master race #9 pub-dkiii-0009 dark knight iii: the master race 9 dkiii #9. core_batman_saga|extended_frank_miller_batman_chronology dark_knight_master_race" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_master_race" data-status="owned" data-sequence="058" data-publication-sequence="058" data-chronological-sequence="058" data-publication-sequences="core_batman_saga:058|extended_frank_miller_batman_chronology:168" data-chronological-sequences="core_batman_saga:058|extended_frank_miller_batman_chronology:058" data-order-sequences="chronological:058|publication:058">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKIII-0009.jpg" data-full-title="Dark Knight III: The Master Race #9" data-full-detail="PUB-DKIII-0009 | Seq 058 | core | verified | core DKR continuity | DKIII #9. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKIII-0009.jpg" alt="Dark Knight III: The Master Race #9 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKIII-0009.jpg" data-full-title="Dark Knight III: The Master Race #9" data-full-detail="PUB-DKIII-0009 | Seq 058 | core | verified | core DKR continuity | DKIII #9. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKIII-0009.jpg" data-display-src="../assets/covers/display/PUB-DKIII-0009.jpg" alt="Dark Knight III: The Master Race #9 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core batman saga +1</span>
@@ -624,9 +677,9 @@
       </article>
     
 
-      <article class="comic-card owned cover-approved_auto" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_golden_child" data-status="owned" data-sequence="060" data-publication-sequence="070" data-chronological-sequence="060" data-publication-sequences="core_batman_saga:070|extended_frank_miller_batman_chronology:180" data-chronological-sequences="core_batman_saga:060|extended_frank_miller_batman_chronology:060" data-order-sequences="chronological:060|publication:070">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-DKR-GOLDEN-CHILD-0001" data-work="Dark Knight Returns: The Golden Child" data-section="dark_knight_golden_child" data-search="dark knight returns: the golden child #1 pub-dkr-golden-child-0001 dark knight returns: the golden child 1 one-shot after dkiii.; set three years after dkiii. core_batman_saga|extended_frank_miller_batman_chronology dark_knight_golden_child" data-order="publication|chronological" data-scope="core_batman_saga|extended_frank_miller_batman_chronology" data-project="dark_knight_golden_child" data-status="owned" data-sequence="060" data-publication-sequence="070" data-chronological-sequence="060" data-publication-sequences="core_batman_saga:070|extended_frank_miller_batman_chronology:180" data-chronological-sequences="core_batman_saga:060|extended_frank_miller_batman_chronology:060" data-order-sequences="chronological:060|publication:070">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKR-GOLDEN-CHILD-0001.jpg" data-full-title="Dark Knight Returns: The Golden Child #1" data-full-detail="PUB-DKR-GOLDEN-CHILD-0001 | Seq 060 | core | verified | core DKR continuity | One-shot after DKIII.; Set three years after DKIII. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKR-GOLDEN-CHILD-0001.jpg" alt="Dark Knight Returns: The Golden Child #1 cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-DKR-GOLDEN-CHILD-0001.jpg" data-full-title="Dark Knight Returns: The Golden Child #1" data-full-detail="PUB-DKR-GOLDEN-CHILD-0001 | Seq 060 | core | verified | core DKR continuity | One-shot after DKIII.; Set three years after DKIII. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-DKR-GOLDEN-CHILD-0001.jpg" data-display-src="../assets/covers/display/PUB-DKR-GOLDEN-CHILD-0001.jpg" alt="Dark Knight Returns: The Golden Child #1 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">core batman saga +1</span>
@@ -640,48 +693,142 @@
   </main>
   <div class="lightbox" aria-modal="true" role="dialog" aria-label="Cover preview">
     <div class="lightbox-panel">
-      <img src="" alt="">
+      <button class="lightbox-nav" type="button" data-lightbox-previous aria-label="Previous cover">&#8249;</button>
+      <div class="lightbox-image-wrap"><img src="" alt=""></div>
+      <button class="lightbox-nav" type="button" data-lightbox-next aria-label="Next cover">&#8250;</button>
       <div class="lightbox-caption">
         <div>
           <div class="lightbox-title"></div>
           <div class="lightbox-detail"></div>
         </div>
+        <span class="lightbox-position"></span>
         <button class="lightbox-close" type="button" data-lightbox-close>Close</button>
       </div>
     </div>
   </div>
+  <div class="keyboard-help" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
+    <div class="keyboard-help-panel">
+      <h2>Keyboard shortcuts</h2>
+      <div class="shortcut-grid"><kbd>/</kbd><span>Search</span><kbd>F</kbd><span>Filters</span><kbd>B</kbd><span>Browse cards</span><kbd>Arrow keys</kbd><span>Move selection or preview</span><kbd>Enter</kbd><span>Open selected cover</span><kbd>M</kbd><span>Missing</span><kbd>O</kbd><span>Owned</span><kbd>A</kbd><span>All statuses</span><kbd>C</kbd><span>Cover/detail density</span><kbd>Esc</kbd><span>Close or clear</span></div>
+      <button class="tool-button" type="button" data-close-help>Close</button>
+    </div>
+  </div>
+  <nav class="mobile-tools" aria-label="Viewer tools"><button type="button" data-mobile-search title="Search" aria-label="Search">S</button><button type="button" data-mobile-filter title="Filters" aria-label="Filters">F</button><button type="button" data-mobile-density title="Cover density" aria-label="Cover density">C</button><button type="button" data-mobile-top title="Back to top" aria-label="Back to top">&uarr;</button></nav>
   <script>
-    const state = { order: 'chronological', scope: 'extended_frank_miller_batman_chronology', project: 'all', status: 'all' };
+    const state = { order: 'chronological', scope: 'extended_frank_miller_batman_chronology', project: 'all', status: 'all', query: '' };
     const grid = document.querySelector('.grid');
+    const cards = [...document.querySelectorAll('.comic-card')];
     const lightbox = document.querySelector('.lightbox');
     const lightboxImage = document.querySelector('.lightbox img');
     const lightboxTitle = document.querySelector('.lightbox-title');
     const lightboxDetail = document.querySelector('.lightbox-detail');
+    const lightboxPosition = document.querySelector('.lightbox-position');
+    const previousButton = document.querySelector('[data-lightbox-previous]');
+    const nextButton = document.querySelector('[data-lightbox-next]');
     const controls = document.querySelector('.controls');
     const filterToggle = document.querySelector('.filter-toggle');
+    const filterSummary = document.querySelector('.filter-summary');
+    const search = document.querySelector('.viewer-search');
+    const searchClear = document.querySelector('.search-clear');
+    const visibleCount = document.querySelector('.visible-count');
+    const sectionJump = document.querySelector('.section-jump');
+    const densityButton = document.querySelector('[data-toggle-density]');
+    const storiesButton = document.querySelector('[data-toggle-stories]');
+    const browseButton = document.querySelector('[data-toggle-browse]');
+    const help = document.querySelector('.keyboard-help');
+    const filterStorageKey = 'gothamViewerFiltersOpen';
+    const stateStorageKey = `gothamViewerState:${location.pathname}`;
+    let currentPreviewButton = null;
+    let selectedCard = null;
+    let browseMode = false;
+    let storiesVisible = false;
+    let touchStartX = 0;
+    let swipedPreview = false;
+    let savedViewState = {};
+
+    function safeStore(key, value) { try { localStorage.setItem(key, value); } catch (error) {} }
+    function safeRead(key) { try { return localStorage.getItem(key); } catch (error) { return null; } }
+    function humanize(value) { return String(value || '').replaceAll('_', ' '); }
+    function validFilter(key, value) {
+      return value === 'all' || !!document.querySelector(`.chip[data-filter="${key}"][data-value="${CSS.escape(value)}"]`);
+    }
+    try {
+      const saved = JSON.parse(safeRead(stateStorageKey) || '{}');
+      savedViewState = saved;
+      ['order', 'scope', 'project', 'status'].forEach(key => {
+        if (saved[key] && validFilter(key, saved[key])) state[key] = saved[key];
+      });
+      if (saved.density === 'compact') document.body.classList.add('compact-view');
+      storiesVisible = saved.stories === true;
+    } catch (error) {}
+    if (safeRead(filterStorageKey) === 'true') {
+      controls.classList.add('open');
+      filterToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function saveState() {
+      safeStore(stateStorageKey, JSON.stringify({ ...state, query: '', density: document.body.classList.contains('compact-view') ? 'compact' : 'details', stories: storiesVisible, scrollY: window.scrollY, lastPublication: selectedCard?.dataset.publicationId || '' }));
+    }
+    function setFilter(group, value) {
+      state[group] = value;
+      document.querySelectorAll(`.chip[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item.dataset.value === value));
+      document.querySelectorAll(`.metric[data-status]`).forEach(item => item.classList.toggle('active', group === 'status' && item.dataset.status === value));
+      applyFilters();
+      updateFilterSummary();
+      saveState();
+    }
     filterToggle.addEventListener('click', () => {
       const open = controls.classList.toggle('open');
       filterToggle.setAttribute('aria-expanded', String(open));
+      safeStore(filterStorageKey, String(open));
     });
-    document.querySelectorAll('.chip').forEach(button => {
-      button.addEventListener('click', () => {
-        const group = button.dataset.filter;
-        state[group] = button.dataset.value;
-        document.querySelectorAll(`.chip[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item === button));
-        applyFilters();
-      });
-    });
+    document.querySelectorAll('.chip').forEach(button => button.addEventListener('click', () => setFilter(button.dataset.filter, button.dataset.value)));
+    document.querySelectorAll('.metric[data-status]').forEach(button => button.addEventListener('click', () => setFilter('status', button.dataset.status)));
+    search.addEventListener('input', () => { state.query = search.value.trim().toLocaleLowerCase(); applyFilters(); });
+    searchClear.addEventListener('click', () => { search.value = ''; state.query = ''; applyFilters(); search.focus(); });
+    densityButton.addEventListener('click', toggleDensity);
+    storiesButton.addEventListener('click', toggleStories);
+    browseButton.addEventListener('click', () => setBrowseMode(!browseMode));
+    document.querySelector('[data-open-help]').addEventListener('click', openHelp);
+    document.querySelector('[data-close-help]').addEventListener('click', closeHelp);
+    help.addEventListener('click', event => { if (event.target === help) closeHelp(); });
+
+    function updateFilterSummary() {
+      const selected = ['order', 'scope', 'project', 'status'].map(key => state[key]).filter(value => value && value !== 'all').map(humanize);
+      filterSummary.textContent = selected.length ? selected.join(' · ') : 'All';
+    }
     function applyFilters() {
-      document.querySelectorAll('.comic-card').forEach(card => {
-        const visible = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]));
-        card.classList.toggle('hidden', !visible);
+      cards.forEach(card => {
+        const matches = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]));
+        const searched = !state.query || card.dataset.search.includes(state.query);
+        card.classList.toggle('hidden', !(matches && searched));
       });
       sortCards();
+      const visible = visibleCards();
+      visibleCount.textContent = `${visible.length} of ${cards.length}`;
+      if (browseMode && (!selectedCard || selectedCard.classList.contains('hidden'))) selectCard(visible[0] || null);
     }
     function sortCards() {
-      [...document.querySelectorAll('.comic-card')]
-        .sort((left, right) => sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent))
-        .forEach(card => grid.appendChild(card));
+      grid.querySelectorAll('.chapter-divider').forEach(item => item.remove());
+      cards.sort((left, right) => sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent)).forEach(card => grid.appendChild(card));
+      renderChapterDividers();
+    }
+    function renderChapterDividers() {
+      if (!storiesVisible) return;
+      const visible = visibleCards();
+      const sections = [...new Set(visible.map(card => card.dataset.section).filter(Boolean))];
+      if (sections.length < 2 || sections.length > 18) return;
+      let previous = '';
+      visible.forEach(card => {
+        const section = card.dataset.section;
+        if (section && section !== previous) {
+          const divider = document.createElement('div');
+          divider.className = 'chapter-divider';
+          divider.textContent = humanize(section);
+          grid.insertBefore(divider, card);
+          previous = section;
+        }
+      });
     }
     function sequenceForCard(card) {
       const order = state.order === 'all' ? 'chronological' : state.order;
@@ -719,28 +866,111 @@
         const embedded = String(value || '').match(/\d+(\.\d+)?/);
       return embedded ? Number.parseFloat(embedded[0]) : 999999;
     }
-    document.querySelectorAll('.cover-button').forEach(button => {
-      button.addEventListener('click', () => {
-        lightboxImage.src = button.dataset.fullSrc;
-        lightboxImage.alt = `${button.dataset.fullTitle} cover`;
-        lightboxTitle.textContent = button.dataset.fullTitle;
-        lightboxDetail.textContent = button.dataset.fullDetail || '';
-        lightbox.classList.add('open');
-      });
-    });
+    function visibleCards() { return cards.filter(card => !card.classList.contains('hidden')); }
+    function visibleCoverButtons() { return visibleCards().map(card => card.querySelector('.cover-button')).filter(Boolean); }
+    function openLightbox(button) { currentPreviewButton = button; renderPreview(button); lightbox.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function renderPreview(button) {
+      if (!button) return;
+      currentPreviewButton = button;
+      lightboxImage.src = button.dataset.fullSrc;
+      lightboxImage.alt = `${button.dataset.fullTitle} cover`;
+      lightboxTitle.textContent = button.dataset.fullTitle;
+      lightboxDetail.textContent = button.dataset.fullDetail || '';
+      const sequence = visibleCoverButtons();
+      const index = sequence.indexOf(button);
+      lightboxPosition.textContent = index >= 0 ? `${index + 1} / ${sequence.length}` : '';
+      previousButton.disabled = sequence.length < 2;
+      nextButton.disabled = sequence.length < 2;
+      [-1, 1].forEach(direction => { if (sequence.length > 1) { const adjacent = sequence[(index + direction + sequence.length) % sequence.length]; const preload = new Image(); preload.src = adjacent.dataset.fullSrc; } });
+    }
+    function movePreview(direction) {
+      const sequence = visibleCoverButtons();
+      if (sequence.length < 2) return;
+      const index = sequence.indexOf(currentPreviewButton);
+      renderPreview(sequence[(Math.max(index, 0) + direction + sequence.length) % sequence.length]);
+    }
+    document.querySelectorAll('.cover-button').forEach(button => button.addEventListener('click', event => { event.stopPropagation(); openLightbox(button); }));
+    previousButton.addEventListener('click', event => { event.stopPropagation(); movePreview(-1); });
+    nextButton.addEventListener('click', event => { event.stopPropagation(); movePreview(1); });
     document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
-    lightbox.addEventListener('click', closeLightbox);
-    document.addEventListener('keydown', event => {
-      if (event.key === 'Escape') closeLightbox();
-    });
+    lightbox.addEventListener('click', () => { if (swipedPreview) { swipedPreview = false; return; } closeLightbox(); });
+    lightbox.addEventListener('touchstart', event => { touchStartX = event.changedTouches[0].clientX; }, { passive: true });
+    lightbox.addEventListener('touchend', event => { const delta = event.changedTouches[0].clientX - touchStartX; if (Math.abs(delta) > 45) { swipedPreview = true; movePreview(delta > 0 ? -1 : 1); } }, { passive: true });
     function closeLightbox() {
+      if (!lightbox.classList.contains('open')) return;
       lightbox.classList.remove('open');
+      document.body.style.overflow = '';
       lightboxImage.removeAttribute('src');
       lightboxImage.removeAttribute('alt');
       lightboxTitle.textContent = '';
       lightboxDetail.textContent = '';
+      const returnCard = currentPreviewButton?.closest('.comic-card');
+      currentPreviewButton = null;
+      if (returnCard) returnCard.focus({ preventScroll: true });
     }
+    function toggleDensity() {
+      document.body.classList.toggle('compact-view');
+      densityButton.classList.toggle('active', document.body.classList.contains('compact-view'));
+      densityButton.textContent = document.body.classList.contains('compact-view') ? 'Details' : 'Covers';
+      saveState();
+    }
+    function toggleStories() {
+      storiesVisible = !storiesVisible;
+      storiesButton.classList.toggle('active', storiesVisible);
+      storiesButton.textContent = storiesVisible ? 'Grid' : 'Stories';
+      sortCards();
+      saveState();
+    }
+    function selectCard(card, centre = false) {
+      if (selectedCard) selectedCard.classList.remove('keyboard-selected');
+      selectedCard = card;
+      if (card) { card.classList.add('keyboard-selected'); card.scrollIntoView({ block: centre ? 'center' : 'nearest', inline: 'nearest', behavior: 'smooth' }); }
+    }
+    function setBrowseMode(enabled) { browseMode = enabled; browseButton.classList.toggle('active', enabled); if (enabled) selectCard(selectedCard && !selectedCard.classList.contains('hidden') ? selectedCard : visibleCards()[0] || null, true); else selectCard(null); }
+    function moveCardSelection(direction) {
+      const available = visibleCards();
+      if (!available.length) return;
+      if (!selectedCard || !available.includes(selectedCard)) { selectCard(available[0]); return; }
+      const source = selectedCard.getBoundingClientRect();
+      const sx = source.left + source.width / 2, sy = source.top + source.height / 2;
+      const horizontal = direction === 'left' || direction === 'right';
+      const candidates = available.filter(card => card !== selectedCard).map(card => { const rect = card.getBoundingClientRect(); const dx = rect.left + rect.width / 2 - sx, dy = rect.top + rect.height / 2 - sy; const forward = direction === 'left' ? dx < -2 : direction === 'right' ? dx > 2 : direction === 'up' ? dy < -2 : dy > 2; return { card, forward, score: Math.abs(horizontal ? dx : dy) + Math.abs(horizontal ? dy : dx) * 3 }; }).filter(item => item.forward).sort((a, b) => a.score - b.score);
+      if (candidates.length) selectCard(candidates[0].card);
+    }
+    function openHelp() { help.classList.add('open'); }
+    function closeHelp() { help.classList.remove('open'); }
+    function resetFilters() { search.value = ''; state.query = ''; ['scope', 'project', 'status'].forEach(key => setFilter(key, 'all')); }
+    sectionJump?.addEventListener('change', () => { const target = visibleCards().find(card => card.dataset.section.split('|').includes(sectionJump.value) || card.dataset.work === sectionJump.value); if (target) target.scrollIntoView({ block: 'center', behavior: 'smooth' }); sectionJump.value = ''; });
+    document.querySelector('[data-mobile-search]').addEventListener('click', () => { controls.classList.add('open'); filterToggle.setAttribute('aria-expanded', 'true'); search.focus(); });
+    document.querySelector('[data-mobile-filter]').addEventListener('click', () => filterToggle.click());
+    document.querySelector('[data-mobile-density]').addEventListener('click', toggleDensity);
+    document.querySelector('[data-mobile-top]').addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+    document.addEventListener('keydown', event => {
+      const typing = event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLTextAreaElement;
+      if (help.classList.contains('open')) { if (event.key === 'Escape' || event.key === '?') { event.preventDefault(); closeHelp(); } return; }
+      if (lightbox.classList.contains('open')) { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); movePreview(event.key === 'ArrowLeft' ? -1 : 1); } else if (event.key === 'Escape' || event.code === 'Space') { event.preventDefault(); closeLightbox(); } return; }
+      if (event.key === 'Escape' && typing) { search.value = ''; state.query = ''; applyFilters(); search.blur(); return; }
+      if (typing) return;
+      if (browseMode && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); moveCardSelection(event.key.replace('Arrow', '').toLowerCase()); return; }
+      if (browseMode && (event.key === 'Enter' || event.code === 'Space')) { event.preventDefault(); const button = selectedCard?.querySelector('.cover-button'); if (button) openLightbox(button); return; }
+      if (event.key === '/') { event.preventDefault(); controls.classList.add('open'); filterToggle.setAttribute('aria-expanded', 'true'); search.focus(); }
+      else if (event.key.toLowerCase() === 'f') filterToggle.click();
+      else if (event.key.toLowerCase() === 'b') setBrowseMode(!browseMode);
+      else if (event.key === '?') openHelp();
+      else if (event.key.toLowerCase() === 'm') setFilter('status', 'missing');
+      else if (event.key.toLowerCase() === 'o') setFilter('status', 'owned');
+      else if (event.key.toLowerCase() === 'a') setFilter('status', 'all');
+      else if (event.key.toLowerCase() === 'c') toggleDensity();
+    });
+    ['order', 'scope', 'project', 'status'].forEach(key => document.querySelectorAll(`.chip[data-filter="${key}"]`).forEach(item => item.classList.toggle('active', item.dataset.value === state[key])));
+    densityButton.classList.toggle('active', document.body.classList.contains('compact-view'));
+    densityButton.textContent = document.body.classList.contains('compact-view') ? 'Details' : 'Covers';
+    storiesButton.classList.toggle('active', storiesVisible);
+    storiesButton.textContent = storiesVisible ? 'Grid' : 'Stories';
     applyFilters();
+    updateFilterSummary();
+    window.addEventListener('pagehide', saveState);
+    if (savedViewState.scrollY) requestAnimationFrame(() => scrollTo({ top: savedViewState.scrollY }));
     </script>
 </body>
 </html>

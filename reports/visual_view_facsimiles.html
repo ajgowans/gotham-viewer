@@ -16,15 +16,25 @@
     .back-link:hover { background: rgba(255,255,255,.16); }
     h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; }
     header p { margin: 0; color: #c8d0d8; max-width: 900px; }
-    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; padding: 18px 32px; background: #e9edf1; border-bottom: 1px solid var(--line); }
-    .metric { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+    .summary { display: grid; grid-template-columns: repeat(5, minmax(90px, 1fr)); gap: 8px; padding: 12px 32px; background: #e9edf1; border-bottom: 1px solid var(--line); }
+    .metric { appearance: none; text-align: left; color: inherit; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; cursor: pointer; }
+    .metric:hover, .metric.active { border-color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,.08); }
     .metric strong { display: block; font-size: 24px; }
     .metric span { color: var(--muted); font-size: 13px; }
-    .controls { padding: 18px 32px; display: grid; gap: 12px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
-    .filter-toggle { display: none; width: 100%; border: 1px solid var(--line); background: #172026; color: white; border-radius: 6px; padding: 9px 12px; font-weight: 750; cursor: pointer; align-items: center; justify-content: space-between; }
+    .controls { padding: 8px 32px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
+    .filter-toggle { display: flex; width: auto; max-width: 100%; border: 1px solid var(--line); background: #172026; color: white; border-radius: 6px; padding: 8px 11px; font-weight: 750; cursor: pointer; align-items: center; gap: 10px; }
+    .filter-toggle small { color: #c8d0d8; font-size: 11px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .filter-toggle::after { content: "+"; font-size: 18px; line-height: 1; }
     .controls.open .filter-toggle::after { content: "−"; }
-    .control-content { display: grid; gap: 12px; }
+    .control-content { display: none; gap: 12px; margin-top: 10px; }
+    .controls.open .control-content { display: grid; }
+    .viewer-tools { display: grid; grid-template-columns: minmax(180px, 1fr) minmax(160px, auto) auto auto; gap: 8px; align-items: center; }
+    .search-wrap { position: relative; min-width: 0; }
+    .viewer-search, .section-jump { width: 100%; height: 38px; border: 1px solid var(--line); border-radius: 6px; background: white; color: var(--ink); padding: 0 36px 0 11px; font: inherit; }
+    .search-clear { position: absolute; right: 5px; top: 5px; width: 28px; height: 28px; border: 0; border-radius: 5px; background: transparent; color: var(--muted); font-size: 18px; cursor: pointer; }
+    .tool-button { height: 38px; border: 1px solid var(--line); border-radius: 6px; background: #f8fafb; color: var(--ink); padding: 0 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .tool-button.active { background: var(--ink); color: white; border-color: var(--ink); }
+    .visible-count { color: var(--muted); font-size: 12px; font-weight: 700; white-space: nowrap; text-align: right; }
     .control-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
     .control-row b { margin-right: 4px; font-size: 13px; color: var(--muted); min-width: 70px; }
     .chip { border: 1px solid var(--line); background: #f8fafb; color: var(--ink); border-radius: 999px; padding: 7px 11px; cursor: pointer; text-transform: capitalize; }
@@ -53,6 +63,13 @@
     .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
     .comic-card.cover-needs_review { border-color: #a46a00; }
     .comic-card.cover-rejected_auto { border-color: #b42318; }
+    .comic-card.keyboard-selected { outline: 4px solid #f4c430; outline-offset: 3px; box-shadow: 0 0 0 7px rgba(255,255,255,.92), 0 10px 26px rgba(0,0,0,.28); transform: translateY(-2px); }
+    body.compact-view .grid { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 10px; }
+    body.compact-view .card-body { min-height: 58px; padding: 7px 8px 9px; }
+    body.compact-view .badges, body.compact-view .publication-date { display: none; }
+    body.compact-view h3 { font-size: 13px; margin: 0; -webkit-line-clamp: 2; }
+    body.compact-view .status-strip { min-height: 25px; padding: 5px; font-size: 10px; }
+    .chapter-divider { grid-column: 1 / -1; margin: 10px 0 0; padding: 9px 2px 7px; border-bottom: 2px solid var(--line); font-size: 16px; font-weight: 850; text-transform: capitalize; }
     .card-body { padding: 10px 11px 12px; min-height: 86px; display: flex; flex-direction: column; overflow: hidden; }
     .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
     .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
@@ -71,21 +88,47 @@
     .hidden { display: none; }
     .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
     .lightbox.open { display: flex; }
-    .lightbox-panel { width: min(92vw, 980px); height: 94vh; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; align-items: center; justify-items: center; }
+    .lightbox-panel { width: min(96vw, 1100px); height: 94vh; display: grid; grid-template-columns: 48px minmax(0,1fr) 48px; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; align-items: center; justify-items: center; }
     .lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; align-self: center; }
-    .lightbox-caption { display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
+    .lightbox-image-wrap { min-width: 0; min-height: 0; width: 100%; height: 100%; display: grid; place-items: center; }
+    .lightbox-caption { grid-column: 1 / -1; width: min(92vw, 900px); display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
     .lightbox-title { font-weight: 750; }
     .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
     .lightbox-close { border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: white; border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+    .lightbox-nav { width: 46px; height: 64px; border: 1px solid rgba(255,255,255,.35); border-radius: 7px; background: rgba(255,255,255,.12); color: white; font-size: 30px; cursor: pointer; }
+    .lightbox-nav:disabled { opacity: .3; cursor: default; }
+    .lightbox-position { color: #c8d0d8; font-size: 12px; white-space: nowrap; }
+    .keyboard-help { position: fixed; inset: 0; z-index: 30; display: none; place-items: center; padding: 20px; background: rgba(12,17,22,.78); }
+    .keyboard-help.open { display: grid; }
+    .keyboard-help-panel { width: min(92vw, 520px); max-height: 80vh; overflow: auto; background: white; border-radius: 8px; padding: 18px; box-shadow: 0 20px 60px rgba(0,0,0,.4); }
+    .keyboard-help-panel h2 { margin: 0 0 12px; font-size: 20px; }
+    .shortcut-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 12px; align-items: center; }
+    kbd { min-width: 34px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 3px 7px; background: #f4f6f8; text-align: center; font: 700 12px ui-monospace, monospace; }
+    .mobile-tools { display: none; }
     @media (max-width: 700px) {
       header, .summary, main { padding-left: 14px; padding-right: 14px; }
+      header { padding-top: 18px; }
+      .summary { grid-template-columns: repeat(5, 1fr); gap: 5px; padding-top: 7px; padding-bottom: 7px; }
+      .metric { padding: 6px; text-align: center; }
+      .metric strong { font-size: 17px; }
+      .metric span { font-size: 9px; line-height: 1.05; }
       .controls { padding: 8px 14px; gap: 8px; }
-      .filter-toggle { display: flex; }
-      .control-content { display: none; max-height: 58vh; overflow-y: auto; padding: 4px 0 8px; }
-      .controls.open .control-content { display: grid; }
+      .filter-toggle { width: 100%; justify-content: space-between; }
+      .control-content { max-height: 58vh; overflow-y: auto; padding: 4px 0 8px; }
       .control-row b { flex-basis: 100%; min-width: 0; }
       .chip { padding: 6px 9px; font-size: 13px; }
       .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; }
+      .viewer-tools { grid-template-columns: 1fr; }
+      .visible-count { text-align: left; }
+      .tool-button.keyboard-only { display: none; }
+      .lightbox { padding: 8px; }
+      .lightbox-panel { width: 100%; height: 96vh; grid-template-columns: 42px minmax(0,1fr) 42px; gap: 4px; }
+      .lightbox-nav { width: 40px; height: 56px; }
+      .lightbox-caption { width: 100%; align-items: flex-end; padding: 0 4px; }
+      .lightbox-detail { max-height: 3.8em; overflow: hidden; }
+      .mobile-tools { position: fixed; z-index: 8; left: 50%; bottom: max(8px, env(safe-area-inset-bottom)); transform: translateX(-50%); display: flex; gap: 5px; padding: 5px; border: 1px solid var(--line); border-radius: 8px; background: rgba(255,255,255,.95); box-shadow: 0 8px 24px rgba(0,0,0,.2); backdrop-filter: blur(10px); }
+      .mobile-tools button { width: 42px; height: 38px; border: 0; border-radius: 5px; background: #eef1f4; color: var(--ink); font-size: 18px; }
+      main { padding-bottom: 84px; }
     }
     </style>
 </head>
@@ -98,14 +141,24 @@
     <p>Owned facsimiles and facsimile editions currently on order.</p>
   </header>
   <section class="summary">
-    <div class="metric"><strong>28</strong><span>unique publications</span></div>
-    <div class="metric"><strong>27</strong><span>owned/readable</span></div>
-    <div class="metric"><strong>27</strong><span>facsimiles</span></div>
-    <div class="metric"><strong>0</strong><span>missing</span></div>
+    <button class="metric" type="button" data-status="all"><strong>28</strong><span>publications</span></button>
+    <button class="metric" type="button" data-status="owned"><strong>0</strong><span>owned originals</span></button>
+    <button class="metric" type="button" data-status="facsimile"><strong>27</strong><span>facsimiles</span></button>
+    <button class="metric" type="button" data-status="ordered"><strong>1</strong><span>ordered</span></button>
+    <button class="metric" type="button" data-status="missing"><strong>0</strong><span>missing</span></button>
   </section>
   <section class="controls">
-    <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="viewer-filters"><span>Filters and order</span></button>
+    <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="viewer-filters"><span>Filters &amp; order</span><small class="filter-summary">series</small></button>
     <div class="control-content" id="viewer-filters">
+      <div class="viewer-tools">
+        <div class="search-wrap"><input class="viewer-search" type="search" placeholder="Search title, issue or story" aria-label="Search comics"><button class="search-clear" type="button" title="Clear search" aria-label="Clear search">&times;</button></div>
+        <select class="section-jump" aria-label="Jump to section"><option value="">Jump to section</option><option value="Batman">Batman</option><option value="Batman Adventures: Mad Love: Special: One-Shot">Batman Adventures: Mad Love: Special: One-Shot</option><option value="Batman: The Killing Joke">Batman: The Killing Joke</option><option value="Detective Comics">Detective Comics</option></select>
+        <button class="tool-button" type="button" data-toggle-density>Covers</button>
+        <button class="tool-button" type="button" data-toggle-stories>Stories</button>
+        <button class="tool-button keyboard-only" type="button" data-toggle-browse>Browse</button>
+        <span class="visible-count">28 of 28</span>
+        <button class="tool-button keyboard-only" type="button" data-open-help aria-label="Keyboard shortcuts">Shortcuts</button>
+      </div>
       <div class="control-row"><b>Order</b><button class="chip" data-filter="order" data-value="all">All orders</button>
 <button class="chip active" data-filter="order" data-value="series">series</button></div>
       <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button></div>
@@ -120,9 +173,9 @@
   </section>
   <main>
     <section class="grid">
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000001">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0001" data-work="Batman" data-section="Batman" data-search="batman #1 - facsimile pub-bat-0001 batman 1 original cover a / standard original-cover facsimile; owned facsimile; very expensive original; facsimile is the natural target." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000001">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0001.jpg" data-full-title="Batman #1 - Facsimile" data-full-detail="Published 1940-04-23 | PUB-BAT-0001 | Seq 000001 | Original Cover A / standard original-cover facsimile; Owned facsimile; Very expensive original; facsimile is the natural target. | https://dc.fandom.com/wiki/Batman_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0001.jpg" alt="Batman #1 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0001.jpg" data-full-title="Batman #1 - Facsimile" data-full-detail="Published 1940-04-23 | PUB-BAT-0001 | Seq 000001 | Original Cover A / standard original-cover facsimile; Owned facsimile; Very expensive original; facsimile is the natural target. | https://dc.fandom.com/wiki/Batman_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0001.jpg" data-display-src="../assets/covers/display/PUB-BAT-0001.jpg" alt="Batman #1 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -134,9 +187,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000002">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0005" data-work="Batman" data-section="Batman" data-search="batman #5 - facsimile pub-bat-0005 batman 5 original cover a / standard original-cover facsimile; owned facsimile; low priority unless cheap." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000002">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0005.jpg" data-full-title="Batman #5 - Facsimile" data-full-detail="Published 1941-04-18 | PUB-BAT-0005 | Seq 000002 | Original Cover A / standard original-cover facsimile; Owned facsimile; Low priority unless cheap. | https://dc.fandom.com/wiki/Batman_Vol_1_5 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0005.jpg" alt="Batman #5 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0005.jpg" data-full-title="Batman #5 - Facsimile" data-full-detail="Published 1941-04-18 | PUB-BAT-0005 | Seq 000002 | Original Cover A / standard original-cover facsimile; Owned facsimile; Low priority unless cheap. | https://dc.fandom.com/wiki/Batman_Vol_1_5 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0005.jpg" data-display-src="../assets/covers/display/PUB-BAT-0005.jpg" alt="Batman #5 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -148,9 +201,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000003">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0009" data-work="Batman" data-section="Batman" data-search="batman #9 - facsimile pub-bat-0009 batman 9 cover a / standard assumed; owned facsimile; user confirmed facsimile exists; low priority unless cheap." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000003">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0009.jpg" data-full-title="Batman #9 - Facsimile" data-full-detail="Published 1941-12-05 | PUB-BAT-0009 | Seq 000003 | Cover A / standard assumed; Owned facsimile; User confirmed facsimile exists; low priority unless cheap. | https://dc.fandom.com/wiki/Batman_Vol_1_9 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0009.jpg" alt="Batman #9 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0009.jpg" data-full-title="Batman #9 - Facsimile" data-full-detail="Published 1941-12-05 | PUB-BAT-0009 | Seq 000003 | Cover A / standard assumed; Owned facsimile; User confirmed facsimile exists; low priority unless cheap. | https://dc.fandom.com/wiki/Batman_Vol_1_9 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0009.jpg" data-display-src="../assets/covers/display/PUB-BAT-0009.jpg" alt="Batman #9 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -162,9 +215,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000004">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0047" data-work="Batman" data-section="Batman" data-search="batman #47 - facsimile pub-bat-0047 batman 47 cover a / standard assumed; owned facsimile; user confirmed facsimile exists; good origin-history facsimile target." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000004">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0047.jpg" data-full-title="Batman #47 - Facsimile" data-full-detail="Published 1948-04-14 | PUB-BAT-0047 | Seq 000004 | Cover A / standard assumed; Owned facsimile; User confirmed facsimile exists; good origin-history facsimile target. | https://dc.fandom.com/wiki/Batman_Vol_1_47 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0047.jpg" alt="Batman #47 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0047.jpg" data-full-title="Batman #47 - Facsimile" data-full-detail="Published 1948-04-14 | PUB-BAT-0047 | Seq 000004 | Cover A / standard assumed; Owned facsimile; User confirmed facsimile exists; good origin-history facsimile target. | https://dc.fandom.com/wiki/Batman_Vol_1_47 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0047.jpg" data-display-src="../assets/covers/display/PUB-BAT-0047.jpg" alt="Batman #47 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -176,9 +229,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000005">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0127" data-work="Batman" data-section="Batman" data-search="batman #127 - facsimile pub-bat-0127 batman 127 cover a curt swan; owned facsimile; user ordered ebay listing: batman #127 facsimile edition cover a curt swan." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000005">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0127.jpg" data-full-title="Batman #127 - Facsimile" data-full-detail="Published 1959-08 | PUB-BAT-0127 | Seq 000005 | Cover A Curt Swan; Owned facsimile; User ordered eBay listing: Batman #127 Facsimile Edition Cover A Curt Swan. | https://dc.fandom.com/wiki/Batman_Vol_1_127 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0127.jpg" alt="Batman #127 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0127.jpg" data-full-title="Batman #127 - Facsimile" data-full-detail="Published 1959-08 | PUB-BAT-0127 | Seq 000005 | Cover A Curt Swan; Owned facsimile; User ordered eBay listing: Batman #127 Facsimile Edition Cover A Curt Swan. | https://dc.fandom.com/wiki/Batman_Vol_1_127 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0127.jpg" data-display-src="../assets/covers/display/PUB-BAT-0127.jpg" alt="Batman #127 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -190,9 +243,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000006">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0181" data-work="Batman" data-section="Batman" data-search="batman #181 - facsimile pub-bat-0181 batman 181 original cover a / standard original-cover facsimile; owned facsimile; original is expensive; facsimile is sensible." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000006">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0181.jpg" data-full-title="Batman #181 - Facsimile" data-full-detail="Published 1966-04-20 | PUB-BAT-0181 | Seq 000006 | Original Cover A / standard original-cover facsimile; Owned facsimile; Original is expensive; facsimile is sensible. | https://dc.fandom.com/wiki/Batman_Vol_1_181 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0181.jpg" alt="Batman #181 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0181.jpg" data-full-title="Batman #181 - Facsimile" data-full-detail="Published 1966-04-20 | PUB-BAT-0181 | Seq 000006 | Original Cover A / standard original-cover facsimile; Owned facsimile; Original is expensive; facsimile is sensible. | https://dc.fandom.com/wiki/Batman_Vol_1_181 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0181.jpg" data-display-src="../assets/covers/display/PUB-BAT-0181.jpg" alt="Batman #181 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -204,9 +257,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000007">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0244" data-work="Batman" data-section="Batman" data-search="batman #244 - facsimile pub-bat-0244 batman 244 cover a / standard assumed; owned facsimile; user confirmed facsimile exists; very strong fit for your bronze/gotham shelf." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000007">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0244.jpg" data-full-title="Batman #244 - Facsimile" data-full-detail="PUB-BAT-0244 | Seq 000007 | Cover A / standard assumed; Owned facsimile; User confirmed facsimile exists; very strong fit for your Bronze/Gotham shelf. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0244.jpg" alt="Batman #244 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0244.jpg" data-full-title="Batman #244 - Facsimile" data-full-detail="PUB-BAT-0244 | Seq 000007 | Cover A / standard assumed; Owned facsimile; User confirmed facsimile exists; very strong fit for your Bronze/Gotham shelf. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0244.jpg" data-display-src="../assets/covers/display/PUB-BAT-0244.jpg" alt="Batman #244 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -218,9 +271,9 @@
       </article>
     
 
-      <article class="comic-card ordered cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="ordered" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000008">
+      <article class="comic-card ordered cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0251" data-work="Batman" data-section="Batman" data-search="batman #251 - facsimile pub-bat-0251 batman 251 ordered, not arrived; official dc page confirms earlier 2019 facsimile; you noted september repress." data-order="series" data-scope="" data-project="" data-status="ordered" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000008">
         <div class="status-strip">Ordered</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0251.jpg" data-full-title="Batman #251 - Facsimile" data-full-detail="Published 1973-07-25 | PUB-BAT-0251 | Seq 000008 | Ordered, not arrived; Official DC page confirms earlier 2019 facsimile; you noted September repress. | https://dc.fandom.com/wiki/Batman_Vol_1_251 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0251.jpg" alt="Batman #251 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0251.jpg" data-full-title="Batman #251 - Facsimile" data-full-detail="Published 1973-07-25 | PUB-BAT-0251 | Seq 000008 | Ordered, not arrived; Official DC page confirms earlier 2019 facsimile; you noted September repress. | https://dc.fandom.com/wiki/Batman_Vol_1_251 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0251.jpg" data-display-src="../assets/covers/display/PUB-BAT-0251.jpg" alt="Batman #251 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -232,9 +285,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000009">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0404" data-work="Batman" data-section="Batman" data-search="batman #404 - facsimile pub-bat-0404 batman 404 original cover a / standard original-cover facsimile; owned facsimile; you likely have originals/reprints; facsimile less important." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000009">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0404.jpg" data-full-title="Batman #404 - Facsimile" data-full-detail="Published 1986-10-22 | PUB-BAT-0404 | Seq 000009 | Original Cover A / standard original-cover facsimile; Owned facsimile; You likely have originals/reprints; facsimile less important. | https://dc.fandom.com/wiki/Batman_Vol_1_404 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0404.jpg" alt="Batman #404 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0404.jpg" data-full-title="Batman #404 - Facsimile" data-full-detail="Published 1986-10-22 | PUB-BAT-0404 | Seq 000009 | Original Cover A / standard original-cover facsimile; Owned facsimile; You likely have originals/reprints; facsimile less important. | https://dc.fandom.com/wiki/Batman_Vol_1_404 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0404.jpg" data-display-src="../assets/covers/display/PUB-BAT-0404.jpg" alt="Batman #404 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -246,9 +299,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000010">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0405" data-work="Batman" data-section="Batman" data-search="batman #405 - facsimile pub-bat-0405 batman 405 original cover a / standard original-cover facsimile; owned facsimile; you likely have originals/reprints; facsimile less important." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000010">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0405.jpg" data-full-title="Batman #405 - Facsimile" data-full-detail="Published 1986-11-19 | PUB-BAT-0405 | Seq 000010 | Original Cover A / standard original-cover facsimile; Owned facsimile; You likely have originals/reprints; facsimile less important. | https://dc.fandom.com/wiki/Batman_Vol_1_405 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0405.jpg" alt="Batman #405 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0405.jpg" data-full-title="Batman #405 - Facsimile" data-full-detail="Published 1986-11-19 | PUB-BAT-0405 | Seq 000010 | Original Cover A / standard original-cover facsimile; Owned facsimile; You likely have originals/reprints; facsimile less important. | https://dc.fandom.com/wiki/Batman_Vol_1_405 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0405.jpg" data-display-src="../assets/covers/display/PUB-BAT-0405.jpg" alt="Batman #405 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -260,9 +313,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000011">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0406" data-work="Batman" data-section="Batman" data-search="batman #406 - facsimile pub-bat-0406 batman 406 original cover a / standard original-cover facsimile; owned facsimile; you likely have originals/reprints; facsimile less important." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000011">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0406.jpg" data-full-title="Batman #406 - Facsimile" data-full-detail="Published 1986-12-17 | PUB-BAT-0406 | Seq 000011 | Original Cover A / standard original-cover facsimile; Owned facsimile; You likely have originals/reprints; facsimile less important. | https://dc.fandom.com/wiki/Batman_Vol_1_406 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0406.jpg" alt="Batman #406 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0406.jpg" data-full-title="Batman #406 - Facsimile" data-full-detail="Published 1986-12-17 | PUB-BAT-0406 | Seq 000011 | Original Cover A / standard original-cover facsimile; Owned facsimile; You likely have originals/reprints; facsimile less important. | https://dc.fandom.com/wiki/Batman_Vol_1_406 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-0406.jpg" data-display-src="../assets/covers/display/PUB-BAT-0406.jpg" alt="Batman #406 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -274,9 +327,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_manual" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000012">
+      <article class="comic-card facsimile cover-approved_manual" tabindex="-1" data-publication-id="PUB-BAT-0407" data-work="Batman" data-section="Batman" data-search="batman #407 - facsimile pub-bat-0407 batman 407 original cover a / standard original-cover facsimile; owned facsimile; you likely have originals/reprints; facsimile less important." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000012">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0407.jpg" data-full-title="Batman #407 - Facsimile" data-full-detail="Published 1987-01-21 | PUB-BAT-0407 | Seq 000012 | Original Cover A / standard original-cover facsimile; Owned facsimile; You likely have originals/reprints; facsimile less important. | https://dc.fandom.com/wiki/Batman_Vol_1_407 | Collector confirmed the detected black edge is acceptable."><img src="../assets/covers/display/PUB-BAT-0407.jpg" alt="Batman #407 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0407.jpg" data-full-title="Batman #407 - Facsimile" data-full-detail="Published 1987-01-21 | PUB-BAT-0407 | Seq 000012 | Original Cover A / standard original-cover facsimile; Owned facsimile; You likely have originals/reprints; facsimile less important. | https://dc.fandom.com/wiki/Batman_Vol_1_407 | Collector confirmed the detected black edge is acceptable."><img src="../assets/covers/display/PUB-BAT-0407.jpg" data-display-src="../assets/covers/display/PUB-BAT-0407.jpg" alt="Batman #407 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -288,9 +341,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000013" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000013">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-adventures-mad-love-special-one-shot-1" data-work="Batman Adventures: Mad Love: Special: One-Shot" data-section="Batman Adventures: Mad Love: Special: One-Shot" data-search="batman adventures: mad love: special: one-shot #1 - facsimile view-batman-adventures-mad-love-special-one-shot-1 batman adventures: mad love: special: one-shot 1 cover a bruce timm; owned facsimile; user confirmed facsimile exists via listing; buy cover a / standard cover only." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000013" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000013">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-adventures-mad-love-special-one-shot-1.jpg" data-full-title="Batman Adventures: Mad Love: Special: One-Shot #1 - Facsimile" data-full-detail="Published 1993-12-15 | VIEW-batman-adventures-mad-love-special-one-shot-1 | Seq 000013 | Cover A Bruce Timm; Owned facsimile; User confirmed facsimile exists via listing; buy Cover A / standard cover only. | https://dc.fandom.com/wiki/The_Batman_Adventures:_Mad_Love | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-adventures-mad-love-special-one-shot-1.jpg" alt="Batman Adventures: Mad Love: Special: One-Shot #1 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-adventures-mad-love-special-one-shot-1.jpg" data-full-title="Batman Adventures: Mad Love: Special: One-Shot #1 - Facsimile" data-full-detail="Published 1993-12-15 | VIEW-batman-adventures-mad-love-special-one-shot-1 | Seq 000013 | Cover A Bruce Timm; Owned facsimile; User confirmed facsimile exists via listing; buy Cover A / standard cover only. | https://dc.fandom.com/wiki/The_Batman_Adventures:_Mad_Love | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-batman-adventures-mad-love-special-one-shot-1.jpg" data-display-src="../assets/covers/display/VIEW-batman-adventures-mad-love-special-one-shot-1.jpg" alt="Batman Adventures: Mad Love: Special: One-Shot #1 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -302,9 +355,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000014" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000014">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-KILLING-JOKE-0001" data-work="Batman: The Killing Joke" data-section="Batman: The Killing Joke" data-search="batman: the killing joke #1 - facsimile pub-bat-killing-joke-0001 batman: the killing joke 1 cover a brian bolland; owned facsimile; user confirmed facsimile exists via listing; original is a one-shot; buy cover a / standard facsimile only unless explicitly choosing a variant later." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000014" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000014">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-KILLING-JOKE-0001.jpg" data-full-title="Batman: The Killing Joke #1 - Facsimile" data-full-detail="Published 1988 | PUB-BAT-KILLING-JOKE-0001 | Seq 000014 | Cover A Brian Bolland; Owned facsimile; User confirmed facsimile exists via listing; original is a one-shot; buy Cover A / standard facsimile only unless explicitly choosing a variant later. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-KILLING-JOKE-0001.jpg" alt="Batman: The Killing Joke #1 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-KILLING-JOKE-0001.jpg" data-full-title="Batman: The Killing Joke #1 - Facsimile" data-full-detail="Published 1988 | PUB-BAT-KILLING-JOKE-0001 | Seq 000014 | Cover A Brian Bolland; Owned facsimile; User confirmed facsimile exists via listing; original is a one-shot; buy Cover A / standard facsimile only unless explicitly choosing a variant later. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/PUB-BAT-KILLING-JOKE-0001.jpg" data-display-src="../assets/covers/display/PUB-BAT-KILLING-JOKE-0001.jpg" alt="Batman: The Killing Joke #1 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -316,9 +369,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000015" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000015">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="VIEW-detective-comics-27" data-work="Detective Comics" data-section="Detective Comics" data-search="detective comics #27 - facsimile view-detective-comics-27 detective comics 27 original cover a / standard original-cover facsimile; cover a bob kane; owned facsimile; very expensive original; facsimile is the sensible reading/collection copy." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000015" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000015">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-27.jpg" data-full-title="Detective Comics #27 - Facsimile" data-full-detail="Published 1939-03-29 | VIEW-detective-comics-27 | Seq 000015 | Original Cover A / standard original-cover facsimile; Cover A Bob Kane; Owned facsimile; Very expensive original; facsimile is the sensible reading/collection copy. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_27 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-27.jpg" alt="Detective Comics #27 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-27.jpg" data-full-title="Detective Comics #27 - Facsimile" data-full-detail="Published 1939-03-29 | VIEW-detective-comics-27 | Seq 000015 | Original Cover A / standard original-cover facsimile; Cover A Bob Kane; Owned facsimile; Very expensive original; facsimile is the sensible reading/collection copy. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_27 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-27.jpg" data-display-src="../assets/covers/display/VIEW-detective-comics-27.jpg" alt="Detective Comics #27 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -330,9 +383,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000016" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000016">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="VIEW-detective-comics-31" data-work="Detective Comics" data-section="Detective Comics" data-search="detective comics #31 - facsimile view-detective-comics-31 detective comics 31 cover a / standard assumed; owned facsimile; user confirmed facsimile exists; very expensive original; good facsimile target if available cheap." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000016" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000016">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-31.jpg" data-full-title="Detective Comics #31 - Facsimile" data-full-detail="Published 1939-08-02 | VIEW-detective-comics-31 | Seq 000016 | Cover A / standard assumed; Owned facsimile; User confirmed facsimile exists; very expensive original; good facsimile target if available cheap. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_31 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-31.jpg" alt="Detective Comics #31 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-31.jpg" data-full-title="Detective Comics #31 - Facsimile" data-full-detail="Published 1939-08-02 | VIEW-detective-comics-31 | Seq 000016 | Cover A / standard assumed; Owned facsimile; User confirmed facsimile exists; very expensive original; good facsimile target if available cheap. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_31 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-31.jpg" data-display-src="../assets/covers/display/VIEW-detective-comics-31.jpg" alt="Detective Comics #31 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -344,9 +397,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000017" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000017">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="VIEW-detective-comics-38" data-work="Detective Comics" data-section="Detective Comics" data-search="detective comics #38 - facsimile view-detective-comics-38 detective comics 38 cover a / standard assumed; owned facsimile; very expensive original; high priority facsimile." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000017" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000017">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-38.jpg" data-full-title="Detective Comics #38 - Facsimile" data-full-detail="Published 1940-03-05 | VIEW-detective-comics-38 | Seq 000017 | Cover A / standard assumed; Owned facsimile; Very expensive original; high priority facsimile. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_38 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-38.jpg" alt="Detective Comics #38 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-38.jpg" data-full-title="Detective Comics #38 - Facsimile" data-full-detail="Published 1940-03-05 | VIEW-detective-comics-38 | Seq 000017 | Cover A / standard assumed; Owned facsimile; Very expensive original; high priority facsimile. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_38 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-38.jpg" data-display-src="../assets/covers/display/VIEW-detective-comics-38.jpg" alt="Detective Comics #38 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -358,9 +411,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000018" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000018">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="VIEW-detective-comics-58" data-work="Detective Comics" data-section="Detective Comics" data-search="detective comics #58 - facsimile view-detective-comics-58 detective comics 58 original cover a / standard original-cover facsimile; cover a / standard assumed; owned facsimile; user confirmed facsimile exists; very expensive original; matching owned copy is facsimile." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000018" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000018">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-58.jpg" data-full-title="Detective Comics #58 - Facsimile" data-full-detail="Published 1941-10-24 | VIEW-detective-comics-58 | Seq 000018 | Original Cover A / standard original-cover facsimile; Cover A / standard assumed; Owned facsimile; User confirmed facsimile exists; very expensive original; matching owned copy is facsimile. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_58 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-58.jpg" alt="Detective Comics #58 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-58.jpg" data-full-title="Detective Comics #58 - Facsimile" data-full-detail="Published 1941-10-24 | VIEW-detective-comics-58 | Seq 000018 | Original Cover A / standard original-cover facsimile; Cover A / standard assumed; Owned facsimile; User confirmed facsimile exists; very expensive original; matching owned copy is facsimile. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_58 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-58.jpg" data-display-src="../assets/covers/display/VIEW-detective-comics-58.jpg" alt="Detective Comics #58 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -372,9 +425,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000019" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000019">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="VIEW-detective-comics-140" data-work="Detective Comics" data-section="Detective Comics" data-search="detective comics #140 - facsimile view-detective-comics-140 detective comics 140 original cover a / standard original-cover facsimile; owned facsimile; very expensive original; confirm if matching copy is facsimile." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000019" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000019">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-140.jpg" data-full-title="Detective Comics #140 - Facsimile" data-full-detail="Published 1948-08-25 | VIEW-detective-comics-140 | Seq 000019 | Original Cover A / standard original-cover facsimile; Owned facsimile; Very expensive original; confirm if matching copy is facsimile. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_140 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-140.jpg" alt="Detective Comics #140 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-140.jpg" data-full-title="Detective Comics #140 - Facsimile" data-full-detail="Published 1948-08-25 | VIEW-detective-comics-140 | Seq 000019 | Original Cover A / standard original-cover facsimile; Owned facsimile; Very expensive original; confirm if matching copy is facsimile. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_140 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-140.jpg" data-display-src="../assets/covers/display/VIEW-detective-comics-140.jpg" alt="Detective Comics #140 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -386,9 +439,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000020">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="VIEW-detective-comics-359" data-work="Detective Comics" data-section="Detective Comics" data-search="detective comics #359 - facsimile view-detective-comics-359 detective comics 359 cover a carmine infantino; owned facsimile; user spotted facsimile listing on forbidden planet; buy cover a / standard cover only." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000020">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-359.jpg" data-full-title="Detective Comics #359 - Facsimile" data-full-detail="Published 1966-11-30 | VIEW-detective-comics-359 | Seq 000020 | Cover A Carmine Infantino; Owned facsimile; User spotted facsimile listing on Forbidden Planet; buy Cover A / standard cover only. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_359 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-359.jpg" alt="Detective Comics #359 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-359.jpg" data-full-title="Detective Comics #359 - Facsimile" data-full-detail="Published 1966-11-30 | VIEW-detective-comics-359 | Seq 000020 | Cover A Carmine Infantino; Owned facsimile; User spotted facsimile listing on Forbidden Planet; buy Cover A / standard cover only. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_359 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-359.jpg" data-display-src="../assets/covers/display/VIEW-detective-comics-359.jpg" alt="Detective Comics #359 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -400,9 +453,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000021">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="VIEW-detective-comics-400" data-work="Detective Comics" data-section="Detective Comics" data-search="detective comics #400 - facsimile view-detective-comics-400 detective comics 400 original cover a / standard original-cover facsimile; owned facsimile; user confirmed facsimile exists; matching owned copy is facsimile." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000021">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-400.jpg" data-full-title="Detective Comics #400 - Facsimile" data-full-detail="Published 1970-04-29 | VIEW-detective-comics-400 | Seq 000021 | Original Cover A / standard original-cover facsimile; Owned facsimile; User confirmed facsimile exists; matching owned copy is facsimile. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_400 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-400.jpg" alt="Detective Comics #400 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-400.jpg" data-full-title="Detective Comics #400 - Facsimile" data-full-detail="Published 1970-04-29 | VIEW-detective-comics-400 | Seq 000021 | Original Cover A / standard original-cover facsimile; Owned facsimile; User confirmed facsimile exists; matching owned copy is facsimile. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_400 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-400.jpg" data-display-src="../assets/covers/display/VIEW-detective-comics-400.jpg" alt="Detective Comics #400 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -414,9 +467,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000022" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000022">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="VIEW-detective-comics-411" data-work="Detective Comics" data-section="Detective Comics" data-search="detective comics #411 - facsimile view-detective-comics-411 detective comics 411 foil cover facsimile variant; non-foil cover a / standard assumed; owned facsimile; user confirmed facsimile exists; owned copy confirmed as foil cover facsimile variant." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000022" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000022">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-411.jpg" data-full-title="Detective Comics #411 - Facsimile" data-full-detail="Published 1971-03-31 | VIEW-detective-comics-411 | Seq 000022 | Foil cover facsimile variant; Non-foil Cover A / standard assumed; Owned facsimile; User confirmed facsimile exists; owned copy confirmed as foil cover facsimile variant. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_411 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-411.jpg" alt="Detective Comics #411 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-411.jpg" data-full-title="Detective Comics #411 - Facsimile" data-full-detail="Published 1971-03-31 | VIEW-detective-comics-411 | Seq 000022 | Foil cover facsimile variant; Non-foil Cover A / standard assumed; Owned facsimile; User confirmed facsimile exists; owned copy confirmed as foil cover facsimile variant. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_411 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-411.jpg" data-display-src="../assets/covers/display/VIEW-detective-comics-411.jpg" alt="Detective Comics #411 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -428,9 +481,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000023" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000023">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="VIEW-detective-comics-428" data-work="Detective Comics" data-section="Detective Comics" data-search="detective comics #428 - facsimile view-detective-comics-428 detective comics 428 original cover a / standard original-story facsimile; robin lives alternate facsimile version; owned facsimile; owned standard facsimile reproducing the original published story." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000023" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000023">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-428.jpg" data-full-title="Detective Comics #428 - Facsimile" data-full-detail="Published 1972-08 | VIEW-detective-comics-428 | Seq 000023 | Original Cover A / standard original-story facsimile; Robin lives alternate facsimile version; Owned facsimile; Owned standard facsimile reproducing the original published story. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_428 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-428.jpg" alt="Detective Comics #428 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-428.jpg" data-full-title="Detective Comics #428 - Facsimile" data-full-detail="Published 1972-08 | VIEW-detective-comics-428 | Seq 000023 | Original Cover A / standard original-story facsimile; Robin lives alternate facsimile version; Owned facsimile; Owned standard facsimile reproducing the original published story. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_428 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-428.jpg" data-display-src="../assets/covers/display/VIEW-detective-comics-428.jpg" alt="Detective Comics #428 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -442,9 +495,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000024" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000024">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="VIEW-detective-comics-475" data-work="Detective Comics" data-section="Detective Comics" data-search="detective comics #475 - facsimile view-detective-comics-475 detective comics 475 cover a marshall rogers; owned facsimile; one of your best facsimile targets." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000024" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000024">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-475.jpg" data-full-title="Detective Comics #475 - Facsimile" data-full-detail="Published 1977-11-30 | VIEW-detective-comics-475 | Seq 000024 | Cover A Marshall Rogers; Owned facsimile; One of your best facsimile targets. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_475 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-475.jpg" alt="Detective Comics #475 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-475.jpg" data-full-title="Detective Comics #475 - Facsimile" data-full-detail="Published 1977-11-30 | VIEW-detective-comics-475 | Seq 000024 | Cover A Marshall Rogers; Owned facsimile; One of your best facsimile targets. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_475 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-475.jpg" data-display-src="../assets/covers/display/VIEW-detective-comics-475.jpg" alt="Detective Comics #475 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -456,9 +509,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000025" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000025">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="VIEW-detective-comics-575" data-work="Detective Comics" data-section="Detective Comics" data-search="detective comics #575 - facsimile view-detective-comics-575 detective comics 575 nm/nm-; owned facsimile; year two facsimiles are useful, but originals may still be attainable." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000025" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000025">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-575.jpg" data-full-title="Detective Comics #575 - Facsimile" data-full-detail="Published 1987-03-04 | VIEW-detective-comics-575 | Seq 000025 | NM/NM-; Owned facsimile; Year Two facsimiles are useful, but originals may still be attainable. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_575 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-575.jpg" alt="Detective Comics #575 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-575.jpg" data-full-title="Detective Comics #575 - Facsimile" data-full-detail="Published 1987-03-04 | VIEW-detective-comics-575 | Seq 000025 | NM/NM-; Owned facsimile; Year Two facsimiles are useful, but originals may still be attainable. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_575 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-575.jpg" data-display-src="../assets/covers/display/VIEW-detective-comics-575.jpg" alt="Detective Comics #575 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -470,9 +523,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000026" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000026">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="VIEW-detective-comics-576" data-work="Detective Comics" data-section="Detective Comics" data-search="detective comics #576 - facsimile view-detective-comics-576 detective comics 576 cover a todd mcfarlane; owned facsimile; year two facsimiles are useful, but originals may still be attainable." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000026" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000026">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-576.jpg" data-full-title="Detective Comics #576 - Facsimile" data-full-detail="Published 1987-04-01 | VIEW-detective-comics-576 | Seq 000026 | Cover A Todd McFarlane; Owned facsimile; Year Two facsimiles are useful, but originals may still be attainable. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_576 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-576.jpg" alt="Detective Comics #576 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-576.jpg" data-full-title="Detective Comics #576 - Facsimile" data-full-detail="Published 1987-04-01 | VIEW-detective-comics-576 | Seq 000026 | Cover A Todd McFarlane; Owned facsimile; Year Two facsimiles are useful, but originals may still be attainable. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_576 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-576.jpg" data-display-src="../assets/covers/display/VIEW-detective-comics-576.jpg" alt="Detective Comics #576 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -484,9 +537,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000027" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000027">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="VIEW-detective-comics-577" data-work="Detective Comics" data-section="Detective Comics" data-search="detective comics #577 - facsimile view-detective-comics-577 detective comics 577 cover a todd mcfarlane; owned facsimile; year two facsimiles are useful, but originals may still be attainable." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000027" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000027">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-577.jpg" data-full-title="Detective Comics #577 - Facsimile" data-full-detail="Published 1987-05 | VIEW-detective-comics-577 | Seq 000027 | Cover A Todd McFarlane; Owned facsimile; Year Two facsimiles are useful, but originals may still be attainable. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_577 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-577.jpg" alt="Detective Comics #577 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-577.jpg" data-full-title="Detective Comics #577 - Facsimile" data-full-detail="Published 1987-05 | VIEW-detective-comics-577 | Seq 000027 | Cover A Todd McFarlane; Owned facsimile; Year Two facsimiles are useful, but originals may still be attainable. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_577 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-577.jpg" data-display-src="../assets/covers/display/VIEW-detective-comics-577.jpg" alt="Detective Comics #577 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -498,9 +551,9 @@
       </article>
     
 
-      <article class="comic-card facsimile cover-approved_auto" data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000028" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000028">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="VIEW-detective-comics-578" data-work="Detective Comics" data-section="Detective Comics" data-search="detective comics #578 - facsimile view-detective-comics-578 detective comics 578 cover a todd mcfarlane; owned facsimile; year two facsimiles are useful, but originals may still be attainable." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000028" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000028">
         <div class="status-strip">Facsimile</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-578.jpg" data-full-title="Detective Comics #578 - Facsimile" data-full-detail="VIEW-detective-comics-578 | Seq 000028 | Cover A Todd McFarlane; Owned facsimile; Year Two facsimiles are useful, but originals may still be attainable. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-578.jpg" alt="Detective Comics #578 - Facsimile cover"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-578.jpg" data-full-title="Detective Comics #578 - Facsimile" data-full-detail="VIEW-detective-comics-578 | Seq 000028 | Cover A Todd McFarlane; Owned facsimile; Year Two facsimiles are useful, but originals may still be attainable. | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/VIEW-detective-comics-578.jpg" data-display-src="../assets/covers/display/VIEW-detective-comics-578.jpg" alt="Detective Comics #578 - Facsimile cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge"></span>
@@ -514,48 +567,142 @@
   </main>
   <div class="lightbox" aria-modal="true" role="dialog" aria-label="Cover preview">
     <div class="lightbox-panel">
-      <img src="" alt="">
+      <button class="lightbox-nav" type="button" data-lightbox-previous aria-label="Previous cover">&#8249;</button>
+      <div class="lightbox-image-wrap"><img src="" alt=""></div>
+      <button class="lightbox-nav" type="button" data-lightbox-next aria-label="Next cover">&#8250;</button>
       <div class="lightbox-caption">
         <div>
           <div class="lightbox-title"></div>
           <div class="lightbox-detail"></div>
         </div>
+        <span class="lightbox-position"></span>
         <button class="lightbox-close" type="button" data-lightbox-close>Close</button>
       </div>
     </div>
   </div>
+  <div class="keyboard-help" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
+    <div class="keyboard-help-panel">
+      <h2>Keyboard shortcuts</h2>
+      <div class="shortcut-grid"><kbd>/</kbd><span>Search</span><kbd>F</kbd><span>Filters</span><kbd>B</kbd><span>Browse cards</span><kbd>Arrow keys</kbd><span>Move selection or preview</span><kbd>Enter</kbd><span>Open selected cover</span><kbd>M</kbd><span>Missing</span><kbd>O</kbd><span>Owned</span><kbd>A</kbd><span>All statuses</span><kbd>C</kbd><span>Cover/detail density</span><kbd>Esc</kbd><span>Close or clear</span></div>
+      <button class="tool-button" type="button" data-close-help>Close</button>
+    </div>
+  </div>
+  <nav class="mobile-tools" aria-label="Viewer tools"><button type="button" data-mobile-search title="Search" aria-label="Search">S</button><button type="button" data-mobile-filter title="Filters" aria-label="Filters">F</button><button type="button" data-mobile-density title="Cover density" aria-label="Cover density">C</button><button type="button" data-mobile-top title="Back to top" aria-label="Back to top">&uarr;</button></nav>
   <script>
-    const state = { order: 'series', scope: 'all', project: 'all', status: 'all' };
+    const state = { order: 'series', scope: 'all', project: 'all', status: 'all', query: '' };
     const grid = document.querySelector('.grid');
+    const cards = [...document.querySelectorAll('.comic-card')];
     const lightbox = document.querySelector('.lightbox');
     const lightboxImage = document.querySelector('.lightbox img');
     const lightboxTitle = document.querySelector('.lightbox-title');
     const lightboxDetail = document.querySelector('.lightbox-detail');
+    const lightboxPosition = document.querySelector('.lightbox-position');
+    const previousButton = document.querySelector('[data-lightbox-previous]');
+    const nextButton = document.querySelector('[data-lightbox-next]');
     const controls = document.querySelector('.controls');
     const filterToggle = document.querySelector('.filter-toggle');
+    const filterSummary = document.querySelector('.filter-summary');
+    const search = document.querySelector('.viewer-search');
+    const searchClear = document.querySelector('.search-clear');
+    const visibleCount = document.querySelector('.visible-count');
+    const sectionJump = document.querySelector('.section-jump');
+    const densityButton = document.querySelector('[data-toggle-density]');
+    const storiesButton = document.querySelector('[data-toggle-stories]');
+    const browseButton = document.querySelector('[data-toggle-browse]');
+    const help = document.querySelector('.keyboard-help');
+    const filterStorageKey = 'gothamViewerFiltersOpen';
+    const stateStorageKey = `gothamViewerState:${location.pathname}`;
+    let currentPreviewButton = null;
+    let selectedCard = null;
+    let browseMode = false;
+    let storiesVisible = false;
+    let touchStartX = 0;
+    let swipedPreview = false;
+    let savedViewState = {};
+
+    function safeStore(key, value) { try { localStorage.setItem(key, value); } catch (error) {} }
+    function safeRead(key) { try { return localStorage.getItem(key); } catch (error) { return null; } }
+    function humanize(value) { return String(value || '').replaceAll('_', ' '); }
+    function validFilter(key, value) {
+      return value === 'all' || !!document.querySelector(`.chip[data-filter="${key}"][data-value="${CSS.escape(value)}"]`);
+    }
+    try {
+      const saved = JSON.parse(safeRead(stateStorageKey) || '{}');
+      savedViewState = saved;
+      ['order', 'scope', 'project', 'status'].forEach(key => {
+        if (saved[key] && validFilter(key, saved[key])) state[key] = saved[key];
+      });
+      if (saved.density === 'compact') document.body.classList.add('compact-view');
+      storiesVisible = saved.stories === true;
+    } catch (error) {}
+    if (safeRead(filterStorageKey) === 'true') {
+      controls.classList.add('open');
+      filterToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function saveState() {
+      safeStore(stateStorageKey, JSON.stringify({ ...state, query: '', density: document.body.classList.contains('compact-view') ? 'compact' : 'details', stories: storiesVisible, scrollY: window.scrollY, lastPublication: selectedCard?.dataset.publicationId || '' }));
+    }
+    function setFilter(group, value) {
+      state[group] = value;
+      document.querySelectorAll(`.chip[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item.dataset.value === value));
+      document.querySelectorAll(`.metric[data-status]`).forEach(item => item.classList.toggle('active', group === 'status' && item.dataset.status === value));
+      applyFilters();
+      updateFilterSummary();
+      saveState();
+    }
     filterToggle.addEventListener('click', () => {
       const open = controls.classList.toggle('open');
       filterToggle.setAttribute('aria-expanded', String(open));
+      safeStore(filterStorageKey, String(open));
     });
-    document.querySelectorAll('.chip').forEach(button => {
-      button.addEventListener('click', () => {
-        const group = button.dataset.filter;
-        state[group] = button.dataset.value;
-        document.querySelectorAll(`.chip[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item === button));
-        applyFilters();
-      });
-    });
+    document.querySelectorAll('.chip').forEach(button => button.addEventListener('click', () => setFilter(button.dataset.filter, button.dataset.value)));
+    document.querySelectorAll('.metric[data-status]').forEach(button => button.addEventListener('click', () => setFilter('status', button.dataset.status)));
+    search.addEventListener('input', () => { state.query = search.value.trim().toLocaleLowerCase(); applyFilters(); });
+    searchClear.addEventListener('click', () => { search.value = ''; state.query = ''; applyFilters(); search.focus(); });
+    densityButton.addEventListener('click', toggleDensity);
+    storiesButton.addEventListener('click', toggleStories);
+    browseButton.addEventListener('click', () => setBrowseMode(!browseMode));
+    document.querySelector('[data-open-help]').addEventListener('click', openHelp);
+    document.querySelector('[data-close-help]').addEventListener('click', closeHelp);
+    help.addEventListener('click', event => { if (event.target === help) closeHelp(); });
+
+    function updateFilterSummary() {
+      const selected = ['order', 'scope', 'project', 'status'].map(key => state[key]).filter(value => value && value !== 'all').map(humanize);
+      filterSummary.textContent = selected.length ? selected.join(' · ') : 'All';
+    }
     function applyFilters() {
-      document.querySelectorAll('.comic-card').forEach(card => {
-        const visible = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]));
-        card.classList.toggle('hidden', !visible);
+      cards.forEach(card => {
+        const matches = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]));
+        const searched = !state.query || card.dataset.search.includes(state.query);
+        card.classList.toggle('hidden', !(matches && searched));
       });
       sortCards();
+      const visible = visibleCards();
+      visibleCount.textContent = `${visible.length} of ${cards.length}`;
+      if (browseMode && (!selectedCard || selectedCard.classList.contains('hidden'))) selectCard(visible[0] || null);
     }
     function sortCards() {
-      [...document.querySelectorAll('.comic-card')]
-        .sort((left, right) => sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent))
-        .forEach(card => grid.appendChild(card));
+      grid.querySelectorAll('.chapter-divider').forEach(item => item.remove());
+      cards.sort((left, right) => sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent)).forEach(card => grid.appendChild(card));
+      renderChapterDividers();
+    }
+    function renderChapterDividers() {
+      if (!storiesVisible) return;
+      const visible = visibleCards();
+      const sections = [...new Set(visible.map(card => card.dataset.section).filter(Boolean))];
+      if (sections.length < 2 || sections.length > 18) return;
+      let previous = '';
+      visible.forEach(card => {
+        const section = card.dataset.section;
+        if (section && section !== previous) {
+          const divider = document.createElement('div');
+          divider.className = 'chapter-divider';
+          divider.textContent = humanize(section);
+          grid.insertBefore(divider, card);
+          previous = section;
+        }
+      });
     }
     function sequenceForCard(card) {
       const order = state.order === 'all' ? 'series' : state.order;
@@ -593,28 +740,111 @@
         const embedded = String(value || '').match(/\d+(\.\d+)?/);
       return embedded ? Number.parseFloat(embedded[0]) : 999999;
     }
-    document.querySelectorAll('.cover-button').forEach(button => {
-      button.addEventListener('click', () => {
-        lightboxImage.src = button.dataset.fullSrc;
-        lightboxImage.alt = `${button.dataset.fullTitle} cover`;
-        lightboxTitle.textContent = button.dataset.fullTitle;
-        lightboxDetail.textContent = button.dataset.fullDetail || '';
-        lightbox.classList.add('open');
-      });
-    });
+    function visibleCards() { return cards.filter(card => !card.classList.contains('hidden')); }
+    function visibleCoverButtons() { return visibleCards().map(card => card.querySelector('.cover-button')).filter(Boolean); }
+    function openLightbox(button) { currentPreviewButton = button; renderPreview(button); lightbox.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function renderPreview(button) {
+      if (!button) return;
+      currentPreviewButton = button;
+      lightboxImage.src = button.dataset.fullSrc;
+      lightboxImage.alt = `${button.dataset.fullTitle} cover`;
+      lightboxTitle.textContent = button.dataset.fullTitle;
+      lightboxDetail.textContent = button.dataset.fullDetail || '';
+      const sequence = visibleCoverButtons();
+      const index = sequence.indexOf(button);
+      lightboxPosition.textContent = index >= 0 ? `${index + 1} / ${sequence.length}` : '';
+      previousButton.disabled = sequence.length < 2;
+      nextButton.disabled = sequence.length < 2;
+      [-1, 1].forEach(direction => { if (sequence.length > 1) { const adjacent = sequence[(index + direction + sequence.length) % sequence.length]; const preload = new Image(); preload.src = adjacent.dataset.fullSrc; } });
+    }
+    function movePreview(direction) {
+      const sequence = visibleCoverButtons();
+      if (sequence.length < 2) return;
+      const index = sequence.indexOf(currentPreviewButton);
+      renderPreview(sequence[(Math.max(index, 0) + direction + sequence.length) % sequence.length]);
+    }
+    document.querySelectorAll('.cover-button').forEach(button => button.addEventListener('click', event => { event.stopPropagation(); openLightbox(button); }));
+    previousButton.addEventListener('click', event => { event.stopPropagation(); movePreview(-1); });
+    nextButton.addEventListener('click', event => { event.stopPropagation(); movePreview(1); });
     document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
-    lightbox.addEventListener('click', closeLightbox);
-    document.addEventListener('keydown', event => {
-      if (event.key === 'Escape') closeLightbox();
-    });
+    lightbox.addEventListener('click', () => { if (swipedPreview) { swipedPreview = false; return; } closeLightbox(); });
+    lightbox.addEventListener('touchstart', event => { touchStartX = event.changedTouches[0].clientX; }, { passive: true });
+    lightbox.addEventListener('touchend', event => { const delta = event.changedTouches[0].clientX - touchStartX; if (Math.abs(delta) > 45) { swipedPreview = true; movePreview(delta > 0 ? -1 : 1); } }, { passive: true });
     function closeLightbox() {
+      if (!lightbox.classList.contains('open')) return;
       lightbox.classList.remove('open');
+      document.body.style.overflow = '';
       lightboxImage.removeAttribute('src');
       lightboxImage.removeAttribute('alt');
       lightboxTitle.textContent = '';
       lightboxDetail.textContent = '';
+      const returnCard = currentPreviewButton?.closest('.comic-card');
+      currentPreviewButton = null;
+      if (returnCard) returnCard.focus({ preventScroll: true });
     }
+    function toggleDensity() {
+      document.body.classList.toggle('compact-view');
+      densityButton.classList.toggle('active', document.body.classList.contains('compact-view'));
+      densityButton.textContent = document.body.classList.contains('compact-view') ? 'Details' : 'Covers';
+      saveState();
+    }
+    function toggleStories() {
+      storiesVisible = !storiesVisible;
+      storiesButton.classList.toggle('active', storiesVisible);
+      storiesButton.textContent = storiesVisible ? 'Grid' : 'Stories';
+      sortCards();
+      saveState();
+    }
+    function selectCard(card, centre = false) {
+      if (selectedCard) selectedCard.classList.remove('keyboard-selected');
+      selectedCard = card;
+      if (card) { card.classList.add('keyboard-selected'); card.scrollIntoView({ block: centre ? 'center' : 'nearest', inline: 'nearest', behavior: 'smooth' }); }
+    }
+    function setBrowseMode(enabled) { browseMode = enabled; browseButton.classList.toggle('active', enabled); if (enabled) selectCard(selectedCard && !selectedCard.classList.contains('hidden') ? selectedCard : visibleCards()[0] || null, true); else selectCard(null); }
+    function moveCardSelection(direction) {
+      const available = visibleCards();
+      if (!available.length) return;
+      if (!selectedCard || !available.includes(selectedCard)) { selectCard(available[0]); return; }
+      const source = selectedCard.getBoundingClientRect();
+      const sx = source.left + source.width / 2, sy = source.top + source.height / 2;
+      const horizontal = direction === 'left' || direction === 'right';
+      const candidates = available.filter(card => card !== selectedCard).map(card => { const rect = card.getBoundingClientRect(); const dx = rect.left + rect.width / 2 - sx, dy = rect.top + rect.height / 2 - sy; const forward = direction === 'left' ? dx < -2 : direction === 'right' ? dx > 2 : direction === 'up' ? dy < -2 : dy > 2; return { card, forward, score: Math.abs(horizontal ? dx : dy) + Math.abs(horizontal ? dy : dx) * 3 }; }).filter(item => item.forward).sort((a, b) => a.score - b.score);
+      if (candidates.length) selectCard(candidates[0].card);
+    }
+    function openHelp() { help.classList.add('open'); }
+    function closeHelp() { help.classList.remove('open'); }
+    function resetFilters() { search.value = ''; state.query = ''; ['scope', 'project', 'status'].forEach(key => setFilter(key, 'all')); }
+    sectionJump?.addEventListener('change', () => { const target = visibleCards().find(card => card.dataset.section.split('|').includes(sectionJump.value) || card.dataset.work === sectionJump.value); if (target) target.scrollIntoView({ block: 'center', behavior: 'smooth' }); sectionJump.value = ''; });
+    document.querySelector('[data-mobile-search]').addEventListener('click', () => { controls.classList.add('open'); filterToggle.setAttribute('aria-expanded', 'true'); search.focus(); });
+    document.querySelector('[data-mobile-filter]').addEventListener('click', () => filterToggle.click());
+    document.querySelector('[data-mobile-density]').addEventListener('click', toggleDensity);
+    document.querySelector('[data-mobile-top]').addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+    document.addEventListener('keydown', event => {
+      const typing = event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLTextAreaElement;
+      if (help.classList.contains('open')) { if (event.key === 'Escape' || event.key === '?') { event.preventDefault(); closeHelp(); } return; }
+      if (lightbox.classList.contains('open')) { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); movePreview(event.key === 'ArrowLeft' ? -1 : 1); } else if (event.key === 'Escape' || event.code === 'Space') { event.preventDefault(); closeLightbox(); } return; }
+      if (event.key === 'Escape' && typing) { search.value = ''; state.query = ''; applyFilters(); search.blur(); return; }
+      if (typing) return;
+      if (browseMode && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); moveCardSelection(event.key.replace('Arrow', '').toLowerCase()); return; }
+      if (browseMode && (event.key === 'Enter' || event.code === 'Space')) { event.preventDefault(); const button = selectedCard?.querySelector('.cover-button'); if (button) openLightbox(button); return; }
+      if (event.key === '/') { event.preventDefault(); controls.classList.add('open'); filterToggle.setAttribute('aria-expanded', 'true'); search.focus(); }
+      else if (event.key.toLowerCase() === 'f') filterToggle.click();
+      else if (event.key.toLowerCase() === 'b') setBrowseMode(!browseMode);
+      else if (event.key === '?') openHelp();
+      else if (event.key.toLowerCase() === 'm') setFilter('status', 'missing');
+      else if (event.key.toLowerCase() === 'o') setFilter('status', 'owned');
+      else if (event.key.toLowerCase() === 'a') setFilter('status', 'all');
+      else if (event.key.toLowerCase() === 'c') toggleDensity();
+    });
+    ['order', 'scope', 'project', 'status'].forEach(key => document.querySelectorAll(`.chip[data-filter="${key}"]`).forEach(item => item.classList.toggle('active', item.dataset.value === state[key])));
+    densityButton.classList.toggle('active', document.body.classList.contains('compact-view'));
+    densityButton.textContent = document.body.classList.contains('compact-view') ? 'Details' : 'Covers';
+    storiesButton.classList.toggle('active', storiesVisible);
+    storiesButton.textContent = storiesVisible ? 'Grid' : 'Stories';
     applyFilters();
+    updateFilterSummary();
+    window.addEventListener('pagehide', saveState);
+    if (savedViewState.scrollY) requestAnimationFrame(() => scrollTo({ top: savedViewState.scrollY }));
     </script>
 </body>
 </html>
