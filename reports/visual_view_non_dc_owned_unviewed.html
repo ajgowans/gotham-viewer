@@ -161,6 +161,10 @@
       </div>
       <div class="control-row"><b>Order</b><button class="chip" data-filter="order" data-value="all">All orders</button>
 <button class="chip active" data-filter="order" data-value="series">series</button></div>
+      <div class="control-row"><b>Sort</b><button class="chip active" data-filter="sort" data-value="curated">curated</button><button class="chip" data-filter="sort" data-value="date">date</button><button class="chip" data-filter="sort" data-value="title">title</button></div>
+      <div class="control-row"><b>Decade</b><button class="chip active" data-filter="decade" data-value="all">All decades</button>
+<button class="chip" data-filter="decade" data-value="1980s">1980s</button></div>
+      <div class="control-row"><b>Year</b><select class="section-jump year-filter" aria-label="Filter by publication year"><option value="all">All years</option><option value="1982">1982</option></select></div>
       <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button></div>
       <div class="control-row"><b>Status</b><button class="chip active" data-filter="status" data-value="all">All statuses</button>
 <button class="chip" data-filter="status" data-value="owned">owned</button>
@@ -173,7 +177,7 @@
   </section>
   <main>
     <section class="grid">
-      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="OWNED-OTHER-51" data-work="Wolverine" data-section="Wolverine" data-search="wolverine #01 owned-other-51 wolverine 1 owned facsimile: facsimile.; marvel publications." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000001">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="OWNED-OTHER-51" data-work="Wolverine" data-section="Wolverine" data-search="wolverine #01 owned-other-51 wolverine 1 owned facsimile: facsimile.; marvel publications." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000001" data-publication-date="1982-06" data-publication-year="1982" data-publication-decade="1980s">
         <div class="status-strip">Facsimile</div>
         <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/OWNED-OTHER-51.jpg" data-full-title="Wolverine #01" data-full-detail="Published 1982-06 | OWNED-OTHER-51 | Seq 000001 | Owned facsimile: facsimile.; Marvel publications. | https://marvel.fandom.com/wiki/Wolverine_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/display/OWNED-OTHER-51.jpg" data-display-src="../assets/covers/display/OWNED-OTHER-51.jpg" alt="Wolverine #01 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
@@ -211,7 +215,7 @@
   </div>
   <nav class="mobile-tools" aria-label="Viewer tools"><button type="button" data-mobile-search title="Search" aria-label="Search">S</button><button type="button" data-mobile-filter title="Filters" aria-label="Filters">F</button><button type="button" data-mobile-density title="Cover density" aria-label="Cover density">C</button><button type="button" data-mobile-top title="Back to top" aria-label="Back to top">&uarr;</button></nav>
   <script>
-    const state = { order: 'series', scope: 'all', project: 'all', status: 'all', query: '' };
+    const state = { order: 'series', scope: 'all', project: 'all', status: 'all', sort: 'curated', decade: 'all', year: 'all', query: '' };
     const grid = document.querySelector('.grid');
     const cards = [...document.querySelectorAll('.comic-card')];
     const lightbox = document.querySelector('.lightbox');
@@ -251,9 +255,10 @@
     try {
       const saved = JSON.parse(safeRead(stateStorageKey) || '{}');
       savedViewState = saved;
-      ['order', 'scope', 'project', 'status'].forEach(key => {
+      ['order', 'scope', 'project', 'status', 'sort', 'decade'].forEach(key => {
         if (saved[key] && validFilter(key, saved[key])) state[key] = saved[key];
       });
+      if (saved.year && document.querySelector(`.year-filter option[value="${CSS.escape(saved.year)}"]`)) state.year = saved.year;
       if (saved.density === 'compact') document.body.classList.add('compact-view');
       storiesVisible = saved.stories === true;
     } catch (error) {}
@@ -279,6 +284,7 @@
       safeStore(filterStorageKey, String(open));
     });
     document.querySelectorAll('.chip').forEach(button => button.addEventListener('click', () => setFilter(button.dataset.filter, button.dataset.value)));
+    document.querySelector('.year-filter').addEventListener('change', event => { state.year = event.target.value; applyFilters(); updateFilterSummary(); saveState(); });
     document.querySelectorAll('.metric[data-status]').forEach(button => button.addEventListener('click', () => setFilter('status', button.dataset.status)));
     search.addEventListener('input', () => { state.query = search.value.trim().toLocaleLowerCase(); applyFilters(); });
     searchClear.addEventListener('click', () => { search.value = ''; state.query = ''; applyFilters(); search.focus(); });
@@ -290,12 +296,14 @@
     help.addEventListener('click', event => { if (event.target === help) closeHelp(); });
 
     function updateFilterSummary() {
-      const selected = ['order', 'scope', 'project', 'status'].map(key => state[key]).filter(value => value && value !== 'all').map(humanize);
+      const selected = ['order', 'scope', 'project', 'status', 'sort', 'decade', 'year'].map(key => state[key]).filter(value => value && value !== 'all' && value !== 'curated').map(humanize);
       filterSummary.textContent = selected.length ? selected.join(' · ') : 'All';
     }
     function applyFilters() {
       cards.forEach(card => {
-        const matches = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]));
+        const matches = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]))
+          && (state.decade === 'all' || card.dataset.publicationDecade === state.decade)
+          && (state.year === 'all' || card.dataset.publicationYear === state.year);
         const searched = !state.query || card.dataset.search.includes(state.query);
         card.classList.toggle('hidden', !(matches && searched));
       });
@@ -306,8 +314,17 @@
     }
     function sortCards() {
       grid.querySelectorAll('.chapter-divider').forEach(item => item.remove());
-      cards.sort((left, right) => sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent)).forEach(card => grid.appendChild(card));
+      cards.sort((left, right) => {
+        if (state.sort === 'date') return dateSortValue(left) - dateSortValue(right) || sequenceForCard(left) - sequenceForCard(right);
+        if (state.sort === 'title') return left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent, undefined, {numeric:true, sensitivity:'base'});
+        return sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent);
+      }).forEach(card => grid.appendChild(card));
       renderChapterDividers();
+    }
+    function dateSortValue(card) {
+      const value = card.dataset.publicationDate || '';
+      const match = value.match(/^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?/);
+      return match ? Number(`${match[1]}${match[2] || '00'}${match[3] || '00'}`) : 99999999;
     }
     function renderChapterDividers() {
       if (!storiesVisible) return;
@@ -435,7 +452,7 @@
     }
     function openHelp() { help.classList.add('open'); }
     function closeHelp() { help.classList.remove('open'); }
-    function resetFilters() { search.value = ''; state.query = ''; ['scope', 'project', 'status'].forEach(key => setFilter(key, 'all')); }
+    function resetFilters() { search.value = ''; state.query = ''; ['scope', 'project', 'status', 'decade'].forEach(key => setFilter(key, 'all')); state.year = 'all'; document.querySelector('.year-filter').value = 'all'; }
     sectionJump?.addEventListener('change', () => { const target = visibleCards().find(card => card.dataset.section.split('|').includes(sectionJump.value) || card.dataset.work === sectionJump.value); if (target) target.scrollIntoView({ block: 'center', behavior: 'smooth' }); sectionJump.value = ''; });
     document.querySelector('[data-mobile-search]').addEventListener('click', () => { controls.classList.add('open'); filterToggle.setAttribute('aria-expanded', 'true'); search.focus(); });
     document.querySelector('[data-mobile-filter]').addEventListener('click', () => filterToggle.click());
@@ -458,7 +475,8 @@
       else if (event.key.toLowerCase() === 'a') setFilter('status', 'all');
       else if (event.key.toLowerCase() === 'c') toggleDensity();
     });
-    ['order', 'scope', 'project', 'status'].forEach(key => document.querySelectorAll(`.chip[data-filter="${key}"]`).forEach(item => item.classList.toggle('active', item.dataset.value === state[key])));
+    ['order', 'scope', 'project', 'status', 'sort', 'decade'].forEach(key => document.querySelectorAll(`.chip[data-filter="${key}"]`).forEach(item => item.classList.toggle('active', item.dataset.value === state[key])));
+    document.querySelector('.year-filter').value = state.year;
     densityButton.classList.toggle('active', document.body.classList.contains('compact-view'));
     densityButton.textContent = document.body.classList.contains('compact-view') ? 'Details' : 'Covers';
     storiesButton.classList.toggle('active', storiesVisible);
