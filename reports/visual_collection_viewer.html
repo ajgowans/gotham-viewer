@@ -480,11 +480,14 @@
     });
   </script>
 
+
+
+
 <!-- VISUAL_INDEX_SECTIONS_START -->
 <style>
 .visual-index-section { margin: 0 0 2rem; }
 .visual-index-section > h2 { margin: 0 0 .8rem .75rem; }
-.shopping-dashboard-link { display:inline-flex; margin:0 0 1rem .75rem; padding:.7rem .9rem; border-radius:6px; background:#172026; color:white; text-decoration:none; font-weight:750; }
+.shopping-dashboard-link { display:inline-flex; margin:0 .5rem 1rem .75rem; padding:.7rem .9rem; border-radius:6px; background:#172026; color:white; text-decoration:none; font-weight:750; }
 </style>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -508,6 +511,11 @@ document.addEventListener("DOMContentLoaded", () => {
   shopLink.href = "mobile_shopping_dashboard.html";
   shopLink.textContent = "Comic Shop Dashboard";
   parent.insertBefore(shopLink, original);
+  const storyLink = document.createElement("a");
+  storyLink.className = "shopping-dashboard-link";
+  storyLink.href = "story_collection_dashboard.html";
+  storyLink.textContent = "Story Collection Dashboard";
+  parent.insertBefore(storyLink, original);
   const fragment = document.createDocumentFragment();
   order.forEach(name => {
     const cards = groups.get(name);
