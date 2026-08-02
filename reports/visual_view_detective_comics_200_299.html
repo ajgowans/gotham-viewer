@@ -21,6 +21,13 @@
     .metric:hover, .metric.active { border-color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,.08); }
     .metric strong { display: block; font-size: 24px; }
     .metric span { color: var(--muted); font-size: 13px; }
+    .project-progress { display: none; padding: 10px 32px; gap: 8px; overflow-x: auto; background: #f4f6f8; border-bottom: 1px solid var(--line); }
+    .project-progress.visible { display: flex; }
+    .project-progress button { flex: 0 0 auto; min-width: 160px; border: 1px solid var(--line); border-radius: 7px; background: white; color: var(--ink); padding: 8px 10px; text-align: left; cursor: pointer; }
+    .project-progress button.active { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+    .project-progress strong, .project-progress span { display: block; }
+    .project-progress strong { font-size: 13px; text-transform: capitalize; }
+    .project-progress span { margin-top: 3px; color: var(--muted); font-size: 11px; }
     .controls { padding: 8px 32px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
     .filter-toggle { display: flex; width: auto; max-width: 100%; border: 1px solid var(--line); background: #172026; color: white; border-radius: 6px; padding: 8px 11px; font-weight: 750; cursor: pointer; align-items: center; gap: 10px; }
     .filter-toggle small { color: #c8d0d8; font-size: 11px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -106,7 +113,7 @@
     kbd { min-width: 34px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 3px 7px; background: #f4f6f8; text-align: center; font: 700 12px ui-monospace, monospace; }
     .mobile-tools { display: none; }
     @media (max-width: 700px) {
-      header, .summary, main { padding-left: 14px; padding-right: 14px; }
+      header, .summary, .project-progress, main { padding-left: 14px; padding-right: 14px; }
       header { padding-top: 18px; }
       .summary { grid-template-columns: repeat(5, 1fr); gap: 5px; padding-top: 7px; padding-bottom: 7px; }
       .metric { padding: 6px; text-align: center; }
@@ -147,6 +154,7 @@
     <button class="metric" type="button" data-status="ordered"><strong>0</strong><span>ordered</span></button>
     <button class="metric" type="button" data-status="missing"><strong>100</strong><span>missing</span></button>
   </section>
+  <nav class="project-progress" aria-label="Story completion"></nav>
   <section class="controls">
     <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="viewer-filters"><span>Filters &amp; order</span><small class="filter-summary">All</small></button>
     <div class="control-content" id="viewer-filters">
@@ -1618,6 +1626,7 @@
     const search = document.querySelector('.viewer-search');
     const searchClear = document.querySelector('.search-clear');
     const visibleCount = document.querySelector('.visible-count');
+    const projectProgress = document.querySelector('.project-progress');
     const sectionJump = document.querySelector('.section-jump');
     const densityButton = document.querySelector('[data-toggle-density]');
     const storiesButton = document.querySelector('[data-toggle-stories]');
@@ -1695,9 +1704,27 @@
         card.classList.toggle('hidden', !(matches && searched));
       });
       sortCards();
+      renderProjectProgress();
       const visible = visibleCards();
       visibleCount.textContent = `${visible.length} of ${cards.length}`;
       if (browseMode && (!selectedCard || selectedCard.classList.contains('hidden'))) selectCard(visible[0] || null);
+    }
+    function renderProjectProgress() {
+      const projectNames = [...new Set(cards.flatMap(card => card.dataset.project.split('|')).filter(Boolean))];
+      if (projectNames.length < 2 || projectNames.length > 30) { projectProgress.classList.remove('visible'); return; }
+      projectProgress.innerHTML = '';
+      projectNames.forEach(project => {
+        const projectCards = cards.filter(card => card.dataset.project.split('|').includes(project));
+        const counts = Object.fromEntries(['owned', 'facsimile', 'ordered', 'readable', 'missing'].map(status => [status, projectCards.filter(card => card.dataset.status === status).length]));
+        const available = counts.owned + counts.facsimile + counts.readable;
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.classList.toggle('active', state.project === project);
+        button.innerHTML = `<strong>${humanize(project)}</strong><span>${available}/${projectCards.length} available · ${counts.ordered} ordered · ${counts.missing} missing</span>`;
+        button.addEventListener('click', () => setFilter('project', state.project === project ? 'all' : project));
+        projectProgress.appendChild(button);
+      });
+      projectProgress.classList.add('visible');
     }
     function sortCards() {
       grid.querySelectorAll('.chapter-divider').forEach(item => item.remove());
