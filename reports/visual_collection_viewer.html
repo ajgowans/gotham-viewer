@@ -44,6 +44,12 @@
               <em>28 cards from 28 rows</em>
             </a>
             
+            <a class="view-card" href="visual_view_action_comics_weekly_gotham.html">
+              <strong>Action Comics Weekly: Catwoman &amp; Nightwing</strong>
+              <span>The sixteen unique Action Comics Weekly issues containing The Tin Roof Club and the two early Nightwing serials.</span>
+              <em>16 cards from 16 rows</em>
+            </a>
+            
             <a class="view-card" href="visual_view_american_psycho.html">
               <strong>American Psycho</strong>
               <span>Complete five-issue Sumerian Comics limited series.</span>
@@ -108,6 +114,12 @@
               <strong>Batman #600-713</strong>
               <span>Batman numbered run from #600 through the end of the original volume at #713.</span>
               <em>114 cards from 114 rows</em>
+            </a>
+            
+            <a class="view-card" href="visual_view_post_nml_2000_2006.html">
+              <strong>Batman 2000-2006 Story Arcs</strong>
+              <span>New Gotham Officer Down Bruce Wayne Murderer and Fugitive War Games and Under the Hood in chronological project order.</span>
+              <em>110 cards from 110 rows</em>
             </a>
             
             <a class="view-card" href="visual_view_batman_and_the_outsiders_complete.html">
@@ -209,7 +221,19 @@
             <a class="view-card" href="visual_view_catwoman_vol2.html">
               <strong>Catwoman</strong>
               <span>Catwoman Vol. 1 followed by the complete Catwoman Vol. 2 run and catalogued annuals and specials.</span>
-              <em>110 cards from 110 rows</em>
+              <em>245 cards from 246 rows</em>
+            </a>
+            
+            <a class="view-card" href="visual_view_catwoman_vol3.html">
+              <strong>Catwoman Vol. 3 (2002-2008)</strong>
+              <span>Complete original Catwoman Vol. 3 numbered run plus the later #83 revival issue.</span>
+              <em>83 cards from 83 rows</em>
+            </a>
+            
+            <a class="view-card" href="visual_view_catwoman_vol4.html">
+              <strong>Catwoman Vol. 4 (New 52)</strong>
+              <span>Complete Catwoman New 52 numbered run plus origin issue #0.</span>
+              <em>53 cards from 53 rows</em>
             </a>
             
             <a class="view-card" href="visual_view_countdown_expanded.html">
@@ -239,7 +263,7 @@
             <a class="view-card" href="visual_view_dc_owned_unviewed.html">
               <strong>DC Comics Owned</strong>
               <span>Owned DC publications not already represented in another visual viewer.</span>
-              <em>49 cards from 49 rows</em>
+              <em>41 cards from 41 rows</em>
             </a>
             
             <a class="view-card" href="visual_view_dc_graphic_novels_owned.html">
@@ -300,6 +324,12 @@
               <strong>Detective Comics #700-775</strong>
               <span>Detective Comics numbered run from #700 through #775 with ownership and cover status.</span>
               <em>76 cards from 76 rows</em>
+            </a>
+            
+            <a class="view-card" href="visual_view_detective_comics_new52.html">
+              <strong>Detective Comics (New 52)</strong>
+              <span>Complete Detective Comics Vol. 2 numbered run.</span>
+              <em>53 cards from 53 rows</em>
             </a>
             
             <a class="view-card" href="visual_view_detective_comics_annuals_specials.html">
@@ -492,8 +522,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!links.length) return;
   const original = links[0].parentElement;
   if (!original || original.dataset.sectioned === "yes") return;
-  const configuredSections = {"absolute_batman": "Batman", "american_psycho": "Other", "azrael_complete": "Batman", "bane_conquest": "Story Collections", "batgirl_complete": "Batman", "batman_0_99": "Batman", "batman_100_199": "Batman", "batman_200_299": "Batman", "batman_300_399": "Batman", "batman_400_499": "Batman", "batman_500_599": "Batman", "batman_600_714": "Batman", "batman_and_the_outsiders_complete": "Batman", "batman_annuals_specials": "Batman", "batman_black_white": "Batman", "batman_chronicles": "Batman", "batman_elseworlds": "Batman", "batman_family_complete_run": "Batman", "batman_legends_uk": "Batman", "batman_miniseries": "Batman", "batman_vol2": "Batman", "batman_vol3_1_34": "Batman", "beowulf_dragon_slayer": "Other", "bloodlines_extended": "Story Collections", "brave_and_bold_batman_bronze": "Batman", "brave_and_bold_complete": "Batman", "catwoman_vol2": "Batman", "citadel_journal": "Other", "countdown_expanded": "Story Collections", "court_of_owls": "Story Collections", "crisis_on_infinite_earths": "Story Collections", "dc_graphic_novels_owned": "DC Graphic Novels Owned", "dc_one_million": "Story Collections", "dc_owned_unviewed": "DC Comics Owned", "detective_comics_0_99": "Batman", "detective_comics_100_199": "Batman", "detective_comics_200_299": "Batman", "detective_comics_300_399": "Batman", "detective_comics_400_499": "Batman", "detective_comics_500_599": "Batman", "detective_comics_600_699": "Batman", "detective_comics_700_775": "Batman", "detective_comics_annuals_specials": "Batman", "dkr_saga": "Story Collections", "doomsday_clock": "Story Collections", "facsimiles": "Facsimiles", "gotham_city": "Story Collections", "heavy_metal": "Other", "hush_extended": "Story Collections", "infinite_crisis_buildup_expanded": "Story Collections", "joker_1970s": "Batman", "knightfall_to_knightsend": "Story Collections", "legends_of_the_dark_knight": "Batman", "long_halloween_universe": "Story Collections", "man_bat_universe": "Batman", "modern_gotham_one_shots": "Batman", "nightwing_complete": "Batman", "no_mans_land_extended": "Story Collections", "non_dc_owned_unviewed": "Non-DC Comics Owned", "ordered_comics": "Ordered Comics", "post_knightsend_arcs": "Story Collections", "richard_dragon_complete": "Other", "robin_complete": "Batman", "rom_spaceknight_complete": "Other", "secret_origins_files": "Batman", "shadow_of_the_bat": "Batman", "showcase_93_95": "Other", "spike_journal": "Other", "the_guild": "Other", "the_nam_complete": "Other", "warhammer_monthly": "Other", "zero_hour_expanded": "Story Collections"};
-  const configuredOrder = {"absolute_batman": 10, "american_psycho": 70, "azrael_complete": 20, "bane_conquest": 125, "batgirl_complete": 30, "batman_0_99": 40, "batman_100_199": 41, "batman_200_299": 42, "batman_300_399": 43, "batman_400_499": 44, "batman_500_599": 45, "batman_600_714": 46, "batman_and_the_outsiders_complete": 60, "batman_annuals_specials": 70, "batman_black_white": 80, "batman_chronicles": 90, "batman_elseworlds": 100, "batman_family_complete_run": 110, "batman_legends_uk": 95, "batman_miniseries": 120, "batman_vol2": 47, "batman_vol3_1_34": 48, "beowulf_dragon_slayer": 60, "bloodlines_extended": 40, "brave_and_bold_batman_bronze": 231, "brave_and_bold_complete": 230, "catwoman_vol2": 160, "citadel_journal": 47, "countdown_expanded": 110, "court_of_owls": 115, "crisis_on_infinite_earths": 5, "dc_graphic_novels_owned": 10, "dc_one_million": 60, "dc_owned_unviewed": 10, "detective_comics_0_99": 170, "detective_comics_100_199": 171, "detective_comics_200_299": 172, "detective_comics_300_399": 173, "detective_comics_400_499": 174, "detective_comics_500_599": 175, "detective_comics_600_699": 176, "detective_comics_700_775": 177, "detective_comics_annuals_specials": 178, "dkr_saga": 10, "doomsday_clock": 120, "facsimiles": 10, "gotham_city": 45, "heavy_metal": 45, "hush_extended": 130, "infinite_crisis_buildup_expanded": 100, "joker_1970s": 240, "knightfall_to_knightsend": 30, "legends_of_the_dark_knight": 140, "long_halloween_universe": 20, "man_bat_universe": 190, "modern_gotham_one_shots": 130, "nightwing_complete": 200, "no_mans_land_extended": 80, "non_dc_owned_unviewed": 10, "ordered_comics": 10, "post_knightsend_arcs": 50, "richard_dragon_complete": 20, "robin_complete": 210, "rom_spaceknight_complete": 10, "secret_origins_files": 220, "shadow_of_the_bat": 150, "showcase_93_95": 50, "spike_journal": 48, "the_guild": 80, "the_nam_complete": 30, "warhammer_monthly": 40, "zero_hour_expanded": 35};
+  const configuredSections = {"absolute_batman": "Batman", "action_comics_weekly_gotham": "Other", "american_psycho": "Other", "azrael_complete": "Batman", "bane_conquest": "Story Collections", "batgirl_complete": "Batman", "batman_0_99": "Batman", "batman_100_199": "Batman", "batman_200_299": "Batman", "batman_300_399": "Batman", "batman_400_499": "Batman", "batman_500_599": "Batman", "batman_600_714": "Batman", "batman_and_the_outsiders_complete": "Batman", "batman_annuals_specials": "Batman", "batman_black_white": "Batman", "batman_chronicles": "Batman", "batman_elseworlds": "Batman", "batman_family_complete_run": "Batman", "batman_legends_uk": "Batman", "batman_miniseries": "Batman", "batman_vol2": "Batman", "batman_vol3_1_34": "Batman", "beowulf_dragon_slayer": "Other", "bloodlines_extended": "Story Collections", "brave_and_bold_batman_bronze": "Batman", "brave_and_bold_complete": "Batman", "catwoman_vol2": "Batman", "catwoman_vol3": "Batman", "catwoman_vol4": "Batman", "citadel_journal": "Other", "countdown_expanded": "Story Collections", "court_of_owls": "Story Collections", "crisis_on_infinite_earths": "Story Collections", "dc_graphic_novels_owned": "DC Graphic Novels Owned", "dc_one_million": "Story Collections", "dc_owned_unviewed": "DC Comics Owned", "detective_comics_0_99": "Batman", "detective_comics_100_199": "Batman", "detective_comics_200_299": "Batman", "detective_comics_300_399": "Batman", "detective_comics_400_499": "Batman", "detective_comics_500_599": "Batman", "detective_comics_600_699": "Batman", "detective_comics_700_775": "Batman", "detective_comics_annuals_specials": "Batman", "detective_comics_new52": "Batman", "dkr_saga": "Story Collections", "doomsday_clock": "Story Collections", "facsimiles": "Facsimiles", "gotham_city": "Story Collections", "heavy_metal": "Other", "hush_extended": "Story Collections", "infinite_crisis_buildup_expanded": "Story Collections", "joker_1970s": "Batman", "knightfall_to_knightsend": "Story Collections", "legends_of_the_dark_knight": "Batman", "long_halloween_universe": "Story Collections", "man_bat_universe": "Batman", "modern_gotham_one_shots": "Batman", "nightwing_complete": "Batman", "no_mans_land_extended": "Story Collections", "non_dc_owned_unviewed": "Non-DC Comics Owned", "ordered_comics": "Ordered Comics", "post_knightsend_arcs": "Story Collections", "post_nml_2000_2006": "Story Collections", "richard_dragon_complete": "Other", "robin_complete": "Batman", "rom_spaceknight_complete": "Other", "secret_origins_files": "Batman", "shadow_of_the_bat": "Batman", "showcase_93_95": "Other", "spike_journal": "Other", "the_guild": "Other", "the_nam_complete": "Other", "warhammer_monthly": "Other", "zero_hour_expanded": "Story Collections"};
+  const configuredOrder = {"absolute_batman": 10, "action_comics_weekly_gotham": 35, "american_psycho": 70, "azrael_complete": 20, "bane_conquest": 125, "batgirl_complete": 30, "batman_0_99": 40, "batman_100_199": 41, "batman_200_299": 42, "batman_300_399": 43, "batman_400_499": 44, "batman_500_599": 45, "batman_600_714": 46, "batman_and_the_outsiders_complete": 60, "batman_annuals_specials": 70, "batman_black_white": 80, "batman_chronicles": 90, "batman_elseworlds": 100, "batman_family_complete_run": 110, "batman_legends_uk": 95, "batman_miniseries": 120, "batman_vol2": 47, "batman_vol3_1_34": 48, "beowulf_dragon_slayer": 60, "bloodlines_extended": 40, "brave_and_bold_batman_bronze": 231, "brave_and_bold_complete": 230, "catwoman_vol2": 160, "catwoman_vol3": 161, "catwoman_vol4": 162, "citadel_journal": 47, "countdown_expanded": 110, "court_of_owls": 115, "crisis_on_infinite_earths": 5, "dc_graphic_novels_owned": 10, "dc_one_million": 60, "dc_owned_unviewed": 10, "detective_comics_0_99": 170, "detective_comics_100_199": 171, "detective_comics_200_299": 172, "detective_comics_300_399": 173, "detective_comics_400_499": 174, "detective_comics_500_599": 175, "detective_comics_600_699": 176, "detective_comics_700_775": 177, "detective_comics_annuals_specials": 178, "detective_comics_new52": 179, "dkr_saga": 10, "doomsday_clock": 120, "facsimiles": 10, "gotham_city": 45, "heavy_metal": 45, "hush_extended": 130, "infinite_crisis_buildup_expanded": 100, "joker_1970s": 240, "knightfall_to_knightsend": 30, "legends_of_the_dark_knight": 140, "long_halloween_universe": 20, "man_bat_universe": 190, "modern_gotham_one_shots": 130, "nightwing_complete": 200, "no_mans_land_extended": 80, "non_dc_owned_unviewed": 10, "ordered_comics": 10, "post_knightsend_arcs": 50, "post_nml_2000_2006": 90, "richard_dragon_complete": 20, "robin_complete": 210, "rom_spaceknight_complete": 10, "secret_origins_files": 220, "shadow_of_the_bat": 150, "showcase_93_95": 50, "spike_journal": 48, "the_guild": 80, "the_nam_complete": 30, "warhammer_monthly": 40, "zero_hour_expanded": 35};
   const sectionFor = href => {
     const id = href.replace(/^.*visual_view_/, "").replace(/\.html.*$/, "");
     return configuredSections[id] || "Batman";

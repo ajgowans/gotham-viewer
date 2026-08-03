@@ -156,7 +156,7 @@
   </section>
   <nav class="project-progress" aria-label="Story completion"></nav>
   <section class="controls">
-    <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="viewer-filters"><span>Filters &amp; order</span><small class="filter-summary">reading · core story</small></button>
+    <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="viewer-filters"><span>Filters &amp; order</span><small class="filter-summary">reading</small></button>
     <div class="control-content" id="viewer-filters">
       <div class="viewer-tools">
         <div class="search-wrap"><input class="viewer-search" type="search" placeholder="Search title, issue or story" aria-label="Search comics"><button class="search-clear" type="button" title="Clear search" aria-label="Clear search">&times;</button></div>
@@ -173,8 +173,8 @@
       <div class="control-row"><b>Decade</b><button class="chip active" data-filter="decade" data-value="all">All decades</button>
 <button class="chip" data-filter="decade" data-value="2010s">2010s</button></div>
       <div class="control-row"><b>Year</b><select class="section-jump year-filter" aria-label="Filter by publication year"><option value="all">All years</option><option value="2011">2011</option><option value="2012">2012</option></select></div>
-      <div class="control-row"><b>Scope</b><button class="chip" data-filter="scope" data-value="all">All scopes</button>
-<button class="chip active" data-filter="scope" data-value="core_story">core story</button>
+      <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button>
+<button class="chip" data-filter="scope" data-value="core_story">core story</button>
 <button class="chip" data-filter="scope" data-value="night_of_the_owls">night of the owls</button></div>
       <div class="control-row"><b>Status</b><button class="chip active" data-filter="status" data-value="all">All statuses</button>
 <button class="chip" data-filter="status" data-value="owned">owned</button>
@@ -544,7 +544,7 @@
   </div>
   <nav class="mobile-tools" aria-label="Viewer tools"><button type="button" data-mobile-search title="Search" aria-label="Search">S</button><button type="button" data-mobile-filter title="Filters" aria-label="Filters">F</button><button type="button" data-mobile-density title="Cover density" aria-label="Cover density">C</button><button type="button" data-mobile-top title="Back to top" aria-label="Back to top">&uarr;</button></nav>
   <script>
-    const state = { order: 'reading', scope: 'core_story', project: 'all', status: 'all', sort: 'curated', decade: 'all', year: 'all', query: '' };
+    const state = { order: 'reading', scope: 'all', project: 'all', status: 'all', sort: 'curated', decade: 'all', year: 'all', query: '' };
     const grid = document.querySelector('.grid');
     const cards = [...document.querySelectorAll('.comic-card')];
     const lightbox = document.querySelector('.lightbox');
