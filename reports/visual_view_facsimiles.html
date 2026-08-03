@@ -648,10 +648,11 @@
     try {
       const saved = JSON.parse(safeRead(stateStorageKey) || '{}');
       savedViewState = saved;
-      ['order', 'scope', 'project', 'status', 'sort', 'decade'].forEach(key => {
+      // Restore presentation preferences, but never reopen a viewer with a hidden
+      // collection filter that contradicts the totals shown in its summary.
+      ['order', 'sort'].forEach(key => {
         if (saved[key] && validFilter(key, saved[key])) state[key] = saved[key];
       });
-      if (saved.year && document.querySelector(`.year-filter option[value="${CSS.escape(saved.year)}"]`)) state.year = saved.year;
       if (saved.density === 'compact') document.body.classList.add('compact-view');
       storiesVisible = saved.stories === true;
     } catch (error) {}
@@ -678,7 +679,17 @@
     });
     document.querySelectorAll('.chip').forEach(button => button.addEventListener('click', () => setFilter(button.dataset.filter, button.dataset.value)));
     document.querySelector('.year-filter').addEventListener('change', event => { state.year = event.target.value; applyFilters(); updateFilterSummary(); saveState(); });
-    document.querySelectorAll('.metric[data-status]').forEach(button => button.addEventListener('click', () => setFilter('status', button.dataset.status)));
+    document.querySelectorAll('.metric[data-status]').forEach(button => button.addEventListener('click', () => {
+      search.value = '';
+      state.query = '';
+      ['scope', 'project', 'decade'].forEach(key => {
+        state[key] = 'all';
+        document.querySelectorAll(`.chip[data-filter="${key}"]`).forEach(item => item.classList.toggle('active', item.dataset.value === 'all'));
+      });
+      state.year = 'all';
+      document.querySelector('.year-filter').value = 'all';
+      setFilter('status', button.dataset.status);
+    }));
     search.addEventListener('input', () => { state.query = search.value.trim().toLocaleLowerCase(); applyFilters(); });
     searchClear.addEventListener('click', () => { search.value = ''; state.query = ''; applyFilters(); search.focus(); });
     densityButton.addEventListener('click', toggleDensity);
