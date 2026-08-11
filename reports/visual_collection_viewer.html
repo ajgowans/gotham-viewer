@@ -516,6 +516,12 @@
     });
   </script>
 
+
+
+
+
+
+
 <!-- VISUAL_INDEX_SECTIONS_START -->
 <style>
 .visual-index-section { margin: 0 0 2rem; }
@@ -549,6 +555,11 @@ document.addEventListener("DOMContentLoaded", () => {
   storyLink.href = "story_collection_dashboard.html";
   storyLink.textContent = "Story Collection Dashboard";
   parent.insertBefore(storyLink, original);
+  const creatorLink = document.createElement("a");
+  creatorLink.className = "shopping-dashboard-link";
+  creatorLink.href = "creator_collection_viewer.html";
+  creatorLink.textContent = "Creators";
+  parent.insertBefore(creatorLink, original);
   const fragment = document.createDocumentFragment();
   order.forEach(name => {
     const cards = groups.get(name);
