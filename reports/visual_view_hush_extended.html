@@ -1,0 +1,1368 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="../assets/site/batman-favicon.png">
+  <title>Hush Saga Expanded - Visual Viewer</title>
+  <style>
+    :root { color-scheme: light; --ink:#172026; --muted:#5c6670; --line:#d9dee4; --paper:#f6f7f8; --panel:#ffffff; --owned:#0f7b4f; --fac:#6b4bb8; --ordered:#2166ad; --readable:#a46a00; --missing:#b42318; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); }
+    header { padding: 28px 32px 18px; background: #111820; color: white; }
+    .header-top { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .back-link { color: white; border: 1px solid rgba(255,255,255,.32); border-radius: 999px; padding: 7px 11px; text-decoration: none; font-size: 13px; background: rgba(255,255,255,.08); }
+    .back-link:hover { background: rgba(255,255,255,.16); }
+    h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; }
+    header p { margin: 0; color: #c8d0d8; max-width: 900px; }
+    .summary { display: grid; grid-template-columns: repeat(5, minmax(90px, 1fr)); gap: 8px; padding: 12px 32px; background: #e9edf1; border-bottom: 1px solid var(--line); }
+    .metric { appearance: none; text-align: left; color: inherit; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; cursor: pointer; }
+    .metric:hover, .metric.active { border-color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+    .metric strong { display: block; font-size: 24px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    .project-progress { display: none; padding: 10px 32px; gap: 8px; overflow-x: auto; background: #f4f6f8; border-bottom: 1px solid var(--line); }
+    .project-progress.visible { display: flex; }
+    .project-progress button { flex: 0 0 auto; min-width: 160px; border: 1px solid var(--line); border-radius: 7px; background: white; color: var(--ink); padding: 8px 10px; text-align: left; cursor: pointer; }
+    .project-progress button.active { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+    .project-progress strong, .project-progress span { display: block; }
+    .project-progress strong { font-size: 13px; text-transform: capitalize; }
+    .project-progress span { margin-top: 3px; color: var(--muted); font-size: 11px; }
+    .controls { padding: 8px 32px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
+    .filter-toggle { display: flex; width: auto; max-width: 100%; border: 1px solid var(--line); background: #172026; color: white; border-radius: 6px; padding: 8px 11px; font-weight: 750; cursor: pointer; align-items: center; gap: 10px; }
+    .filter-toggle small { color: #c8d0d8; font-size: 11px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .filter-toggle::after { content: "+"; font-size: 18px; line-height: 1; }
+    .controls.open .filter-toggle::after { content: "−"; }
+    .control-content { display: none; gap: 12px; margin-top: 10px; }
+    .controls.open .control-content { display: grid; }
+    .viewer-tools { display: grid; grid-template-columns: minmax(180px, 1fr) minmax(160px, auto) auto auto; gap: 8px; align-items: center; }
+    .search-wrap { position: relative; min-width: 0; }
+    .viewer-search, .section-jump { width: 100%; height: 38px; border: 1px solid var(--line); border-radius: 6px; background: white; color: var(--ink); padding: 0 36px 0 11px; font: inherit; }
+    .search-clear { position: absolute; right: 5px; top: 5px; width: 28px; height: 28px; border: 0; border-radius: 5px; background: transparent; color: var(--muted); font-size: 18px; cursor: pointer; }
+    .tool-button { height: 38px; border: 1px solid var(--line); border-radius: 6px; background: #f8fafb; color: var(--ink); padding: 0 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .tool-button.active { background: var(--ink); color: white; border-color: var(--ink); }
+    .visible-count { color: var(--muted); font-size: 12px; font-weight: 700; white-space: nowrap; text-align: right; }
+    .control-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .control-row b { margin-right: 4px; font-size: 13px; color: var(--muted); min-width: 70px; }
+    .chip { border: 1px solid var(--line); background: #f8fafb; color: var(--ink); border-radius: 999px; padding: 7px 11px; cursor: pointer; text-transform: capitalize; }
+    .chip.active { background: #172026; border-color: #172026; color: white; }
+    main { padding: 24px 32px 40px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 16px; align-items: start; }
+    .comic-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05); min-width: 0; display: flex; flex-direction: column; position: relative; }
+    .comic-card.owned { background: #f2fbf6; }
+    .comic-card.facsimile { background: #f6f2ff; }
+    .comic-card.ordered { background: #f1f7ff; }
+    .comic-card.readable { background: #fff8ec; }
+    .status-strip { background: var(--missing); color: white; min-height: 30px; display: grid; place-items: center; padding: 7px 8px; font-size: 12px; line-height: 1; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; }
+    .comic-card.owned .status-strip { background: var(--owned); }
+    .comic-card.facsimile .status-strip { background: var(--fac); }
+    .comic-card.ordered .status-strip { background: var(--ordered); }
+    .comic-card.readable .status-strip { background: var(--readable); }
+    .cover-wrap { aspect-ratio: 2 / 3; background: #242a31; display: grid; place-items: center; overflow: hidden; position: relative; }
+    .cover-button { appearance: none; border: 0; background: #111820; padding: 0; margin: 0; width: 100%; height: 100%; display: block; cursor: zoom-in; }
+    .cover-button:focus-visible { outline: 3px solid #f4c430; outline-offset: -3px; }
+    .cover-wrap img { width: 100%; height: 100%; object-fit: contain; background: #111820; display: block; }
+    .cover-placeholder { width: 100%; height: 100%; padding: 14px; color: white; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(145deg, #18212a, #39424c); }
+    .cover-placeholder span { font-weight: 700; line-height: 1.1; overflow-wrap: anywhere; }
+    .cover-placeholder strong { font-size: 42px; align-self: flex-end; }
+    .cover-review-badge { position: absolute; left: 8px; right: 8px; top: 8px; border-radius: 6px; padding: 6px 7px; color: white; font-size: 11px; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.22); pointer-events: none; }
+    .cover-review-badge.warning { background: rgba(164,106,0,.92); }
+    .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
+    .comic-card.cover-needs_review { border-color: #a46a00; }
+    .comic-card.cover-rejected_auto { border-color: #b42318; }
+    .comic-card.keyboard-selected { outline: 4px solid #f4c430; outline-offset: 3px; box-shadow: 0 0 0 7px rgba(255,255,255,.92), 0 10px 26px rgba(0,0,0,.28); transform: translateY(-2px); }
+    body.compact-view .grid { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 10px; }
+    body.compact-view .card-body { min-height: 58px; padding: 7px 8px 9px; }
+    body.compact-view .badges, body.compact-view .publication-date { display: none; }
+    body.compact-view h3 { font-size: 13px; margin: 0; -webkit-line-clamp: 2; }
+    body.compact-view .status-strip { min-height: 25px; padding: 5px; font-size: 10px; }
+    .chapter-divider { grid-column: 1 / -1; margin: 10px 0 0; padding: 9px 2px 7px; border-bottom: 2px solid var(--line); font-size: 16px; font-weight: 850; text-transform: capitalize; }
+    .card-body { padding: 10px 11px 12px; min-height: 86px; display: flex; flex-direction: column; overflow: hidden; }
+    .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
+    .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
+    .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
+    h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .publication-date { margin: auto 0 0; color: var(--muted); font-size: 12px; line-height: 1.3; }
+    .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id { -webkit-line-clamp: 1; }
+    .meta, .continuity { -webkit-line-clamp: 2; }
+    .notes { -webkit-line-clamp: 2; position: relative; }
+    .notes::after { content: ""; position: absolute; inset: auto 0 0 0; height: 1.2em; background: linear-gradient(to bottom, rgba(255,255,255,0), var(--panel)); pointer-events: none; }
+    .comic-card.owned .notes::after { background: linear-gradient(to bottom, rgba(242,251,246,0), #f2fbf6); }
+    .comic-card.facsimile .notes::after { background: linear-gradient(to bottom, rgba(246,242,255,0), #f6f2ff); }
+    .comic-card.ordered .notes::after { background: linear-gradient(to bottom, rgba(241,247,255,0), #f1f7ff); }
+    .comic-card.readable .notes::after { background: linear-gradient(to bottom, rgba(255,248,236,0), #fff8ec); }
+    .hidden { display: none; }
+    .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
+    .lightbox.open { display: flex; }
+    .lightbox-panel { width: min(96vw, 1100px); height: 94vh; display: grid; grid-template-columns: 48px minmax(0,1fr) 48px; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; align-items: center; justify-items: center; }
+    .lightbox img { width: 100%; height: 100%; min-width: 0; min-height: 0; object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-image-wrap { min-width: 0; min-height: 0; width: 100%; height: 100%; display: grid; place-items: center; overflow: hidden; }
+    .lightbox-caption { grid-column: 1 / -1; width: min(92vw, 900px); display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
+    .lightbox-title { font-weight: 750; }
+    .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
+    .lightbox-close { border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: white; border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+    .lightbox-nav { width: 46px; height: 64px; border: 1px solid rgba(255,255,255,.35); border-radius: 7px; background: rgba(255,255,255,.12); color: white; font-size: 30px; cursor: pointer; }
+    .lightbox-nav:disabled { opacity: .3; cursor: default; }
+    .lightbox-position { color: #c8d0d8; font-size: 12px; white-space: nowrap; }
+    .keyboard-help { position: fixed; inset: 0; z-index: 30; display: none; place-items: center; padding: 20px; background: rgba(12,17,22,.78); }
+    .keyboard-help.open { display: grid; }
+    .keyboard-help-panel { width: min(92vw, 520px); max-height: 80vh; overflow: auto; background: white; border-radius: 8px; padding: 18px; box-shadow: 0 20px 60px rgba(0,0,0,.4); }
+    .keyboard-help-panel h2 { margin: 0 0 12px; font-size: 20px; }
+    .shortcut-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 12px; align-items: center; }
+    kbd { min-width: 34px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 3px 7px; background: #f4f6f8; text-align: center; font: 700 12px ui-monospace, monospace; }
+    .mobile-tools { display: none; }
+    @media (max-width: 700px) {
+      header, .summary, .project-progress, main { padding-left: 14px; padding-right: 14px; }
+      header { padding-top: 18px; }
+      .summary { grid-template-columns: repeat(5, 1fr); gap: 5px; padding-top: 7px; padding-bottom: 7px; }
+      .metric { padding: 6px; text-align: center; }
+      .metric strong { font-size: 17px; }
+      .metric span { font-size: 9px; line-height: 1.05; }
+      .controls { padding: 8px 14px; gap: 8px; }
+      .filter-toggle { width: 100%; justify-content: space-between; }
+      .control-content { max-height: 58vh; overflow-y: auto; padding: 4px 0 8px; }
+      .control-row b { flex-basis: 100%; min-width: 0; }
+      .chip { padding: 6px 9px; font-size: 13px; }
+      .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; }
+      .viewer-tools { grid-template-columns: 1fr; }
+      .visible-count { text-align: left; }
+      .tool-button.keyboard-only { display: none; }
+      .lightbox { padding: 8px; }
+      .lightbox-panel { width: 100%; height: 96vh; grid-template-columns: 42px minmax(0,1fr) 42px; gap: 4px; }
+      .lightbox-nav { width: 40px; height: 56px; }
+      .lightbox-caption { width: 100%; align-items: flex-end; padding: 0 4px; }
+      .lightbox-detail { max-height: 3.8em; overflow: hidden; }
+      .mobile-tools { position: fixed; z-index: 8; left: 50%; bottom: max(8px, env(safe-area-inset-bottom)); transform: translateX(-50%); display: flex; gap: 5px; padding: 5px; border: 1px solid var(--line); border-radius: 8px; background: rgba(255,255,255,.95); box-shadow: 0 8px 24px rgba(0,0,0,.2); backdrop-filter: blur(10px); }
+      .mobile-tools button { width: 42px; height: 38px; border: 0; border-radius: 5px; background: #eef1f4; color: var(--ink); font-size: 18px; }
+      main { padding-bottom: 84px; }
+    }
+    </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <h1>Hush Saga Expanded</h1>
+      <a class="back-link" href="visual_collection_viewer.html">All visual views</a>
+    </div>
+    <p>Original Hush Hush Returns Heart of Hush Hush Money House of Hush and H2SH Part One.</p>
+  </header>
+  <section class="summary">
+    <button class="metric" type="button" data-status="all"><strong>60</strong><span>publications</span></button>
+    <button class="metric" type="button" data-status="owned"><strong>0</strong><span>owned originals</span></button>
+    <button class="metric" type="button" data-status="facsimile"><strong>0</strong><span>facsimiles</span></button>
+    <button class="metric" type="button" data-status="ordered"><strong>0</strong><span>ordered</span></button>
+    <button class="metric" type="button" data-status="missing"><strong>60</strong><span>missing</span></button>
+  </section>
+  <nav class="project-progress" aria-label="Story completion"></nav>
+  <section class="controls">
+    <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="viewer-filters"><span>Filters &amp; order</span><small class="filter-summary">reading</small></button>
+    <div class="control-content" id="viewer-filters">
+      <div class="viewer-tools">
+        <div class="search-wrap"><input class="viewer-search" type="search" placeholder="Search title, issue or story" aria-label="Search comics"><button class="search-clear" type="button" title="Clear search" aria-label="Clear search">&times;</button></div>
+        <select class="section-jump" aria-label="Jump to section"><option value="">Jump to section</option><option value="Batman">Batman</option><option value="Wizard">Wizard</option><option value="Batman: Gotham Knights">Batman: Gotham Knights</option><option value="Detective Comics">Detective Comics</option><option value="Batman: Streets of Gotham">Batman: Streets of Gotham</option><option value="Justice League Unlimited">Justice League Unlimited</option><option value="Batman (Vol. 3)">Batman (Vol. 3)</option></select>
+        <button class="tool-button" type="button" data-toggle-density>Covers</button>
+        <button class="tool-button" type="button" data-toggle-stories>Stories</button>
+        <button class="tool-button keyboard-only" type="button" data-toggle-browse>Browse</button>
+        <span class="visible-count">60 of 60</span>
+        <button class="tool-button keyboard-only" type="button" data-open-help aria-label="Keyboard shortcuts">Shortcuts</button>
+      </div>
+      <div class="control-row"><b>Order</b><button class="chip" data-filter="order" data-value="all">All orders</button>
+<button class="chip active" data-filter="order" data-value="reading">reading</button></div>
+      <div class="control-row"><b>Sort</b><button class="chip active" data-filter="sort" data-value="curated">curated</button><button class="chip" data-filter="sort" data-value="date">date</button><button class="chip" data-filter="sort" data-value="title">title</button></div>
+      <div class="control-row"><b>Decade</b><button class="chip active" data-filter="decade" data-value="all">All decades</button>
+<button class="chip" data-filter="decade" data-value="2000s">2000s</button>
+<button class="chip" data-filter="decade" data-value="2010s">2010s</button>
+<button class="chip" data-filter="decade" data-value="2020s">2020s</button></div>
+      <div class="control-row"><b>Year</b><select class="section-jump year-filter" aria-label="Filter by publication year"><option value="all">All years</option><option value="2002">2002</option><option value="2003">2003</option><option value="2004">2004</option><option value="2005">2005</option><option value="2006">2006</option><option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option><option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option></select></div>
+      <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button>
+<button class="chip" data-filter="scope" data-value="Hush">Hush</button>
+<button class="chip" data-filter="scope" data-value="Hush Returns">Hush Returns</button>
+<button class="chip" data-filter="scope" data-value="Hush Returns / Payback">Hush Returns / Payback</button>
+<button class="chip" data-filter="scope" data-value="Heart of Hush">Heart of Hush</button>
+<button class="chip" data-filter="scope" data-value="Heart of Hush epilogue">Heart of Hush epilogue</button>
+<button class="chip" data-filter="scope" data-value="Hush Money">Hush Money</button>
+<button class="chip" data-filter="scope" data-value="House of Hush">House of Hush</button>
+<button class="chip" data-filter="scope" data-value="H2SH Prelude">H2SH Prelude</button>
+<button class="chip" data-filter="scope" data-value="H2SH Part One">H2SH Part One</button></div>
+      <div class="control-row"><b>Status</b><button class="chip active" data-filter="status" data-value="all">All statuses</button>
+<button class="chip" data-filter="status" data-value="owned">owned</button>
+<button class="chip" data-filter="status" data-value="facsimile">facsimile</button>
+<button class="chip" data-filter="status" data-value="ordered">ordered</button>
+<button class="chip" data-filter="status" data-value="readable">readable</button>
+<button class="chip" data-filter="status" data-value="missing">missing</button></div>
+      <div class="control-row"><b>Work</b><button class="chip active" data-filter="project" data-value="all">All works</button>
+<button class="chip" data-filter="project" data-value="hush_extended">hush extended</button></div>
+    </div>
+  </section>
+  <main>
+    <section class="grid">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0608" data-work="Batman" data-section="hush_extended" data-search="batman #608 pub-bat-0608 batman 608 original twelve-part hush story. hush hush_extended" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001000" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001000" data-publication-date="2002-10-23" data-publication-year="2002" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0608.jpg" data-full-title="Batman #608" data-full-detail="Published 2002-10-23 | PUB-BAT-0608 | Seq 001000 | core | Original twelve-part Hush story. | https://dc.fandom.com/wiki/Batman_Vol_1_608 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-0608.jpg" data-display-src="../assets/covers/display/PUB-BAT-0608.jpg" alt="Batman #608 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #608">Batman #608</h3>
+          <p class="publication-date">Published 2002-10-23</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0609" data-work="Batman" data-section="hush_extended" data-search="batman #609 pub-bat-0609 batman 609 original twelve-part hush story. hush hush_extended" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001001" data-publication-date="2002-11-27" data-publication-year="2002" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0609.jpg" data-full-title="Batman #609" data-full-detail="Published 2002-11-27 | PUB-BAT-0609 | Seq 001001 | core | Original twelve-part Hush story. | https://dc.fandom.com/wiki/Batman_Vol_1_609 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-0609.jpg" data-display-src="../assets/covers/display/PUB-BAT-0609.jpg" alt="Batman #609 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #609">Batman #609</h3>
+          <p class="publication-date">Published 2002-11-27</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0610" data-work="Batman" data-section="hush_extended" data-search="batman #610 pub-bat-0610 batman 610 original twelve-part hush story. hush hush_extended" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001002" data-publication-date="2002-12-25" data-publication-year="2002" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0610.jpg" data-full-title="Batman #610" data-full-detail="Published 2002-12-25 | PUB-BAT-0610 | Seq 001002 | core | Original twelve-part Hush story. | https://dc.fandom.com/wiki/Batman_Vol_1_610 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-0610.jpg" data-display-src="../assets/covers/display/PUB-BAT-0610.jpg" alt="Batman #610 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #610">Batman #610</h3>
+          <p class="publication-date">Published 2002-12-25</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0611" data-work="Batman" data-section="hush_extended" data-search="batman #611 pub-bat-0611 batman 611 original twelve-part hush story. hush hush_extended" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001003" data-publication-date="2003-01-22" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0611.jpg" data-full-title="Batman #611" data-full-detail="Published 2003-01-22 | PUB-BAT-0611 | Seq 001003 | core | Original twelve-part Hush story. | https://dc.fandom.com/wiki/Batman_Vol_1_611 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-0611.jpg" data-display-src="../assets/covers/display/PUB-BAT-0611.jpg" alt="Batman #611 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #611">Batman #611</h3>
+          <p class="publication-date">Published 2003-01-22</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0612" data-work="Batman" data-section="hush_extended" data-search="batman #612 pub-bat-0612 batman 612 original twelve-part hush story. hush hush_extended" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001004" data-publication-date="2003-02-26" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0612.jpg" data-full-title="Batman #612" data-full-detail="Published 2003-02-26 | PUB-BAT-0612 | Seq 001004 | core | Original twelve-part Hush story. | https://dc.fandom.com/wiki/Batman_Vol_1_612 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-0612.jpg" data-display-src="../assets/covers/display/PUB-BAT-0612.jpg" alt="Batman #612 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #612">Batman #612</h3>
+          <p class="publication-date">Published 2003-02-26</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0613" data-work="Batman" data-section="hush_extended" data-search="batman #613 pub-bat-0613 batman 613 original twelve-part hush story. hush hush_extended" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001005" data-publication-date="2003-03-26" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0613.jpg" data-full-title="Batman #613" data-full-detail="Published 2003-03-26 | PUB-BAT-0613 | Seq 001005 | core | Original twelve-part Hush story. | https://dc.fandom.com/wiki/Batman_Vol_1_613 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-0613.jpg" data-display-src="../assets/covers/display/PUB-BAT-0613.jpg" alt="Batman #613 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #613">Batman #613</h3>
+          <p class="publication-date">Published 2003-03-26</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0614" data-work="Batman" data-section="hush_extended" data-search="batman #614 pub-bat-0614 batman 614 original twelve-part hush story. hush hush_extended" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001006" data-publication-date="2003-04-30" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0614.jpg" data-full-title="Batman #614" data-full-detail="Published 2003-04-30 | PUB-BAT-0614 | Seq 001006 | core | Original twelve-part Hush story. | https://dc.fandom.com/wiki/Batman_Vol_1_614 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-0614.jpg" data-display-src="../assets/covers/display/PUB-BAT-0614.jpg" alt="Batman #614 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #614">Batman #614</h3>
+          <p class="publication-date">Published 2003-04-30</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0615" data-work="Batman" data-section="hush_extended" data-search="batman #615 pub-bat-0615 batman 615 original twelve-part hush story. hush hush_extended" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001007" data-publication-date="2003-05-28" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0615.jpg" data-full-title="Batman #615" data-full-detail="Published 2003-05-28 | PUB-BAT-0615 | Seq 001007 | core | Original twelve-part Hush story. | https://dc.fandom.com/wiki/Batman_Vol_1_615 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-0615.jpg" data-display-src="../assets/covers/display/PUB-BAT-0615.jpg" alt="Batman #615 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #615">Batman #615</h3>
+          <p class="publication-date">Published 2003-05-28</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0616" data-work="Batman" data-section="hush_extended" data-search="batman #616 pub-bat-0616 batman 616 original twelve-part hush story. hush hush_extended" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001008" data-publication-date="2003-06-25" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0616.jpg" data-full-title="Batman #616" data-full-detail="Published 2003-06-25 | PUB-BAT-0616 | Seq 001008 | core | Original twelve-part Hush story. | https://dc.fandom.com/wiki/Batman_Vol_1_616 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-0616.jpg" data-display-src="../assets/covers/display/PUB-BAT-0616.jpg" alt="Batman #616 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #616">Batman #616</h3>
+          <p class="publication-date">Published 2003-06-25</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0617" data-work="Batman" data-section="hush_extended" data-search="batman #617 pub-bat-0617 batman 617 original twelve-part hush story. hush hush_extended" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001009" data-publication-date="2003-07-30" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0617.jpg" data-full-title="Batman #617" data-full-detail="Published 2003-07-30 | PUB-BAT-0617 | Seq 001009 | core | Original twelve-part Hush story. | https://dc.fandom.com/wiki/Batman_Vol_1_617 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-0617.jpg" data-display-src="../assets/covers/display/PUB-BAT-0617.jpg" alt="Batman #617 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #617">Batman #617</h3>
+          <p class="publication-date">Published 2003-07-30</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0618" data-work="Batman" data-section="hush_extended" data-search="batman #618 pub-bat-0618 batman 618 original twelve-part hush story. hush hush_extended" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001010" data-publication-date="2003-08-27" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0618.jpg" data-full-title="Batman #618" data-full-detail="Published 2003-08-27 | PUB-BAT-0618 | Seq 001010 | core | Original twelve-part Hush story. | https://dc.fandom.com/wiki/Batman_Vol_1_618 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-0618.jpg" data-display-src="../assets/covers/display/PUB-BAT-0618.jpg" alt="Batman #618 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #618">Batman #618</h3>
+          <p class="publication-date">Published 2003-08-27</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0619" data-work="Batman" data-section="hush_extended" data-search="batman #619 pub-bat-0619 batman 619 original twelve-part hush story. hush hush_extended" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001011" data-publication-date="2003-09-24" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0619.jpg" data-full-title="Batman #619" data-full-detail="Published 2003-09-24 | PUB-BAT-0619 | Seq 001011 | core | Original twelve-part Hush story. | https://dc.fandom.com/wiki/Batman_Vol_1_619 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-0619.jpg" data-display-src="../assets/covers/display/PUB-BAT-0619.jpg" alt="Batman #619 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Batman #619">Batman #619</h3>
+          <p class="publication-date">Published 2003-09-24</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-wizard-0" data-work="Wizard" data-section="hush_extended" data-search="wizard #0 - hush interlude view-wizard-0 wizard 0 six-page hush interlude positioned after batman #616 in collected editions. hush hush_extended" data-order="reading" data-scope="Hush" data-project="hush_extended" data-status="missing" data-sequence="001999" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001999" data-publication-date="2003-09-01" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-wizard-0.jpg" data-full-title="Wizard #0 - Hush interlude" data-full-detail="Published 2003-09-01 | VIEW-wizard-0 | Seq 001999 | core | Six-page Hush interlude positioned after Batman #616 in collected editions. | https://www.comiccollectorlive.com/issue/magazines/Wizard-The-Comics-Magazine/0/f9847263-7ea2-454c-862f-5f81a92985b2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-wizard-0.jpg" data-display-src="../assets/covers/display/VIEW-wizard-0.jpg" alt="Wizard #0 - Hush interlude cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush</span>
+            
+          </div>
+          <h3 title="Wizard #0 - Hush interlude">Wizard #0 - Hush interlude</h3>
+          <p class="publication-date">Published 2003-09-01</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-gotham-knights-50" data-work="Batman: Gotham Knights" data-section="hush_extended" data-search="batman: gotham knights #50 view-batman-gotham-knights-50 batman: gotham knights 50 hush returns opening sequence. hush returns hush_extended" data-order="reading" data-scope="Hush Returns" data-project="hush_extended" data-status="missing" data-sequence="002000" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002000" data-publication-date="2004-02-18" data-publication-year="2004" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-50.jpg" data-full-title="Batman: Gotham Knights #50" data-full-detail="Published 2004-02-18 | VIEW-batman-gotham-knights-50 | Seq 002000 | core | Hush Returns opening sequence. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_50 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-gotham-knights-50.jpg" data-display-src="../assets/covers/display/VIEW-batman-gotham-knights-50.jpg" alt="Batman: Gotham Knights #50 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #50">Batman: Gotham Knights #50</h3>
+          <p class="publication-date">Published 2004-02-18</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-gotham-knights-51" data-work="Batman: Gotham Knights" data-section="hush_extended" data-search="batman: gotham knights #51 view-batman-gotham-knights-51 batman: gotham knights 51 hush returns opening sequence. hush returns hush_extended" data-order="reading" data-scope="Hush Returns" data-project="hush_extended" data-status="missing" data-sequence="002001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002001" data-publication-date="2004-03-17" data-publication-year="2004" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-51.jpg" data-full-title="Batman: Gotham Knights #51" data-full-detail="Published 2004-03-17 | VIEW-batman-gotham-knights-51 | Seq 002001 | core | Hush Returns opening sequence. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_51 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-gotham-knights-51.jpg" data-display-src="../assets/covers/display/VIEW-batman-gotham-knights-51.jpg" alt="Batman: Gotham Knights #51 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #51">Batman: Gotham Knights #51</h3>
+          <p class="publication-date">Published 2004-03-17</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-gotham-knights-52" data-work="Batman: Gotham Knights" data-section="hush_extended" data-search="batman: gotham knights #52 view-batman-gotham-knights-52 batman: gotham knights 52 hush returns opening sequence. hush returns hush_extended" data-order="reading" data-scope="Hush Returns" data-project="hush_extended" data-status="missing" data-sequence="002002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002002" data-publication-date="2004-04-21" data-publication-year="2004" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-52.jpg" data-full-title="Batman: Gotham Knights #52" data-full-detail="Published 2004-04-21 | VIEW-batman-gotham-knights-52 | Seq 002002 | core | Hush Returns opening sequence. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_52 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-gotham-knights-52.jpg" data-display-src="../assets/covers/display/VIEW-batman-gotham-knights-52.jpg" alt="Batman: Gotham Knights #52 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #52">Batman: Gotham Knights #52</h3>
+          <p class="publication-date">Published 2004-04-21</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-gotham-knights-53" data-work="Batman: Gotham Knights" data-section="hush_extended" data-search="batman: gotham knights #53 view-batman-gotham-knights-53 batman: gotham knights 53 hush returns opening sequence. hush returns hush_extended" data-order="reading" data-scope="Hush Returns" data-project="hush_extended" data-status="missing" data-sequence="002003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002003" data-publication-date="2004-05-19" data-publication-year="2004" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-53.jpg" data-full-title="Batman: Gotham Knights #53" data-full-detail="Published 2004-05-19 | VIEW-batman-gotham-knights-53 | Seq 002003 | core | Hush Returns opening sequence. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_53 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-gotham-knights-53.jpg" data-display-src="../assets/covers/display/VIEW-batman-gotham-knights-53.jpg" alt="Batman: Gotham Knights #53 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #53">Batman: Gotham Knights #53</h3>
+          <p class="publication-date">Published 2004-05-19</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-gotham-knights-54" data-work="Batman: Gotham Knights" data-section="hush_extended" data-search="batman: gotham knights #54 view-batman-gotham-knights-54 batman: gotham knights 54 hush returns opening sequence. hush returns hush_extended" data-order="reading" data-scope="Hush Returns" data-project="hush_extended" data-status="missing" data-sequence="002004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002004" data-publication-date="2004-06-16" data-publication-year="2004" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-54.jpg" data-full-title="Batman: Gotham Knights #54" data-full-detail="Published 2004-06-16 | VIEW-batman-gotham-knights-54 | Seq 002004 | core | Hush Returns opening sequence. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_54 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-gotham-knights-54.jpg" data-display-src="../assets/covers/display/VIEW-batman-gotham-knights-54.jpg" alt="Batman: Gotham Knights #54 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #54">Batman: Gotham Knights #54</h3>
+          <p class="publication-date">Published 2004-06-16</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-gotham-knights-55" data-work="Batman: Gotham Knights" data-section="hush_extended" data-search="batman: gotham knights #55 view-batman-gotham-knights-55 batman: gotham knights 55 hush returns opening sequence. hush returns hush_extended" data-order="reading" data-scope="Hush Returns" data-project="hush_extended" data-status="missing" data-sequence="002005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002005" data-publication-date="2004-07-21" data-publication-year="2004" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-55.jpg" data-full-title="Batman: Gotham Knights #55" data-full-detail="Published 2004-07-21 | VIEW-batman-gotham-knights-55 | Seq 002005 | core | Hush Returns opening sequence. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_55 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-gotham-knights-55.jpg" data-display-src="../assets/covers/display/VIEW-batman-gotham-knights-55.jpg" alt="Batman: Gotham Knights #55 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #55">Batman: Gotham Knights #55</h3>
+          <p class="publication-date">Published 2004-07-21</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-gotham-knights-60" data-work="Batman: Gotham Knights" data-section="hush_extended" data-search="batman: gotham knights #60 view-batman-gotham-knights-60 batman: gotham knights 60 extended hush material in omnibus scope. hush returns / payback hush_extended" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002100" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002100" data-publication-date="2004-12-15" data-publication-year="2004" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-60.jpg" data-full-title="Batman: Gotham Knights #60" data-full-detail="Published 2004-12-15 | VIEW-batman-gotham-knights-60 | Seq 002100 | core | Extended Hush material in omnibus scope. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_60 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-gotham-knights-60.jpg" data-display-src="../assets/covers/display/VIEW-batman-gotham-knights-60.jpg" alt="Batman: Gotham Knights #60 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #60">Batman: Gotham Knights #60</h3>
+          <p class="publication-date">Published 2004-12-15</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-gotham-knights-61" data-work="Batman: Gotham Knights" data-section="hush_extended" data-search="batman: gotham knights #61 view-batman-gotham-knights-61 batman: gotham knights 61 extended hush material in omnibus scope. hush returns / payback hush_extended" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002101" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002101" data-publication-date="2005-01-19" data-publication-year="2005" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-61.jpg" data-full-title="Batman: Gotham Knights #61" data-full-detail="Published 2005-01-19 | VIEW-batman-gotham-knights-61 | Seq 002101 | core | Extended Hush material in omnibus scope. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_61 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-gotham-knights-61.jpg" data-display-src="../assets/covers/display/VIEW-batman-gotham-knights-61.jpg" alt="Batman: Gotham Knights #61 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #61">Batman: Gotham Knights #61</h3>
+          <p class="publication-date">Published 2005-01-19</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-gotham-knights-62" data-work="Batman: Gotham Knights" data-section="hush_extended" data-search="batman: gotham knights #62 view-batman-gotham-knights-62 batman: gotham knights 62 extended hush material in omnibus scope. hush returns / payback hush_extended" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002102" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002102" data-publication-date="2005-02-16" data-publication-year="2005" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-62.jpg" data-full-title="Batman: Gotham Knights #62" data-full-detail="Published 2005-02-16 | VIEW-batman-gotham-knights-62 | Seq 002102 | core | Extended Hush material in omnibus scope. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_62 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-gotham-knights-62.jpg" data-display-src="../assets/covers/display/VIEW-batman-gotham-knights-62.jpg" alt="Batman: Gotham Knights #62 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #62">Batman: Gotham Knights #62</h3>
+          <p class="publication-date">Published 2005-02-16</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-gotham-knights-63" data-work="Batman: Gotham Knights" data-section="hush_extended" data-search="batman: gotham knights #63 view-batman-gotham-knights-63 batman: gotham knights 63 extended hush material in omnibus scope. hush returns / payback hush_extended" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002103" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002103" data-publication-date="2005-03-23" data-publication-year="2005" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-63.jpg" data-full-title="Batman: Gotham Knights #63" data-full-detail="Published 2005-03-23 | VIEW-batman-gotham-knights-63 | Seq 002103 | core | Extended Hush material in omnibus scope. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_63 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-gotham-knights-63.jpg" data-display-src="../assets/covers/display/VIEW-batman-gotham-knights-63.jpg" alt="Batman: Gotham Knights #63 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #63">Batman: Gotham Knights #63</h3>
+          <p class="publication-date">Published 2005-03-23</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-gotham-knights-64" data-work="Batman: Gotham Knights" data-section="hush_extended" data-search="batman: gotham knights #64 view-batman-gotham-knights-64 batman: gotham knights 64 extended hush material in omnibus scope. hush returns / payback hush_extended" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002104" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002104" data-publication-date="2005-04-20" data-publication-year="2005" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-64.jpg" data-full-title="Batman: Gotham Knights #64" data-full-detail="Published 2005-04-20 | VIEW-batman-gotham-knights-64 | Seq 002104 | core | Extended Hush material in omnibus scope. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_64 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-gotham-knights-64.jpg" data-display-src="../assets/covers/display/VIEW-batman-gotham-knights-64.jpg" alt="Batman: Gotham Knights #64 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #64">Batman: Gotham Knights #64</h3>
+          <p class="publication-date">Published 2005-04-20</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-gotham-knights-65" data-work="Batman: Gotham Knights" data-section="hush_extended" data-search="batman: gotham knights #65 view-batman-gotham-knights-65 batman: gotham knights 65 extended hush material in omnibus scope. hush returns / payback hush_extended" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002105" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002105" data-publication-date="2005-05-18" data-publication-year="2005" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-65.jpg" data-full-title="Batman: Gotham Knights #65" data-full-detail="Published 2005-05-18 | VIEW-batman-gotham-knights-65 | Seq 002105 | core | Extended Hush material in omnibus scope. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_65 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-gotham-knights-65.jpg" data-display-src="../assets/covers/display/VIEW-batman-gotham-knights-65.jpg" alt="Batman: Gotham Knights #65 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #65">Batman: Gotham Knights #65</h3>
+          <p class="publication-date">Published 2005-05-18</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-gotham-knights-66" data-work="Batman: Gotham Knights" data-section="hush_extended" data-search="batman: gotham knights #66 view-batman-gotham-knights-66 batman: gotham knights 66 extended hush material in omnibus scope. hush returns / payback hush_extended" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002106" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002106" data-publication-date="2005-06-15" data-publication-year="2005" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-66.jpg" data-full-title="Batman: Gotham Knights #66" data-full-detail="Published 2005-06-15 | VIEW-batman-gotham-knights-66 | Seq 002106 | core | Extended Hush material in omnibus scope. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_66 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-gotham-knights-66.jpg" data-display-src="../assets/covers/display/VIEW-batman-gotham-knights-66.jpg" alt="Batman: Gotham Knights #66 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #66">Batman: Gotham Knights #66</h3>
+          <p class="publication-date">Published 2005-06-15</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-gotham-knights-67" data-work="Batman: Gotham Knights" data-section="hush_extended" data-search="batman: gotham knights #67 view-batman-gotham-knights-67 batman: gotham knights 67 extended hush material in omnibus scope. hush returns / payback hush_extended" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002107" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002107" data-publication-date="2005-07-20" data-publication-year="2005" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-67.jpg" data-full-title="Batman: Gotham Knights #67" data-full-detail="Published 2005-07-20 | VIEW-batman-gotham-knights-67 | Seq 002107 | core | Extended Hush material in omnibus scope. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_67 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-gotham-knights-67.jpg" data-display-src="../assets/covers/display/VIEW-batman-gotham-knights-67.jpg" alt="Batman: Gotham Knights #67 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #67">Batman: Gotham Knights #67</h3>
+          <p class="publication-date">Published 2005-07-20</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-gotham-knights-68" data-work="Batman: Gotham Knights" data-section="hush_extended" data-search="batman: gotham knights #68 view-batman-gotham-knights-68 batman: gotham knights 68 extended hush material in omnibus scope. hush returns / payback hush_extended" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002108" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002108" data-publication-date="2005-08-24" data-publication-year="2005" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-68.jpg" data-full-title="Batman: Gotham Knights #68" data-full-detail="Published 2005-08-24 | VIEW-batman-gotham-knights-68 | Seq 002108 | core | Extended Hush material in omnibus scope. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_68 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-gotham-knights-68.jpg" data-display-src="../assets/covers/display/VIEW-batman-gotham-knights-68.jpg" alt="Batman: Gotham Knights #68 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #68">Batman: Gotham Knights #68</h3>
+          <p class="publication-date">Published 2005-08-24</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-gotham-knights-69" data-work="Batman: Gotham Knights" data-section="hush_extended" data-search="batman: gotham knights #69 view-batman-gotham-knights-69 batman: gotham knights 69 extended hush material in omnibus scope. hush returns / payback hush_extended" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002109" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002109" data-publication-date="2005-09-21" data-publication-year="2005" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-69.jpg" data-full-title="Batman: Gotham Knights #69" data-full-detail="Published 2005-09-21 | VIEW-batman-gotham-knights-69 | Seq 002109 | core | Extended Hush material in omnibus scope. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_69 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-gotham-knights-69.jpg" data-display-src="../assets/covers/display/VIEW-batman-gotham-knights-69.jpg" alt="Batman: Gotham Knights #69 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #69">Batman: Gotham Knights #69</h3>
+          <p class="publication-date">Published 2005-09-21</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-gotham-knights-70" data-work="Batman: Gotham Knights" data-section="hush_extended" data-search="batman: gotham knights #70 view-batman-gotham-knights-70 batman: gotham knights 70 extended hush material in omnibus scope. hush returns / payback hush_extended" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002110" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002110" data-publication-date="2005-10-19" data-publication-year="2005" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-70.jpg" data-full-title="Batman: Gotham Knights #70" data-full-detail="Published 2005-10-19 | VIEW-batman-gotham-knights-70 | Seq 002110 | core | Extended Hush material in omnibus scope. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_70 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-gotham-knights-70.jpg" data-display-src="../assets/covers/display/VIEW-batman-gotham-knights-70.jpg" alt="Batman: Gotham Knights #70 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #70">Batman: Gotham Knights #70</h3>
+          <p class="publication-date">Published 2005-10-19</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-gotham-knights-71" data-work="Batman: Gotham Knights" data-section="hush_extended" data-search="batman: gotham knights #71 view-batman-gotham-knights-71 batman: gotham knights 71 extended hush material in omnibus scope. hush returns / payback hush_extended" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002111" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002111" data-publication-date="2005-11-23" data-publication-year="2005" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-71.jpg" data-full-title="Batman: Gotham Knights #71" data-full-detail="Published 2005-11-23 | VIEW-batman-gotham-knights-71 | Seq 002111 | core | Extended Hush material in omnibus scope. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_71 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-gotham-knights-71.jpg" data-display-src="../assets/covers/display/VIEW-batman-gotham-knights-71.jpg" alt="Batman: Gotham Knights #71 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #71">Batman: Gotham Knights #71</h3>
+          <p class="publication-date">Published 2005-11-23</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-gotham-knights-73" data-work="Batman: Gotham Knights" data-section="hush_extended" data-search="batman: gotham knights #73 view-batman-gotham-knights-73 batman: gotham knights 73 extended hush material in omnibus scope. hush returns / payback hush_extended" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002200" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002200" data-publication-date="2006-01-18" data-publication-year="2006" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-73.jpg" data-full-title="Batman: Gotham Knights #73" data-full-detail="Published 2006-01-18 | VIEW-batman-gotham-knights-73 | Seq 002200 | core | Extended Hush material in omnibus scope. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_73 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-gotham-knights-73.jpg" data-display-src="../assets/covers/display/VIEW-batman-gotham-knights-73.jpg" alt="Batman: Gotham Knights #73 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #73">Batman: Gotham Knights #73</h3>
+          <p class="publication-date">Published 2006-01-18</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-gotham-knights-74" data-work="Batman: Gotham Knights" data-section="hush_extended" data-search="batman: gotham knights #74 view-batman-gotham-knights-74 batman: gotham knights 74 extended hush material in omnibus scope. hush returns / payback hush_extended" data-order="reading" data-scope="Hush Returns / Payback" data-project="hush_extended" data-status="missing" data-sequence="002201" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002201" data-publication-date="2006-02-15" data-publication-year="2006" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-gotham-knights-74.jpg" data-full-title="Batman: Gotham Knights #74" data-full-detail="Published 2006-02-15 | VIEW-batman-gotham-knights-74 | Seq 002201 | core | Extended Hush material in omnibus scope. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_74 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-gotham-knights-74.jpg" data-display-src="../assets/covers/display/VIEW-batman-gotham-knights-74.jpg" alt="Batman: Gotham Knights #74 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Returns / Payback</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #74">Batman: Gotham Knights #74</h3>
+          <p class="publication-date">Published 2006-02-15</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-detective-comics-846" data-work="Detective Comics" data-section="hush_extended" data-search="detective comics #846 view-detective-comics-846 detective comics 846 heart of hush core chapters. heart of hush hush_extended" data-order="reading" data-scope="Heart of Hush" data-project="hush_extended" data-status="missing" data-sequence="003000" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003000" data-publication-date="2008-07" data-publication-year="2008" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-846.jpg" data-full-title="Detective Comics #846" data-full-detail="Published 2008-07 | VIEW-detective-comics-846 | Seq 003000 | core | Heart of Hush core chapters. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_846 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-detective-comics-846.jpg" data-display-src="../assets/covers/display/VIEW-detective-comics-846.jpg" alt="Detective Comics #846 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Heart of Hush</span>
+            
+          </div>
+          <h3 title="Detective Comics #846">Detective Comics #846</h3>
+          <p class="publication-date">Published 2008-07</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-detective-comics-847" data-work="Detective Comics" data-section="hush_extended" data-search="detective comics #847 view-detective-comics-847 detective comics 847 heart of hush core chapters. heart of hush hush_extended" data-order="reading" data-scope="Heart of Hush" data-project="hush_extended" data-status="missing" data-sequence="003001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003001" data-publication-date="2008-08" data-publication-year="2008" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-847.jpg" data-full-title="Detective Comics #847" data-full-detail="Published 2008-08 | VIEW-detective-comics-847 | Seq 003001 | core | Heart of Hush core chapters. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_847 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-detective-comics-847.jpg" data-display-src="../assets/covers/display/VIEW-detective-comics-847.jpg" alt="Detective Comics #847 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Heart of Hush</span>
+            
+          </div>
+          <h3 title="Detective Comics #847">Detective Comics #847</h3>
+          <p class="publication-date">Published 2008-08</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-detective-comics-848" data-work="Detective Comics" data-section="hush_extended" data-search="detective comics #848 view-detective-comics-848 detective comics 848 heart of hush core chapters. heart of hush hush_extended" data-order="reading" data-scope="Heart of Hush" data-project="hush_extended" data-status="missing" data-sequence="003002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003002" data-publication-date="2008-09" data-publication-year="2008" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-848.jpg" data-full-title="Detective Comics #848" data-full-detail="Published 2008-09 | VIEW-detective-comics-848 | Seq 003002 | core | Heart of Hush core chapters. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_848 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-detective-comics-848.jpg" data-display-src="../assets/covers/display/VIEW-detective-comics-848.jpg" alt="Detective Comics #848 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Heart of Hush</span>
+            
+          </div>
+          <h3 title="Detective Comics #848">Detective Comics #848</h3>
+          <p class="publication-date">Published 2008-09</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-detective-comics-849" data-work="Detective Comics" data-section="hush_extended" data-search="detective comics #849 view-detective-comics-849 detective comics 849 heart of hush core chapters. heart of hush hush_extended" data-order="reading" data-scope="Heart of Hush" data-project="hush_extended" data-status="missing" data-sequence="003003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003003" data-publication-date="2008-10" data-publication-year="2008" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-849.jpg" data-full-title="Detective Comics #849" data-full-detail="Published 2008-10 | VIEW-detective-comics-849 | Seq 003003 | core | Heart of Hush core chapters. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_849 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-detective-comics-849.jpg" data-display-src="../assets/covers/display/VIEW-detective-comics-849.jpg" alt="Detective Comics #849 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Heart of Hush</span>
+            
+          </div>
+          <h3 title="Detective Comics #849">Detective Comics #849</h3>
+          <p class="publication-date">Published 2008-10</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-detective-comics-850" data-work="Detective Comics" data-section="hush_extended" data-search="detective comics #850 view-detective-comics-850 detective comics 850 heart of hush core chapters. heart of hush hush_extended" data-order="reading" data-scope="Heart of Hush" data-project="hush_extended" data-status="missing" data-sequence="003004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003004" data-publication-date="2008-11" data-publication-year="2008" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-850.jpg" data-full-title="Detective Comics #850" data-full-detail="Published 2008-11 | VIEW-detective-comics-850 | Seq 003004 | core | Heart of Hush core chapters. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_850 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-detective-comics-850.jpg" data-display-src="../assets/covers/display/VIEW-detective-comics-850.jpg" alt="Detective Comics #850 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Heart of Hush</span>
+            
+          </div>
+          <h3 title="Detective Comics #850">Detective Comics #850</h3>
+          <p class="publication-date">Published 2008-11</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-detective-comics-852" data-work="Detective Comics" data-section="hush_extended" data-search="detective comics #852 view-detective-comics-852 detective comics 852 omnibus hush scope. heart of hush epilogue hush_extended" data-order="reading" data-scope="Heart of Hush epilogue" data-project="hush_extended" data-status="missing" data-sequence="003006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003006" data-publication-date="2009-01-07" data-publication-year="2009" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-detective-comics-852.jpg" data-full-title="Detective Comics #852" data-full-detail="Published 2009-01-07 | VIEW-detective-comics-852 | Seq 003006 | core | Omnibus Hush scope. | https://dc.fandom.com/wiki/Detective_Comics_Vol_1_852 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-detective-comics-852.jpg" data-display-src="../assets/covers/display/VIEW-detective-comics-852.jpg" alt="Detective Comics #852 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Heart of Hush epilogue</span>
+            
+          </div>
+          <h3 title="Detective Comics #852">Detective Comics #852</h3>
+          <p class="publication-date">Published 2009-01-07</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0685" data-work="Batman" data-section="hush_extended" data-search="batman #685 pub-bat-0685 batman 685 hush money lead-in. hush money hush_extended" data-order="reading" data-scope="Hush Money" data-project="hush_extended" data-status="missing" data-sequence="003007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003007" data-publication-date="2009-01-28" data-publication-year="2009" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-0685.jpg" data-full-title="Batman #685" data-full-detail="Published 2009-01-28 | PUB-BAT-0685 | Seq 003007 | core | Hush Money lead-in. | https://dc.fandom.com/wiki/Batman_Vol_1_685 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-0685.jpg" data-display-src="../assets/covers/display/PUB-BAT-0685.jpg" alt="Batman #685 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Money</span>
+            
+          </div>
+          <h3 title="Batman #685">Batman #685</h3>
+          <p class="publication-date">Published 2009-01-28</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-streets-of-gotham-1" data-work="Batman: Streets of Gotham" data-section="hush_extended" data-search="batman: streets of gotham #1 view-batman-streets-of-gotham-1 batman: streets of gotham 1 hush money chapters. hush money hush_extended" data-order="reading" data-scope="Hush Money" data-project="hush_extended" data-status="missing" data-sequence="004000" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004000" data-publication-date="2009-06-10" data-publication-year="2009" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-1.jpg" data-full-title="Batman: Streets of Gotham #1" data-full-detail="Published 2009-06-10 | VIEW-batman-streets-of-gotham-1 | Seq 004000 | core | Hush Money chapters. | https://dc.fandom.com/wiki/Batman:_Streets_of_Gotham_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-streets-of-gotham-1.jpg" data-display-src="../assets/covers/display/VIEW-batman-streets-of-gotham-1.jpg" alt="Batman: Streets of Gotham #1 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Money</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #1">Batman: Streets of Gotham #1</h3>
+          <p class="publication-date">Published 2009-06-10</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-streets-of-gotham-2" data-work="Batman: Streets of Gotham" data-section="hush_extended" data-search="batman: streets of gotham #2 view-batman-streets-of-gotham-2 batman: streets of gotham 2 hush money chapters. hush money hush_extended" data-order="reading" data-scope="Hush Money" data-project="hush_extended" data-status="missing" data-sequence="004001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004001" data-publication-date="2009-07-15" data-publication-year="2009" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-2.jpg" data-full-title="Batman: Streets of Gotham #2" data-full-detail="Published 2009-07-15 | VIEW-batman-streets-of-gotham-2 | Seq 004001 | core | Hush Money chapters. | https://dc.fandom.com/wiki/Batman:_Streets_of_Gotham_Vol_1_2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-streets-of-gotham-2.jpg" data-display-src="../assets/covers/display/VIEW-batman-streets-of-gotham-2.jpg" alt="Batman: Streets of Gotham #2 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Money</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #2">Batman: Streets of Gotham #2</h3>
+          <p class="publication-date">Published 2009-07-15</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-streets-of-gotham-3" data-work="Batman: Streets of Gotham" data-section="hush_extended" data-search="batman: streets of gotham #3 view-batman-streets-of-gotham-3 batman: streets of gotham 3 hush money chapters. hush money hush_extended" data-order="reading" data-scope="Hush Money" data-project="hush_extended" data-status="missing" data-sequence="004002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004002" data-publication-date="2009-08-19" data-publication-year="2009" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-3.jpg" data-full-title="Batman: Streets of Gotham #3" data-full-detail="Published 2009-08-19 | VIEW-batman-streets-of-gotham-3 | Seq 004002 | core | Hush Money chapters. | https://dc.fandom.com/wiki/Batman:_Streets_of_Gotham_Vol_1_3 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-streets-of-gotham-3.jpg" data-display-src="../assets/covers/display/VIEW-batman-streets-of-gotham-3.jpg" alt="Batman: Streets of Gotham #3 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Money</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #3">Batman: Streets of Gotham #3</h3>
+          <p class="publication-date">Published 2009-08-19</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-streets-of-gotham-4" data-work="Batman: Streets of Gotham" data-section="hush_extended" data-search="batman: streets of gotham #4 view-batman-streets-of-gotham-4 batman: streets of gotham 4 hush money chapters. hush money hush_extended" data-order="reading" data-scope="Hush Money" data-project="hush_extended" data-status="missing" data-sequence="004003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004003" data-publication-date="2009-09-16" data-publication-year="2009" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-4.jpg" data-full-title="Batman: Streets of Gotham #4" data-full-detail="Published 2009-09-16 | VIEW-batman-streets-of-gotham-4 | Seq 004003 | core | Hush Money chapters. | https://dc.fandom.com/wiki/Batman:_Streets_of_Gotham_Vol_1_4 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-streets-of-gotham-4.jpg" data-display-src="../assets/covers/display/VIEW-batman-streets-of-gotham-4.jpg" alt="Batman: Streets of Gotham #4 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">Hush Money</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #4">Batman: Streets of Gotham #4</h3>
+          <p class="publication-date">Published 2009-09-16</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_manual" tabindex="-1" data-publication-id="VIEW-batman-streets-of-gotham-12" data-work="Batman: Streets of Gotham" data-section="hush_extended" data-search="batman: streets of gotham #12 view-batman-streets-of-gotham-12 batman: streets of gotham 12 house of hush opening chapters. house of hush hush_extended" data-order="reading" data-scope="House of Hush" data-project="hush_extended" data-status="missing" data-sequence="004100" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004100" data-publication-date="2010-05" data-publication-year="2010" data-publication-decade="2010s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-12.jpg" data-full-title="Batman: Streets of Gotham #12" data-full-detail="Published 2010-05 | VIEW-batman-streets-of-gotham-12 | Seq 004100 | core | House of Hush opening chapters. | https://dc.fandom.com/wiki/Batman:_Streets_of_Gotham_Vol_1_12 | Collector confirmed the detected black edge is acceptable."><img src="../assets/covers/thumb/VIEW-batman-streets-of-gotham-12.jpg" data-display-src="../assets/covers/display/VIEW-batman-streets-of-gotham-12.jpg" alt="Batman: Streets of Gotham #12 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">House of Hush</span>
+            <span class="badge review" title="Collector confirmed the detected black edge is acceptable.">approved manual</span>
+          </div>
+          <h3 title="Batman: Streets of Gotham #12">Batman: Streets of Gotham #12</h3>
+          <p class="publication-date">Published 2010-05</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-streets-of-gotham-13" data-work="Batman: Streets of Gotham" data-section="hush_extended" data-search="batman: streets of gotham #13 view-batman-streets-of-gotham-13 batman: streets of gotham 13 house of hush opening chapters. house of hush hush_extended" data-order="reading" data-scope="House of Hush" data-project="hush_extended" data-status="missing" data-sequence="004101" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004101" data-publication-date="2010-06" data-publication-year="2010" data-publication-decade="2010s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-13.jpg" data-full-title="Batman: Streets of Gotham #13" data-full-detail="Published 2010-06 | VIEW-batman-streets-of-gotham-13 | Seq 004101 | core | House of Hush opening chapters. | https://dc.fandom.com/wiki/Batman:_Streets_of_Gotham_Vol_1_13 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-streets-of-gotham-13.jpg" data-display-src="../assets/covers/display/VIEW-batman-streets-of-gotham-13.jpg" alt="Batman: Streets of Gotham #13 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">House of Hush</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #13">Batman: Streets of Gotham #13</h3>
+          <p class="publication-date">Published 2010-06</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-streets-of-gotham-14" data-work="Batman: Streets of Gotham" data-section="hush_extended" data-search="batman: streets of gotham #14 view-batman-streets-of-gotham-14 batman: streets of gotham 14 house of hush opening chapters. house of hush hush_extended" data-order="reading" data-scope="House of Hush" data-project="hush_extended" data-status="missing" data-sequence="004102" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004102" data-publication-date="2010-07" data-publication-year="2010" data-publication-decade="2010s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-14.jpg" data-full-title="Batman: Streets of Gotham #14" data-full-detail="Published 2010-07 | VIEW-batman-streets-of-gotham-14 | Seq 004102 | core | House of Hush opening chapters. | https://dc.fandom.com/wiki/Batman:_Streets_of_Gotham_Vol_1_14 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-streets-of-gotham-14.jpg" data-display-src="../assets/covers/display/VIEW-batman-streets-of-gotham-14.jpg" alt="Batman: Streets of Gotham #14 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">House of Hush</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #14">Batman: Streets of Gotham #14</h3>
+          <p class="publication-date">Published 2010-07</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-streets-of-gotham-16" data-work="Batman: Streets of Gotham" data-section="hush_extended" data-search="batman: streets of gotham #16 view-batman-streets-of-gotham-16 batman: streets of gotham 16 complete omnibus house of hush scope through issue 21. house of hush hush_extended" data-order="reading" data-scope="House of Hush" data-project="hush_extended" data-status="missing" data-sequence="004200" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004200" data-publication-date="2010-09" data-publication-year="2010" data-publication-decade="2010s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-16.jpg" data-full-title="Batman: Streets of Gotham #16" data-full-detail="Published 2010-09 | VIEW-batman-streets-of-gotham-16 | Seq 004200 | core | Complete omnibus House of Hush scope through issue 21. | https://dc.fandom.com/wiki/Batman:_Streets_of_Gotham_Vol_1_16 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-streets-of-gotham-16.jpg" data-display-src="../assets/covers/display/VIEW-batman-streets-of-gotham-16.jpg" alt="Batman: Streets of Gotham #16 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">House of Hush</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #16">Batman: Streets of Gotham #16</h3>
+          <p class="publication-date">Published 2010-09</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-streets-of-gotham-17" data-work="Batman: Streets of Gotham" data-section="hush_extended" data-search="batman: streets of gotham #17 view-batman-streets-of-gotham-17 batman: streets of gotham 17 complete omnibus house of hush scope through issue 21. house of hush hush_extended" data-order="reading" data-scope="House of Hush" data-project="hush_extended" data-status="missing" data-sequence="004201" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004201" data-publication-date="2010-11-17" data-publication-year="2010" data-publication-decade="2010s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-17.jpg" data-full-title="Batman: Streets of Gotham #17" data-full-detail="Published 2010-11-17 | VIEW-batman-streets-of-gotham-17 | Seq 004201 | core | Complete omnibus House of Hush scope through issue 21. | https://dc.fandom.com/wiki/Batman:_Streets_of_Gotham_Vol_1_17 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-streets-of-gotham-17.jpg" data-display-src="../assets/covers/display/VIEW-batman-streets-of-gotham-17.jpg" alt="Batman: Streets of Gotham #17 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">House of Hush</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #17">Batman: Streets of Gotham #17</h3>
+          <p class="publication-date">Published 2010-11-17</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-streets-of-gotham-18" data-work="Batman: Streets of Gotham" data-section="hush_extended" data-search="batman: streets of gotham #18 view-batman-streets-of-gotham-18 batman: streets of gotham 18 complete omnibus house of hush scope through issue 21. house of hush hush_extended" data-order="reading" data-scope="House of Hush" data-project="hush_extended" data-status="missing" data-sequence="004202" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004202" data-publication-date="2010-12" data-publication-year="2010" data-publication-decade="2010s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-18.jpg" data-full-title="Batman: Streets of Gotham #18" data-full-detail="Published 2010-12 | VIEW-batman-streets-of-gotham-18 | Seq 004202 | core | Complete omnibus House of Hush scope through issue 21. | https://dc.fandom.com/wiki/Batman:_Streets_of_Gotham_Vol_1_18 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-streets-of-gotham-18.jpg" data-display-src="../assets/covers/display/VIEW-batman-streets-of-gotham-18.jpg" alt="Batman: Streets of Gotham #18 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">House of Hush</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #18">Batman: Streets of Gotham #18</h3>
+          <p class="publication-date">Published 2010-12</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_manual" tabindex="-1" data-publication-id="VIEW-batman-streets-of-gotham-19" data-work="Batman: Streets of Gotham" data-section="hush_extended" data-search="batman: streets of gotham #19 view-batman-streets-of-gotham-19 batman: streets of gotham 19 complete omnibus house of hush scope through issue 21. house of hush hush_extended" data-order="reading" data-scope="House of Hush" data-project="hush_extended" data-status="missing" data-sequence="004203" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004203" data-publication-date="2011-01" data-publication-year="2011" data-publication-decade="2010s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-19.jpg" data-full-title="Batman: Streets of Gotham #19" data-full-detail="Published 2011-01 | VIEW-batman-streets-of-gotham-19 | Seq 004203 | core | Complete omnibus House of Hush scope through issue 21. | https://dc.fandom.com/wiki/Batman:_Streets_of_Gotham_Vol_1_19 | Collector confirmed this perspective-style detection is acceptable."><img src="../assets/covers/thumb/VIEW-batman-streets-of-gotham-19.jpg" data-display-src="../assets/covers/display/VIEW-batman-streets-of-gotham-19.jpg" alt="Batman: Streets of Gotham #19 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">House of Hush</span>
+            <span class="badge review" title="Collector confirmed this perspective-style detection is acceptable.">approved manual</span>
+          </div>
+          <h3 title="Batman: Streets of Gotham #19">Batman: Streets of Gotham #19</h3>
+          <p class="publication-date">Published 2011-01</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_manual" tabindex="-1" data-publication-id="VIEW-batman-streets-of-gotham-20" data-work="Batman: Streets of Gotham" data-section="hush_extended" data-search="batman: streets of gotham #20 view-batman-streets-of-gotham-20 batman: streets of gotham 20 complete omnibus house of hush scope through issue 21. house of hush hush_extended" data-order="reading" data-scope="House of Hush" data-project="hush_extended" data-status="missing" data-sequence="004204" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004204" data-publication-date="2011-03-02" data-publication-year="2011" data-publication-decade="2010s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-20.jpg" data-full-title="Batman: Streets of Gotham #20" data-full-detail="Published 2011-03-02 | VIEW-batman-streets-of-gotham-20 | Seq 004204 | core | Complete omnibus House of Hush scope through issue 21. | https://dc.fandom.com/wiki/Batman:_Streets_of_Gotham_Vol_1_20 | Collector confirmed the detected black edge is acceptable."><img src="../assets/covers/thumb/VIEW-batman-streets-of-gotham-20.jpg" data-display-src="../assets/covers/display/VIEW-batman-streets-of-gotham-20.jpg" alt="Batman: Streets of Gotham #20 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">House of Hush</span>
+            <span class="badge review" title="Collector confirmed the detected black edge is acceptable.">approved manual</span>
+          </div>
+          <h3 title="Batman: Streets of Gotham #20">Batman: Streets of Gotham #20</h3>
+          <p class="publication-date">Published 2011-03-02</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-streets-of-gotham-21" data-work="Batman: Streets of Gotham" data-section="hush_extended" data-search="batman: streets of gotham #21 view-batman-streets-of-gotham-21 batman: streets of gotham 21 complete omnibus house of hush scope through issue 21. house of hush hush_extended" data-order="reading" data-scope="House of Hush" data-project="hush_extended" data-status="missing" data-sequence="004205" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004205" data-publication-date="2011-03" data-publication-year="2011" data-publication-decade="2010s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-streets-of-gotham-21.jpg" data-full-title="Batman: Streets of Gotham #21" data-full-detail="Published 2011-03 | VIEW-batman-streets-of-gotham-21 | Seq 004205 | core | Complete omnibus House of Hush scope through issue 21. | https://dc.fandom.com/wiki/Batman:_Streets_of_Gotham_Vol_1_21 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-streets-of-gotham-21.jpg" data-display-src="../assets/covers/display/VIEW-batman-streets-of-gotham-21.jpg" alt="Batman: Streets of Gotham #21 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">House of Hush</span>
+            
+          </div>
+          <h3 title="Batman: Streets of Gotham #21">Batman: Streets of Gotham #21</h3>
+          <p class="publication-date">Published 2011-03</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-justice-league-unlimited-1" data-work="Justice League Unlimited" data-section="hush_extended" data-search="justice league unlimited #1 - h2sh prelude view-justice-league-unlimited-1 justice league unlimited 1 optional h2sh prelude backup story. h2sh prelude hush_extended" data-order="reading" data-scope="H2SH Prelude" data-project="hush_extended" data-status="missing" data-sequence="004999" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:004999" data-publication-date="2024-11-27" data-publication-year="2024" data-publication-decade="2020s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-justice-league-unlimited-1.jpg" data-full-title="Justice League Unlimited #1 - H2SH prelude" data-full-detail="Published 2024-11-27 | VIEW-justice-league-unlimited-1 | Seq 004999 | core | Optional H2SH prelude backup story. | https://dc.fandom.com/wiki/Justice_League_Unlimited_Vol_2_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-justice-league-unlimited-1.jpg" data-display-src="../assets/covers/display/VIEW-justice-league-unlimited-1.jpg" alt="Justice League Unlimited #1 - H2SH prelude cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">H2SH Prelude</span>
+            
+          </div>
+          <h3 title="Justice League Unlimited #1 - H2SH prelude">Justice League Unlimited #1 - H2SH prelude</h3>
+          <p class="publication-date">Published 2024-11-27</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-vol-3-158" data-work="Batman (Vol. 3)" data-section="hush_extended" data-search="batman (vol. 3) #158 view-batman-vol-3-158 batman (vol. 3) 158 official six-part h2sh part one. h2sh part one hush_extended" data-order="reading" data-scope="H2SH Part One" data-project="hush_extended" data-status="missing" data-sequence="005000" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:005000" data-publication-date="2025-03-26" data-publication-year="2025" data-publication-decade="2020s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-vol-3-158.jpg" data-full-title="Batman (Vol. 3) #158" data-full-detail="Published 2025-03-26 | VIEW-batman-vol-3-158 | Seq 005000 | core | Official six-part H2SH Part One. | https://dc.fandom.com/wiki/Batman_Vol_3_158 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-vol-3-158.jpg" data-display-src="../assets/covers/display/VIEW-batman-vol-3-158.jpg" alt="Batman (Vol. 3) #158 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">H2SH Part One</span>
+            
+          </div>
+          <h3 title="Batman (Vol. 3) #158">Batman (Vol. 3) #158</h3>
+          <p class="publication-date">Published 2025-03-26</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-vol-3-159" data-work="Batman (Vol. 3)" data-section="hush_extended" data-search="batman (vol. 3) #159 view-batman-vol-3-159 batman (vol. 3) 159 official six-part h2sh part one. h2sh part one hush_extended" data-order="reading" data-scope="H2SH Part One" data-project="hush_extended" data-status="missing" data-sequence="005001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:005001" data-publication-date="2025-04-23" data-publication-year="2025" data-publication-decade="2020s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-vol-3-159.jpg" data-full-title="Batman (Vol. 3) #159" data-full-detail="Published 2025-04-23 | VIEW-batman-vol-3-159 | Seq 005001 | core | Official six-part H2SH Part One. | https://dc.fandom.com/wiki/Batman_Vol_3_159 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-vol-3-159.jpg" data-display-src="../assets/covers/display/VIEW-batman-vol-3-159.jpg" alt="Batman (Vol. 3) #159 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">H2SH Part One</span>
+            
+          </div>
+          <h3 title="Batman (Vol. 3) #159">Batman (Vol. 3) #159</h3>
+          <p class="publication-date">Published 2025-04-23</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-vol-3-160" data-work="Batman (Vol. 3)" data-section="hush_extended" data-search="batman (vol. 3) #160 view-batman-vol-3-160 batman (vol. 3) 160 official six-part h2sh part one. h2sh part one hush_extended" data-order="reading" data-scope="H2SH Part One" data-project="hush_extended" data-status="missing" data-sequence="005002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:005002" data-publication-date="2025-05-28" data-publication-year="2025" data-publication-decade="2020s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-vol-3-160.jpg" data-full-title="Batman (Vol. 3) #160" data-full-detail="Published 2025-05-28 | VIEW-batman-vol-3-160 | Seq 005002 | core | Official six-part H2SH Part One. | https://dc.fandom.com/wiki/Batman_Vol_3_160 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-vol-3-160.jpg" data-display-src="../assets/covers/display/VIEW-batman-vol-3-160.jpg" alt="Batman (Vol. 3) #160 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">H2SH Part One</span>
+            
+          </div>
+          <h3 title="Batman (Vol. 3) #160">Batman (Vol. 3) #160</h3>
+          <p class="publication-date">Published 2025-05-28</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-vol-3-161" data-work="Batman (Vol. 3)" data-section="hush_extended" data-search="batman (vol. 3) #161 view-batman-vol-3-161 batman (vol. 3) 161 official six-part h2sh part one. h2sh part one hush_extended" data-order="reading" data-scope="H2SH Part One" data-project="hush_extended" data-status="missing" data-sequence="005003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:005003" data-publication-date="2025-07-23" data-publication-year="2025" data-publication-decade="2020s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-vol-3-161.jpg" data-full-title="Batman (Vol. 3) #161" data-full-detail="Published 2025-07-23 | VIEW-batman-vol-3-161 | Seq 005003 | core | Official six-part H2SH Part One. | https://dc.fandom.com/wiki/Batman_Vol_3_161 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-vol-3-161.jpg" data-display-src="../assets/covers/display/VIEW-batman-vol-3-161.jpg" alt="Batman (Vol. 3) #161 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">H2SH Part One</span>
+            
+          </div>
+          <h3 title="Batman (Vol. 3) #161">Batman (Vol. 3) #161</h3>
+          <p class="publication-date">Published 2025-07-23</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-vol-3-162" data-work="Batman (Vol. 3)" data-section="hush_extended" data-search="batman (vol. 3) #162 view-batman-vol-3-162 batman (vol. 3) 162 official six-part h2sh part one. h2sh part one hush_extended" data-order="reading" data-scope="H2SH Part One" data-project="hush_extended" data-status="missing" data-sequence="005004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:005004" data-publication-date="2025-11-12" data-publication-year="2025" data-publication-decade="2020s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-vol-3-162.jpg" data-full-title="Batman (Vol. 3) #162" data-full-detail="Published 2025-11-12 | VIEW-batman-vol-3-162 | Seq 005004 | core | Official six-part H2SH Part One. | https://dc.fandom.com/wiki/Batman_Vol_3_162 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-vol-3-162.jpg" data-display-src="../assets/covers/display/VIEW-batman-vol-3-162.jpg" alt="Batman (Vol. 3) #162 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">H2SH Part One</span>
+            
+          </div>
+          <h3 title="Batman (Vol. 3) #162">Batman (Vol. 3) #162</h3>
+          <p class="publication-date">Published 2025-11-12</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-vol-3-163" data-work="Batman (Vol. 3)" data-section="hush_extended" data-search="batman (vol. 3) #163 view-batman-vol-3-163 batman (vol. 3) 163 official six-part h2sh part one. h2sh part one hush_extended" data-order="reading" data-scope="H2SH Part One" data-project="hush_extended" data-status="missing" data-sequence="005005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:005005" data-publication-date="2026-05-27" data-publication-year="2026" data-publication-decade="2020s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-vol-3-163.jpg" data-full-title="Batman (Vol. 3) #163" data-full-detail="Published 2026-05-27 | VIEW-batman-vol-3-163 | Seq 005005 | core | Official six-part H2SH Part One. | https://dc.fandom.com/wiki/Batman_Vol_3_163 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-vol-3-163.jpg" data-display-src="../assets/covers/display/VIEW-batman-vol-3-163.jpg" alt="Batman (Vol. 3) #163 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">H2SH Part One</span>
+            
+          </div>
+          <h3 title="Batman (Vol. 3) #163">Batman (Vol. 3) #163</h3>
+          <p class="publication-date">Published 2026-05-27</p>
+        </div>
+      </article>
+    </section>
+  </main>
+  <div class="lightbox" aria-modal="true" role="dialog" aria-label="Cover preview">
+    <div class="lightbox-panel">
+      <button class="lightbox-nav" type="button" data-lightbox-previous aria-label="Previous cover">&#8249;</button>
+      <div class="lightbox-image-wrap"><img src="" alt=""></div>
+      <button class="lightbox-nav" type="button" data-lightbox-next aria-label="Next cover">&#8250;</button>
+      <div class="lightbox-caption">
+        <div>
+          <div class="lightbox-title"></div>
+          <div class="lightbox-detail"></div>
+        </div>
+        <span class="lightbox-position"></span>
+        <button class="lightbox-close" type="button" data-lightbox-close>Close</button>
+      </div>
+    </div>
+  </div>
+  <div class="keyboard-help" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
+    <div class="keyboard-help-panel">
+      <h2>Keyboard shortcuts</h2>
+      <div class="shortcut-grid"><kbd>/</kbd><span>Search</span><kbd>F</kbd><span>Filters</span><kbd>B</kbd><span>Browse cards</span><kbd>Arrow keys</kbd><span>Move selection or preview</span><kbd>Enter</kbd><span>Open selected cover</span><kbd>M</kbd><span>Missing</span><kbd>O</kbd><span>Owned</span><kbd>A</kbd><span>All statuses</span><kbd>C</kbd><span>Cover/detail density</span><kbd>Esc</kbd><span>Close or clear</span><kbd>Command/Ctrl + C</kbd><span>Copy normally</span></div>
+      <button class="tool-button" type="button" data-close-help>Close</button>
+    </div>
+  </div>
+  <nav class="mobile-tools" aria-label="Viewer tools"><button type="button" data-mobile-search title="Search" aria-label="Search">S</button><button type="button" data-mobile-filter title="Filters" aria-label="Filters">F</button><button type="button" data-mobile-density title="Cover density" aria-label="Cover density">C</button><button type="button" data-mobile-help title="Keyboard shortcuts" aria-label="Keyboard shortcuts">?</button><button type="button" data-mobile-top title="Back to top" aria-label="Back to top">&uarr;</button></nav>
+  <script>
+    const state = { order: 'reading', scope: 'all', project: 'all', status: 'all', sort: 'curated', decade: 'all', year: 'all', query: '' };
+    const grid = document.querySelector('.grid');
+    const cards = [...document.querySelectorAll('.comic-card')];
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImage = document.querySelector('.lightbox img');
+    const lightboxTitle = document.querySelector('.lightbox-title');
+    const lightboxDetail = document.querySelector('.lightbox-detail');
+    const lightboxPosition = document.querySelector('.lightbox-position');
+    const previousButton = document.querySelector('[data-lightbox-previous]');
+    const nextButton = document.querySelector('[data-lightbox-next]');
+    const controls = document.querySelector('.controls');
+    const filterToggle = document.querySelector('.filter-toggle');
+    const filterSummary = document.querySelector('.filter-summary');
+    const search = document.querySelector('.viewer-search');
+    const searchClear = document.querySelector('.search-clear');
+    const visibleCount = document.querySelector('.visible-count');
+    const projectProgress = document.querySelector('.project-progress');
+    const sectionJump = document.querySelector('.section-jump');
+    const densityButton = document.querySelector('[data-toggle-density]');
+    const storiesButton = document.querySelector('[data-toggle-stories]');
+    const browseButton = document.querySelector('[data-toggle-browse]');
+    const help = document.querySelector('.keyboard-help');
+    const filterStorageKey = 'gothamViewerFiltersOpen';
+    const stateStorageKey = `gothamViewerState:${location.pathname}`;
+    let currentPreviewButton = null;
+    let selectedCard = null;
+    let browseMode = false;
+    let storiesVisible = false;
+    let touchStartX = 0;
+    let swipedPreview = false;
+    let savedViewState = {};
+
+    function safeStore(key, value) { try { localStorage.setItem(key, value); } catch (error) {} }
+    function safeRead(key) { try { return localStorage.getItem(key); } catch (error) { return null; } }
+    function humanize(value) { return String(value || '').replaceAll('_', ' '); }
+    function validFilter(key, value) {
+      return value === 'all' || !!document.querySelector(`.chip[data-filter="${key}"][data-value="${CSS.escape(value)}"]`);
+    }
+    try {
+      const saved = JSON.parse(safeRead(stateStorageKey) || '{}');
+      savedViewState = saved;
+      // Restore presentation preferences, but never reopen a viewer with a hidden
+      // collection filter that contradicts the totals shown in its summary.
+      ['order', 'sort'].forEach(key => {
+        if (saved[key] && validFilter(key, saved[key])) state[key] = saved[key];
+      });
+      if (saved.density === 'compact') document.body.classList.add('compact-view');
+      storiesVisible = saved.stories === true;
+    } catch (error) {}
+    if (safeRead(filterStorageKey) === 'true') {
+      controls.classList.add('open');
+      filterToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function saveState() {
+      safeStore(stateStorageKey, JSON.stringify({ ...state, query: '', density: document.body.classList.contains('compact-view') ? 'compact' : 'details', stories: storiesVisible, scrollY: window.scrollY, lastPublication: selectedCard?.dataset.publicationId || '' }));
+    }
+    function setFilter(group, value) {
+      state[group] = value;
+      document.querySelectorAll(`.chip[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item.dataset.value === value));
+      document.querySelectorAll(`.metric[data-status]`).forEach(item => item.classList.toggle('active', group === 'status' && item.dataset.status === value));
+      applyFilters();
+      updateFilterSummary();
+      saveState();
+    }
+    filterToggle.addEventListener('click', () => {
+      const open = controls.classList.toggle('open');
+      filterToggle.setAttribute('aria-expanded', String(open));
+      safeStore(filterStorageKey, String(open));
+    });
+    document.querySelectorAll('.chip').forEach(button => button.addEventListener('click', () => setFilter(button.dataset.filter, button.dataset.value)));
+    document.querySelector('.year-filter').addEventListener('change', event => { state.year = event.target.value; applyFilters(); updateFilterSummary(); saveState(); });
+    document.querySelectorAll('.metric[data-status]').forEach(button => button.addEventListener('click', () => {
+      search.value = '';
+      state.query = '';
+      ['scope', 'project', 'decade'].forEach(key => {
+        state[key] = 'all';
+        document.querySelectorAll(`.chip[data-filter="${key}"]`).forEach(item => item.classList.toggle('active', item.dataset.value === 'all'));
+      });
+      state.year = 'all';
+      document.querySelector('.year-filter').value = 'all';
+      setFilter('status', button.dataset.status);
+    }));
+    search.addEventListener('input', () => { state.query = search.value.trim().toLocaleLowerCase(); applyFilters(); });
+    searchClear.addEventListener('click', () => { search.value = ''; state.query = ''; applyFilters(); search.focus(); });
+    densityButton.addEventListener('click', toggleDensity);
+    storiesButton.addEventListener('click', toggleStories);
+    browseButton.addEventListener('click', () => setBrowseMode(!browseMode));
+    document.querySelector('[data-open-help]').addEventListener('click', openHelp);
+    document.querySelector('[data-close-help]').addEventListener('click', closeHelp);
+    help.addEventListener('click', event => { if (event.target === help) closeHelp(); });
+
+    function updateFilterSummary() {
+      const selected = ['order', 'scope', 'project', 'status', 'sort', 'decade', 'year'].map(key => state[key]).filter(value => value && value !== 'all' && value !== 'curated').map(humanize);
+      filterSummary.textContent = selected.length ? selected.join(' · ') : 'All';
+    }
+    function applyFilters() {
+      cards.forEach(card => {
+        const matches = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]))
+          && (state.decade === 'all' || card.dataset.publicationDecade === state.decade)
+          && (state.year === 'all' || card.dataset.publicationYear === state.year);
+        const searched = !state.query || card.dataset.search.includes(state.query);
+        card.classList.toggle('hidden', !(matches && searched));
+      });
+      sortCards();
+      renderProjectProgress();
+      const visible = visibleCards();
+      visibleCount.textContent = `${visible.length} of ${cards.length}`;
+      if (browseMode && (!selectedCard || selectedCard.classList.contains('hidden'))) selectCard(visible[0] || null);
+    }
+    function renderProjectProgress() {
+      const projectNames = [...new Set(cards.flatMap(card => card.dataset.project.split('|')).filter(Boolean))];
+      if (projectNames.length < 2 || projectNames.length > 30) { projectProgress.classList.remove('visible'); return; }
+      projectProgress.innerHTML = '';
+      projectNames.forEach(project => {
+        const projectCards = cards.filter(card => card.dataset.project.split('|').includes(project));
+        const counts = Object.fromEntries(['owned', 'facsimile', 'ordered', 'readable', 'missing'].map(status => [status, projectCards.filter(card => card.dataset.status === status).length]));
+        const available = counts.owned + counts.facsimile + counts.readable;
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.classList.toggle('active', state.project === project);
+        button.innerHTML = `<strong>${humanize(project)}</strong><span>${available}/${projectCards.length} available · ${counts.ordered} ordered · ${counts.missing} missing</span>`;
+        button.addEventListener('click', () => setFilter('project', state.project === project ? 'all' : project));
+        projectProgress.appendChild(button);
+      });
+      projectProgress.classList.add('visible');
+    }
+    function sortCards() {
+      grid.querySelectorAll('.chapter-divider').forEach(item => item.remove());
+      cards.sort((left, right) => {
+        if (state.sort === 'date') return dateSortValue(left) - dateSortValue(right) || sequenceForCard(left) - sequenceForCard(right);
+        if (state.sort === 'title') return left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent, undefined, {numeric:true, sensitivity:'base'});
+        return sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent);
+      }).forEach(card => grid.appendChild(card));
+      renderChapterDividers();
+    }
+    function dateSortValue(card) {
+      const value = card.dataset.publicationDate || '';
+      const match = value.match(/^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?/);
+      return match ? Number(`${match[1]}${match[2] || '00'}${match[3] || '00'}`) : 99999999;
+    }
+    function renderChapterDividers() {
+      if (!storiesVisible) return;
+      const visible = visibleCards();
+      const sections = [...new Set(visible.map(card => card.dataset.section).filter(Boolean))];
+      if (sections.length < 2 || sections.length > 18) return;
+      let previous = '';
+      visible.forEach(card => {
+        const section = card.dataset.section;
+        if (section && section !== previous) {
+          const divider = document.createElement('div');
+          divider.className = 'chapter-divider';
+          divider.textContent = humanize(section);
+          grid.insertBefore(divider, card);
+          previous = section;
+        }
+      });
+    }
+    function sequenceForCard(card) {
+      const order = state.order === 'all' ? 'reading' : state.order;
+      if (order === 'publication') {
+        return scopedSequence(card, 'publicationSequence');
+      }
+      if (order === 'chronological') {
+        return scopedSequence(card, 'chronologicalSequence');
+      }
+      const byOrder = sequenceMap(card.dataset.orderSequences);
+      if (byOrder[order]) {
+        return sortValue(byOrder[order]);
+      }
+      const chronological = scopedSequence(card, 'chronologicalSequence');
+      return chronological < 999999 ? chronological : sortValue(card.dataset.sequence);
+    }
+    function scopedSequence(card, orderKey) {
+      const scoped = sequenceMap(card.dataset[`${orderKey}s`]);
+      if (state.scope !== 'all' && scoped[state.scope]) {
+        return sortValue(scoped[state.scope]);
+      }
+      return sortValue(card.dataset[orderKey]);
+    }
+    function sequenceMap(value) {
+      return Object.fromEntries((value || '').split('|').filter(Boolean).map(item => {
+        const [scope, sequence] = item.split(':');
+        return [scope, sequence];
+      }));
+    }
+    function sortValue(value) {
+      const parsed = Number.parseFloat(value || '999999');
+      if (Number.isFinite(parsed)) {
+        return parsed;
+      }
+        const embedded = String(value || '').match(/\d+(\.\d+)?/);
+      return embedded ? Number.parseFloat(embedded[0]) : 999999;
+    }
+    function visibleCards() { return cards.filter(card => !card.classList.contains('hidden')); }
+    function visibleCoverButtons() { return visibleCards().map(card => card.querySelector('.cover-button')).filter(Boolean); }
+    function openLightbox(button) { currentPreviewButton = button; renderPreview(button); lightbox.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function renderPreview(button) {
+      if (!button) return;
+      currentPreviewButton = button;
+      lightboxImage.src = button.dataset.fullSrc;
+      lightboxImage.alt = `${button.dataset.fullTitle} cover`;
+      lightboxTitle.textContent = button.dataset.fullTitle;
+      lightboxDetail.textContent = button.dataset.fullDetail || '';
+      const sequence = visibleCoverButtons();
+      const index = sequence.indexOf(button);
+      lightboxPosition.textContent = index >= 0 ? `${index + 1} / ${sequence.length}` : '';
+      previousButton.disabled = sequence.length < 2;
+      nextButton.disabled = sequence.length < 2;
+      [-1, 1].forEach(direction => { if (sequence.length > 1) { const adjacent = sequence[(index + direction + sequence.length) % sequence.length]; const preload = new Image(); preload.src = adjacent.dataset.fullSrc; } });
+    }
+    function movePreview(direction) {
+      const sequence = visibleCoverButtons();
+      if (sequence.length < 2) return;
+      const index = sequence.indexOf(currentPreviewButton);
+      renderPreview(sequence[(Math.max(index, 0) + direction + sequence.length) % sequence.length]);
+    }
+    document.querySelectorAll('.cover-button').forEach(button => button.addEventListener('click', event => { event.stopPropagation(); openLightbox(button); }));
+    previousButton.addEventListener('click', event => { event.stopPropagation(); movePreview(-1); });
+    nextButton.addEventListener('click', event => { event.stopPropagation(); movePreview(1); });
+    document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
+    lightbox.addEventListener('click', () => { if (swipedPreview) { swipedPreview = false; return; } closeLightbox(); });
+    lightbox.addEventListener('touchstart', event => { touchStartX = event.changedTouches[0].clientX; }, { passive: true });
+    lightbox.addEventListener('touchend', event => { const delta = event.changedTouches[0].clientX - touchStartX; if (Math.abs(delta) > 45) { swipedPreview = true; movePreview(delta > 0 ? -1 : 1); } }, { passive: true });
+    function closeLightbox() {
+      if (!lightbox.classList.contains('open')) return;
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+      lightboxImage.removeAttribute('src');
+      lightboxImage.removeAttribute('alt');
+      lightboxTitle.textContent = '';
+      lightboxDetail.textContent = '';
+      const returnCard = currentPreviewButton?.closest('.comic-card');
+      currentPreviewButton = null;
+      if (returnCard) returnCard.focus({ preventScroll: true });
+    }
+    function toggleDensity() {
+      document.body.classList.toggle('compact-view');
+      densityButton.classList.toggle('active', document.body.classList.contains('compact-view'));
+      densityButton.textContent = document.body.classList.contains('compact-view') ? 'Details' : 'Covers';
+      saveState();
+    }
+    function toggleStories() {
+      storiesVisible = !storiesVisible;
+      storiesButton.classList.toggle('active', storiesVisible);
+      storiesButton.textContent = storiesVisible ? 'Grid' : 'Stories';
+      sortCards();
+      saveState();
+    }
+    function selectCard(card, centre = false) {
+      if (selectedCard) selectedCard.classList.remove('keyboard-selected');
+      selectedCard = card;
+      if (card) { card.classList.add('keyboard-selected'); card.scrollIntoView({ block: centre ? 'center' : 'nearest', inline: 'nearest', behavior: 'smooth' }); }
+    }
+    function setBrowseMode(enabled) { browseMode = enabled; browseButton.classList.toggle('active', enabled); if (enabled) selectCard(selectedCard && !selectedCard.classList.contains('hidden') ? selectedCard : visibleCards()[0] || null, true); else selectCard(null); }
+    function moveCardSelection(direction) {
+      const available = visibleCards();
+      if (!available.length) return;
+      if (!selectedCard || !available.includes(selectedCard)) { selectCard(available[0]); return; }
+      const source = selectedCard.getBoundingClientRect();
+      const sx = source.left + source.width / 2, sy = source.top + source.height / 2;
+      const horizontal = direction === 'left' || direction === 'right';
+      const candidates = available.filter(card => card !== selectedCard).map(card => { const rect = card.getBoundingClientRect(); const dx = rect.left + rect.width / 2 - sx, dy = rect.top + rect.height / 2 - sy; const forward = direction === 'left' ? dx < -2 : direction === 'right' ? dx > 2 : direction === 'up' ? dy < -2 : dy > 2; return { card, forward, score: Math.abs(horizontal ? dx : dy) + Math.abs(horizontal ? dy : dx) * 3 }; }).filter(item => item.forward).sort((a, b) => a.score - b.score);
+      if (candidates.length) selectCard(candidates[0].card);
+    }
+    function openHelp() { help.classList.add('open'); }
+    function closeHelp() { help.classList.remove('open'); }
+    function resetFilters() { search.value = ''; state.query = ''; ['scope', 'project', 'status', 'decade'].forEach(key => setFilter(key, 'all')); state.year = 'all'; document.querySelector('.year-filter').value = 'all'; }
+    sectionJump?.addEventListener('change', () => { const target = visibleCards().find(card => card.dataset.section.split('|').includes(sectionJump.value) || card.dataset.work === sectionJump.value); if (target) target.scrollIntoView({ block: 'center', behavior: 'smooth' }); sectionJump.value = ''; });
+    document.querySelector('[data-mobile-search]').addEventListener('click', () => { controls.classList.add('open'); filterToggle.setAttribute('aria-expanded', 'true'); search.focus(); });
+    document.querySelector('[data-mobile-filter]').addEventListener('click', () => filterToggle.click());
+    document.querySelector('[data-mobile-density]').addEventListener('click', toggleDensity);
+    document.querySelector('[data-mobile-help]').addEventListener('click', openHelp);
+    document.querySelector('[data-mobile-top]').addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+    document.addEventListener('keydown', event => {
+      const typing = event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLTextAreaElement;
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+      if (help.classList.contains('open')) { if (event.key === 'Escape' || event.key === '?') { event.preventDefault(); closeHelp(); } return; }
+      if (lightbox.classList.contains('open')) { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); movePreview(event.key === 'ArrowLeft' ? -1 : 1); } else if (event.key === 'Escape' || event.code === 'Space') { event.preventDefault(); closeLightbox(); } return; }
+      if (event.key === 'Escape' && typing) { search.value = ''; state.query = ''; applyFilters(); search.blur(); return; }
+      if (typing) return;
+      if (browseMode && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); moveCardSelection(event.key.replace('Arrow', '').toLowerCase()); return; }
+      if (browseMode && (event.key === 'Enter' || event.code === 'Space')) { event.preventDefault(); const button = selectedCard?.querySelector('.cover-button'); if (button) openLightbox(button); return; }
+      if (event.key === '/') { event.preventDefault(); controls.classList.add('open'); filterToggle.setAttribute('aria-expanded', 'true'); search.focus(); }
+      else if (event.key.toLowerCase() === 'f') filterToggle.click();
+      else if (event.key.toLowerCase() === 'b') setBrowseMode(!browseMode);
+      else if (event.key === '?') openHelp();
+      else if (event.key.toLowerCase() === 'm') setFilter('status', 'missing');
+      else if (event.key.toLowerCase() === 'o') setFilter('status', 'owned');
+      else if (event.key.toLowerCase() === 'a') setFilter('status', 'all');
+      else if (event.key.toLowerCase() === 'c') toggleDensity();
+    });
+    ['order', 'scope', 'project', 'status', 'sort', 'decade'].forEach(key => document.querySelectorAll(`.chip[data-filter="${key}"]`).forEach(item => item.classList.toggle('active', item.dataset.value === state[key])));
+    document.querySelector('.year-filter').value = state.year;
+    densityButton.classList.toggle('active', document.body.classList.contains('compact-view'));
+    densityButton.textContent = document.body.classList.contains('compact-view') ? 'Details' : 'Covers';
+    storiesButton.classList.toggle('active', storiesVisible);
+    storiesButton.textContent = storiesVisible ? 'Grid' : 'Stories';
+    applyFilters();
+    updateFilterSummary();
+    window.addEventListener('pagehide', saveState);
+    if (savedViewState.scrollY) requestAnimationFrame(() => scrollTo({ top: savedViewState.scrollY }));
+    </script>
+</body>
+</html>

@@ -1,0 +1,1434 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="../assets/site/batman-favicon.png">
+  <title>Batman: Black and White - Visual Viewer</title>
+  <style>
+    :root { color-scheme: light; --ink:#172026; --muted:#5c6670; --line:#d9dee4; --paper:#f6f7f8; --panel:#ffffff; --owned:#0f7b4f; --fac:#6b4bb8; --ordered:#2166ad; --readable:#a46a00; --missing:#b42318; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); }
+    header { padding: 28px 32px 18px; background: #111820; color: white; }
+    .header-top { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .back-link { color: white; border: 1px solid rgba(255,255,255,.32); border-radius: 999px; padding: 7px 11px; text-decoration: none; font-size: 13px; background: rgba(255,255,255,.08); }
+    .back-link:hover { background: rgba(255,255,255,.16); }
+    h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; }
+    header p { margin: 0; color: #c8d0d8; max-width: 900px; }
+    .summary { display: grid; grid-template-columns: repeat(5, minmax(90px, 1fr)); gap: 8px; padding: 12px 32px; background: #e9edf1; border-bottom: 1px solid var(--line); }
+    .metric { appearance: none; text-align: left; color: inherit; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; cursor: pointer; }
+    .metric:hover, .metric.active { border-color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+    .metric strong { display: block; font-size: 24px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    .project-progress { display: none; padding: 10px 32px; gap: 8px; overflow-x: auto; background: #f4f6f8; border-bottom: 1px solid var(--line); }
+    .project-progress.visible { display: flex; }
+    .project-progress button { flex: 0 0 auto; min-width: 160px; border: 1px solid var(--line); border-radius: 7px; background: white; color: var(--ink); padding: 8px 10px; text-align: left; cursor: pointer; }
+    .project-progress button.active { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+    .project-progress strong, .project-progress span { display: block; }
+    .project-progress strong { font-size: 13px; text-transform: capitalize; }
+    .project-progress span { margin-top: 3px; color: var(--muted); font-size: 11px; }
+    .controls { padding: 8px 32px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
+    .filter-toggle { display: flex; width: auto; max-width: 100%; border: 1px solid var(--line); background: #172026; color: white; border-radius: 6px; padding: 8px 11px; font-weight: 750; cursor: pointer; align-items: center; gap: 10px; }
+    .filter-toggle small { color: #c8d0d8; font-size: 11px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .filter-toggle::after { content: "+"; font-size: 18px; line-height: 1; }
+    .controls.open .filter-toggle::after { content: "−"; }
+    .control-content { display: none; gap: 12px; margin-top: 10px; }
+    .controls.open .control-content { display: grid; }
+    .viewer-tools { display: grid; grid-template-columns: minmax(180px, 1fr) minmax(160px, auto) auto auto; gap: 8px; align-items: center; }
+    .search-wrap { position: relative; min-width: 0; }
+    .viewer-search, .section-jump { width: 100%; height: 38px; border: 1px solid var(--line); border-radius: 6px; background: white; color: var(--ink); padding: 0 36px 0 11px; font: inherit; }
+    .search-clear { position: absolute; right: 5px; top: 5px; width: 28px; height: 28px; border: 0; border-radius: 5px; background: transparent; color: var(--muted); font-size: 18px; cursor: pointer; }
+    .tool-button { height: 38px; border: 1px solid var(--line); border-radius: 6px; background: #f8fafb; color: var(--ink); padding: 0 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .tool-button.active { background: var(--ink); color: white; border-color: var(--ink); }
+    .visible-count { color: var(--muted); font-size: 12px; font-weight: 700; white-space: nowrap; text-align: right; }
+    .control-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .control-row b { margin-right: 4px; font-size: 13px; color: var(--muted); min-width: 70px; }
+    .chip { border: 1px solid var(--line); background: #f8fafb; color: var(--ink); border-radius: 999px; padding: 7px 11px; cursor: pointer; text-transform: capitalize; }
+    .chip.active { background: #172026; border-color: #172026; color: white; }
+    main { padding: 24px 32px 40px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 16px; align-items: start; }
+    .comic-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05); min-width: 0; display: flex; flex-direction: column; position: relative; }
+    .comic-card.owned { background: #f2fbf6; }
+    .comic-card.facsimile { background: #f6f2ff; }
+    .comic-card.ordered { background: #f1f7ff; }
+    .comic-card.readable { background: #fff8ec; }
+    .status-strip { background: var(--missing); color: white; min-height: 30px; display: grid; place-items: center; padding: 7px 8px; font-size: 12px; line-height: 1; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; }
+    .comic-card.owned .status-strip { background: var(--owned); }
+    .comic-card.facsimile .status-strip { background: var(--fac); }
+    .comic-card.ordered .status-strip { background: var(--ordered); }
+    .comic-card.readable .status-strip { background: var(--readable); }
+    .cover-wrap { aspect-ratio: 2 / 3; background: #242a31; display: grid; place-items: center; overflow: hidden; position: relative; }
+    .cover-button { appearance: none; border: 0; background: #111820; padding: 0; margin: 0; width: 100%; height: 100%; display: block; cursor: zoom-in; }
+    .cover-button:focus-visible { outline: 3px solid #f4c430; outline-offset: -3px; }
+    .cover-wrap img { width: 100%; height: 100%; object-fit: contain; background: #111820; display: block; }
+    .cover-placeholder { width: 100%; height: 100%; padding: 14px; color: white; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(145deg, #18212a, #39424c); }
+    .cover-placeholder span { font-weight: 700; line-height: 1.1; overflow-wrap: anywhere; }
+    .cover-placeholder strong { font-size: 42px; align-self: flex-end; }
+    .cover-review-badge { position: absolute; left: 8px; right: 8px; top: 8px; border-radius: 6px; padding: 6px 7px; color: white; font-size: 11px; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.22); pointer-events: none; }
+    .cover-review-badge.warning { background: rgba(164,106,0,.92); }
+    .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
+    .comic-card.cover-needs_review { border-color: #a46a00; }
+    .comic-card.cover-rejected_auto { border-color: #b42318; }
+    .comic-card.keyboard-selected { outline: 4px solid #f4c430; outline-offset: 3px; box-shadow: 0 0 0 7px rgba(255,255,255,.92), 0 10px 26px rgba(0,0,0,.28); transform: translateY(-2px); }
+    body.compact-view .grid { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 10px; }
+    body.compact-view .card-body { min-height: 58px; padding: 7px 8px 9px; }
+    body.compact-view .badges, body.compact-view .publication-date { display: none; }
+    body.compact-view h3 { font-size: 13px; margin: 0; -webkit-line-clamp: 2; }
+    body.compact-view .status-strip { min-height: 25px; padding: 5px; font-size: 10px; }
+    .chapter-divider { grid-column: 1 / -1; margin: 10px 0 0; padding: 9px 2px 7px; border-bottom: 2px solid var(--line); font-size: 16px; font-weight: 850; text-transform: capitalize; }
+    .card-body { padding: 10px 11px 12px; min-height: 86px; display: flex; flex-direction: column; overflow: hidden; }
+    .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
+    .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
+    .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
+    h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .publication-date { margin: auto 0 0; color: var(--muted); font-size: 12px; line-height: 1.3; }
+    .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id { -webkit-line-clamp: 1; }
+    .meta, .continuity { -webkit-line-clamp: 2; }
+    .notes { -webkit-line-clamp: 2; position: relative; }
+    .notes::after { content: ""; position: absolute; inset: auto 0 0 0; height: 1.2em; background: linear-gradient(to bottom, rgba(255,255,255,0), var(--panel)); pointer-events: none; }
+    .comic-card.owned .notes::after { background: linear-gradient(to bottom, rgba(242,251,246,0), #f2fbf6); }
+    .comic-card.facsimile .notes::after { background: linear-gradient(to bottom, rgba(246,242,255,0), #f6f2ff); }
+    .comic-card.ordered .notes::after { background: linear-gradient(to bottom, rgba(241,247,255,0), #f1f7ff); }
+    .comic-card.readable .notes::after { background: linear-gradient(to bottom, rgba(255,248,236,0), #fff8ec); }
+    .hidden { display: none; }
+    .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
+    .lightbox.open { display: flex; }
+    .lightbox-panel { width: min(96vw, 1100px); height: 94vh; display: grid; grid-template-columns: 48px minmax(0,1fr) 48px; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; align-items: center; justify-items: center; }
+    .lightbox img { width: 100%; height: 100%; min-width: 0; min-height: 0; object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-image-wrap { min-width: 0; min-height: 0; width: 100%; height: 100%; display: grid; place-items: center; overflow: hidden; }
+    .lightbox-caption { grid-column: 1 / -1; width: min(92vw, 900px); display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
+    .lightbox-title { font-weight: 750; }
+    .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
+    .lightbox-close { border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: white; border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+    .lightbox-nav { width: 46px; height: 64px; border: 1px solid rgba(255,255,255,.35); border-radius: 7px; background: rgba(255,255,255,.12); color: white; font-size: 30px; cursor: pointer; }
+    .lightbox-nav:disabled { opacity: .3; cursor: default; }
+    .lightbox-position { color: #c8d0d8; font-size: 12px; white-space: nowrap; }
+    .keyboard-help { position: fixed; inset: 0; z-index: 30; display: none; place-items: center; padding: 20px; background: rgba(12,17,22,.78); }
+    .keyboard-help.open { display: grid; }
+    .keyboard-help-panel { width: min(92vw, 520px); max-height: 80vh; overflow: auto; background: white; border-radius: 8px; padding: 18px; box-shadow: 0 20px 60px rgba(0,0,0,.4); }
+    .keyboard-help-panel h2 { margin: 0 0 12px; font-size: 20px; }
+    .shortcut-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 12px; align-items: center; }
+    kbd { min-width: 34px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 3px 7px; background: #f4f6f8; text-align: center; font: 700 12px ui-monospace, monospace; }
+    .mobile-tools { display: none; }
+    @media (max-width: 700px) {
+      header, .summary, .project-progress, main { padding-left: 14px; padding-right: 14px; }
+      header { padding-top: 18px; }
+      .summary { grid-template-columns: repeat(5, 1fr); gap: 5px; padding-top: 7px; padding-bottom: 7px; }
+      .metric { padding: 6px; text-align: center; }
+      .metric strong { font-size: 17px; }
+      .metric span { font-size: 9px; line-height: 1.05; }
+      .controls { padding: 8px 14px; gap: 8px; }
+      .filter-toggle { width: 100%; justify-content: space-between; }
+      .control-content { max-height: 58vh; overflow-y: auto; padding: 4px 0 8px; }
+      .control-row b { flex-basis: 100%; min-width: 0; }
+      .chip { padding: 6px 9px; font-size: 13px; }
+      .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; }
+      .viewer-tools { grid-template-columns: 1fr; }
+      .visible-count { text-align: left; }
+      .tool-button.keyboard-only { display: none; }
+      .lightbox { padding: 8px; }
+      .lightbox-panel { width: 100%; height: 96vh; grid-template-columns: 42px minmax(0,1fr) 42px; gap: 4px; }
+      .lightbox-nav { width: 40px; height: 56px; }
+      .lightbox-caption { width: 100%; align-items: flex-end; padding: 0 4px; }
+      .lightbox-detail { max-height: 3.8em; overflow: hidden; }
+      .mobile-tools { position: fixed; z-index: 8; left: 50%; bottom: max(8px, env(safe-area-inset-bottom)); transform: translateX(-50%); display: flex; gap: 5px; padding: 5px; border: 1px solid var(--line); border-radius: 8px; background: rgba(255,255,255,.95); box-shadow: 0 8px 24px rgba(0,0,0,.2); backdrop-filter: blur(10px); }
+      .mobile-tools button { width: 42px; height: 38px; border: 0; border-radius: 5px; background: #eef1f4; color: var(--ink); font-size: 18px; }
+      main { padding-bottom: 84px; }
+    }
+    </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <h1>Batman: Black and White</h1>
+      <a class="back-link" href="visual_collection_viewer.html">All visual views</a>
+    </div>
+    <p>Original anthology miniseries, Gotham Knights backup-story publications, and the 2013 and 2020 anthology revivals.</p>
+  </header>
+  <section class="summary">
+    <button class="metric" type="button" data-status="all"><strong>65</strong><span>publications</span></button>
+    <button class="metric" type="button" data-status="owned"><strong>0</strong><span>owned originals</span></button>
+    <button class="metric" type="button" data-status="facsimile"><strong>0</strong><span>facsimiles</span></button>
+    <button class="metric" type="button" data-status="ordered"><strong>0</strong><span>ordered</span></button>
+    <button class="metric" type="button" data-status="missing"><strong>65</strong><span>missing</span></button>
+  </section>
+  <nav class="project-progress" aria-label="Story completion"></nav>
+  <section class="controls">
+    <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="viewer-filters"><span>Filters &amp; order</span><small class="filter-summary">reading</small></button>
+    <div class="control-content" id="viewer-filters">
+      <div class="viewer-tools">
+        <div class="search-wrap"><input class="viewer-search" type="search" placeholder="Search title, issue or story" aria-label="Search comics"><button class="search-clear" type="button" title="Clear search" aria-label="Clear search">&times;</button></div>
+        <select class="section-jump" aria-label="Jump to section"><option value="">Jump to section</option><option value="Batman: Black and White (1996)">Batman: Black and White (1996)</option><option value="Batman: Gotham Knights">Batman: Gotham Knights</option><option value="Batman: Black and White (2013)">Batman: Black and White (2013)</option><option value="Batman: Black and White (2020)">Batman: Black and White (2020)</option></select>
+        <button class="tool-button" type="button" data-toggle-density>Covers</button>
+        <button class="tool-button" type="button" data-toggle-stories>Stories</button>
+        <button class="tool-button keyboard-only" type="button" data-toggle-browse>Browse</button>
+        <span class="visible-count">65 of 65</span>
+        <button class="tool-button keyboard-only" type="button" data-open-help aria-label="Keyboard shortcuts">Shortcuts</button>
+      </div>
+      <div class="control-row"><b>Order</b><button class="chip" data-filter="order" data-value="all">All orders</button>
+<button class="chip active" data-filter="order" data-value="reading">reading</button></div>
+      <div class="control-row"><b>Sort</b><button class="chip active" data-filter="sort" data-value="curated">curated</button><button class="chip" data-filter="sort" data-value="date">date</button><button class="chip" data-filter="sort" data-value="title">title</button></div>
+      <div class="control-row"><b>Decade</b><button class="chip active" data-filter="decade" data-value="all">All decades</button>
+<button class="chip" data-filter="decade" data-value="1990s">1990s</button>
+<button class="chip" data-filter="decade" data-value="2000s">2000s</button>
+<button class="chip" data-filter="decade" data-value="2010s">2010s</button>
+<button class="chip" data-filter="decade" data-value="2020s">2020s</button></div>
+      <div class="control-row"><b>Year</b><select class="section-jump year-filter" aria-label="Filter by publication year"><option value="all">All years</option><option value="1996">1996</option><option value="2000">2000</option><option value="2001">2001</option><option value="2002">2002</option><option value="2003">2003</option><option value="2004">2004</option><option value="2013">2013</option><option value="2014">2014</option><option value="2020">2020</option><option value="2021">2021</option></select></div>
+      <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button>
+<button class="chip" data-filter="scope" data-value="original_miniseries">original miniseries</button>
+<button class="chip" data-filter="scope" data-value="gotham_knights_backups">gotham knights backups</button>
+<button class="chip" data-filter="scope" data-value="2013_miniseries">2013 miniseries</button>
+<button class="chip" data-filter="scope" data-value="2020_miniseries">2020 miniseries</button></div>
+      <div class="control-row"><b>Status</b><button class="chip active" data-filter="status" data-value="all">All statuses</button>
+<button class="chip" data-filter="status" data-value="owned">owned</button>
+<button class="chip" data-filter="status" data-value="facsimile">facsimile</button>
+<button class="chip" data-filter="status" data-value="ordered">ordered</button>
+<button class="chip" data-filter="status" data-value="readable">readable</button>
+<button class="chip" data-filter="status" data-value="missing">missing</button></div>
+      <div class="control-row"><b>Work</b><button class="chip active" data-filter="project" data-value="all">All works</button>
+<button class="chip" data-filter="project" data-value="batman_black_white">batman black white</button></div>
+    </div>
+  </section>
+  <main>
+    <section class="grid">
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-BW-V1-0001" data-work="Batman: Black and White (1996)" data-section="batman_black_white" data-search="batman: black and white (1996) #1 view-bat-bw-v1-0001 batman: black and white (1996) 1 original four-issue anthology miniseries. original_miniseries batman_black_white" data-order="reading" data-scope="original_miniseries" data-project="batman_black_white" data-status="missing" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000001" data-publication-date="1996-04-03" data-publication-year="1996" data-publication-decade="1990s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-BW-V1-0001.jpg" data-full-title="Batman: Black and White (1996) #1" data-full-detail="Published 1996-04-03 | VIEW-BAT-BW-V1-0001 | Seq 000001 | anthology | Original four-issue anthology miniseries. | https://dc.fandom.com/wiki/Batman:_Black_and_White_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-BW-V1-0001.jpg" data-display-src="../assets/covers/display/VIEW-BAT-BW-V1-0001.jpg" alt="Batman: Black and White (1996) #1 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">original miniseries</span>
+            
+          </div>
+          <h3 title="Batman: Black and White (1996) #1">Batman: Black and White (1996) #1</h3>
+          <p class="publication-date">Published 1996-04-03</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-BW-V1-0002" data-work="Batman: Black and White (1996)" data-section="batman_black_white" data-search="batman: black and white (1996) #2 view-bat-bw-v1-0002 batman: black and white (1996) 2 original four-issue anthology miniseries. original_miniseries batman_black_white" data-order="reading" data-scope="original_miniseries" data-project="batman_black_white" data-status="missing" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000002" data-publication-date="1996-05" data-publication-year="1996" data-publication-decade="1990s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-BW-V1-0002.jpg" data-full-title="Batman: Black and White (1996) #2" data-full-detail="Published 1996-05 | VIEW-BAT-BW-V1-0002 | Seq 000002 | anthology | Original four-issue anthology miniseries. | https://dc.fandom.com/wiki/Batman:_Black_and_White_Vol_1_2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-BW-V1-0002.jpg" data-display-src="../assets/covers/display/VIEW-BAT-BW-V1-0002.jpg" alt="Batman: Black and White (1996) #2 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">original miniseries</span>
+            
+          </div>
+          <h3 title="Batman: Black and White (1996) #2">Batman: Black and White (1996) #2</h3>
+          <p class="publication-date">Published 1996-05</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-BW-V1-0003" data-work="Batman: Black and White (1996)" data-section="batman_black_white" data-search="batman: black and white (1996) #3 view-bat-bw-v1-0003 batman: black and white (1996) 3 original four-issue anthology miniseries. original_miniseries batman_black_white" data-order="reading" data-scope="original_miniseries" data-project="batman_black_white" data-status="missing" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000003" data-publication-date="1996-06" data-publication-year="1996" data-publication-decade="1990s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-BW-V1-0003.jpg" data-full-title="Batman: Black and White (1996) #3" data-full-detail="Published 1996-06 | VIEW-BAT-BW-V1-0003 | Seq 000003 | anthology | Original four-issue anthology miniseries. | https://dc.fandom.com/wiki/Batman:_Black_and_White_Vol_1_3 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-BW-V1-0003.jpg" data-display-src="../assets/covers/display/VIEW-BAT-BW-V1-0003.jpg" alt="Batman: Black and White (1996) #3 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">original miniseries</span>
+            
+          </div>
+          <h3 title="Batman: Black and White (1996) #3">Batman: Black and White (1996) #3</h3>
+          <p class="publication-date">Published 1996-06</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-BW-V1-0004" data-work="Batman: Black and White (1996)" data-section="batman_black_white" data-search="batman: black and white (1996) #4 view-bat-bw-v1-0004 batman: black and white (1996) 4 original four-issue anthology miniseries. original_miniseries batman_black_white" data-order="reading" data-scope="original_miniseries" data-project="batman_black_white" data-status="missing" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000004" data-publication-date="1996-07" data-publication-year="1996" data-publication-decade="1990s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-BW-V1-0004.jpg" data-full-title="Batman: Black and White (1996) #4" data-full-detail="Published 1996-07 | VIEW-BAT-BW-V1-0004 | Seq 000004 | anthology | Original four-issue anthology miniseries. | https://dc.fandom.com/wiki/Batman:_Black_and_White_Vol_1_4 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-BW-V1-0004.jpg" data-display-src="../assets/covers/display/VIEW-BAT-BW-V1-0004.jpg" alt="Batman: Black and White (1996) #4 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">original miniseries</span>
+            
+          </div>
+          <h3 title="Batman: Black and White (1996) #4">Batman: Black and White (1996) #4</h3>
+          <p class="publication-date">Published 1996-07</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0001" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #1 view-bat-gotham-knights-0001 batman: gotham knights 1 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001001" data-publication-date="2000-01" data-publication-year="2000" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0001.jpg" data-full-title="Batman: Gotham Knights #1" data-full-detail="Published 2000-01 | VIEW-BAT-GOTHAM-KNIGHTS-0001 | Seq 001001 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0001.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0001.jpg" alt="Batman: Gotham Knights #1 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #1">Batman: Gotham Knights #1</h3>
+          <p class="publication-date">Published 2000-01</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0002" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #2 view-bat-gotham-knights-0002 batman: gotham knights 2 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001002" data-publication-date="2000-02" data-publication-year="2000" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0002.jpg" data-full-title="Batman: Gotham Knights #2" data-full-detail="Published 2000-02 | VIEW-BAT-GOTHAM-KNIGHTS-0002 | Seq 001002 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0002.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0002.jpg" alt="Batman: Gotham Knights #2 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #2">Batman: Gotham Knights #2</h3>
+          <p class="publication-date">Published 2000-02</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0003" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #3 view-bat-gotham-knights-0003 batman: gotham knights 3 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001003" data-publication-date="2000-03" data-publication-year="2000" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0003.jpg" data-full-title="Batman: Gotham Knights #3" data-full-detail="Published 2000-03 | VIEW-BAT-GOTHAM-KNIGHTS-0003 | Seq 001003 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_3 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0003.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0003.jpg" alt="Batman: Gotham Knights #3 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #3">Batman: Gotham Knights #3</h3>
+          <p class="publication-date">Published 2000-03</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0004" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #4 view-bat-gotham-knights-0004 batman: gotham knights 4 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001004" data-publication-date="2000-04" data-publication-year="2000" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0004.jpg" data-full-title="Batman: Gotham Knights #4" data-full-detail="Published 2000-04 | VIEW-BAT-GOTHAM-KNIGHTS-0004 | Seq 001004 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_4 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0004.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0004.jpg" alt="Batman: Gotham Knights #4 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #4">Batman: Gotham Knights #4</h3>
+          <p class="publication-date">Published 2000-04</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0005" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #5 view-bat-gotham-knights-0005 batman: gotham knights 5 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001005" data-publication-date="2000-05" data-publication-year="2000" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0005.jpg" data-full-title="Batman: Gotham Knights #5" data-full-detail="Published 2000-05 | VIEW-BAT-GOTHAM-KNIGHTS-0005 | Seq 001005 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_5 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0005.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0005.jpg" alt="Batman: Gotham Knights #5 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #5">Batman: Gotham Knights #5</h3>
+          <p class="publication-date">Published 2000-05</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0006" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #6 view-bat-gotham-knights-0006 batman: gotham knights 6 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001006" data-publication-date="2000-06" data-publication-year="2000" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0006.jpg" data-full-title="Batman: Gotham Knights #6" data-full-detail="Published 2000-06 | VIEW-BAT-GOTHAM-KNIGHTS-0006 | Seq 001006 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_6 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0006.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0006.jpg" alt="Batman: Gotham Knights #6 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #6">Batman: Gotham Knights #6</h3>
+          <p class="publication-date">Published 2000-06</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0007" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #7 view-bat-gotham-knights-0007 batman: gotham knights 7 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001007" data-publication-date="2000-07" data-publication-year="2000" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0007.jpg" data-full-title="Batman: Gotham Knights #7" data-full-detail="Published 2000-07 | VIEW-BAT-GOTHAM-KNIGHTS-0007 | Seq 001007 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_7 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0007.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0007.jpg" alt="Batman: Gotham Knights #7 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #7">Batman: Gotham Knights #7</h3>
+          <p class="publication-date">Published 2000-07</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0008" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #8 view-bat-gotham-knights-0008 batman: gotham knights 8 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001008" data-publication-date="2000-08" data-publication-year="2000" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0008.jpg" data-full-title="Batman: Gotham Knights #8" data-full-detail="Published 2000-08 | VIEW-BAT-GOTHAM-KNIGHTS-0008 | Seq 001008 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_8 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0008.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0008.jpg" alt="Batman: Gotham Knights #8 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #8">Batman: Gotham Knights #8</h3>
+          <p class="publication-date">Published 2000-08</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0009" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #9 view-bat-gotham-knights-0009 batman: gotham knights 9 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001009" data-publication-date="2000-09" data-publication-year="2000" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0009.jpg" data-full-title="Batman: Gotham Knights #9" data-full-detail="Published 2000-09 | VIEW-BAT-GOTHAM-KNIGHTS-0009 | Seq 001009 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_9 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0009.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0009.jpg" alt="Batman: Gotham Knights #9 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #9">Batman: Gotham Knights #9</h3>
+          <p class="publication-date">Published 2000-09</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0010" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #10 view-bat-gotham-knights-0010 batman: gotham knights 10 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001010" data-publication-date="2000-10" data-publication-year="2000" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0010.jpg" data-full-title="Batman: Gotham Knights #10" data-full-detail="Published 2000-10 | VIEW-BAT-GOTHAM-KNIGHTS-0010 | Seq 001010 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_10 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0010.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0010.jpg" alt="Batman: Gotham Knights #10 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #10">Batman: Gotham Knights #10</h3>
+          <p class="publication-date">Published 2000-10</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0011" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #11 view-bat-gotham-knights-0011 batman: gotham knights 11 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001011" data-publication-date="2000-11" data-publication-year="2000" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0011.jpg" data-full-title="Batman: Gotham Knights #11" data-full-detail="Published 2000-11 | VIEW-BAT-GOTHAM-KNIGHTS-0011 | Seq 001011 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_11 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0011.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0011.jpg" alt="Batman: Gotham Knights #11 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #11">Batman: Gotham Knights #11</h3>
+          <p class="publication-date">Published 2000-11</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0012" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #12 view-bat-gotham-knights-0012 batman: gotham knights 12 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001012" data-publication-date="2000-12" data-publication-year="2000" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0012.jpg" data-full-title="Batman: Gotham Knights #12" data-full-detail="Published 2000-12 | VIEW-BAT-GOTHAM-KNIGHTS-0012 | Seq 001012 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_12 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0012.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0012.jpg" alt="Batman: Gotham Knights #12 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #12">Batman: Gotham Knights #12</h3>
+          <p class="publication-date">Published 2000-12</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BATMAN-GOTHAM-KNIGHTS-0013" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #13 pub-batman-gotham-knights-0013 batman: gotham knights 13 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001013" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001013" data-publication-date="2001-01-31" data-publication-year="2001" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0013.jpg" data-full-title="Batman: Gotham Knights #13" data-full-detail="Published 2001-01-31 | PUB-BATMAN-GOTHAM-KNIGHTS-0013 | Seq 001013 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_13 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0013.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0013.jpg" alt="Batman: Gotham Knights #13 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #13">Batman: Gotham Knights #13</h3>
+          <p class="publication-date">Published 2001-01-31</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0014" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #14 view-bat-gotham-knights-0014 batman: gotham knights 14 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001014" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001014" data-publication-date="2001-02-28" data-publication-year="2001" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0014.jpg" data-full-title="Batman: Gotham Knights #14" data-full-detail="Published 2001-02-28 | VIEW-BAT-GOTHAM-KNIGHTS-0014 | Seq 001014 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_14 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0014.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0014.jpg" alt="Batman: Gotham Knights #14 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #14">Batman: Gotham Knights #14</h3>
+          <p class="publication-date">Published 2001-02-28</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0015" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #15 view-bat-gotham-knights-0015 batman: gotham knights 15 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001015" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001015" data-publication-date="2001-03" data-publication-year="2001" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0015.jpg" data-full-title="Batman: Gotham Knights #15" data-full-detail="Published 2001-03 | VIEW-BAT-GOTHAM-KNIGHTS-0015 | Seq 001015 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_15 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0015.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0015.jpg" alt="Batman: Gotham Knights #15 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #15">Batman: Gotham Knights #15</h3>
+          <p class="publication-date">Published 2001-03</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0016" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #16 view-bat-gotham-knights-0016 batman: gotham knights 16 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001016" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001016" data-publication-date="2001-04" data-publication-year="2001" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0016.jpg" data-full-title="Batman: Gotham Knights #16" data-full-detail="Published 2001-04 | VIEW-BAT-GOTHAM-KNIGHTS-0016 | Seq 001016 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_16 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0016.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0016.jpg" alt="Batman: Gotham Knights #16 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #16">Batman: Gotham Knights #16</h3>
+          <p class="publication-date">Published 2001-04</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0017" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #17 view-bat-gotham-knights-0017 batman: gotham knights 17 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001017" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001017" data-publication-date="2001-05" data-publication-year="2001" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0017.jpg" data-full-title="Batman: Gotham Knights #17" data-full-detail="Published 2001-05 | VIEW-BAT-GOTHAM-KNIGHTS-0017 | Seq 001017 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_17 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0017.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0017.jpg" alt="Batman: Gotham Knights #17 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #17">Batman: Gotham Knights #17</h3>
+          <p class="publication-date">Published 2001-05</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0018" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #18 view-bat-gotham-knights-0018 batman: gotham knights 18 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001018" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001018" data-publication-date="2001-06" data-publication-year="2001" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0018.jpg" data-full-title="Batman: Gotham Knights #18" data-full-detail="Published 2001-06 | VIEW-BAT-GOTHAM-KNIGHTS-0018 | Seq 001018 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_18 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0018.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0018.jpg" alt="Batman: Gotham Knights #18 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #18">Batman: Gotham Knights #18</h3>
+          <p class="publication-date">Published 2001-06</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0019" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #19 view-bat-gotham-knights-0019 batman: gotham knights 19 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001019" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001019" data-publication-date="2001-07" data-publication-year="2001" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0019.jpg" data-full-title="Batman: Gotham Knights #19" data-full-detail="Published 2001-07 | VIEW-BAT-GOTHAM-KNIGHTS-0019 | Seq 001019 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_19 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0019.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0019.jpg" alt="Batman: Gotham Knights #19 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #19">Batman: Gotham Knights #19</h3>
+          <p class="publication-date">Published 2001-07</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0020" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #20 view-bat-gotham-knights-0020 batman: gotham knights 20 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001020" data-publication-date="2001-08" data-publication-year="2001" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0020.jpg" data-full-title="Batman: Gotham Knights #20" data-full-detail="Published 2001-08 | VIEW-BAT-GOTHAM-KNIGHTS-0020 | Seq 001020 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_20 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0020.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0020.jpg" alt="Batman: Gotham Knights #20 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #20">Batman: Gotham Knights #20</h3>
+          <p class="publication-date">Published 2001-08</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0021" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #21 view-bat-gotham-knights-0021 batman: gotham knights 21 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001021" data-publication-date="2001-09-19" data-publication-year="2001" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0021.jpg" data-full-title="Batman: Gotham Knights #21" data-full-detail="Published 2001-09-19 | VIEW-BAT-GOTHAM-KNIGHTS-0021 | Seq 001021 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_21 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0021.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0021.jpg" alt="Batman: Gotham Knights #21 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #21">Batman: Gotham Knights #21</h3>
+          <p class="publication-date">Published 2001-09-19</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0022" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #22 view-bat-gotham-knights-0022 batman: gotham knights 22 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001022" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001022" data-publication-date="2001-10" data-publication-year="2001" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0022.jpg" data-full-title="Batman: Gotham Knights #22" data-full-detail="Published 2001-10 | VIEW-BAT-GOTHAM-KNIGHTS-0022 | Seq 001022 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_22 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0022.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0022.jpg" alt="Batman: Gotham Knights #22 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #22">Batman: Gotham Knights #22</h3>
+          <p class="publication-date">Published 2001-10</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0023" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #23 view-bat-gotham-knights-0023 batman: gotham knights 23 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001023" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001023" data-publication-date="2001-11-21" data-publication-year="2001" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0023.jpg" data-full-title="Batman: Gotham Knights #23" data-full-detail="Published 2001-11-21 | VIEW-BAT-GOTHAM-KNIGHTS-0023 | Seq 001023 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_23 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0023.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0023.jpg" alt="Batman: Gotham Knights #23 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #23">Batman: Gotham Knights #23</h3>
+          <p class="publication-date">Published 2001-11-21</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0024" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #24 view-bat-gotham-knights-0024 batman: gotham knights 24 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001024" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001024" data-publication-date="2001-12-19" data-publication-year="2001" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0024.jpg" data-full-title="Batman: Gotham Knights #24" data-full-detail="Published 2001-12-19 | VIEW-BAT-GOTHAM-KNIGHTS-0024 | Seq 001024 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_24 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0024.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0024.jpg" alt="Batman: Gotham Knights #24 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #24">Batman: Gotham Knights #24</h3>
+          <p class="publication-date">Published 2001-12-19</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BATMAN-GOTHAM-KNIGHTS-0025" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #25 pub-batman-gotham-knights-0025 batman: gotham knights 25 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001025" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001025" data-publication-date="2002-01-16" data-publication-year="2002" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0025.jpg" data-full-title="Batman: Gotham Knights #25" data-full-detail="Published 2002-01-16 | PUB-BATMAN-GOTHAM-KNIGHTS-0025 | Seq 001025 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_25 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0025.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0025.jpg" alt="Batman: Gotham Knights #25 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #25">Batman: Gotham Knights #25</h3>
+          <p class="publication-date">Published 2002-01-16</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BATMAN-GOTHAM-KNIGHTS-0026" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #26 pub-batman-gotham-knights-0026 batman: gotham knights 26 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001026" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001026" data-publication-date="2002-02-20" data-publication-year="2002" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0026.jpg" data-full-title="Batman: Gotham Knights #26" data-full-detail="Published 2002-02-20 | PUB-BATMAN-GOTHAM-KNIGHTS-0026 | Seq 001026 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_26 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0026.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0026.jpg" alt="Batman: Gotham Knights #26 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #26">Batman: Gotham Knights #26</h3>
+          <p class="publication-date">Published 2002-02-20</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0027" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #27 view-bat-gotham-knights-0027 batman: gotham knights 27 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001027" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001027" data-publication-date="2002-03-20" data-publication-year="2002" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0027.jpg" data-full-title="Batman: Gotham Knights #27" data-full-detail="Published 2002-03-20 | VIEW-BAT-GOTHAM-KNIGHTS-0027 | Seq 001027 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_27 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0027.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0027.jpg" alt="Batman: Gotham Knights #27 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #27">Batman: Gotham Knights #27</h3>
+          <p class="publication-date">Published 2002-03-20</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BATMAN-GOTHAM-KNIGHTS-0028" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #28 pub-batman-gotham-knights-0028 batman: gotham knights 28 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001028" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001028" data-publication-date="2002-04-17" data-publication-year="2002" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0028.jpg" data-full-title="Batman: Gotham Knights #28" data-full-detail="Published 2002-04-17 | PUB-BATMAN-GOTHAM-KNIGHTS-0028 | Seq 001028 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_28 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0028.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0028.jpg" alt="Batman: Gotham Knights #28 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #28">Batman: Gotham Knights #28</h3>
+          <p class="publication-date">Published 2002-04-17</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0029" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #29 view-bat-gotham-knights-0029 batman: gotham knights 29 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001029" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001029" data-publication-date="2002-05-15" data-publication-year="2002" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0029.jpg" data-full-title="Batman: Gotham Knights #29" data-full-detail="Published 2002-05-15 | VIEW-BAT-GOTHAM-KNIGHTS-0029 | Seq 001029 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_29 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0029.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0029.jpg" alt="Batman: Gotham Knights #29 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #29">Batman: Gotham Knights #29</h3>
+          <p class="publication-date">Published 2002-05-15</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BATMAN-GOTHAM-KNIGHTS-0030" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #30 pub-batman-gotham-knights-0030 batman: gotham knights 30 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001030" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001030" data-publication-date="2002-06-19" data-publication-year="2002" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0030.jpg" data-full-title="Batman: Gotham Knights #30" data-full-detail="Published 2002-06-19 | PUB-BATMAN-GOTHAM-KNIGHTS-0030 | Seq 001030 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_30 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0030.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0030.jpg" alt="Batman: Gotham Knights #30 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #30">Batman: Gotham Knights #30</h3>
+          <p class="publication-date">Published 2002-06-19</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BATMAN-GOTHAM-KNIGHTS-0031" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #31 pub-batman-gotham-knights-0031 batman: gotham knights 31 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001031" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001031" data-publication-date="2002-07-17" data-publication-year="2002" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0031.jpg" data-full-title="Batman: Gotham Knights #31" data-full-detail="Published 2002-07-17 | PUB-BATMAN-GOTHAM-KNIGHTS-0031 | Seq 001031 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_31 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0031.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0031.jpg" alt="Batman: Gotham Knights #31 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #31">Batman: Gotham Knights #31</h3>
+          <p class="publication-date">Published 2002-07-17</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0032" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #32 view-bat-gotham-knights-0032 batman: gotham knights 32 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001032" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001032" data-publication-date="2002-08-21" data-publication-year="2002" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0032.jpg" data-full-title="Batman: Gotham Knights #32" data-full-detail="Published 2002-08-21 | VIEW-BAT-GOTHAM-KNIGHTS-0032 | Seq 001032 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_32 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0032.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0032.jpg" alt="Batman: Gotham Knights #32 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #32">Batman: Gotham Knights #32</h3>
+          <p class="publication-date">Published 2002-08-21</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0033" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #33 view-bat-gotham-knights-0033 batman: gotham knights 33 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001033" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001033" data-publication-date="2002-09-18" data-publication-year="2002" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0033.jpg" data-full-title="Batman: Gotham Knights #33" data-full-detail="Published 2002-09-18 | VIEW-BAT-GOTHAM-KNIGHTS-0033 | Seq 001033 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_33 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0033.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0033.jpg" alt="Batman: Gotham Knights #33 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #33">Batman: Gotham Knights #33</h3>
+          <p class="publication-date">Published 2002-09-18</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0034" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #34 view-bat-gotham-knights-0034 batman: gotham knights 34 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001034" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001034" data-publication-date="2002-10-16" data-publication-year="2002" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0034.jpg" data-full-title="Batman: Gotham Knights #34" data-full-detail="Published 2002-10-16 | VIEW-BAT-GOTHAM-KNIGHTS-0034 | Seq 001034 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_34 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0034.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0034.jpg" alt="Batman: Gotham Knights #34 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #34">Batman: Gotham Knights #34</h3>
+          <p class="publication-date">Published 2002-10-16</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0035" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #35 view-bat-gotham-knights-0035 batman: gotham knights 35 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001035" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001035" data-publication-date="2002-11-20" data-publication-year="2002" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0035.jpg" data-full-title="Batman: Gotham Knights #35" data-full-detail="Published 2002-11-20 | VIEW-BAT-GOTHAM-KNIGHTS-0035 | Seq 001035 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_35 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0035.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0035.jpg" alt="Batman: Gotham Knights #35 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #35">Batman: Gotham Knights #35</h3>
+          <p class="publication-date">Published 2002-11-20</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0036" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #36 view-bat-gotham-knights-0036 batman: gotham knights 36 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001036" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001036" data-publication-date="2002-12-18" data-publication-year="2002" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0036.jpg" data-full-title="Batman: Gotham Knights #36" data-full-detail="Published 2002-12-18 | VIEW-BAT-GOTHAM-KNIGHTS-0036 | Seq 001036 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_36 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0036.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0036.jpg" alt="Batman: Gotham Knights #36 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #36">Batman: Gotham Knights #36</h3>
+          <p class="publication-date">Published 2002-12-18</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0037" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #37 view-bat-gotham-knights-0037 batman: gotham knights 37 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001037" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001037" data-publication-date="2003-01-15" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0037.jpg" data-full-title="Batman: Gotham Knights #37" data-full-detail="Published 2003-01-15 | VIEW-BAT-GOTHAM-KNIGHTS-0037 | Seq 001037 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_37 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0037.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0037.jpg" alt="Batman: Gotham Knights #37 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #37">Batman: Gotham Knights #37</h3>
+          <p class="publication-date">Published 2003-01-15</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0038" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #38 view-bat-gotham-knights-0038 batman: gotham knights 38 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001038" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001038" data-publication-date="2003-02-19" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0038.jpg" data-full-title="Batman: Gotham Knights #38" data-full-detail="Published 2003-02-19 | VIEW-BAT-GOTHAM-KNIGHTS-0038 | Seq 001038 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_38 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0038.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0038.jpg" alt="Batman: Gotham Knights #38 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #38">Batman: Gotham Knights #38</h3>
+          <p class="publication-date">Published 2003-02-19</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0039" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #39 view-bat-gotham-knights-0039 batman: gotham knights 39 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001039" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001039" data-publication-date="2003-03-19" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0039.jpg" data-full-title="Batman: Gotham Knights #39" data-full-detail="Published 2003-03-19 | VIEW-BAT-GOTHAM-KNIGHTS-0039 | Seq 001039 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_39 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0039.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0039.jpg" alt="Batman: Gotham Knights #39 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #39">Batman: Gotham Knights #39</h3>
+          <p class="publication-date">Published 2003-03-19</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0040" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #40 view-bat-gotham-knights-0040 batman: gotham knights 40 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001040" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001040" data-publication-date="2003-04-16" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0040.jpg" data-full-title="Batman: Gotham Knights #40" data-full-detail="Published 2003-04-16 | VIEW-BAT-GOTHAM-KNIGHTS-0040 | Seq 001040 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_40 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0040.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0040.jpg" alt="Batman: Gotham Knights #40 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #40">Batman: Gotham Knights #40</h3>
+          <p class="publication-date">Published 2003-04-16</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0041" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #41 view-bat-gotham-knights-0041 batman: gotham knights 41 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001041" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001041" data-publication-date="2003-05-21" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0041.jpg" data-full-title="Batman: Gotham Knights #41" data-full-detail="Published 2003-05-21 | VIEW-BAT-GOTHAM-KNIGHTS-0041 | Seq 001041 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_41 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0041.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0041.jpg" alt="Batman: Gotham Knights #41 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #41">Batman: Gotham Knights #41</h3>
+          <p class="publication-date">Published 2003-05-21</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0042" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #42 view-bat-gotham-knights-0042 batman: gotham knights 42 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001042" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001042" data-publication-date="2003-06-18" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0042.jpg" data-full-title="Batman: Gotham Knights #42" data-full-detail="Published 2003-06-18 | VIEW-BAT-GOTHAM-KNIGHTS-0042 | Seq 001042 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_42 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0042.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0042.jpg" alt="Batman: Gotham Knights #42 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #42">Batman: Gotham Knights #42</h3>
+          <p class="publication-date">Published 2003-06-18</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0043" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #43 view-bat-gotham-knights-0043 batman: gotham knights 43 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001043" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001043" data-publication-date="2003-07-16" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0043.jpg" data-full-title="Batman: Gotham Knights #43" data-full-detail="Published 2003-07-16 | VIEW-BAT-GOTHAM-KNIGHTS-0043 | Seq 001043 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_43 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0043.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0043.jpg" alt="Batman: Gotham Knights #43 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #43">Batman: Gotham Knights #43</h3>
+          <p class="publication-date">Published 2003-07-16</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_manual" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0044" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #44 view-bat-gotham-knights-0044 batman: gotham knights 44 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001044" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001044" data-publication-date="2003-08-20" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0044.jpg" data-full-title="Batman: Gotham Knights #44" data-full-detail="Published 2003-08-20 | VIEW-BAT-GOTHAM-KNIGHTS-0044 | Seq 001044 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_44 | Collector visually confirmed the detected black border is acceptable."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0044.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0044.jpg" alt="Batman: Gotham Knights #44 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            <span class="badge review" title="Collector visually confirmed the detected black border is acceptable.">approved manual</span>
+          </div>
+          <h3 title="Batman: Gotham Knights #44">Batman: Gotham Knights #44</h3>
+          <p class="publication-date">Published 2003-08-20</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0045" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #45 view-bat-gotham-knights-0045 batman: gotham knights 45 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001045" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001045" data-publication-date="2003-09-17" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0045.jpg" data-full-title="Batman: Gotham Knights #45" data-full-detail="Published 2003-09-17 | VIEW-BAT-GOTHAM-KNIGHTS-0045 | Seq 001045 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_45 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0045.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0045.jpg" alt="Batman: Gotham Knights #45 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #45">Batman: Gotham Knights #45</h3>
+          <p class="publication-date">Published 2003-09-17</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0046" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #46 view-bat-gotham-knights-0046 batman: gotham knights 46 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001046" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001046" data-publication-date="2003-10-15" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0046.jpg" data-full-title="Batman: Gotham Knights #46" data-full-detail="Published 2003-10-15 | VIEW-BAT-GOTHAM-KNIGHTS-0046 | Seq 001046 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_46 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0046.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0046.jpg" alt="Batman: Gotham Knights #46 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #46">Batman: Gotham Knights #46</h3>
+          <p class="publication-date">Published 2003-10-15</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0047" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #47 view-bat-gotham-knights-0047 batman: gotham knights 47 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001047" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001047" data-publication-date="2003-11-19" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0047.jpg" data-full-title="Batman: Gotham Knights #47" data-full-detail="Published 2003-11-19 | VIEW-BAT-GOTHAM-KNIGHTS-0047 | Seq 001047 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_47 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0047.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0047.jpg" alt="Batman: Gotham Knights #47 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #47">Batman: Gotham Knights #47</h3>
+          <p class="publication-date">Published 2003-11-19</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0048" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #48 view-bat-gotham-knights-0048 batman: gotham knights 48 contains a batman: black and white backup story. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001048" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001048" data-publication-date="2003-12-17" data-publication-year="2003" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0048.jpg" data-full-title="Batman: Gotham Knights #48" data-full-detail="Published 2003-12-17 | VIEW-BAT-GOTHAM-KNIGHTS-0048 | Seq 001048 | backup_story | Contains a Batman: Black and White backup story. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_48 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0048.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0048.jpg" alt="Batman: Gotham Knights #48 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #48">Batman: Gotham Knights #48</h3>
+          <p class="publication-date">Published 2003-12-17</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-GOTHAM-KNIGHTS-0049" data-work="Batman: Gotham Knights" data-section="batman_black_white" data-search="batman: gotham knights #49 view-bat-gotham-knights-0049 batman: gotham knights 49 contains the final batman: black and white backup story in this run. gotham_knights_backups batman_black_white" data-order="reading" data-scope="gotham_knights_backups" data-project="batman_black_white" data-status="missing" data-sequence="001049" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:001049" data-publication-date="2004-01-21" data-publication-year="2004" data-publication-decade="2000s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0049.jpg" data-full-title="Batman: Gotham Knights #49" data-full-detail="Published 2004-01-21 | VIEW-BAT-GOTHAM-KNIGHTS-0049 | Seq 001049 | backup_story | Contains the final Batman: Black and White backup story in this run. | https://dc.fandom.com/wiki/Batman:_Gotham_Knights_Vol_1_49 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-GOTHAM-KNIGHTS-0049.jpg" data-display-src="../assets/covers/display/VIEW-BAT-GOTHAM-KNIGHTS-0049.jpg" alt="Batman: Gotham Knights #49 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">gotham knights backups</span>
+            
+          </div>
+          <h3 title="Batman: Gotham Knights #49">Batman: Gotham Knights #49</h3>
+          <p class="publication-date">Published 2004-01-21</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-BW-V2-0001" data-work="Batman: Black and White (2013)" data-section="batman_black_white" data-search="batman: black and white (2013) #1 view-bat-bw-v2-0001 batman: black and white (2013) 1 six-issue anthology revival. 2013_miniseries batman_black_white" data-order="reading" data-scope="2013_miniseries" data-project="batman_black_white" data-status="missing" data-sequence="002001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002001" data-publication-date="2013-09-04" data-publication-year="2013" data-publication-decade="2010s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-BW-V2-0001.jpg" data-full-title="Batman: Black and White (2013) #1" data-full-detail="Published 2013-09-04 | VIEW-BAT-BW-V2-0001 | Seq 002001 | anthology | Six-issue anthology revival. | https://dc.fandom.com/wiki/Batman_Black_and_White_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-BW-V2-0001.jpg" data-display-src="../assets/covers/display/VIEW-BAT-BW-V2-0001.jpg" alt="Batman: Black and White (2013) #1 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2013 miniseries</span>
+            
+          </div>
+          <h3 title="Batman: Black and White (2013) #1">Batman: Black and White (2013) #1</h3>
+          <p class="publication-date">Published 2013-09-04</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-BW-V2-0002" data-work="Batman: Black and White (2013)" data-section="batman_black_white" data-search="batman: black and white (2013) #2 view-bat-bw-v2-0002 batman: black and white (2013) 2 six-issue anthology revival. 2013_miniseries batman_black_white" data-order="reading" data-scope="2013_miniseries" data-project="batman_black_white" data-status="missing" data-sequence="002002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002002" data-publication-date="2013-10-02" data-publication-year="2013" data-publication-decade="2010s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-BW-V2-0002.jpg" data-full-title="Batman: Black and White (2013) #2" data-full-detail="Published 2013-10-02 | VIEW-BAT-BW-V2-0002 | Seq 002002 | anthology | Six-issue anthology revival. | https://dc.fandom.com/wiki/Batman_Black_and_White_Vol_1_2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-BW-V2-0002.jpg" data-display-src="../assets/covers/display/VIEW-BAT-BW-V2-0002.jpg" alt="Batman: Black and White (2013) #2 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2013 miniseries</span>
+            
+          </div>
+          <h3 title="Batman: Black and White (2013) #2">Batman: Black and White (2013) #2</h3>
+          <p class="publication-date">Published 2013-10-02</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-BW-V2-0003" data-work="Batman: Black and White (2013)" data-section="batman_black_white" data-search="batman: black and white (2013) #3 view-bat-bw-v2-0003 batman: black and white (2013) 3 six-issue anthology revival. 2013_miniseries batman_black_white" data-order="reading" data-scope="2013_miniseries" data-project="batman_black_white" data-status="missing" data-sequence="002003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002003" data-publication-date="2013-11-06" data-publication-year="2013" data-publication-decade="2010s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-BW-V2-0003.jpg" data-full-title="Batman: Black and White (2013) #3" data-full-detail="Published 2013-11-06 | VIEW-BAT-BW-V2-0003 | Seq 002003 | anthology | Six-issue anthology revival. | https://dc.fandom.com/wiki/Batman_Black_and_White_Vol_1_3 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-BW-V2-0003.jpg" data-display-src="../assets/covers/display/VIEW-BAT-BW-V2-0003.jpg" alt="Batman: Black and White (2013) #3 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2013 miniseries</span>
+            
+          </div>
+          <h3 title="Batman: Black and White (2013) #3">Batman: Black and White (2013) #3</h3>
+          <p class="publication-date">Published 2013-11-06</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_manual" tabindex="-1" data-publication-id="VIEW-BAT-BW-V2-0004" data-work="Batman: Black and White (2013)" data-section="batman_black_white" data-search="batman: black and white (2013) #4 view-bat-bw-v2-0004 batman: black and white (2013) 4 six-issue anthology revival. 2013_miniseries batman_black_white" data-order="reading" data-scope="2013_miniseries" data-project="batman_black_white" data-status="missing" data-sequence="002004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002004" data-publication-date="2013-12-11" data-publication-year="2013" data-publication-decade="2010s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-BW-V2-0004.jpg" data-full-title="Batman: Black and White (2013) #4" data-full-detail="Published 2013-12-11 | VIEW-BAT-BW-V2-0004 | Seq 002004 | anthology | Six-issue anthology revival. | https://dc.fandom.com/wiki/Batman_Black_and_White_Vol_1_4 | Collector visually confirmed this cover is correct."><img src="../assets/covers/thumb/VIEW-BAT-BW-V2-0004.jpg" data-display-src="../assets/covers/display/VIEW-BAT-BW-V2-0004.jpg" alt="Batman: Black and White (2013) #4 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2013 miniseries</span>
+            <span class="badge review" title="Collector visually confirmed this cover is correct.">approved manual</span>
+          </div>
+          <h3 title="Batman: Black and White (2013) #4">Batman: Black and White (2013) #4</h3>
+          <p class="publication-date">Published 2013-12-11</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-BW-V2-0005" data-work="Batman: Black and White (2013)" data-section="batman_black_white" data-search="batman: black and white (2013) #5 view-bat-bw-v2-0005 batman: black and white (2013) 5 six-issue anthology revival. 2013_miniseries batman_black_white" data-order="reading" data-scope="2013_miniseries" data-project="batman_black_white" data-status="missing" data-sequence="002005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002005" data-publication-date="2014-01-08" data-publication-year="2014" data-publication-decade="2010s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-BW-V2-0005.jpg" data-full-title="Batman: Black and White (2013) #5" data-full-detail="Published 2014-01-08 | VIEW-BAT-BW-V2-0005 | Seq 002005 | anthology | Six-issue anthology revival. | https://dc.fandom.com/wiki/Batman_Black_and_White_Vol_1_5 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-BW-V2-0005.jpg" data-display-src="../assets/covers/display/VIEW-BAT-BW-V2-0005.jpg" alt="Batman: Black and White (2013) #5 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2013 miniseries</span>
+            
+          </div>
+          <h3 title="Batman: Black and White (2013) #5">Batman: Black and White (2013) #5</h3>
+          <p class="publication-date">Published 2014-01-08</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-BW-V2-0006" data-work="Batman: Black and White (2013)" data-section="batman_black_white" data-search="batman: black and white (2013) #6 view-bat-bw-v2-0006 batman: black and white (2013) 6 six-issue anthology revival. 2013_miniseries batman_black_white" data-order="reading" data-scope="2013_miniseries" data-project="batman_black_white" data-status="missing" data-sequence="002006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:002006" data-publication-date="2014-02-05" data-publication-year="2014" data-publication-decade="2010s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-BW-V2-0006.jpg" data-full-title="Batman: Black and White (2013) #6" data-full-detail="Published 2014-02-05 | VIEW-BAT-BW-V2-0006 | Seq 002006 | anthology | Six-issue anthology revival. | https://dc.fandom.com/wiki/Batman_Black_and_White_Vol_1_6 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-BW-V2-0006.jpg" data-display-src="../assets/covers/display/VIEW-BAT-BW-V2-0006.jpg" alt="Batman: Black and White (2013) #6 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2013 miniseries</span>
+            
+          </div>
+          <h3 title="Batman: Black and White (2013) #6">Batman: Black and White (2013) #6</h3>
+          <p class="publication-date">Published 2014-02-05</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-BW-V3-0001" data-work="Batman: Black and White (2020)" data-section="batman_black_white" data-search="batman: black and white (2020) #1 view-bat-bw-v3-0001 batman: black and white (2020) 1 six-issue 25th-anniversary anthology series. 2020_miniseries batman_black_white" data-order="reading" data-scope="2020_miniseries" data-project="batman_black_white" data-status="missing" data-sequence="003001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003001" data-publication-date="2020-12-09" data-publication-year="2020" data-publication-decade="2020s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-BW-V3-0001.jpg" data-full-title="Batman: Black and White (2020) #1" data-full-detail="Published 2020-12-09 | VIEW-BAT-BW-V3-0001 | Seq 003001 | anthology | Six-issue 25th-anniversary anthology series. | https://dc.fandom.com/wiki/Batman:_Black_and_White_Vol_2_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-BW-V3-0001.jpg" data-display-src="../assets/covers/display/VIEW-BAT-BW-V3-0001.jpg" alt="Batman: Black and White (2020) #1 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2020 miniseries</span>
+            
+          </div>
+          <h3 title="Batman: Black and White (2020) #1">Batman: Black and White (2020) #1</h3>
+          <p class="publication-date">Published 2020-12-09</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-BW-V3-0002" data-work="Batman: Black and White (2020)" data-section="batman_black_white" data-search="batman: black and white (2020) #2 view-bat-bw-v3-0002 batman: black and white (2020) 2 six-issue 25th-anniversary anthology series. 2020_miniseries batman_black_white" data-order="reading" data-scope="2020_miniseries" data-project="batman_black_white" data-status="missing" data-sequence="003002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003002" data-publication-date="2021-01-27" data-publication-year="2021" data-publication-decade="2020s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-BW-V3-0002.jpg" data-full-title="Batman: Black and White (2020) #2" data-full-detail="Published 2021-01-27 | VIEW-BAT-BW-V3-0002 | Seq 003002 | anthology | Six-issue 25th-anniversary anthology series. | https://dc.fandom.com/wiki/Batman:_Black_and_White_Vol_2_2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-BW-V3-0002.jpg" data-display-src="../assets/covers/display/VIEW-BAT-BW-V3-0002.jpg" alt="Batman: Black and White (2020) #2 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2020 miniseries</span>
+            
+          </div>
+          <h3 title="Batman: Black and White (2020) #2">Batman: Black and White (2020) #2</h3>
+          <p class="publication-date">Published 2021-01-27</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-BW-V3-0003" data-work="Batman: Black and White (2020)" data-section="batman_black_white" data-search="batman: black and white (2020) #3 view-bat-bw-v3-0003 batman: black and white (2020) 3 six-issue 25th-anniversary anthology series. 2020_miniseries batman_black_white" data-order="reading" data-scope="2020_miniseries" data-project="batman_black_white" data-status="missing" data-sequence="003003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003003" data-publication-date="2021-02-24" data-publication-year="2021" data-publication-decade="2020s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-BW-V3-0003.jpg" data-full-title="Batman: Black and White (2020) #3" data-full-detail="Published 2021-02-24 | VIEW-BAT-BW-V3-0003 | Seq 003003 | anthology | Six-issue 25th-anniversary anthology series. | https://dc.fandom.com/wiki/Batman:_Black_and_White_Vol_2_3 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-BW-V3-0003.jpg" data-display-src="../assets/covers/display/VIEW-BAT-BW-V3-0003.jpg" alt="Batman: Black and White (2020) #3 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2020 miniseries</span>
+            
+          </div>
+          <h3 title="Batman: Black and White (2020) #3">Batman: Black and White (2020) #3</h3>
+          <p class="publication-date">Published 2021-02-24</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-BW-V3-0004" data-work="Batman: Black and White (2020)" data-section="batman_black_white" data-search="batman: black and white (2020) #4 view-bat-bw-v3-0004 batman: black and white (2020) 4 six-issue 25th-anniversary anthology series. 2020_miniseries batman_black_white" data-order="reading" data-scope="2020_miniseries" data-project="batman_black_white" data-status="missing" data-sequence="003004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003004" data-publication-date="2021-03-24" data-publication-year="2021" data-publication-decade="2020s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-BW-V3-0004.jpg" data-full-title="Batman: Black and White (2020) #4" data-full-detail="Published 2021-03-24 | VIEW-BAT-BW-V3-0004 | Seq 003004 | anthology | Six-issue 25th-anniversary anthology series. | https://dc.fandom.com/wiki/Batman:_Black_and_White_Vol_2_4 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-BW-V3-0004.jpg" data-display-src="../assets/covers/display/VIEW-BAT-BW-V3-0004.jpg" alt="Batman: Black and White (2020) #4 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2020 miniseries</span>
+            
+          </div>
+          <h3 title="Batman: Black and White (2020) #4">Batman: Black and White (2020) #4</h3>
+          <p class="publication-date">Published 2021-03-24</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-BW-V3-0005" data-work="Batman: Black and White (2020)" data-section="batman_black_white" data-search="batman: black and white (2020) #5 view-bat-bw-v3-0005 batman: black and white (2020) 5 six-issue 25th-anniversary anthology series. 2020_miniseries batman_black_white" data-order="reading" data-scope="2020_miniseries" data-project="batman_black_white" data-status="missing" data-sequence="003005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003005" data-publication-date="2021-04-28" data-publication-year="2021" data-publication-decade="2020s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-BW-V3-0005.jpg" data-full-title="Batman: Black and White (2020) #5" data-full-detail="Published 2021-04-28 | VIEW-BAT-BW-V3-0005 | Seq 003005 | anthology | Six-issue 25th-anniversary anthology series. | https://dc.fandom.com/wiki/Batman:_Black_and_White_Vol_2_5 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-BW-V3-0005.jpg" data-display-src="../assets/covers/display/VIEW-BAT-BW-V3-0005.jpg" alt="Batman: Black and White (2020) #5 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2020 miniseries</span>
+            
+          </div>
+          <h3 title="Batman: Black and White (2020) #5">Batman: Black and White (2020) #5</h3>
+          <p class="publication-date">Published 2021-04-28</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-BAT-BW-V3-0006" data-work="Batman: Black and White (2020)" data-section="batman_black_white" data-search="batman: black and white (2020) #6 view-bat-bw-v3-0006 batman: black and white (2020) 6 six-issue 25th-anniversary anthology series. 2020_miniseries batman_black_white" data-order="reading" data-scope="2020_miniseries" data-project="batman_black_white" data-status="missing" data-sequence="003006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:003006" data-publication-date="2021-05-26" data-publication-year="2021" data-publication-decade="2020s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-BAT-BW-V3-0006.jpg" data-full-title="Batman: Black and White (2020) #6" data-full-detail="Published 2021-05-26 | VIEW-BAT-BW-V3-0006 | Seq 003006 | anthology | Six-issue 25th-anniversary anthology series. | https://dc.fandom.com/wiki/Batman:_Black_and_White_Vol_2_6 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-BAT-BW-V3-0006.jpg" data-display-src="../assets/covers/display/VIEW-BAT-BW-V3-0006.jpg" alt="Batman: Black and White (2020) #6 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">2020 miniseries</span>
+            
+          </div>
+          <h3 title="Batman: Black and White (2020) #6">Batman: Black and White (2020) #6</h3>
+          <p class="publication-date">Published 2021-05-26</p>
+        </div>
+      </article>
+    </section>
+  </main>
+  <div class="lightbox" aria-modal="true" role="dialog" aria-label="Cover preview">
+    <div class="lightbox-panel">
+      <button class="lightbox-nav" type="button" data-lightbox-previous aria-label="Previous cover">&#8249;</button>
+      <div class="lightbox-image-wrap"><img src="" alt=""></div>
+      <button class="lightbox-nav" type="button" data-lightbox-next aria-label="Next cover">&#8250;</button>
+      <div class="lightbox-caption">
+        <div>
+          <div class="lightbox-title"></div>
+          <div class="lightbox-detail"></div>
+        </div>
+        <span class="lightbox-position"></span>
+        <button class="lightbox-close" type="button" data-lightbox-close>Close</button>
+      </div>
+    </div>
+  </div>
+  <div class="keyboard-help" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
+    <div class="keyboard-help-panel">
+      <h2>Keyboard shortcuts</h2>
+      <div class="shortcut-grid"><kbd>/</kbd><span>Search</span><kbd>F</kbd><span>Filters</span><kbd>B</kbd><span>Browse cards</span><kbd>Arrow keys</kbd><span>Move selection or preview</span><kbd>Enter</kbd><span>Open selected cover</span><kbd>M</kbd><span>Missing</span><kbd>O</kbd><span>Owned</span><kbd>A</kbd><span>All statuses</span><kbd>C</kbd><span>Cover/detail density</span><kbd>Esc</kbd><span>Close or clear</span><kbd>Command/Ctrl + C</kbd><span>Copy normally</span></div>
+      <button class="tool-button" type="button" data-close-help>Close</button>
+    </div>
+  </div>
+  <nav class="mobile-tools" aria-label="Viewer tools"><button type="button" data-mobile-search title="Search" aria-label="Search">S</button><button type="button" data-mobile-filter title="Filters" aria-label="Filters">F</button><button type="button" data-mobile-density title="Cover density" aria-label="Cover density">C</button><button type="button" data-mobile-help title="Keyboard shortcuts" aria-label="Keyboard shortcuts">?</button><button type="button" data-mobile-top title="Back to top" aria-label="Back to top">&uarr;</button></nav>
+  <script>
+    const state = { order: 'reading', scope: 'all', project: 'all', status: 'all', sort: 'curated', decade: 'all', year: 'all', query: '' };
+    const grid = document.querySelector('.grid');
+    const cards = [...document.querySelectorAll('.comic-card')];
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImage = document.querySelector('.lightbox img');
+    const lightboxTitle = document.querySelector('.lightbox-title');
+    const lightboxDetail = document.querySelector('.lightbox-detail');
+    const lightboxPosition = document.querySelector('.lightbox-position');
+    const previousButton = document.querySelector('[data-lightbox-previous]');
+    const nextButton = document.querySelector('[data-lightbox-next]');
+    const controls = document.querySelector('.controls');
+    const filterToggle = document.querySelector('.filter-toggle');
+    const filterSummary = document.querySelector('.filter-summary');
+    const search = document.querySelector('.viewer-search');
+    const searchClear = document.querySelector('.search-clear');
+    const visibleCount = document.querySelector('.visible-count');
+    const projectProgress = document.querySelector('.project-progress');
+    const sectionJump = document.querySelector('.section-jump');
+    const densityButton = document.querySelector('[data-toggle-density]');
+    const storiesButton = document.querySelector('[data-toggle-stories]');
+    const browseButton = document.querySelector('[data-toggle-browse]');
+    const help = document.querySelector('.keyboard-help');
+    const filterStorageKey = 'gothamViewerFiltersOpen';
+    const stateStorageKey = `gothamViewerState:${location.pathname}`;
+    let currentPreviewButton = null;
+    let selectedCard = null;
+    let browseMode = false;
+    let storiesVisible = false;
+    let touchStartX = 0;
+    let swipedPreview = false;
+    let savedViewState = {};
+
+    function safeStore(key, value) { try { localStorage.setItem(key, value); } catch (error) {} }
+    function safeRead(key) { try { return localStorage.getItem(key); } catch (error) { return null; } }
+    function humanize(value) { return String(value || '').replaceAll('_', ' '); }
+    function validFilter(key, value) {
+      return value === 'all' || !!document.querySelector(`.chip[data-filter="${key}"][data-value="${CSS.escape(value)}"]`);
+    }
+    try {
+      const saved = JSON.parse(safeRead(stateStorageKey) || '{}');
+      savedViewState = saved;
+      // Restore presentation preferences, but never reopen a viewer with a hidden
+      // collection filter that contradicts the totals shown in its summary.
+      ['order', 'sort'].forEach(key => {
+        if (saved[key] && validFilter(key, saved[key])) state[key] = saved[key];
+      });
+      if (saved.density === 'compact') document.body.classList.add('compact-view');
+      storiesVisible = saved.stories === true;
+    } catch (error) {}
+    if (safeRead(filterStorageKey) === 'true') {
+      controls.classList.add('open');
+      filterToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function saveState() {
+      safeStore(stateStorageKey, JSON.stringify({ ...state, query: '', density: document.body.classList.contains('compact-view') ? 'compact' : 'details', stories: storiesVisible, scrollY: window.scrollY, lastPublication: selectedCard?.dataset.publicationId || '' }));
+    }
+    function setFilter(group, value) {
+      state[group] = value;
+      document.querySelectorAll(`.chip[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item.dataset.value === value));
+      document.querySelectorAll(`.metric[data-status]`).forEach(item => item.classList.toggle('active', group === 'status' && item.dataset.status === value));
+      applyFilters();
+      updateFilterSummary();
+      saveState();
+    }
+    filterToggle.addEventListener('click', () => {
+      const open = controls.classList.toggle('open');
+      filterToggle.setAttribute('aria-expanded', String(open));
+      safeStore(filterStorageKey, String(open));
+    });
+    document.querySelectorAll('.chip').forEach(button => button.addEventListener('click', () => setFilter(button.dataset.filter, button.dataset.value)));
+    document.querySelector('.year-filter').addEventListener('change', event => { state.year = event.target.value; applyFilters(); updateFilterSummary(); saveState(); });
+    document.querySelectorAll('.metric[data-status]').forEach(button => button.addEventListener('click', () => {
+      search.value = '';
+      state.query = '';
+      ['scope', 'project', 'decade'].forEach(key => {
+        state[key] = 'all';
+        document.querySelectorAll(`.chip[data-filter="${key}"]`).forEach(item => item.classList.toggle('active', item.dataset.value === 'all'));
+      });
+      state.year = 'all';
+      document.querySelector('.year-filter').value = 'all';
+      setFilter('status', button.dataset.status);
+    }));
+    search.addEventListener('input', () => { state.query = search.value.trim().toLocaleLowerCase(); applyFilters(); });
+    searchClear.addEventListener('click', () => { search.value = ''; state.query = ''; applyFilters(); search.focus(); });
+    densityButton.addEventListener('click', toggleDensity);
+    storiesButton.addEventListener('click', toggleStories);
+    browseButton.addEventListener('click', () => setBrowseMode(!browseMode));
+    document.querySelector('[data-open-help]').addEventListener('click', openHelp);
+    document.querySelector('[data-close-help]').addEventListener('click', closeHelp);
+    help.addEventListener('click', event => { if (event.target === help) closeHelp(); });
+
+    function updateFilterSummary() {
+      const selected = ['order', 'scope', 'project', 'status', 'sort', 'decade', 'year'].map(key => state[key]).filter(value => value && value !== 'all' && value !== 'curated').map(humanize);
+      filterSummary.textContent = selected.length ? selected.join(' · ') : 'All';
+    }
+    function applyFilters() {
+      cards.forEach(card => {
+        const matches = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]))
+          && (state.decade === 'all' || card.dataset.publicationDecade === state.decade)
+          && (state.year === 'all' || card.dataset.publicationYear === state.year);
+        const searched = !state.query || card.dataset.search.includes(state.query);
+        card.classList.toggle('hidden', !(matches && searched));
+      });
+      sortCards();
+      renderProjectProgress();
+      const visible = visibleCards();
+      visibleCount.textContent = `${visible.length} of ${cards.length}`;
+      if (browseMode && (!selectedCard || selectedCard.classList.contains('hidden'))) selectCard(visible[0] || null);
+    }
+    function renderProjectProgress() {
+      const projectNames = [...new Set(cards.flatMap(card => card.dataset.project.split('|')).filter(Boolean))];
+      if (projectNames.length < 2 || projectNames.length > 30) { projectProgress.classList.remove('visible'); return; }
+      projectProgress.innerHTML = '';
+      projectNames.forEach(project => {
+        const projectCards = cards.filter(card => card.dataset.project.split('|').includes(project));
+        const counts = Object.fromEntries(['owned', 'facsimile', 'ordered', 'readable', 'missing'].map(status => [status, projectCards.filter(card => card.dataset.status === status).length]));
+        const available = counts.owned + counts.facsimile + counts.readable;
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.classList.toggle('active', state.project === project);
+        button.innerHTML = `<strong>${humanize(project)}</strong><span>${available}/${projectCards.length} available · ${counts.ordered} ordered · ${counts.missing} missing</span>`;
+        button.addEventListener('click', () => setFilter('project', state.project === project ? 'all' : project));
+        projectProgress.appendChild(button);
+      });
+      projectProgress.classList.add('visible');
+    }
+    function sortCards() {
+      grid.querySelectorAll('.chapter-divider').forEach(item => item.remove());
+      cards.sort((left, right) => {
+        if (state.sort === 'date') return dateSortValue(left) - dateSortValue(right) || sequenceForCard(left) - sequenceForCard(right);
+        if (state.sort === 'title') return left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent, undefined, {numeric:true, sensitivity:'base'});
+        return sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent);
+      }).forEach(card => grid.appendChild(card));
+      renderChapterDividers();
+    }
+    function dateSortValue(card) {
+      const value = card.dataset.publicationDate || '';
+      const match = value.match(/^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?/);
+      return match ? Number(`${match[1]}${match[2] || '00'}${match[3] || '00'}`) : 99999999;
+    }
+    function renderChapterDividers() {
+      if (!storiesVisible) return;
+      const visible = visibleCards();
+      const sections = [...new Set(visible.map(card => card.dataset.section).filter(Boolean))];
+      if (sections.length < 2 || sections.length > 18) return;
+      let previous = '';
+      visible.forEach(card => {
+        const section = card.dataset.section;
+        if (section && section !== previous) {
+          const divider = document.createElement('div');
+          divider.className = 'chapter-divider';
+          divider.textContent = humanize(section);
+          grid.insertBefore(divider, card);
+          previous = section;
+        }
+      });
+    }
+    function sequenceForCard(card) {
+      const order = state.order === 'all' ? 'reading' : state.order;
+      if (order === 'publication') {
+        return scopedSequence(card, 'publicationSequence');
+      }
+      if (order === 'chronological') {
+        return scopedSequence(card, 'chronologicalSequence');
+      }
+      const byOrder = sequenceMap(card.dataset.orderSequences);
+      if (byOrder[order]) {
+        return sortValue(byOrder[order]);
+      }
+      const chronological = scopedSequence(card, 'chronologicalSequence');
+      return chronological < 999999 ? chronological : sortValue(card.dataset.sequence);
+    }
+    function scopedSequence(card, orderKey) {
+      const scoped = sequenceMap(card.dataset[`${orderKey}s`]);
+      if (state.scope !== 'all' && scoped[state.scope]) {
+        return sortValue(scoped[state.scope]);
+      }
+      return sortValue(card.dataset[orderKey]);
+    }
+    function sequenceMap(value) {
+      return Object.fromEntries((value || '').split('|').filter(Boolean).map(item => {
+        const [scope, sequence] = item.split(':');
+        return [scope, sequence];
+      }));
+    }
+    function sortValue(value) {
+      const parsed = Number.parseFloat(value || '999999');
+      if (Number.isFinite(parsed)) {
+        return parsed;
+      }
+        const embedded = String(value || '').match(/\d+(\.\d+)?/);
+      return embedded ? Number.parseFloat(embedded[0]) : 999999;
+    }
+    function visibleCards() { return cards.filter(card => !card.classList.contains('hidden')); }
+    function visibleCoverButtons() { return visibleCards().map(card => card.querySelector('.cover-button')).filter(Boolean); }
+    function openLightbox(button) { currentPreviewButton = button; renderPreview(button); lightbox.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function renderPreview(button) {
+      if (!button) return;
+      currentPreviewButton = button;
+      lightboxImage.src = button.dataset.fullSrc;
+      lightboxImage.alt = `${button.dataset.fullTitle} cover`;
+      lightboxTitle.textContent = button.dataset.fullTitle;
+      lightboxDetail.textContent = button.dataset.fullDetail || '';
+      const sequence = visibleCoverButtons();
+      const index = sequence.indexOf(button);
+      lightboxPosition.textContent = index >= 0 ? `${index + 1} / ${sequence.length}` : '';
+      previousButton.disabled = sequence.length < 2;
+      nextButton.disabled = sequence.length < 2;
+      [-1, 1].forEach(direction => { if (sequence.length > 1) { const adjacent = sequence[(index + direction + sequence.length) % sequence.length]; const preload = new Image(); preload.src = adjacent.dataset.fullSrc; } });
+    }
+    function movePreview(direction) {
+      const sequence = visibleCoverButtons();
+      if (sequence.length < 2) return;
+      const index = sequence.indexOf(currentPreviewButton);
+      renderPreview(sequence[(Math.max(index, 0) + direction + sequence.length) % sequence.length]);
+    }
+    document.querySelectorAll('.cover-button').forEach(button => button.addEventListener('click', event => { event.stopPropagation(); openLightbox(button); }));
+    previousButton.addEventListener('click', event => { event.stopPropagation(); movePreview(-1); });
+    nextButton.addEventListener('click', event => { event.stopPropagation(); movePreview(1); });
+    document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
+    lightbox.addEventListener('click', () => { if (swipedPreview) { swipedPreview = false; return; } closeLightbox(); });
+    lightbox.addEventListener('touchstart', event => { touchStartX = event.changedTouches[0].clientX; }, { passive: true });
+    lightbox.addEventListener('touchend', event => { const delta = event.changedTouches[0].clientX - touchStartX; if (Math.abs(delta) > 45) { swipedPreview = true; movePreview(delta > 0 ? -1 : 1); } }, { passive: true });
+    function closeLightbox() {
+      if (!lightbox.classList.contains('open')) return;
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+      lightboxImage.removeAttribute('src');
+      lightboxImage.removeAttribute('alt');
+      lightboxTitle.textContent = '';
+      lightboxDetail.textContent = '';
+      const returnCard = currentPreviewButton?.closest('.comic-card');
+      currentPreviewButton = null;
+      if (returnCard) returnCard.focus({ preventScroll: true });
+    }
+    function toggleDensity() {
+      document.body.classList.toggle('compact-view');
+      densityButton.classList.toggle('active', document.body.classList.contains('compact-view'));
+      densityButton.textContent = document.body.classList.contains('compact-view') ? 'Details' : 'Covers';
+      saveState();
+    }
+    function toggleStories() {
+      storiesVisible = !storiesVisible;
+      storiesButton.classList.toggle('active', storiesVisible);
+      storiesButton.textContent = storiesVisible ? 'Grid' : 'Stories';
+      sortCards();
+      saveState();
+    }
+    function selectCard(card, centre = false) {
+      if (selectedCard) selectedCard.classList.remove('keyboard-selected');
+      selectedCard = card;
+      if (card) { card.classList.add('keyboard-selected'); card.scrollIntoView({ block: centre ? 'center' : 'nearest', inline: 'nearest', behavior: 'smooth' }); }
+    }
+    function setBrowseMode(enabled) { browseMode = enabled; browseButton.classList.toggle('active', enabled); if (enabled) selectCard(selectedCard && !selectedCard.classList.contains('hidden') ? selectedCard : visibleCards()[0] || null, true); else selectCard(null); }
+    function moveCardSelection(direction) {
+      const available = visibleCards();
+      if (!available.length) return;
+      if (!selectedCard || !available.includes(selectedCard)) { selectCard(available[0]); return; }
+      const source = selectedCard.getBoundingClientRect();
+      const sx = source.left + source.width / 2, sy = source.top + source.height / 2;
+      const horizontal = direction === 'left' || direction === 'right';
+      const candidates = available.filter(card => card !== selectedCard).map(card => { const rect = card.getBoundingClientRect(); const dx = rect.left + rect.width / 2 - sx, dy = rect.top + rect.height / 2 - sy; const forward = direction === 'left' ? dx < -2 : direction === 'right' ? dx > 2 : direction === 'up' ? dy < -2 : dy > 2; return { card, forward, score: Math.abs(horizontal ? dx : dy) + Math.abs(horizontal ? dy : dx) * 3 }; }).filter(item => item.forward).sort((a, b) => a.score - b.score);
+      if (candidates.length) selectCard(candidates[0].card);
+    }
+    function openHelp() { help.classList.add('open'); }
+    function closeHelp() { help.classList.remove('open'); }
+    function resetFilters() { search.value = ''; state.query = ''; ['scope', 'project', 'status', 'decade'].forEach(key => setFilter(key, 'all')); state.year = 'all'; document.querySelector('.year-filter').value = 'all'; }
+    sectionJump?.addEventListener('change', () => { const target = visibleCards().find(card => card.dataset.section.split('|').includes(sectionJump.value) || card.dataset.work === sectionJump.value); if (target) target.scrollIntoView({ block: 'center', behavior: 'smooth' }); sectionJump.value = ''; });
+    document.querySelector('[data-mobile-search]').addEventListener('click', () => { controls.classList.add('open'); filterToggle.setAttribute('aria-expanded', 'true'); search.focus(); });
+    document.querySelector('[data-mobile-filter]').addEventListener('click', () => filterToggle.click());
+    document.querySelector('[data-mobile-density]').addEventListener('click', toggleDensity);
+    document.querySelector('[data-mobile-help]').addEventListener('click', openHelp);
+    document.querySelector('[data-mobile-top]').addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+    document.addEventListener('keydown', event => {
+      const typing = event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLTextAreaElement;
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+      if (help.classList.contains('open')) { if (event.key === 'Escape' || event.key === '?') { event.preventDefault(); closeHelp(); } return; }
+      if (lightbox.classList.contains('open')) { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); movePreview(event.key === 'ArrowLeft' ? -1 : 1); } else if (event.key === 'Escape' || event.code === 'Space') { event.preventDefault(); closeLightbox(); } return; }
+      if (event.key === 'Escape' && typing) { search.value = ''; state.query = ''; applyFilters(); search.blur(); return; }
+      if (typing) return;
+      if (browseMode && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); moveCardSelection(event.key.replace('Arrow', '').toLowerCase()); return; }
+      if (browseMode && (event.key === 'Enter' || event.code === 'Space')) { event.preventDefault(); const button = selectedCard?.querySelector('.cover-button'); if (button) openLightbox(button); return; }
+      if (event.key === '/') { event.preventDefault(); controls.classList.add('open'); filterToggle.setAttribute('aria-expanded', 'true'); search.focus(); }
+      else if (event.key.toLowerCase() === 'f') filterToggle.click();
+      else if (event.key.toLowerCase() === 'b') setBrowseMode(!browseMode);
+      else if (event.key === '?') openHelp();
+      else if (event.key.toLowerCase() === 'm') setFilter('status', 'missing');
+      else if (event.key.toLowerCase() === 'o') setFilter('status', 'owned');
+      else if (event.key.toLowerCase() === 'a') setFilter('status', 'all');
+      else if (event.key.toLowerCase() === 'c') toggleDensity();
+    });
+    ['order', 'scope', 'project', 'status', 'sort', 'decade'].forEach(key => document.querySelectorAll(`.chip[data-filter="${key}"]`).forEach(item => item.classList.toggle('active', item.dataset.value === state[key])));
+    document.querySelector('.year-filter').value = state.year;
+    densityButton.classList.toggle('active', document.body.classList.contains('compact-view'));
+    densityButton.textContent = document.body.classList.contains('compact-view') ? 'Details' : 'Covers';
+    storiesButton.classList.toggle('active', storiesVisible);
+    storiesButton.textContent = storiesVisible ? 'Grid' : 'Stories';
+    applyFilters();
+    updateFilterSummary();
+    window.addEventListener('pagehide', saveState);
+    if (savedViewState.scrollY) requestAnimationFrame(() => scrollTo({ top: savedViewState.scrollY }));
+    </script>
+</body>
+</html>

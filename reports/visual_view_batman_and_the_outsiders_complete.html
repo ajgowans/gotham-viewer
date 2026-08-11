@@ -1,0 +1,1586 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="../assets/site/batman-favicon.png">
+  <title>Batman and the Outsiders - Visual Viewer</title>
+  <style>
+    :root { color-scheme: light; --ink:#172026; --muted:#5c6670; --line:#d9dee4; --paper:#f6f7f8; --panel:#ffffff; --owned:#0f7b4f; --fac:#6b4bb8; --ordered:#2166ad; --readable:#a46a00; --missing:#b42318; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); }
+    header { padding: 28px 32px 18px; background: #111820; color: white; }
+    .header-top { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .back-link { color: white; border: 1px solid rgba(255,255,255,.32); border-radius: 999px; padding: 7px 11px; text-decoration: none; font-size: 13px; background: rgba(255,255,255,.08); }
+    .back-link:hover { background: rgba(255,255,255,.16); }
+    h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; }
+    header p { margin: 0; color: #c8d0d8; max-width: 900px; }
+    .summary { display: grid; grid-template-columns: repeat(5, minmax(90px, 1fr)); gap: 8px; padding: 12px 32px; background: #e9edf1; border-bottom: 1px solid var(--line); }
+    .metric { appearance: none; text-align: left; color: inherit; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; cursor: pointer; }
+    .metric:hover, .metric.active { border-color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+    .metric strong { display: block; font-size: 24px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    .project-progress { display: none; padding: 10px 32px; gap: 8px; overflow-x: auto; background: #f4f6f8; border-bottom: 1px solid var(--line); }
+    .project-progress.visible { display: flex; }
+    .project-progress button { flex: 0 0 auto; min-width: 160px; border: 1px solid var(--line); border-radius: 7px; background: white; color: var(--ink); padding: 8px 10px; text-align: left; cursor: pointer; }
+    .project-progress button.active { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+    .project-progress strong, .project-progress span { display: block; }
+    .project-progress strong { font-size: 13px; text-transform: capitalize; }
+    .project-progress span { margin-top: 3px; color: var(--muted); font-size: 11px; }
+    .controls { padding: 8px 32px; border-bottom: 1px solid var(--line); background: white; position: sticky; top: 0; z-index: 5; }
+    .filter-toggle { display: flex; width: auto; max-width: 100%; border: 1px solid var(--line); background: #172026; color: white; border-radius: 6px; padding: 8px 11px; font-weight: 750; cursor: pointer; align-items: center; gap: 10px; }
+    .filter-toggle small { color: #c8d0d8; font-size: 11px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .filter-toggle::after { content: "+"; font-size: 18px; line-height: 1; }
+    .controls.open .filter-toggle::after { content: "−"; }
+    .control-content { display: none; gap: 12px; margin-top: 10px; }
+    .controls.open .control-content { display: grid; }
+    .viewer-tools { display: grid; grid-template-columns: minmax(180px, 1fr) minmax(160px, auto) auto auto; gap: 8px; align-items: center; }
+    .search-wrap { position: relative; min-width: 0; }
+    .viewer-search, .section-jump { width: 100%; height: 38px; border: 1px solid var(--line); border-radius: 6px; background: white; color: var(--ink); padding: 0 36px 0 11px; font: inherit; }
+    .search-clear { position: absolute; right: 5px; top: 5px; width: 28px; height: 28px; border: 0; border-radius: 5px; background: transparent; color: var(--muted); font-size: 18px; cursor: pointer; }
+    .tool-button { height: 38px; border: 1px solid var(--line); border-radius: 6px; background: #f8fafb; color: var(--ink); padding: 0 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .tool-button.active { background: var(--ink); color: white; border-color: var(--ink); }
+    .visible-count { color: var(--muted); font-size: 12px; font-weight: 700; white-space: nowrap; text-align: right; }
+    .control-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .control-row b { margin-right: 4px; font-size: 13px; color: var(--muted); min-width: 70px; }
+    .chip { border: 1px solid var(--line); background: #f8fafb; color: var(--ink); border-radius: 999px; padding: 7px 11px; cursor: pointer; text-transform: capitalize; }
+    .chip.active { background: #172026; border-color: #172026; color: white; }
+    main { padding: 24px 32px 40px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 16px; align-items: start; }
+    .comic-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05); min-width: 0; display: flex; flex-direction: column; position: relative; }
+    .comic-card.owned { background: #f2fbf6; }
+    .comic-card.facsimile { background: #f6f2ff; }
+    .comic-card.ordered { background: #f1f7ff; }
+    .comic-card.readable { background: #fff8ec; }
+    .status-strip { background: var(--missing); color: white; min-height: 30px; display: grid; place-items: center; padding: 7px 8px; font-size: 12px; line-height: 1; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; }
+    .comic-card.owned .status-strip { background: var(--owned); }
+    .comic-card.facsimile .status-strip { background: var(--fac); }
+    .comic-card.ordered .status-strip { background: var(--ordered); }
+    .comic-card.readable .status-strip { background: var(--readable); }
+    .cover-wrap { aspect-ratio: 2 / 3; background: #242a31; display: grid; place-items: center; overflow: hidden; position: relative; }
+    .cover-button { appearance: none; border: 0; background: #111820; padding: 0; margin: 0; width: 100%; height: 100%; display: block; cursor: zoom-in; }
+    .cover-button:focus-visible { outline: 3px solid #f4c430; outline-offset: -3px; }
+    .cover-wrap img { width: 100%; height: 100%; object-fit: contain; background: #111820; display: block; }
+    .cover-placeholder { width: 100%; height: 100%; padding: 14px; color: white; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(145deg, #18212a, #39424c); }
+    .cover-placeholder span { font-weight: 700; line-height: 1.1; overflow-wrap: anywhere; }
+    .cover-placeholder strong { font-size: 42px; align-self: flex-end; }
+    .cover-review-badge { position: absolute; left: 8px; right: 8px; top: 8px; border-radius: 6px; padding: 6px 7px; color: white; font-size: 11px; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.22); pointer-events: none; }
+    .cover-review-badge.warning { background: rgba(164,106,0,.92); }
+    .cover-review-badge.rejected { background: rgba(180,35,24,.94); }
+    .comic-card.cover-needs_review { border-color: #a46a00; }
+    .comic-card.cover-rejected_auto { border-color: #b42318; }
+    .comic-card.keyboard-selected { outline: 4px solid #f4c430; outline-offset: 3px; box-shadow: 0 0 0 7px rgba(255,255,255,.92), 0 10px 26px rgba(0,0,0,.28); transform: translateY(-2px); }
+    body.compact-view .grid { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 10px; }
+    body.compact-view .card-body { min-height: 58px; padding: 7px 8px 9px; }
+    body.compact-view .badges, body.compact-view .publication-date { display: none; }
+    body.compact-view h3 { font-size: 13px; margin: 0; -webkit-line-clamp: 2; }
+    body.compact-view .status-strip { min-height: 25px; padding: 5px; font-size: 10px; }
+    .chapter-divider { grid-column: 1 / -1; margin: 10px 0 0; padding: 9px 2px 7px; border-bottom: 2px solid var(--line); font-size: 16px; font-weight: 850; text-transform: capitalize; }
+    .card-body { padding: 10px 11px 12px; min-height: 86px; display: flex; flex-direction: column; overflow: hidden; }
+    .badges { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
+    .badge { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 6px; color: var(--muted); background: rgba(255,255,255,.8); }
+    .badge.review { border-color: #a46a00; color: #744600; background: #fff4dd; }
+    h3 { font-size: 15px; margin: 0 0 6px; line-height: 1.2; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .publication-date { margin: auto 0 0; color: var(--muted); font-size: 12px; line-height: 1.3; }
+    .pub-id, .meta, .continuity, .notes { margin: 0 0 6px; font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+    .pub-id { -webkit-line-clamp: 1; }
+    .meta, .continuity { -webkit-line-clamp: 2; }
+    .notes { -webkit-line-clamp: 2; position: relative; }
+    .notes::after { content: ""; position: absolute; inset: auto 0 0 0; height: 1.2em; background: linear-gradient(to bottom, rgba(255,255,255,0), var(--panel)); pointer-events: none; }
+    .comic-card.owned .notes::after { background: linear-gradient(to bottom, rgba(242,251,246,0), #f2fbf6); }
+    .comic-card.facsimile .notes::after { background: linear-gradient(to bottom, rgba(246,242,255,0), #f6f2ff); }
+    .comic-card.ordered .notes::after { background: linear-gradient(to bottom, rgba(241,247,255,0), #f1f7ff); }
+    .comic-card.readable .notes::after { background: linear-gradient(to bottom, rgba(255,248,236,0), #fff8ec); }
+    .hidden { display: none; }
+    .lightbox { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(12,17,22,.86); }
+    .lightbox.open { display: flex; }
+    .lightbox-panel { width: min(96vw, 1100px); height: 94vh; display: grid; grid-template-columns: 48px minmax(0,1fr) 48px; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; align-items: center; justify-items: center; }
+    .lightbox img { width: 100%; height: 100%; min-width: 0; min-height: 0; object-fit: contain; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.45); background: #111820; }
+    .lightbox-image-wrap { min-width: 0; min-height: 0; width: 100%; height: 100%; display: grid; place-items: center; overflow: hidden; }
+    .lightbox-caption { grid-column: 1 / -1; width: min(92vw, 900px); display: flex; gap: 10px; align-items: center; justify-content: space-between; color: white; }
+    .lightbox-title { font-weight: 750; }
+    .lightbox-detail { color: #c8d0d8; font-size: 13px; line-height: 1.35; max-width: 820px; }
+    .lightbox-close { border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: white; border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+    .lightbox-nav { width: 46px; height: 64px; border: 1px solid rgba(255,255,255,.35); border-radius: 7px; background: rgba(255,255,255,.12); color: white; font-size: 30px; cursor: pointer; }
+    .lightbox-nav:disabled { opacity: .3; cursor: default; }
+    .lightbox-position { color: #c8d0d8; font-size: 12px; white-space: nowrap; }
+    .keyboard-help { position: fixed; inset: 0; z-index: 30; display: none; place-items: center; padding: 20px; background: rgba(12,17,22,.78); }
+    .keyboard-help.open { display: grid; }
+    .keyboard-help-panel { width: min(92vw, 520px); max-height: 80vh; overflow: auto; background: white; border-radius: 8px; padding: 18px; box-shadow: 0 20px 60px rgba(0,0,0,.4); }
+    .keyboard-help-panel h2 { margin: 0 0 12px; font-size: 20px; }
+    .shortcut-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 12px; align-items: center; }
+    kbd { min-width: 34px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 3px 7px; background: #f4f6f8; text-align: center; font: 700 12px ui-monospace, monospace; }
+    .mobile-tools { display: none; }
+    @media (max-width: 700px) {
+      header, .summary, .project-progress, main { padding-left: 14px; padding-right: 14px; }
+      header { padding-top: 18px; }
+      .summary { grid-template-columns: repeat(5, 1fr); gap: 5px; padding-top: 7px; padding-bottom: 7px; }
+      .metric { padding: 6px; text-align: center; }
+      .metric strong { font-size: 17px; }
+      .metric span { font-size: 9px; line-height: 1.05; }
+      .controls { padding: 8px 14px; gap: 8px; }
+      .filter-toggle { width: 100%; justify-content: space-between; }
+      .control-content { max-height: 58vh; overflow-y: auto; padding: 4px 0 8px; }
+      .control-row b { flex-basis: 100%; min-width: 0; }
+      .chip { padding: 6px 9px; font-size: 13px; }
+      .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; }
+      .viewer-tools { grid-template-columns: 1fr; }
+      .visible-count { text-align: left; }
+      .tool-button.keyboard-only { display: none; }
+      .lightbox { padding: 8px; }
+      .lightbox-panel { width: 100%; height: 96vh; grid-template-columns: 42px minmax(0,1fr) 42px; gap: 4px; }
+      .lightbox-nav { width: 40px; height: 56px; }
+      .lightbox-caption { width: 100%; align-items: flex-end; padding: 0 4px; }
+      .lightbox-detail { max-height: 3.8em; overflow: hidden; }
+      .mobile-tools { position: fixed; z-index: 8; left: 50%; bottom: max(8px, env(safe-area-inset-bottom)); transform: translateX(-50%); display: flex; gap: 5px; padding: 5px; border: 1px solid var(--line); border-radius: 8px; background: rgba(255,255,255,.95); box-shadow: 0 8px 24px rgba(0,0,0,.2); backdrop-filter: blur(10px); }
+      .mobile-tools button { width: 42px; height: 38px; border: 0; border-radius: 5px; background: #eef1f4; color: var(--ink); font-size: 18px; }
+      main { padding-bottom: 84px; }
+    }
+    </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <h1>Batman and the Outsiders</h1>
+      <a class="back-link" href="visual_collection_viewer.html">All visual views</a>
+    </div>
+    <p>Batman and the Outsiders, its Adventures continuation, the parallel Outsiders series and annuals.</p>
+  </header>
+  <section class="summary">
+    <button class="metric" type="button" data-status="all"><strong>76</strong><span>publications</span></button>
+    <button class="metric" type="button" data-status="owned"><strong>19</strong><span>owned originals</span></button>
+    <button class="metric" type="button" data-status="facsimile"><strong>0</strong><span>facsimiles</span></button>
+    <button class="metric" type="button" data-status="ordered"><strong>0</strong><span>ordered</span></button>
+    <button class="metric" type="button" data-status="missing"><strong>57</strong><span>missing</span></button>
+  </section>
+  <nav class="project-progress" aria-label="Story completion"></nav>
+  <section class="controls">
+    <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="viewer-filters"><span>Filters &amp; order</span><small class="filter-summary">All</small></button>
+    <div class="control-content" id="viewer-filters">
+      <div class="viewer-tools">
+        <div class="search-wrap"><input class="viewer-search" type="search" placeholder="Search title, issue or story" aria-label="Search comics"><button class="search-clear" type="button" title="Clear search" aria-label="Clear search">&times;</button></div>
+        <select class="section-jump" aria-label="Jump to section"><option value="">Jump to section</option><option value="Batman and the Outsiders">Batman and the Outsiders</option><option value="Adventures of the Outsiders">Adventures of the Outsiders</option><option value="The Outsiders">The Outsiders</option></select>
+        <button class="tool-button" type="button" data-toggle-density>Covers</button>
+        <button class="tool-button" type="button" data-toggle-stories>Stories</button>
+        <button class="tool-button keyboard-only" type="button" data-toggle-browse>Browse</button>
+        <span class="visible-count">76 of 76</span>
+        <button class="tool-button keyboard-only" type="button" data-open-help aria-label="Keyboard shortcuts">Shortcuts</button>
+      </div>
+      <div class="control-row"><b>Order</b><button class="chip active" data-filter="order" data-value="all">All orders</button>
+<button class="chip" data-filter="order" data-value="series">series</button></div>
+      <div class="control-row"><b>Sort</b><button class="chip active" data-filter="sort" data-value="curated">curated</button><button class="chip" data-filter="sort" data-value="date">date</button><button class="chip" data-filter="sort" data-value="title">title</button></div>
+      <div class="control-row"><b>Decade</b><button class="chip active" data-filter="decade" data-value="all">All decades</button>
+<button class="chip" data-filter="decade" data-value="1980s">1980s</button></div>
+      <div class="control-row"><b>Year</b><select class="section-jump year-filter" aria-label="Filter by publication year"><option value="all">All years</option><option value="1983">1983</option><option value="1984">1984</option><option value="1985">1985</option><option value="1986">1986</option><option value="1987">1987</option></select></div>
+      <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button>
+<button class="chip" data-filter="scope" data-value="batman_and_the_outsiders_1_32">batman and the outsiders 1 32</button>
+<button class="chip" data-filter="scope" data-value="adventures_of_the_outsiders_33_46">adventures of the outsiders 33 46</button>
+<button class="chip" data-filter="scope" data-value="the_outsiders_1985_1_28">the outsiders 1985 1 28</button></div>
+      <div class="control-row"><b>Status</b><button class="chip active" data-filter="status" data-value="all">All statuses</button>
+<button class="chip" data-filter="status" data-value="owned">owned</button>
+<button class="chip" data-filter="status" data-value="facsimile">facsimile</button>
+<button class="chip" data-filter="status" data-value="ordered">ordered</button>
+<button class="chip" data-filter="status" data-value="readable">readable</button>
+<button class="chip" data-filter="status" data-value="missing">missing</button></div>
+      <div class="control-row"><b>Work</b><button class="chip active" data-filter="project" data-value="all">All works</button>
+<button class="chip" data-filter="project" data-value="Batman and the Outsiders">Batman and the Outsiders</button>
+<button class="chip" data-filter="project" data-value="Adventures of the Outsiders">Adventures of the Outsiders</button>
+<button class="chip" data-filter="project" data-value="The Outsiders">The Outsiders</button></div>
+    </div>
+  </section>
+  <main>
+    <section class="grid">
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-1" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #1 view-batman-and-the-outsiders-1 batman and the outsiders 1 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="owned" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000001" data-publication-date="1983-05-18" data-publication-year="1983" data-publication-decade="1980s">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-1.jpg" data-full-title="Batman and the Outsiders #1" data-full-detail="Published 1983-05-18 | VIEW-batman-and-the-outsiders-1 | Seq 000001 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-1.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-1.jpg" alt="Batman and the Outsiders #1 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #1">Batman and the Outsiders #1</h3>
+          <p class="publication-date">Published 1983-05-18</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-2" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #2 view-batman-and-the-outsiders-2 batman and the outsiders 2 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="owned" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000002" data-publication-date="1983-07" data-publication-year="1983" data-publication-decade="1980s">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-2.jpg" data-full-title="Batman and the Outsiders #2" data-full-detail="Published 1983-07 | VIEW-batman-and-the-outsiders-2 | Seq 000002 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-2.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-2.jpg" alt="Batman and the Outsiders #2 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #2">Batman and the Outsiders #2</h3>
+          <p class="publication-date">Published 1983-07</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-3" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #3 view-batman-and-the-outsiders-3 batman and the outsiders 3 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="owned" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000003" data-publication-date="1983-08" data-publication-year="1983" data-publication-decade="1980s">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-3.jpg" data-full-title="Batman and the Outsiders #3" data-full-detail="Published 1983-08 | VIEW-batman-and-the-outsiders-3 | Seq 000003 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_3 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-3.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-3.jpg" alt="Batman and the Outsiders #3 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #3">Batman and the Outsiders #3</h3>
+          <p class="publication-date">Published 1983-08</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-4" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #4 view-batman-and-the-outsiders-4 batman and the outsiders 4 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="owned" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000004" data-publication-date="1983-09" data-publication-year="1983" data-publication-decade="1980s">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-4.jpg" data-full-title="Batman and the Outsiders #4" data-full-detail="Published 1983-09 | VIEW-batman-and-the-outsiders-4 | Seq 000004 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_4 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-4.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-4.jpg" alt="Batman and the Outsiders #4 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #4">Batman and the Outsiders #4</h3>
+          <p class="publication-date">Published 1983-09</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-5" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #5 view-batman-and-the-outsiders-5 batman and the outsiders 5 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="owned" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000005" data-publication-date="1983-09-21" data-publication-year="1983" data-publication-decade="1980s">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-5.jpg" data-full-title="Batman and the Outsiders #5" data-full-detail="Published 1983-09-21 | VIEW-batman-and-the-outsiders-5 | Seq 000005 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_5 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-5.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-5.jpg" alt="Batman and the Outsiders #5 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #5">Batman and the Outsiders #5</h3>
+          <p class="publication-date">Published 1983-09-21</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-6" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #6 view-batman-and-the-outsiders-6 batman and the outsiders 6 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="owned" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000006" data-publication-date="1983-11" data-publication-year="1983" data-publication-decade="1980s">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-6.jpg" data-full-title="Batman and the Outsiders #6" data-full-detail="Published 1983-11 | VIEW-batman-and-the-outsiders-6 | Seq 000006 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_6 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-6.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-6.jpg" alt="Batman and the Outsiders #6 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #6">Batman and the Outsiders #6</h3>
+          <p class="publication-date">Published 1983-11</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-7" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #7 view-batman-and-the-outsiders-7 batman and the outsiders 7 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="owned" data-sequence="000007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000007" data-publication-date="1983-12" data-publication-year="1983" data-publication-decade="1980s">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-7.jpg" data-full-title="Batman and the Outsiders #7" data-full-detail="Published 1983-12 | VIEW-batman-and-the-outsiders-7 | Seq 000007 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_7 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-7.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-7.jpg" alt="Batman and the Outsiders #7 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #7">Batman and the Outsiders #7</h3>
+          <p class="publication-date">Published 1983-12</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-8" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #8 view-batman-and-the-outsiders-8 batman and the outsiders 8 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="owned" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000008" data-publication-date="1984-01" data-publication-year="1984" data-publication-decade="1980s">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-8.jpg" data-full-title="Batman and the Outsiders #8" data-full-detail="Published 1984-01 | VIEW-batman-and-the-outsiders-8 | Seq 000008 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_8 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-8.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-8.jpg" alt="Batman and the Outsiders #8 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #8">Batman and the Outsiders #8</h3>
+          <p class="publication-date">Published 1984-01</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-9" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #9 view-batman-and-the-outsiders-9 batman and the outsiders 9 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="owned" data-sequence="000009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000009" data-publication-date="1984-02" data-publication-year="1984" data-publication-decade="1980s">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-9.jpg" data-full-title="Batman and the Outsiders #9" data-full-detail="Published 1984-02 | VIEW-batman-and-the-outsiders-9 | Seq 000009 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_9 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-9.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-9.jpg" alt="Batman and the Outsiders #9 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #9">Batman and the Outsiders #9</h3>
+          <p class="publication-date">Published 1984-02</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-10" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #10 view-batman-and-the-outsiders-10 batman and the outsiders 10 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="owned" data-sequence="000010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000010" data-publication-date="1984-03" data-publication-year="1984" data-publication-decade="1980s">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-10.jpg" data-full-title="Batman and the Outsiders #10" data-full-detail="Published 1984-03 | VIEW-batman-and-the-outsiders-10 | Seq 000010 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_10 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-10.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-10.jpg" alt="Batman and the Outsiders #10 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #10">Batman and the Outsiders #10</h3>
+          <p class="publication-date">Published 1984-03</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-11" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #11 view-batman-and-the-outsiders-11 batman and the outsiders 11 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="owned" data-sequence="000011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000011" data-publication-date="1984-04" data-publication-year="1984" data-publication-decade="1980s">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-11.jpg" data-full-title="Batman and the Outsiders #11" data-full-detail="Published 1984-04 | VIEW-batman-and-the-outsiders-11 | Seq 000011 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_11 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-11.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-11.jpg" alt="Batman and the Outsiders #11 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #11">Batman and the Outsiders #11</h3>
+          <p class="publication-date">Published 1984-04</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-12" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #12 view-batman-and-the-outsiders-12 batman and the outsiders 12 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="owned" data-sequence="000012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000012" data-publication-date="1984-05" data-publication-year="1984" data-publication-decade="1980s">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-12.jpg" data-full-title="Batman and the Outsiders #12" data-full-detail="Published 1984-05 | VIEW-batman-and-the-outsiders-12 | Seq 000012 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_12 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-12.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-12.jpg" alt="Batman and the Outsiders #12 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #12">Batman and the Outsiders #12</h3>
+          <p class="publication-date">Published 1984-05</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-13" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #13 view-batman-and-the-outsiders-13 batman and the outsiders 13 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="owned" data-sequence="000013" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000013" data-publication-date="1984-06" data-publication-year="1984" data-publication-decade="1980s">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-13.jpg" data-full-title="Batman and the Outsiders #13" data-full-detail="Published 1984-06 | VIEW-batman-and-the-outsiders-13 | Seq 000013 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_13 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-13.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-13.jpg" alt="Batman and the Outsiders #13 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #13">Batman and the Outsiders #13</h3>
+          <p class="publication-date">Published 1984-06</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-14" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #14 view-batman-and-the-outsiders-14 batman and the outsiders 14 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="owned" data-sequence="000014" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000014" data-publication-date="1984-08" data-publication-year="1984" data-publication-decade="1980s">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-14.jpg" data-full-title="Batman and the Outsiders #14" data-full-detail="Published 1984-08 | VIEW-batman-and-the-outsiders-14 | Seq 000014 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_14 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-14.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-14.jpg" alt="Batman and the Outsiders #14 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #14">Batman and the Outsiders #14</h3>
+          <p class="publication-date">Published 1984-08</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-15" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #15 view-batman-and-the-outsiders-15 batman and the outsiders 15 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="owned" data-sequence="000015" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000015" data-publication-date="1984-09" data-publication-year="1984" data-publication-decade="1980s">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-15.jpg" data-full-title="Batman and the Outsiders #15" data-full-detail="Published 1984-09 | VIEW-batman-and-the-outsiders-15 | Seq 000015 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_15 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-15.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-15.jpg" alt="Batman and the Outsiders #15 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #15">Batman and the Outsiders #15</h3>
+          <p class="publication-date">Published 1984-09</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-16" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #16 view-batman-and-the-outsiders-16 batman and the outsiders 16 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="owned" data-sequence="000016" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000016" data-publication-date="1984-10" data-publication-year="1984" data-publication-decade="1980s">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-16.jpg" data-full-title="Batman and the Outsiders #16" data-full-detail="Published 1984-10 | VIEW-batman-and-the-outsiders-16 | Seq 000016 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_16 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-16.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-16.jpg" alt="Batman and the Outsiders #16 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #16">Batman and the Outsiders #16</h3>
+          <p class="publication-date">Published 1984-10</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-17" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #17 view-batman-and-the-outsiders-17 batman and the outsiders 17 closeencountersbedford; estimated delivery 4-5 august 2026. batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="owned" data-sequence="000017" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000017" data-publication-date="1984-11" data-publication-year="1984" data-publication-decade="1980s">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-17.jpg" data-full-title="Batman and the Outsiders #17" data-full-detail="Published 1984-11 | VIEW-batman-and-the-outsiders-17 | Seq 000017 | closeencountersbedford; estimated delivery 4-5 August 2026. | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_17 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-17.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-17.jpg" alt="Batman and the Outsiders #17 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #17">Batman and the Outsiders #17</h3>
+          <p class="publication-date">Published 1984-11</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-18" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #18 view-batman-and-the-outsiders-18 batman and the outsiders 18 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="missing" data-sequence="000018" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000018" data-publication-date="1984-12" data-publication-year="1984" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-18.jpg" data-full-title="Batman and the Outsiders #18" data-full-detail="Published 1984-12 | VIEW-batman-and-the-outsiders-18 | Seq 000018 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_18 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-18.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-18.jpg" alt="Batman and the Outsiders #18 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #18">Batman and the Outsiders #18</h3>
+          <p class="publication-date">Published 1984-12</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-19" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #19 view-batman-and-the-outsiders-19 batman and the outsiders 19 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="missing" data-sequence="000019" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000019" data-publication-date="1985-01" data-publication-year="1985" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-19.jpg" data-full-title="Batman and the Outsiders #19" data-full-detail="Published 1985-01 | VIEW-batman-and-the-outsiders-19 | Seq 000019 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_19 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-19.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-19.jpg" alt="Batman and the Outsiders #19 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #19">Batman and the Outsiders #19</h3>
+          <p class="publication-date">Published 1985-01</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-20" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #20 view-batman-and-the-outsiders-20 batman and the outsiders 20 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="missing" data-sequence="000020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000020" data-publication-date="1985-01-16" data-publication-year="1985" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-20.jpg" data-full-title="Batman and the Outsiders #20" data-full-detail="Published 1985-01-16 | VIEW-batman-and-the-outsiders-20 | Seq 000020 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_20 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-20.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-20.jpg" alt="Batman and the Outsiders #20 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #20">Batman and the Outsiders #20</h3>
+          <p class="publication-date">Published 1985-01-16</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-21" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #21 view-batman-and-the-outsiders-21 batman and the outsiders 21 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="missing" data-sequence="000021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000021" data-publication-date="1985-03" data-publication-year="1985" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-21.jpg" data-full-title="Batman and the Outsiders #21" data-full-detail="Published 1985-03 | VIEW-batman-and-the-outsiders-21 | Seq 000021 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_21 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-21.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-21.jpg" alt="Batman and the Outsiders #21 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #21">Batman and the Outsiders #21</h3>
+          <p class="publication-date">Published 1985-03</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-22" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #22 view-batman-and-the-outsiders-22 batman and the outsiders 22 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="missing" data-sequence="000022" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000022" data-publication-date="1985-04" data-publication-year="1985" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-22.jpg" data-full-title="Batman and the Outsiders #22" data-full-detail="Published 1985-04 | VIEW-batman-and-the-outsiders-22 | Seq 000022 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_22 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-22.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-22.jpg" alt="Batman and the Outsiders #22 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #22">Batman and the Outsiders #22</h3>
+          <p class="publication-date">Published 1985-04</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-23" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #23 view-batman-and-the-outsiders-23 batman and the outsiders 23 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="missing" data-sequence="000023" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000023" data-publication-date="1985-05" data-publication-year="1985" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-23.jpg" data-full-title="Batman and the Outsiders #23" data-full-detail="Published 1985-05 | VIEW-batman-and-the-outsiders-23 | Seq 000023 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_23 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-23.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-23.jpg" alt="Batman and the Outsiders #23 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #23">Batman and the Outsiders #23</h3>
+          <p class="publication-date">Published 1985-05</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-24" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #24 view-batman-and-the-outsiders-24 batman and the outsiders 24 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="missing" data-sequence="000024" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000024" data-publication-date="1985-06" data-publication-year="1985" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-24.jpg" data-full-title="Batman and the Outsiders #24" data-full-detail="Published 1985-06 | VIEW-batman-and-the-outsiders-24 | Seq 000024 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_24 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-24.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-24.jpg" alt="Batman and the Outsiders #24 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #24">Batman and the Outsiders #24</h3>
+          <p class="publication-date">Published 1985-06</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-25" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #25 view-batman-and-the-outsiders-25 batman and the outsiders 25 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="missing" data-sequence="000025" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000025" data-publication-date="1985-07" data-publication-year="1985" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-25.jpg" data-full-title="Batman and the Outsiders #25" data-full-detail="Published 1985-07 | VIEW-batman-and-the-outsiders-25 | Seq 000025 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_25 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-25.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-25.jpg" alt="Batman and the Outsiders #25 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #25">Batman and the Outsiders #25</h3>
+          <p class="publication-date">Published 1985-07</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-26" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #26 view-batman-and-the-outsiders-26 batman and the outsiders 26 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="missing" data-sequence="000026" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000026" data-publication-date="1985-08" data-publication-year="1985" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-26.jpg" data-full-title="Batman and the Outsiders #26" data-full-detail="Published 1985-08 | VIEW-batman-and-the-outsiders-26 | Seq 000026 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_26 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-26.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-26.jpg" alt="Batman and the Outsiders #26 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #26">Batman and the Outsiders #26</h3>
+          <p class="publication-date">Published 1985-08</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-27" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #27 view-batman-and-the-outsiders-27 batman and the outsiders 27 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="missing" data-sequence="000027" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000027" data-publication-date="1985-09" data-publication-year="1985" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-27.jpg" data-full-title="Batman and the Outsiders #27" data-full-detail="Published 1985-09 | VIEW-batman-and-the-outsiders-27 | Seq 000027 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_27 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-27.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-27.jpg" alt="Batman and the Outsiders #27 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #27">Batman and the Outsiders #27</h3>
+          <p class="publication-date">Published 1985-09</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-28" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #28 view-batman-and-the-outsiders-28 batman and the outsiders 28 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="missing" data-sequence="000028" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000028" data-publication-date="1985-08-28" data-publication-year="1985" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-28.jpg" data-full-title="Batman and the Outsiders #28" data-full-detail="Published 1985-08-28 | VIEW-batman-and-the-outsiders-28 | Seq 000028 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_28 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-28.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-28.jpg" alt="Batman and the Outsiders #28 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #28">Batman and the Outsiders #28</h3>
+          <p class="publication-date">Published 1985-08-28</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-29" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #29 view-batman-and-the-outsiders-29 batman and the outsiders 29 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="owned" data-sequence="000029" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000029" data-publication-date="1985-11" data-publication-year="1985" data-publication-decade="1980s">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-29.jpg" data-full-title="Batman and the Outsiders #29" data-full-detail="Published 1985-11 | VIEW-batman-and-the-outsiders-29 | Seq 000029 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_29 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-29.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-29.jpg" alt="Batman and the Outsiders #29 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #29">Batman and the Outsiders #29</h3>
+          <p class="publication-date">Published 1985-11</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-30" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #30 view-batman-and-the-outsiders-30 batman and the outsiders 30 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="missing" data-sequence="000030" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000030" data-publication-date="1985-12" data-publication-year="1985" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-30.jpg" data-full-title="Batman and the Outsiders #30" data-full-detail="Published 1985-12 | VIEW-batman-and-the-outsiders-30 | Seq 000030 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_30 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-30.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-30.jpg" alt="Batman and the Outsiders #30 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #30">Batman and the Outsiders #30</h3>
+          <p class="publication-date">Published 1985-12</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-31" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #31 view-batman-and-the-outsiders-31 batman and the outsiders 31 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="missing" data-sequence="000031" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000031" data-publication-date="1986-01" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-31.jpg" data-full-title="Batman and the Outsiders #31" data-full-detail="Published 1986-01 | VIEW-batman-and-the-outsiders-31 | Seq 000031 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_31 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-31.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-31.jpg" alt="Batman and the Outsiders #31 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #31">Batman and the Outsiders #31</h3>
+          <p class="publication-date">Published 1986-01</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-batman-and-the-outsiders-32" data-work="Batman and the Outsiders" data-section="Batman and the Outsiders" data-search="batman and the outsiders #32 view-batman-and-the-outsiders-32 batman and the outsiders 32 batman_and_the_outsiders_1_32 batman and the outsiders" data-order="series" data-scope="batman_and_the_outsiders_1_32" data-project="Batman and the Outsiders" data-status="owned" data-sequence="000032" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000032" data-publication-date="1985-12-25" data-publication-year="1985" data-publication-decade="1980s">
+        <div class="status-strip">Original</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-batman-and-the-outsiders-32.jpg" data-full-title="Batman and the Outsiders #32" data-full-detail="Published 1985-12-25 | VIEW-batman-and-the-outsiders-32 | Seq 000032 | https://dc.fandom.com/wiki/Batman_and_the_Outsiders_Vol_1_32 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-batman-and-the-outsiders-32.jpg" data-display-src="../assets/covers/display/VIEW-batman-and-the-outsiders-32.jpg" alt="Batman and the Outsiders #32 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">batman and the outsiders 1 32</span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders #32">Batman and the Outsiders #32</h3>
+          <p class="publication-date">Published 1985-12-25</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-adventures-of-the-outsiders-33" data-work="Adventures of the Outsiders" data-section="Adventures of the Outsiders" data-search="adventures of the outsiders #33 view-adventures-of-the-outsiders-33 adventures of the outsiders 33 adventures_of_the_outsiders_33_46 adventures of the outsiders" data-order="series" data-scope="adventures_of_the_outsiders_33_46" data-project="Adventures of the Outsiders" data-status="missing" data-sequence="000033" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000033" data-publication-date="1986-03" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-33.jpg" data-full-title="Adventures of the Outsiders #33" data-full-detail="Published 1986-03 | VIEW-adventures-of-the-outsiders-33 | Seq 000033 | https://dc.fandom.com/wiki/Adventures_of_the_Outsiders_Vol_1_33 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-adventures-of-the-outsiders-33.jpg" data-display-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-33.jpg" alt="Adventures of the Outsiders #33 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">adventures of the outsiders 33 46</span>
+            
+          </div>
+          <h3 title="Adventures of the Outsiders #33">Adventures of the Outsiders #33</h3>
+          <p class="publication-date">Published 1986-03</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-adventures-of-the-outsiders-34" data-work="Adventures of the Outsiders" data-section="Adventures of the Outsiders" data-search="adventures of the outsiders #34 view-adventures-of-the-outsiders-34 adventures of the outsiders 34 adventures_of_the_outsiders_33_46 adventures of the outsiders" data-order="series" data-scope="adventures_of_the_outsiders_33_46" data-project="Adventures of the Outsiders" data-status="missing" data-sequence="000034" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000034" data-publication-date="1986-04" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-34.jpg" data-full-title="Adventures of the Outsiders #34" data-full-detail="Published 1986-04 | VIEW-adventures-of-the-outsiders-34 | Seq 000034 | https://dc.fandom.com/wiki/Adventures_of_the_Outsiders_Vol_1_34 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-adventures-of-the-outsiders-34.jpg" data-display-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-34.jpg" alt="Adventures of the Outsiders #34 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">adventures of the outsiders 33 46</span>
+            
+          </div>
+          <h3 title="Adventures of the Outsiders #34">Adventures of the Outsiders #34</h3>
+          <p class="publication-date">Published 1986-04</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-adventures-of-the-outsiders-35" data-work="Adventures of the Outsiders" data-section="Adventures of the Outsiders" data-search="adventures of the outsiders #35 view-adventures-of-the-outsiders-35 adventures of the outsiders 35 adventures_of_the_outsiders_33_46 adventures of the outsiders" data-order="series" data-scope="adventures_of_the_outsiders_33_46" data-project="Adventures of the Outsiders" data-status="missing" data-sequence="000035" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000035" data-publication-date="1986-04-16" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-35.jpg" data-full-title="Adventures of the Outsiders #35" data-full-detail="Published 1986-04-16 | VIEW-adventures-of-the-outsiders-35 | Seq 000035 | https://dc.fandom.com/wiki/Adventures_of_the_Outsiders_Vol_1_35 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-adventures-of-the-outsiders-35.jpg" data-display-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-35.jpg" alt="Adventures of the Outsiders #35 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">adventures of the outsiders 33 46</span>
+            
+          </div>
+          <h3 title="Adventures of the Outsiders #35">Adventures of the Outsiders #35</h3>
+          <p class="publication-date">Published 1986-04-16</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-adventures-of-the-outsiders-36" data-work="Adventures of the Outsiders" data-section="Adventures of the Outsiders" data-search="adventures of the outsiders #36 view-adventures-of-the-outsiders-36 adventures of the outsiders 36 adventures_of_the_outsiders_33_46 adventures of the outsiders" data-order="series" data-scope="adventures_of_the_outsiders_33_46" data-project="Adventures of the Outsiders" data-status="missing" data-sequence="000036" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000036" data-publication-date="1986-05-14" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-36.jpg" data-full-title="Adventures of the Outsiders #36" data-full-detail="Published 1986-05-14 | VIEW-adventures-of-the-outsiders-36 | Seq 000036 | https://dc.fandom.com/wiki/Adventures_of_the_Outsiders_Vol_1_36 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-adventures-of-the-outsiders-36.jpg" data-display-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-36.jpg" alt="Adventures of the Outsiders #36 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">adventures of the outsiders 33 46</span>
+            
+          </div>
+          <h3 title="Adventures of the Outsiders #36">Adventures of the Outsiders #36</h3>
+          <p class="publication-date">Published 1986-05-14</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-adventures-of-the-outsiders-37" data-work="Adventures of the Outsiders" data-section="Adventures of the Outsiders" data-search="adventures of the outsiders #37 view-adventures-of-the-outsiders-37 adventures of the outsiders 37 adventures_of_the_outsiders_33_46 adventures of the outsiders" data-order="series" data-scope="adventures_of_the_outsiders_33_46" data-project="Adventures of the Outsiders" data-status="missing" data-sequence="000037" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000037" data-publication-date="1986-07" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-37.jpg" data-full-title="Adventures of the Outsiders #37" data-full-detail="Published 1986-07 | VIEW-adventures-of-the-outsiders-37 | Seq 000037 | https://dc.fandom.com/wiki/Adventures_of_the_Outsiders_Vol_1_37 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-adventures-of-the-outsiders-37.jpg" data-display-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-37.jpg" alt="Adventures of the Outsiders #37 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">adventures of the outsiders 33 46</span>
+            
+          </div>
+          <h3 title="Adventures of the Outsiders #37">Adventures of the Outsiders #37</h3>
+          <p class="publication-date">Published 1986-07</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-adventures-of-the-outsiders-38" data-work="Adventures of the Outsiders" data-section="Adventures of the Outsiders" data-search="adventures of the outsiders #38 view-adventures-of-the-outsiders-38 adventures of the outsiders 38 adventures_of_the_outsiders_33_46 adventures of the outsiders" data-order="series" data-scope="adventures_of_the_outsiders_33_46" data-project="Adventures of the Outsiders" data-status="missing" data-sequence="000038" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000038" data-publication-date="1986-07-16" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-38.jpg" data-full-title="Adventures of the Outsiders #38" data-full-detail="Published 1986-07-16 | VIEW-adventures-of-the-outsiders-38 | Seq 000038 | https://dc.fandom.com/wiki/Adventures_of_the_Outsiders_Vol_1_38 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-adventures-of-the-outsiders-38.jpg" data-display-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-38.jpg" alt="Adventures of the Outsiders #38 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">adventures of the outsiders 33 46</span>
+            
+          </div>
+          <h3 title="Adventures of the Outsiders #38">Adventures of the Outsiders #38</h3>
+          <p class="publication-date">Published 1986-07-16</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-adventures-of-the-outsiders-39" data-work="Adventures of the Outsiders" data-section="Adventures of the Outsiders" data-search="adventures of the outsiders #39 view-adventures-of-the-outsiders-39 adventures of the outsiders 39 adventures_of_the_outsiders_33_46 adventures of the outsiders" data-order="series" data-scope="adventures_of_the_outsiders_33_46" data-project="Adventures of the Outsiders" data-status="missing" data-sequence="000039" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000039" data-publication-date="1986-09" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-39.jpg" data-full-title="Adventures of the Outsiders #39" data-full-detail="Published 1986-09 | VIEW-adventures-of-the-outsiders-39 | Seq 000039 | https://dc.fandom.com/wiki/Adventures_of_the_Outsiders_Vol_1_39 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-adventures-of-the-outsiders-39.jpg" data-display-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-39.jpg" alt="Adventures of the Outsiders #39 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">adventures of the outsiders 33 46</span>
+            
+          </div>
+          <h3 title="Adventures of the Outsiders #39">Adventures of the Outsiders #39</h3>
+          <p class="publication-date">Published 1986-09</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-adventures-of-the-outsiders-40" data-work="Adventures of the Outsiders" data-section="Adventures of the Outsiders" data-search="adventures of the outsiders #40 view-adventures-of-the-outsiders-40 adventures of the outsiders 40 adventures_of_the_outsiders_33_46 adventures of the outsiders" data-order="series" data-scope="adventures_of_the_outsiders_33_46" data-project="Adventures of the Outsiders" data-status="missing" data-sequence="000040" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000040" data-publication-date="1986-10" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-40.jpg" data-full-title="Adventures of the Outsiders #40" data-full-detail="Published 1986-10 | VIEW-adventures-of-the-outsiders-40 | Seq 000040 | https://dc.fandom.com/wiki/Adventures_of_the_Outsiders_Vol_1_40 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-adventures-of-the-outsiders-40.jpg" data-display-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-40.jpg" alt="Adventures of the Outsiders #40 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">adventures of the outsiders 33 46</span>
+            
+          </div>
+          <h3 title="Adventures of the Outsiders #40">Adventures of the Outsiders #40</h3>
+          <p class="publication-date">Published 1986-10</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-adventures-of-the-outsiders-41" data-work="Adventures of the Outsiders" data-section="Adventures of the Outsiders" data-search="adventures of the outsiders #41 view-adventures-of-the-outsiders-41 adventures of the outsiders 41 adventures_of_the_outsiders_33_46 adventures of the outsiders" data-order="series" data-scope="adventures_of_the_outsiders_33_46" data-project="Adventures of the Outsiders" data-status="missing" data-sequence="000041" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000041" data-publication-date="1986-11" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-41.jpg" data-full-title="Adventures of the Outsiders #41" data-full-detail="Published 1986-11 | VIEW-adventures-of-the-outsiders-41 | Seq 000041 | https://dc.fandom.com/wiki/Adventures_of_the_Outsiders_Vol_1_41 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-adventures-of-the-outsiders-41.jpg" data-display-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-41.jpg" alt="Adventures of the Outsiders #41 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">adventures of the outsiders 33 46</span>
+            
+          </div>
+          <h3 title="Adventures of the Outsiders #41">Adventures of the Outsiders #41</h3>
+          <p class="publication-date">Published 1986-11</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-adventures-of-the-outsiders-42" data-work="Adventures of the Outsiders" data-section="Adventures of the Outsiders" data-search="adventures of the outsiders #42 view-adventures-of-the-outsiders-42 adventures of the outsiders 42 adventures_of_the_outsiders_33_46 adventures of the outsiders" data-order="series" data-scope="adventures_of_the_outsiders_33_46" data-project="Adventures of the Outsiders" data-status="missing" data-sequence="000042" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000042" data-publication-date="1986-12" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-42.jpg" data-full-title="Adventures of the Outsiders #42" data-full-detail="Published 1986-12 | VIEW-adventures-of-the-outsiders-42 | Seq 000042 | https://dc.fandom.com/wiki/Adventures_of_the_Outsiders_Vol_1_42 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-adventures-of-the-outsiders-42.jpg" data-display-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-42.jpg" alt="Adventures of the Outsiders #42 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">adventures of the outsiders 33 46</span>
+            
+          </div>
+          <h3 title="Adventures of the Outsiders #42">Adventures of the Outsiders #42</h3>
+          <p class="publication-date">Published 1986-12</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-adventures-of-the-outsiders-43" data-work="Adventures of the Outsiders" data-section="Adventures of the Outsiders" data-search="adventures of the outsiders #43 view-adventures-of-the-outsiders-43 adventures of the outsiders 43 adventures_of_the_outsiders_33_46 adventures of the outsiders" data-order="series" data-scope="adventures_of_the_outsiders_33_46" data-project="Adventures of the Outsiders" data-status="missing" data-sequence="000043" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000043" data-publication-date="1987-01" data-publication-year="1987" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-43.jpg" data-full-title="Adventures of the Outsiders #43" data-full-detail="Published 1987-01 | VIEW-adventures-of-the-outsiders-43 | Seq 000043 | https://dc.fandom.com/wiki/Adventures_of_the_Outsiders_Vol_1_43 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-adventures-of-the-outsiders-43.jpg" data-display-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-43.jpg" alt="Adventures of the Outsiders #43 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">adventures of the outsiders 33 46</span>
+            
+          </div>
+          <h3 title="Adventures of the Outsiders #43">Adventures of the Outsiders #43</h3>
+          <p class="publication-date">Published 1987-01</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-adventures-of-the-outsiders-44" data-work="Adventures of the Outsiders" data-section="Adventures of the Outsiders" data-search="adventures of the outsiders #44 view-adventures-of-the-outsiders-44 adventures of the outsiders 44 adventures_of_the_outsiders_33_46 adventures of the outsiders" data-order="series" data-scope="adventures_of_the_outsiders_33_46" data-project="Adventures of the Outsiders" data-status="missing" data-sequence="000044" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000044" data-publication-date="1987-02" data-publication-year="1987" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-44.jpg" data-full-title="Adventures of the Outsiders #44" data-full-detail="Published 1987-02 | VIEW-adventures-of-the-outsiders-44 | Seq 000044 | https://dc.fandom.com/wiki/Adventures_of_the_Outsiders_Vol_1_44 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-adventures-of-the-outsiders-44.jpg" data-display-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-44.jpg" alt="Adventures of the Outsiders #44 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">adventures of the outsiders 33 46</span>
+            
+          </div>
+          <h3 title="Adventures of the Outsiders #44">Adventures of the Outsiders #44</h3>
+          <p class="publication-date">Published 1987-02</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-adventures-of-the-outsiders-45" data-work="Adventures of the Outsiders" data-section="Adventures of the Outsiders" data-search="adventures of the outsiders #45 view-adventures-of-the-outsiders-45 adventures of the outsiders 45 adventures_of_the_outsiders_33_46 adventures of the outsiders" data-order="series" data-scope="adventures_of_the_outsiders_33_46" data-project="Adventures of the Outsiders" data-status="missing" data-sequence="000045" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000045" data-publication-date="1987-03" data-publication-year="1987" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-45.jpg" data-full-title="Adventures of the Outsiders #45" data-full-detail="Published 1987-03 | VIEW-adventures-of-the-outsiders-45 | Seq 000045 | https://dc.fandom.com/wiki/Adventures_of_the_Outsiders_Vol_1_45 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-adventures-of-the-outsiders-45.jpg" data-display-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-45.jpg" alt="Adventures of the Outsiders #45 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">adventures of the outsiders 33 46</span>
+            
+          </div>
+          <h3 title="Adventures of the Outsiders #45">Adventures of the Outsiders #45</h3>
+          <p class="publication-date">Published 1987-03</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-adventures-of-the-outsiders-46" data-work="Adventures of the Outsiders" data-section="Adventures of the Outsiders" data-search="adventures of the outsiders #46 view-adventures-of-the-outsiders-46 adventures of the outsiders 46 adventures_of_the_outsiders_33_46 adventures of the outsiders" data-order="series" data-scope="adventures_of_the_outsiders_33_46" data-project="Adventures of the Outsiders" data-status="missing" data-sequence="000046" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000046" data-publication-date="1987-04" data-publication-year="1987" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-46.jpg" data-full-title="Adventures of the Outsiders #46" data-full-detail="Published 1987-04 | VIEW-adventures-of-the-outsiders-46 | Seq 000046 | https://dc.fandom.com/wiki/Adventures_of_the_Outsiders_Vol_1_46 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-adventures-of-the-outsiders-46.jpg" data-display-src="../assets/covers/display/VIEW-adventures-of-the-outsiders-46.jpg" alt="Adventures of the Outsiders #46 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">adventures of the outsiders 33 46</span>
+            
+          </div>
+          <h3 title="Adventures of the Outsiders #46">Adventures of the Outsiders #46</h3>
+          <p class="publication-date">Published 1987-04</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-1" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #1 view-the-outsiders-1 the outsiders 1 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000047" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000047" data-publication-date="1985-09" data-publication-year="1985" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-1.jpg" data-full-title="The Outsiders #1" data-full-detail="Published 1985-09 | VIEW-the-outsiders-1 | Seq 000047 | https://dc.fandom.com/wiki/Outsiders_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-1.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-1.jpg" alt="The Outsiders #1 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #1">The Outsiders #1</h3>
+          <p class="publication-date">Published 1985-09</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-2" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #2 view-the-outsiders-2 the outsiders 2 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000048" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000048" data-publication-date="1985-10" data-publication-year="1985" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-2.jpg" data-full-title="The Outsiders #2" data-full-detail="Published 1985-10 | VIEW-the-outsiders-2 | Seq 000048 | https://dc.fandom.com/wiki/Outsiders_Vol_1_2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-2.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-2.jpg" alt="The Outsiders #2 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #2">The Outsiders #2</h3>
+          <p class="publication-date">Published 1985-10</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-3" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #3 view-the-outsiders-3 the outsiders 3 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000049" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000049" data-publication-date="1985-11" data-publication-year="1985" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-3.jpg" data-full-title="The Outsiders #3" data-full-detail="Published 1985-11 | VIEW-the-outsiders-3 | Seq 000049 | https://dc.fandom.com/wiki/Outsiders_Vol_1_3 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-3.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-3.jpg" alt="The Outsiders #3 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #3">The Outsiders #3</h3>
+          <p class="publication-date">Published 1985-11</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-4" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #4 view-the-outsiders-4 the outsiders 4 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000050" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000050" data-publication-date="1985-12" data-publication-year="1985" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-4.jpg" data-full-title="The Outsiders #4" data-full-detail="Published 1985-12 | VIEW-the-outsiders-4 | Seq 000050 | https://dc.fandom.com/wiki/Outsiders_Vol_1_4 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-4.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-4.jpg" alt="The Outsiders #4 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #4">The Outsiders #4</h3>
+          <p class="publication-date">Published 1985-12</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-5" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #5 view-the-outsiders-5 the outsiders 5 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000051" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000051" data-publication-date="1986-01" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-5.jpg" data-full-title="The Outsiders #5" data-full-detail="Published 1986-01 | VIEW-the-outsiders-5 | Seq 000051 | https://dc.fandom.com/wiki/Outsiders_Vol_1_5 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-5.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-5.jpg" alt="The Outsiders #5 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #5">The Outsiders #5</h3>
+          <p class="publication-date">Published 1986-01</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-6" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #6 view-the-outsiders-6 the outsiders 6 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000052" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000052" data-publication-date="1986-02" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-6.jpg" data-full-title="The Outsiders #6" data-full-detail="Published 1986-02 | VIEW-the-outsiders-6 | Seq 000052 | https://dc.fandom.com/wiki/Outsiders_Vol_1_6 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-6.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-6.jpg" alt="The Outsiders #6 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #6">The Outsiders #6</h3>
+          <p class="publication-date">Published 1986-02</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-7" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #7 view-the-outsiders-7 the outsiders 7 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000053" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000053" data-publication-date="1986-03" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-7.jpg" data-full-title="The Outsiders #7" data-full-detail="Published 1986-03 | VIEW-the-outsiders-7 | Seq 000053 | https://dc.fandom.com/wiki/Outsiders_Vol_1_7 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-7.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-7.jpg" alt="The Outsiders #7 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #7">The Outsiders #7</h3>
+          <p class="publication-date">Published 1986-03</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-8" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #8 view-the-outsiders-8 the outsiders 8 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000054" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000054" data-publication-date="1986-03-05" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-8.jpg" data-full-title="The Outsiders #8" data-full-detail="Published 1986-03-05 | VIEW-the-outsiders-8 | Seq 000054 | https://dc.fandom.com/wiki/Outsiders_Vol_1_8 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-8.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-8.jpg" alt="The Outsiders #8 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #8">The Outsiders #8</h3>
+          <p class="publication-date">Published 1986-03-05</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-9" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #9 view-the-outsiders-9 the outsiders 9 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000055" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000055" data-publication-date="1986-04-02" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-9.jpg" data-full-title="The Outsiders #9" data-full-detail="Published 1986-04-02 | VIEW-the-outsiders-9 | Seq 000055 | https://dc.fandom.com/wiki/Outsiders_Vol_1_9 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-9.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-9.jpg" alt="The Outsiders #9 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #9">The Outsiders #9</h3>
+          <p class="publication-date">Published 1986-04-02</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-10" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #10 view-the-outsiders-10 the outsiders 10 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000056" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000056" data-publication-date="1986-06" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-10.jpg" data-full-title="The Outsiders #10" data-full-detail="Published 1986-06 | VIEW-the-outsiders-10 | Seq 000056 | https://dc.fandom.com/wiki/Outsiders_Vol_1_10 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-10.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-10.jpg" alt="The Outsiders #10 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #10">The Outsiders #10</h3>
+          <p class="publication-date">Published 1986-06</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-11" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #11 view-the-outsiders-11 the outsiders 11 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000057" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000057" data-publication-date="1986-07" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-11.jpg" data-full-title="The Outsiders #11" data-full-detail="Published 1986-07 | VIEW-the-outsiders-11 | Seq 000057 | https://dc.fandom.com/wiki/Outsiders_Vol_1_11 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-11.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-11.jpg" alt="The Outsiders #11 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #11">The Outsiders #11</h3>
+          <p class="publication-date">Published 1986-07</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-12" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #12 view-the-outsiders-12 the outsiders 12 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000058" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000058" data-publication-date="1986-07-02" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-12.jpg" data-full-title="The Outsiders #12" data-full-detail="Published 1986-07-02 | VIEW-the-outsiders-12 | Seq 000058 | https://dc.fandom.com/wiki/Outsiders_Vol_1_12 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-12.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-12.jpg" alt="The Outsiders #12 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #12">The Outsiders #12</h3>
+          <p class="publication-date">Published 1986-07-02</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-13" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #13 view-the-outsiders-13 the outsiders 13 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000059" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000059" data-publication-date="1986-09" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-13.jpg" data-full-title="The Outsiders #13" data-full-detail="Published 1986-09 | VIEW-the-outsiders-13 | Seq 000059 | https://dc.fandom.com/wiki/Outsiders_Vol_1_13 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-13.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-13.jpg" alt="The Outsiders #13 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #13">The Outsiders #13</h3>
+          <p class="publication-date">Published 1986-09</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-14" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #14 view-the-outsiders-14 the outsiders 14 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000060" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000060" data-publication-date="1986-10" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-14.jpg" data-full-title="The Outsiders #14" data-full-detail="Published 1986-10 | VIEW-the-outsiders-14 | Seq 000060 | https://dc.fandom.com/wiki/Outsiders_Vol_1_14 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-14.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-14.jpg" alt="The Outsiders #14 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #14">The Outsiders #14</h3>
+          <p class="publication-date">Published 1986-10</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-15" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #15 view-the-outsiders-15 the outsiders 15 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000061" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000061" data-publication-date="1986-11" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-15.jpg" data-full-title="The Outsiders #15" data-full-detail="Published 1986-11 | VIEW-the-outsiders-15 | Seq 000061 | https://dc.fandom.com/wiki/Outsiders_Vol_1_15 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-15.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-15.jpg" alt="The Outsiders #15 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #15">The Outsiders #15</h3>
+          <p class="publication-date">Published 1986-11</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-16" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #16 view-the-outsiders-16 the outsiders 16 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000062" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000062" data-publication-date="1986-10-15" data-publication-year="1986" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-16.jpg" data-full-title="The Outsiders #16" data-full-detail="Published 1986-10-15 | VIEW-the-outsiders-16 | Seq 000062 | https://dc.fandom.com/wiki/Outsiders_Vol_1_16 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-16.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-16.jpg" alt="The Outsiders #16 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #16">The Outsiders #16</h3>
+          <p class="publication-date">Published 1986-10-15</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-17" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #17 view-the-outsiders-17 the outsiders 17 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000063" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000063" data-publication-date="1987-01" data-publication-year="1987" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-17.jpg" data-full-title="The Outsiders #17" data-full-detail="Published 1987-01 | VIEW-the-outsiders-17 | Seq 000063 | https://dc.fandom.com/wiki/Outsiders_Vol_1_17 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-17.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-17.jpg" alt="The Outsiders #17 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #17">The Outsiders #17</h3>
+          <p class="publication-date">Published 1987-01</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-18" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #18 view-the-outsiders-18 the outsiders 18 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000064" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000064" data-publication-date="1987-02" data-publication-year="1987" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-18.jpg" data-full-title="The Outsiders #18" data-full-detail="Published 1987-02 | VIEW-the-outsiders-18 | Seq 000064 | https://dc.fandom.com/wiki/Outsiders_Vol_1_18 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-18.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-18.jpg" alt="The Outsiders #18 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #18">The Outsiders #18</h3>
+          <p class="publication-date">Published 1987-02</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-19" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #19 view-the-outsiders-19 the outsiders 19 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000065" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000065" data-publication-date="1987-03" data-publication-year="1987" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-19.jpg" data-full-title="The Outsiders #19" data-full-detail="Published 1987-03 | VIEW-the-outsiders-19 | Seq 000065 | https://dc.fandom.com/wiki/Outsiders_Vol_1_19 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-19.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-19.jpg" alt="The Outsiders #19 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #19">The Outsiders #19</h3>
+          <p class="publication-date">Published 1987-03</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-20" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #20 view-the-outsiders-20 the outsiders 20 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000066" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000066" data-publication-date="1987-04" data-publication-year="1987" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-20.jpg" data-full-title="The Outsiders #20" data-full-detail="Published 1987-04 | VIEW-the-outsiders-20 | Seq 000066 | https://dc.fandom.com/wiki/Outsiders_Vol_1_20 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-20.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-20.jpg" alt="The Outsiders #20 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #20">The Outsiders #20</h3>
+          <p class="publication-date">Published 1987-04</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-21" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #21 view-the-outsiders-21 the outsiders 21 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000067" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000067" data-publication-date="1987-05" data-publication-year="1987" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-21.jpg" data-full-title="The Outsiders #21" data-full-detail="Published 1987-05 | VIEW-the-outsiders-21 | Seq 000067 | https://dc.fandom.com/wiki/Outsiders_Vol_1_21 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-21.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-21.jpg" alt="The Outsiders #21 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #21">The Outsiders #21</h3>
+          <p class="publication-date">Published 1987-05</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-22" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #22 view-the-outsiders-22 the outsiders 22 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000068" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000068" data-publication-date="1987-06" data-publication-year="1987" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-22.jpg" data-full-title="The Outsiders #22" data-full-detail="Published 1987-06 | VIEW-the-outsiders-22 | Seq 000068 | https://dc.fandom.com/wiki/Outsiders_Vol_1_22 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-22.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-22.jpg" alt="The Outsiders #22 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #22">The Outsiders #22</h3>
+          <p class="publication-date">Published 1987-06</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-23" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #23 view-the-outsiders-23 the outsiders 23 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000069" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000069" data-publication-date="1987-07" data-publication-year="1987" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-23.jpg" data-full-title="The Outsiders #23" data-full-detail="Published 1987-07 | VIEW-the-outsiders-23 | Seq 000069 | https://dc.fandom.com/wiki/Outsiders_Vol_1_23 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-23.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-23.jpg" alt="The Outsiders #23 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #23">The Outsiders #23</h3>
+          <p class="publication-date">Published 1987-07</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-24" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #24 view-the-outsiders-24 the outsiders 24 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000070" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000070" data-publication-date="1987-08" data-publication-year="1987" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-24.jpg" data-full-title="The Outsiders #24" data-full-detail="Published 1987-08 | VIEW-the-outsiders-24 | Seq 000070 | https://dc.fandom.com/wiki/Outsiders_Vol_1_24 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-24.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-24.jpg" alt="The Outsiders #24 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #24">The Outsiders #24</h3>
+          <p class="publication-date">Published 1987-08</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-25" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #25 view-the-outsiders-25 the outsiders 25 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000071" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000071" data-publication-date="1987-09" data-publication-year="1987" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-25.jpg" data-full-title="The Outsiders #25" data-full-detail="Published 1987-09 | VIEW-the-outsiders-25 | Seq 000071 | https://dc.fandom.com/wiki/Outsiders_Vol_1_25 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-25.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-25.jpg" alt="The Outsiders #25 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #25">The Outsiders #25</h3>
+          <p class="publication-date">Published 1987-09</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-26" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #26 view-the-outsiders-26 the outsiders 26 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000072" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000072" data-publication-date="1987-10" data-publication-year="1987" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-26.jpg" data-full-title="The Outsiders #26" data-full-detail="Published 1987-10 | VIEW-the-outsiders-26 | Seq 000072 | https://dc.fandom.com/wiki/Outsiders_Vol_1_26 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-26.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-26.jpg" alt="The Outsiders #26 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #26">The Outsiders #26</h3>
+          <p class="publication-date">Published 1987-10</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-27" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #27 view-the-outsiders-27 the outsiders 27 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000073" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000073" data-publication-date="1987-11" data-publication-year="1987" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-27.jpg" data-full-title="The Outsiders #27" data-full-detail="Published 1987-11 | VIEW-the-outsiders-27 | Seq 000073 | https://dc.fandom.com/wiki/Outsiders_Vol_1_27 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-27.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-27.jpg" alt="The Outsiders #27 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #27">The Outsiders #27</h3>
+          <p class="publication-date">Published 1987-11</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-the-outsiders-28" data-work="The Outsiders" data-section="The Outsiders" data-search="the outsiders #28 view-the-outsiders-28 the outsiders 28 the_outsiders_1985_1_28 the outsiders" data-order="series" data-scope="the_outsiders_1985_1_28" data-project="The Outsiders" data-status="missing" data-sequence="000074" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000074" data-publication-date="1987-12" data-publication-year="1987" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-the-outsiders-28.jpg" data-full-title="The Outsiders #28" data-full-detail="Published 1987-12 | VIEW-the-outsiders-28 | Seq 000074 | https://dc.fandom.com/wiki/Outsiders_Vol_1_28 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-the-outsiders-28.jpg" data-display-src="../assets/covers/display/VIEW-the-outsiders-28.jpg" alt="The Outsiders #28 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge">the outsiders 1985 1 28</span>
+            
+          </div>
+          <h3 title="The Outsiders #28">The Outsiders #28</h3>
+          <p class="publication-date">Published 1987-12</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BATO-ANN-0001" data-work="Batman and the Outsiders Annual" data-section="Batman and the Outsiders Annual" data-search="batman and the outsiders annual #1 pub-bato-ann-0001 batman and the outsiders annual 1 annual publication reference: pub-bato-ann-0001" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000075" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000075" data-publication-date="1984" data-publication-year="1984" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATO-ANN-0001.jpg" data-full-title="Batman and the Outsiders Annual #1" data-full-detail="Published 1984 | PUB-BATO-ANN-0001 | Seq 000075 | Annual publication reference: PUB-BATO-ANN-0001 | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BATO-ANN-0001.jpg" data-display-src="../assets/covers/display/PUB-BATO-ANN-0001.jpg" alt="Batman and the Outsiders Annual #1 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            
+          </div>
+          <h3 title="Batman and the Outsiders Annual #1">Batman and the Outsiders Annual #1</h3>
+          <p class="publication-date">Published 1984</p>
+        </div>
+      </article>
+    
+
+      <article class="comic-card missing cover-approved_manual" tabindex="-1" data-publication-id="PUB-BATO-ANN-0002" data-work="Batman and the Outsiders Annual" data-section="Batman and the Outsiders Annual" data-search="batman and the outsiders annual #2 pub-bato-ann-0002 batman and the outsiders annual 2 annual publication reference: pub-bato-ann-0002" data-order="series" data-scope="" data-project="" data-status="missing" data-sequence="000076" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000076" data-publication-date="1985" data-publication-year="1985" data-publication-decade="1980s">
+        <div class="status-strip">Missing</div>
+        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATO-ANN-0002.jpg" data-full-title="Batman and the Outsiders Annual #2" data-full-detail="Published 1985 | PUB-BATO-ANN-0002 | Seq 000076 | Annual publication reference: PUB-BATO-ANN-0002 | https://en.wikipedia.org/wiki/List_of_Batman_comics | Collector confirmed this perspective-style detection is acceptable."><img src="../assets/covers/thumb/PUB-BATO-ANN-0002.jpg" data-display-src="../assets/covers/display/PUB-BATO-ANN-0002.jpg" alt="Batman and the Outsiders Annual #2 cover" loading="lazy" decoding="async"></button></div>
+        <div class="card-body">
+          <div class="badges">
+            <span class="badge"></span>
+            <span class="badge review" title="Collector confirmed this perspective-style detection is acceptable.">approved manual</span>
+          </div>
+          <h3 title="Batman and the Outsiders Annual #2">Batman and the Outsiders Annual #2</h3>
+          <p class="publication-date">Published 1985</p>
+        </div>
+      </article>
+    </section>
+  </main>
+  <div class="lightbox" aria-modal="true" role="dialog" aria-label="Cover preview">
+    <div class="lightbox-panel">
+      <button class="lightbox-nav" type="button" data-lightbox-previous aria-label="Previous cover">&#8249;</button>
+      <div class="lightbox-image-wrap"><img src="" alt=""></div>
+      <button class="lightbox-nav" type="button" data-lightbox-next aria-label="Next cover">&#8250;</button>
+      <div class="lightbox-caption">
+        <div>
+          <div class="lightbox-title"></div>
+          <div class="lightbox-detail"></div>
+        </div>
+        <span class="lightbox-position"></span>
+        <button class="lightbox-close" type="button" data-lightbox-close>Close</button>
+      </div>
+    </div>
+  </div>
+  <div class="keyboard-help" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
+    <div class="keyboard-help-panel">
+      <h2>Keyboard shortcuts</h2>
+      <div class="shortcut-grid"><kbd>/</kbd><span>Search</span><kbd>F</kbd><span>Filters</span><kbd>B</kbd><span>Browse cards</span><kbd>Arrow keys</kbd><span>Move selection or preview</span><kbd>Enter</kbd><span>Open selected cover</span><kbd>M</kbd><span>Missing</span><kbd>O</kbd><span>Owned</span><kbd>A</kbd><span>All statuses</span><kbd>C</kbd><span>Cover/detail density</span><kbd>Esc</kbd><span>Close or clear</span><kbd>Command/Ctrl + C</kbd><span>Copy normally</span></div>
+      <button class="tool-button" type="button" data-close-help>Close</button>
+    </div>
+  </div>
+  <nav class="mobile-tools" aria-label="Viewer tools"><button type="button" data-mobile-search title="Search" aria-label="Search">S</button><button type="button" data-mobile-filter title="Filters" aria-label="Filters">F</button><button type="button" data-mobile-density title="Cover density" aria-label="Cover density">C</button><button type="button" data-mobile-help title="Keyboard shortcuts" aria-label="Keyboard shortcuts">?</button><button type="button" data-mobile-top title="Back to top" aria-label="Back to top">&uarr;</button></nav>
+  <script>
+    const state = { order: 'all', scope: 'all', project: 'all', status: 'all', sort: 'curated', decade: 'all', year: 'all', query: '' };
+    const grid = document.querySelector('.grid');
+    const cards = [...document.querySelectorAll('.comic-card')];
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImage = document.querySelector('.lightbox img');
+    const lightboxTitle = document.querySelector('.lightbox-title');
+    const lightboxDetail = document.querySelector('.lightbox-detail');
+    const lightboxPosition = document.querySelector('.lightbox-position');
+    const previousButton = document.querySelector('[data-lightbox-previous]');
+    const nextButton = document.querySelector('[data-lightbox-next]');
+    const controls = document.querySelector('.controls');
+    const filterToggle = document.querySelector('.filter-toggle');
+    const filterSummary = document.querySelector('.filter-summary');
+    const search = document.querySelector('.viewer-search');
+    const searchClear = document.querySelector('.search-clear');
+    const visibleCount = document.querySelector('.visible-count');
+    const projectProgress = document.querySelector('.project-progress');
+    const sectionJump = document.querySelector('.section-jump');
+    const densityButton = document.querySelector('[data-toggle-density]');
+    const storiesButton = document.querySelector('[data-toggle-stories]');
+    const browseButton = document.querySelector('[data-toggle-browse]');
+    const help = document.querySelector('.keyboard-help');
+    const filterStorageKey = 'gothamViewerFiltersOpen';
+    const stateStorageKey = `gothamViewerState:${location.pathname}`;
+    let currentPreviewButton = null;
+    let selectedCard = null;
+    let browseMode = false;
+    let storiesVisible = false;
+    let touchStartX = 0;
+    let swipedPreview = false;
+    let savedViewState = {};
+
+    function safeStore(key, value) { try { localStorage.setItem(key, value); } catch (error) {} }
+    function safeRead(key) { try { return localStorage.getItem(key); } catch (error) { return null; } }
+    function humanize(value) { return String(value || '').replaceAll('_', ' '); }
+    function validFilter(key, value) {
+      return value === 'all' || !!document.querySelector(`.chip[data-filter="${key}"][data-value="${CSS.escape(value)}"]`);
+    }
+    try {
+      const saved = JSON.parse(safeRead(stateStorageKey) || '{}');
+      savedViewState = saved;
+      // Restore presentation preferences, but never reopen a viewer with a hidden
+      // collection filter that contradicts the totals shown in its summary.
+      ['order', 'sort'].forEach(key => {
+        if (saved[key] && validFilter(key, saved[key])) state[key] = saved[key];
+      });
+      if (saved.density === 'compact') document.body.classList.add('compact-view');
+      storiesVisible = saved.stories === true;
+    } catch (error) {}
+    if (safeRead(filterStorageKey) === 'true') {
+      controls.classList.add('open');
+      filterToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function saveState() {
+      safeStore(stateStorageKey, JSON.stringify({ ...state, query: '', density: document.body.classList.contains('compact-view') ? 'compact' : 'details', stories: storiesVisible, scrollY: window.scrollY, lastPublication: selectedCard?.dataset.publicationId || '' }));
+    }
+    function setFilter(group, value) {
+      state[group] = value;
+      document.querySelectorAll(`.chip[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item.dataset.value === value));
+      document.querySelectorAll(`.metric[data-status]`).forEach(item => item.classList.toggle('active', group === 'status' && item.dataset.status === value));
+      applyFilters();
+      updateFilterSummary();
+      saveState();
+    }
+    filterToggle.addEventListener('click', () => {
+      const open = controls.classList.toggle('open');
+      filterToggle.setAttribute('aria-expanded', String(open));
+      safeStore(filterStorageKey, String(open));
+    });
+    document.querySelectorAll('.chip').forEach(button => button.addEventListener('click', () => setFilter(button.dataset.filter, button.dataset.value)));
+    document.querySelector('.year-filter').addEventListener('change', event => { state.year = event.target.value; applyFilters(); updateFilterSummary(); saveState(); });
+    document.querySelectorAll('.metric[data-status]').forEach(button => button.addEventListener('click', () => {
+      search.value = '';
+      state.query = '';
+      ['scope', 'project', 'decade'].forEach(key => {
+        state[key] = 'all';
+        document.querySelectorAll(`.chip[data-filter="${key}"]`).forEach(item => item.classList.toggle('active', item.dataset.value === 'all'));
+      });
+      state.year = 'all';
+      document.querySelector('.year-filter').value = 'all';
+      setFilter('status', button.dataset.status);
+    }));
+    search.addEventListener('input', () => { state.query = search.value.trim().toLocaleLowerCase(); applyFilters(); });
+    searchClear.addEventListener('click', () => { search.value = ''; state.query = ''; applyFilters(); search.focus(); });
+    densityButton.addEventListener('click', toggleDensity);
+    storiesButton.addEventListener('click', toggleStories);
+    browseButton.addEventListener('click', () => setBrowseMode(!browseMode));
+    document.querySelector('[data-open-help]').addEventListener('click', openHelp);
+    document.querySelector('[data-close-help]').addEventListener('click', closeHelp);
+    help.addEventListener('click', event => { if (event.target === help) closeHelp(); });
+
+    function updateFilterSummary() {
+      const selected = ['order', 'scope', 'project', 'status', 'sort', 'decade', 'year'].map(key => state[key]).filter(value => value && value !== 'all' && value !== 'curated').map(humanize);
+      filterSummary.textContent = selected.length ? selected.join(' · ') : 'All';
+    }
+    function applyFilters() {
+      cards.forEach(card => {
+        const matches = ['order', 'scope', 'project', 'status'].every(key => state[key] === 'all' || card.dataset[key].split('|').includes(state[key]))
+          && (state.decade === 'all' || card.dataset.publicationDecade === state.decade)
+          && (state.year === 'all' || card.dataset.publicationYear === state.year);
+        const searched = !state.query || card.dataset.search.includes(state.query);
+        card.classList.toggle('hidden', !(matches && searched));
+      });
+      sortCards();
+      renderProjectProgress();
+      const visible = visibleCards();
+      visibleCount.textContent = `${visible.length} of ${cards.length}`;
+      if (browseMode && (!selectedCard || selectedCard.classList.contains('hidden'))) selectCard(visible[0] || null);
+    }
+    function renderProjectProgress() {
+      const projectNames = [...new Set(cards.flatMap(card => card.dataset.project.split('|')).filter(Boolean))];
+      if (projectNames.length < 2 || projectNames.length > 30) { projectProgress.classList.remove('visible'); return; }
+      projectProgress.innerHTML = '';
+      projectNames.forEach(project => {
+        const projectCards = cards.filter(card => card.dataset.project.split('|').includes(project));
+        const counts = Object.fromEntries(['owned', 'facsimile', 'ordered', 'readable', 'missing'].map(status => [status, projectCards.filter(card => card.dataset.status === status).length]));
+        const available = counts.owned + counts.facsimile + counts.readable;
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.classList.toggle('active', state.project === project);
+        button.innerHTML = `<strong>${humanize(project)}</strong><span>${available}/${projectCards.length} available · ${counts.ordered} ordered · ${counts.missing} missing</span>`;
+        button.addEventListener('click', () => setFilter('project', state.project === project ? 'all' : project));
+        projectProgress.appendChild(button);
+      });
+      projectProgress.classList.add('visible');
+    }
+    function sortCards() {
+      grid.querySelectorAll('.chapter-divider').forEach(item => item.remove());
+      cards.sort((left, right) => {
+        if (state.sort === 'date') return dateSortValue(left) - dateSortValue(right) || sequenceForCard(left) - sequenceForCard(right);
+        if (state.sort === 'title') return left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent, undefined, {numeric:true, sensitivity:'base'});
+        return sequenceForCard(left) - sequenceForCard(right) || left.querySelector('h3').textContent.localeCompare(right.querySelector('h3').textContent);
+      }).forEach(card => grid.appendChild(card));
+      renderChapterDividers();
+    }
+    function dateSortValue(card) {
+      const value = card.dataset.publicationDate || '';
+      const match = value.match(/^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?/);
+      return match ? Number(`${match[1]}${match[2] || '00'}${match[3] || '00'}`) : 99999999;
+    }
+    function renderChapterDividers() {
+      if (!storiesVisible) return;
+      const visible = visibleCards();
+      const sections = [...new Set(visible.map(card => card.dataset.section).filter(Boolean))];
+      if (sections.length < 2 || sections.length > 18) return;
+      let previous = '';
+      visible.forEach(card => {
+        const section = card.dataset.section;
+        if (section && section !== previous) {
+          const divider = document.createElement('div');
+          divider.className = 'chapter-divider';
+          divider.textContent = humanize(section);
+          grid.insertBefore(divider, card);
+          previous = section;
+        }
+      });
+    }
+    function sequenceForCard(card) {
+      const order = state.order === 'all' ? 'all' : state.order;
+      if (order === 'publication') {
+        return scopedSequence(card, 'publicationSequence');
+      }
+      if (order === 'chronological') {
+        return scopedSequence(card, 'chronologicalSequence');
+      }
+      const byOrder = sequenceMap(card.dataset.orderSequences);
+      if (byOrder[order]) {
+        return sortValue(byOrder[order]);
+      }
+      const chronological = scopedSequence(card, 'chronologicalSequence');
+      return chronological < 999999 ? chronological : sortValue(card.dataset.sequence);
+    }
+    function scopedSequence(card, orderKey) {
+      const scoped = sequenceMap(card.dataset[`${orderKey}s`]);
+      if (state.scope !== 'all' && scoped[state.scope]) {
+        return sortValue(scoped[state.scope]);
+      }
+      return sortValue(card.dataset[orderKey]);
+    }
+    function sequenceMap(value) {
+      return Object.fromEntries((value || '').split('|').filter(Boolean).map(item => {
+        const [scope, sequence] = item.split(':');
+        return [scope, sequence];
+      }));
+    }
+    function sortValue(value) {
+      const parsed = Number.parseFloat(value || '999999');
+      if (Number.isFinite(parsed)) {
+        return parsed;
+      }
+        const embedded = String(value || '').match(/\d+(\.\d+)?/);
+      return embedded ? Number.parseFloat(embedded[0]) : 999999;
+    }
+    function visibleCards() { return cards.filter(card => !card.classList.contains('hidden')); }
+    function visibleCoverButtons() { return visibleCards().map(card => card.querySelector('.cover-button')).filter(Boolean); }
+    function openLightbox(button) { currentPreviewButton = button; renderPreview(button); lightbox.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function renderPreview(button) {
+      if (!button) return;
+      currentPreviewButton = button;
+      lightboxImage.src = button.dataset.fullSrc;
+      lightboxImage.alt = `${button.dataset.fullTitle} cover`;
+      lightboxTitle.textContent = button.dataset.fullTitle;
+      lightboxDetail.textContent = button.dataset.fullDetail || '';
+      const sequence = visibleCoverButtons();
+      const index = sequence.indexOf(button);
+      lightboxPosition.textContent = index >= 0 ? `${index + 1} / ${sequence.length}` : '';
+      previousButton.disabled = sequence.length < 2;
+      nextButton.disabled = sequence.length < 2;
+      [-1, 1].forEach(direction => { if (sequence.length > 1) { const adjacent = sequence[(index + direction + sequence.length) % sequence.length]; const preload = new Image(); preload.src = adjacent.dataset.fullSrc; } });
+    }
+    function movePreview(direction) {
+      const sequence = visibleCoverButtons();
+      if (sequence.length < 2) return;
+      const index = sequence.indexOf(currentPreviewButton);
+      renderPreview(sequence[(Math.max(index, 0) + direction + sequence.length) % sequence.length]);
+    }
+    document.querySelectorAll('.cover-button').forEach(button => button.addEventListener('click', event => { event.stopPropagation(); openLightbox(button); }));
+    previousButton.addEventListener('click', event => { event.stopPropagation(); movePreview(-1); });
+    nextButton.addEventListener('click', event => { event.stopPropagation(); movePreview(1); });
+    document.querySelectorAll('[data-lightbox-close]').forEach(button => button.addEventListener('click', closeLightbox));
+    lightbox.addEventListener('click', () => { if (swipedPreview) { swipedPreview = false; return; } closeLightbox(); });
+    lightbox.addEventListener('touchstart', event => { touchStartX = event.changedTouches[0].clientX; }, { passive: true });
+    lightbox.addEventListener('touchend', event => { const delta = event.changedTouches[0].clientX - touchStartX; if (Math.abs(delta) > 45) { swipedPreview = true; movePreview(delta > 0 ? -1 : 1); } }, { passive: true });
+    function closeLightbox() {
+      if (!lightbox.classList.contains('open')) return;
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+      lightboxImage.removeAttribute('src');
+      lightboxImage.removeAttribute('alt');
+      lightboxTitle.textContent = '';
+      lightboxDetail.textContent = '';
+      const returnCard = currentPreviewButton?.closest('.comic-card');
+      currentPreviewButton = null;
+      if (returnCard) returnCard.focus({ preventScroll: true });
+    }
+    function toggleDensity() {
+      document.body.classList.toggle('compact-view');
+      densityButton.classList.toggle('active', document.body.classList.contains('compact-view'));
+      densityButton.textContent = document.body.classList.contains('compact-view') ? 'Details' : 'Covers';
+      saveState();
+    }
+    function toggleStories() {
+      storiesVisible = !storiesVisible;
+      storiesButton.classList.toggle('active', storiesVisible);
+      storiesButton.textContent = storiesVisible ? 'Grid' : 'Stories';
+      sortCards();
+      saveState();
+    }
+    function selectCard(card, centre = false) {
+      if (selectedCard) selectedCard.classList.remove('keyboard-selected');
+      selectedCard = card;
+      if (card) { card.classList.add('keyboard-selected'); card.scrollIntoView({ block: centre ? 'center' : 'nearest', inline: 'nearest', behavior: 'smooth' }); }
+    }
+    function setBrowseMode(enabled) { browseMode = enabled; browseButton.classList.toggle('active', enabled); if (enabled) selectCard(selectedCard && !selectedCard.classList.contains('hidden') ? selectedCard : visibleCards()[0] || null, true); else selectCard(null); }
+    function moveCardSelection(direction) {
+      const available = visibleCards();
+      if (!available.length) return;
+      if (!selectedCard || !available.includes(selectedCard)) { selectCard(available[0]); return; }
+      const source = selectedCard.getBoundingClientRect();
+      const sx = source.left + source.width / 2, sy = source.top + source.height / 2;
+      const horizontal = direction === 'left' || direction === 'right';
+      const candidates = available.filter(card => card !== selectedCard).map(card => { const rect = card.getBoundingClientRect(); const dx = rect.left + rect.width / 2 - sx, dy = rect.top + rect.height / 2 - sy; const forward = direction === 'left' ? dx < -2 : direction === 'right' ? dx > 2 : direction === 'up' ? dy < -2 : dy > 2; return { card, forward, score: Math.abs(horizontal ? dx : dy) + Math.abs(horizontal ? dy : dx) * 3 }; }).filter(item => item.forward).sort((a, b) => a.score - b.score);
+      if (candidates.length) selectCard(candidates[0].card);
+    }
+    function openHelp() { help.classList.add('open'); }
+    function closeHelp() { help.classList.remove('open'); }
+    function resetFilters() { search.value = ''; state.query = ''; ['scope', 'project', 'status', 'decade'].forEach(key => setFilter(key, 'all')); state.year = 'all'; document.querySelector('.year-filter').value = 'all'; }
+    sectionJump?.addEventListener('change', () => { const target = visibleCards().find(card => card.dataset.section.split('|').includes(sectionJump.value) || card.dataset.work === sectionJump.value); if (target) target.scrollIntoView({ block: 'center', behavior: 'smooth' }); sectionJump.value = ''; });
+    document.querySelector('[data-mobile-search]').addEventListener('click', () => { controls.classList.add('open'); filterToggle.setAttribute('aria-expanded', 'true'); search.focus(); });
+    document.querySelector('[data-mobile-filter]').addEventListener('click', () => filterToggle.click());
+    document.querySelector('[data-mobile-density]').addEventListener('click', toggleDensity);
+    document.querySelector('[data-mobile-help]').addEventListener('click', openHelp);
+    document.querySelector('[data-mobile-top]').addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+    document.addEventListener('keydown', event => {
+      const typing = event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLTextAreaElement;
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+      if (help.classList.contains('open')) { if (event.key === 'Escape' || event.key === '?') { event.preventDefault(); closeHelp(); } return; }
+      if (lightbox.classList.contains('open')) { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); movePreview(event.key === 'ArrowLeft' ? -1 : 1); } else if (event.key === 'Escape' || event.code === 'Space') { event.preventDefault(); closeLightbox(); } return; }
+      if (event.key === 'Escape' && typing) { search.value = ''; state.query = ''; applyFilters(); search.blur(); return; }
+      if (typing) return;
+      if (browseMode && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); moveCardSelection(event.key.replace('Arrow', '').toLowerCase()); return; }
+      if (browseMode && (event.key === 'Enter' || event.code === 'Space')) { event.preventDefault(); const button = selectedCard?.querySelector('.cover-button'); if (button) openLightbox(button); return; }
+      if (event.key === '/') { event.preventDefault(); controls.classList.add('open'); filterToggle.setAttribute('aria-expanded', 'true'); search.focus(); }
+      else if (event.key.toLowerCase() === 'f') filterToggle.click();
+      else if (event.key.toLowerCase() === 'b') setBrowseMode(!browseMode);
+      else if (event.key === '?') openHelp();
+      else if (event.key.toLowerCase() === 'm') setFilter('status', 'missing');
+      else if (event.key.toLowerCase() === 'o') setFilter('status', 'owned');
+      else if (event.key.toLowerCase() === 'a') setFilter('status', 'all');
+      else if (event.key.toLowerCase() === 'c') toggleDensity();
+    });
+    ['order', 'scope', 'project', 'status', 'sort', 'decade'].forEach(key => document.querySelectorAll(`.chip[data-filter="${key}"]`).forEach(item => item.classList.toggle('active', item.dataset.value === state[key])));
+    document.querySelector('.year-filter').value = state.year;
+    densityButton.classList.toggle('active', document.body.classList.contains('compact-view'));
+    densityButton.textContent = document.body.classList.contains('compact-view') ? 'Details' : 'Covers';
+    storiesButton.classList.toggle('active', storiesVisible);
+    storiesButton.textContent = storiesVisible ? 'Grid' : 'Stories';
+    applyFilters();
+    updateFilterSummary();
+    window.addEventListener('pagehide', saveState);
+    if (savedViewState.scrollY) requestAnimationFrame(() => scrollTo({ top: savedViewState.scrollY }));
+    </script>
+</body>
+</html>
