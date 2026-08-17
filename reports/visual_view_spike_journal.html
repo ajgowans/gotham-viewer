@@ -112,6 +112,11 @@
     .shortcut-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 12px; align-items: center; }
     kbd { min-width: 34px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 3px 7px; background: #f4f6f8; text-align: center; font: 700 12px ui-monospace, monospace; }
     .mobile-tools { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .comic-card.keyboard-selected { transform: none; }
+    }
     @media (max-width: 700px) {
       header, .summary, .project-progress, main { padding-left: 14px; padding-right: 14px; }
       header { padding-top: 18px; }
@@ -192,7 +197,7 @@
     <section class="grid">
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0001" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #1 spike-journal-0001 blood bowl spike! journal 1 original magazine issue. 2016 edition spike_journal" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="owned" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000001" data-publication-date="2018" data-publication-year="2018" data-publication-decade="2010s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0001.jpg" data-full-title="Spike! Journal #1" data-full-detail="Published 2018 | SPIKE-JOURNAL-0001 | Seq 000001 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0001.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0001.jpg" alt="Spike! Journal #1 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #1 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0001.jpg" data-full-title="Spike! Journal #1" data-full-detail="Published 2018 | SPIKE-JOURNAL-0001 | Seq 000001 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0001.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0001.jpg" alt="Spike! Journal #1 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">2016 Edition</span>
@@ -206,7 +211,7 @@
 
       <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0002" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #2 spike-journal-0002 blood bowl spike! journal 2 original magazine issue. 2016 edition spike_journal" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="missing" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000002" data-publication-date="2018" data-publication-year="2018" data-publication-decade="2010s">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0002.jpg" data-full-title="Spike! Journal #2" data-full-detail="Published 2018 | SPIKE-JOURNAL-0002 | Seq 000002 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0002.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0002.jpg" alt="Spike! Journal #2 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #2 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0002.jpg" data-full-title="Spike! Journal #2" data-full-detail="Published 2018 | SPIKE-JOURNAL-0002 | Seq 000002 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0002.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0002.jpg" alt="Spike! Journal #2 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">2016 Edition</span>
@@ -220,7 +225,7 @@
 
       <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0003" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #3 spike-journal-0003 blood bowl spike! journal 3 original magazine issue. 2016 edition spike_journal" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="missing" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000003" data-publication-date="2018" data-publication-year="2018" data-publication-decade="2010s">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0003.jpg" data-full-title="Spike! Journal #3" data-full-detail="Published 2018 | SPIKE-JOURNAL-0003 | Seq 000003 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_3 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0003.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0003.jpg" alt="Spike! Journal #3 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #3 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0003.jpg" data-full-title="Spike! Journal #3" data-full-detail="Published 2018 | SPIKE-JOURNAL-0003 | Seq 000003 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_3 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0003.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0003.jpg" alt="Spike! Journal #3 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">2016 Edition</span>
@@ -234,7 +239,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0004" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #4 spike-journal-0004 blood bowl spike! journal 4 original magazine issue. 2016 edition spike_journal" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="owned" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000004" data-publication-date="2018" data-publication-year="2018" data-publication-decade="2010s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0004.jpg" data-full-title="Spike! Journal #4" data-full-detail="Published 2018 | SPIKE-JOURNAL-0004 | Seq 000004 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_4 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0004.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0004.jpg" alt="Spike! Journal #4 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #4 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0004.jpg" data-full-title="Spike! Journal #4" data-full-detail="Published 2018 | SPIKE-JOURNAL-0004 | Seq 000004 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_4 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0004.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0004.jpg" alt="Spike! Journal #4 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">2016 Edition</span>
@@ -248,7 +253,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0005" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #5 spike-journal-0005 blood bowl spike! journal 5 original magazine issue. 2016 edition spike_journal" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="owned" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000005" data-publication-date="2019-06" data-publication-year="2019" data-publication-decade="2010s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0005.jpg" data-full-title="Spike! Journal #5" data-full-detail="Published 2019-06 | SPIKE-JOURNAL-0005 | Seq 000005 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_5 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0005.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0005.jpg" alt="Spike! Journal #5 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #5 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0005.jpg" data-full-title="Spike! Journal #5" data-full-detail="Published 2019-06 | SPIKE-JOURNAL-0005 | Seq 000005 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_5 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0005.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0005.jpg" alt="Spike! Journal #5 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">2016 Edition</span>
@@ -262,7 +267,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0006" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #6 spike-journal-0006 blood bowl spike! journal 6 original magazine issue. 2016 edition spike_journal" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="owned" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000006" data-publication-date="2019-07" data-publication-year="2019" data-publication-decade="2010s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0006.jpg" data-full-title="Spike! Journal #6" data-full-detail="Published 2019-07 | SPIKE-JOURNAL-0006 | Seq 000006 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_6 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0006.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0006.jpg" alt="Spike! Journal #6 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #6 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0006.jpg" data-full-title="Spike! Journal #6" data-full-detail="Published 2019-07 | SPIKE-JOURNAL-0006 | Seq 000006 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_6 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0006.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0006.jpg" alt="Spike! Journal #6 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">2016 Edition</span>
@@ -276,7 +281,7 @@
 
       <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0007" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #7 spike-journal-0007 blood bowl spike! journal 7 original magazine issue. 2016 edition spike_journal" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="missing" data-sequence="000007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000007" data-publication-date="2019-10" data-publication-year="2019" data-publication-decade="2010s">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0007.jpg" data-full-title="Spike! Journal #7" data-full-detail="Published 2019-10 | SPIKE-JOURNAL-0007 | Seq 000007 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_7 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0007.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0007.jpg" alt="Spike! Journal #7 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #7 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0007.jpg" data-full-title="Spike! Journal #7" data-full-detail="Published 2019-10 | SPIKE-JOURNAL-0007 | Seq 000007 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_7 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0007.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0007.jpg" alt="Spike! Journal #7 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">2016 Edition</span>
@@ -290,7 +295,7 @@
 
       <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0008" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #8 spike-journal-0008 blood bowl spike! journal 8 original magazine issue. 2016 edition spike_journal" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="missing" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000008" data-publication-date="2019-12" data-publication-year="2019" data-publication-decade="2010s">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0008.jpg" data-full-title="Spike! Journal #8" data-full-detail="Published 2019-12 | SPIKE-JOURNAL-0008 | Seq 000008 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_8 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0008.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0008.jpg" alt="Spike! Journal #8 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #8 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0008.jpg" data-full-title="Spike! Journal #8" data-full-detail="Published 2019-12 | SPIKE-JOURNAL-0008 | Seq 000008 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_8 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0008.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0008.jpg" alt="Spike! Journal #8 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">2016 Edition</span>
@@ -304,7 +309,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0009" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #9 spike-journal-0009 blood bowl spike! journal 9 original magazine issue. 2016 edition spike_journal" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="owned" data-sequence="000009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000009" data-publication-date="2020-06" data-publication-year="2020" data-publication-decade="2020s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0009.jpg" data-full-title="Spike! Journal #9" data-full-detail="Published 2020-06 | SPIKE-JOURNAL-0009 | Seq 000009 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_9 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0009.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0009.jpg" alt="Spike! Journal #9 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #9 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0009.jpg" data-full-title="Spike! Journal #9" data-full-detail="Published 2020-06 | SPIKE-JOURNAL-0009 | Seq 000009 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_9 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0009.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0009.jpg" alt="Spike! Journal #9 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">2016 Edition</span>
@@ -318,7 +323,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0010" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #10 spike-journal-0010 blood bowl spike! journal 10 original magazine issue. 2016 edition spike_journal" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="owned" data-sequence="000010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000010" data-publication-date="2020-08" data-publication-year="2020" data-publication-decade="2020s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0010.jpg" data-full-title="Spike! Journal #10" data-full-detail="Published 2020-08 | SPIKE-JOURNAL-0010 | Seq 000010 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_10 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0010.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0010.jpg" alt="Spike! Journal #10 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #10 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0010.jpg" data-full-title="Spike! Journal #10" data-full-detail="Published 2020-08 | SPIKE-JOURNAL-0010 | Seq 000010 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_10 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0010.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0010.jpg" alt="Spike! Journal #10 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">2016 Edition</span>
@@ -332,7 +337,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0011" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #11 spike-journal-0011 blood bowl spike! journal 11 original magazine issue. 2016 edition spike_journal" data-order="series" data-scope="2016 Edition" data-project="spike_journal" data-status="owned" data-sequence="000011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000011" data-publication-date="2020" data-publication-year="2020" data-publication-decade="2020s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0011.jpg" data-full-title="Spike! Journal #11" data-full-detail="Published 2020 | SPIKE-JOURNAL-0011 | Seq 000011 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_11 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0011.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0011.jpg" alt="Spike! Journal #11 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #11 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0011.jpg" data-full-title="Spike! Journal #11" data-full-detail="Published 2020 | SPIKE-JOURNAL-0011 | Seq 000011 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_11 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0011.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0011.jpg" alt="Spike! Journal #11 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">2016 Edition</span>
@@ -346,7 +351,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0012" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #12 spike-journal-0012 blood bowl spike! journal 12 original magazine issue. second season edition spike_journal" data-order="series" data-scope="Second Season Edition" data-project="spike_journal" data-status="owned" data-sequence="000012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000012" data-publication-date="2021-04" data-publication-year="2021" data-publication-decade="2020s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0012.jpg" data-full-title="Spike! Journal #12" data-full-detail="Published 2021-04 | SPIKE-JOURNAL-0012 | Seq 000012 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_12 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0012.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0012.jpg" alt="Spike! Journal #12 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #12 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0012.jpg" data-full-title="Spike! Journal #12" data-full-detail="Published 2021-04 | SPIKE-JOURNAL-0012 | Seq 000012 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_12 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0012.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0012.jpg" alt="Spike! Journal #12 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Second Season Edition</span>
@@ -360,7 +365,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0013" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #13 spike-journal-0013 blood bowl spike! journal 13 original magazine issue. second season edition spike_journal" data-order="series" data-scope="Second Season Edition" data-project="spike_journal" data-status="owned" data-sequence="000013" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000013" data-publication-date="2021-11-13" data-publication-year="2021" data-publication-decade="2020s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0013.jpg" data-full-title="Spike! Journal #13" data-full-detail="Published 2021-11-13 | SPIKE-JOURNAL-0013 | Seq 000013 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_13 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0013.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0013.jpg" alt="Spike! Journal #13 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #13 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0013.jpg" data-full-title="Spike! Journal #13" data-full-detail="Published 2021-11-13 | SPIKE-JOURNAL-0013 | Seq 000013 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_13 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0013.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0013.jpg" alt="Spike! Journal #13 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Second Season Edition</span>
@@ -374,7 +379,7 @@
 
       <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0014" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #14 spike-journal-0014 blood bowl spike! journal 14 original magazine issue. second season edition spike_journal" data-order="series" data-scope="Second Season Edition" data-project="spike_journal" data-status="missing" data-sequence="000014" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000014" data-publication-date="2022-04" data-publication-year="2022" data-publication-decade="2020s">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0014.jpg" data-full-title="Spike! Journal #14" data-full-detail="Published 2022-04 | SPIKE-JOURNAL-0014 | Seq 000014 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_14 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0014.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0014.jpg" alt="Spike! Journal #14 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #14 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0014.jpg" data-full-title="Spike! Journal #14" data-full-detail="Published 2022-04 | SPIKE-JOURNAL-0014 | Seq 000014 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_14 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0014.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0014.jpg" alt="Spike! Journal #14 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Second Season Edition</span>
@@ -388,7 +393,7 @@
 
       <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0015" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #15 spike-journal-0015 blood bowl spike! journal 15 original magazine issue. second season edition spike_journal" data-order="series" data-scope="Second Season Edition" data-project="spike_journal" data-status="missing" data-sequence="000015" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000015" data-publication-date="2022-10" data-publication-year="2022" data-publication-decade="2020s">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0015.jpg" data-full-title="Spike! Journal #15" data-full-detail="Published 2022-10 | SPIKE-JOURNAL-0015 | Seq 000015 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_15 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0015.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0015.jpg" alt="Spike! Journal #15 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #15 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0015.jpg" data-full-title="Spike! Journal #15" data-full-detail="Published 2022-10 | SPIKE-JOURNAL-0015 | Seq 000015 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_15 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0015.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0015.jpg" alt="Spike! Journal #15 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Second Season Edition</span>
@@ -402,7 +407,7 @@
 
       <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0016" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #16 spike-journal-0016 blood bowl spike! journal 16 original magazine issue. second season edition spike_journal" data-order="series" data-scope="Second Season Edition" data-project="spike_journal" data-status="missing" data-sequence="000016" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000016" data-publication-date="2023-09-30" data-publication-year="2023" data-publication-decade="2020s">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0016.jpg" data-full-title="Spike! Journal #16" data-full-detail="Published 2023-09-30 | SPIKE-JOURNAL-0016 | Seq 000016 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_16 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0016.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0016.jpg" alt="Spike! Journal #16 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #16 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0016.jpg" data-full-title="Spike! Journal #16" data-full-detail="Published 2023-09-30 | SPIKE-JOURNAL-0016 | Seq 000016 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_16 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0016.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0016.jpg" alt="Spike! Journal #16 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Second Season Edition</span>
@@ -416,7 +421,7 @@
 
       <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0017" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #17 spike-journal-0017 blood bowl spike! journal 17 original magazine issue. second season edition spike_journal" data-order="series" data-scope="Second Season Edition" data-project="spike_journal" data-status="missing" data-sequence="000017" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000017" data-publication-date="2024" data-publication-year="2024" data-publication-decade="2020s">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0017.jpg" data-full-title="Spike! Journal #17" data-full-detail="Published 2024 | SPIKE-JOURNAL-0017 | Seq 000017 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_17 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0017.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0017.jpg" alt="Spike! Journal #17 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #17 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0017.jpg" data-full-title="Spike! Journal #17" data-full-detail="Published 2024 | SPIKE-JOURNAL-0017 | Seq 000017 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_17 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0017.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0017.jpg" alt="Spike! Journal #17 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Second Season Edition</span>
@@ -430,7 +435,7 @@
 
       <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0018" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #18 spike-journal-0018 blood bowl spike! journal 18 original magazine issue. second season edition spike_journal" data-order="series" data-scope="Second Season Edition" data-project="spike_journal" data-status="missing" data-sequence="000018" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000018" data-publication-date="2024-10" data-publication-year="2024" data-publication-decade="2020s">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0018.jpg" data-full-title="Spike! Journal #18" data-full-detail="Published 2024-10 | SPIKE-JOURNAL-0018 | Seq 000018 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_18 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0018.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0018.jpg" alt="Spike! Journal #18 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #18 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0018.jpg" data-full-title="Spike! Journal #18" data-full-detail="Published 2024-10 | SPIKE-JOURNAL-0018 | Seq 000018 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_18 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0018.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0018.jpg" alt="Spike! Journal #18 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Second Season Edition</span>
@@ -444,7 +449,7 @@
 
       <article class="comic-card missing cover-needs_review" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0019" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #19 spike-journal-0019 blood bowl spike! journal 19 original magazine issue. third season edition spike_journal" data-order="series" data-scope="Third Season Edition" data-project="spike_journal" data-status="missing" data-sequence="000019" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000019" data-publication-date="2025-11" data-publication-year="2025" data-publication-decade="2020s">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0019.jpg" data-full-title="Spike! Journal #19" data-full-detail="Published 2025-11 | SPIKE-JOURNAL-0019 | Seq 000019 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_19 | possible_perspective_preview | Artwork sits inside a pale product-preview background; verify that the source is a flat full-cover scan."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0019.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0019.jpg" alt="Spike! Journal #19 cover" loading="lazy" decoding="async"></button><span class="cover-review-badge warning">Cover check</span></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #19 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0019.jpg" data-full-title="Spike! Journal #19" data-full-detail="Published 2025-11 | SPIKE-JOURNAL-0019 | Seq 000019 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_19 | possible_perspective_preview | Artwork sits inside a pale product-preview background; verify that the source is a flat full-cover scan."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0019.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0019.jpg" alt="Spike! Journal #19 cover" loading="lazy" decoding="async"></button><span class="cover-review-badge warning">Cover check</span></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Third Season Edition</span>
@@ -458,7 +463,7 @@
 
       <article class="comic-card missing cover-needs_review" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0020" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #20 spike-journal-0020 blood bowl spike! journal 20 original magazine issue. third season edition spike_journal" data-order="series" data-scope="Third Season Edition" data-project="spike_journal" data-status="missing" data-sequence="000020" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000020" data-publication-date="2025-11" data-publication-year="2025" data-publication-decade="2020s">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0020.jpg" data-full-title="Spike! Journal #20" data-full-detail="Published 2025-11 | SPIKE-JOURNAL-0020 | Seq 000020 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_20 | possible_perspective_preview | The complete outer edge is a pale product background; verify that the image is a flat full-cover scan rather than a perspective preview."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0020.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0020.jpg" alt="Spike! Journal #20 cover" loading="lazy" decoding="async"></button><span class="cover-review-badge warning">Cover check</span></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #20 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0020.jpg" data-full-title="Spike! Journal #20" data-full-detail="Published 2025-11 | SPIKE-JOURNAL-0020 | Seq 000020 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_20 | possible_perspective_preview | The complete outer edge is a pale product background; verify that the image is a flat full-cover scan rather than a perspective preview."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0020.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0020.jpg" alt="Spike! Journal #20 cover" loading="lazy" decoding="async"></button><span class="cover-review-badge warning">Cover check</span></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Third Season Edition</span>
@@ -472,7 +477,7 @@
 
       <article class="comic-card missing cover-needs_review" tabindex="-1" data-publication-id="SPIKE-JOURNAL-0021" data-work="Blood Bowl Spike! Journal" data-section="spike_journal" data-search="spike! journal #21 spike-journal-0021 blood bowl spike! journal 21 original magazine issue. third season edition spike_journal" data-order="series" data-scope="Third Season Edition" data-project="spike_journal" data-status="missing" data-sequence="000021" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000021" data-publication-date="2026-03" data-publication-year="2026" data-publication-decade="2020s">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0021.jpg" data-full-title="Spike! Journal #21" data-full-detail="Published 2026-03 | SPIKE-JOURNAL-0021 | Seq 000021 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_21 | possible_perspective_preview | The complete outer edge is a pale product background; verify that the image is a flat full-cover scan rather than a perspective preview."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0021.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0021.jpg" alt="Spike! Journal #21 cover" loading="lazy" decoding="async"></button><span class="cover-review-badge warning">Cover check</span></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Spike! Journal #21 cover" data-full-src="../assets/covers/display/SPIKE-JOURNAL-0021.jpg" data-full-title="Spike! Journal #21" data-full-detail="Published 2026-03 | SPIKE-JOURNAL-0021 | Seq 000021 | Magazine issue | Original magazine issue. | https://whfb.lexicanum.com/wiki/Spike%21_Journal_Issue_21 | possible_perspective_preview | The complete outer edge is a pale product background; verify that the image is a flat full-cover scan rather than a perspective preview."><img src="../assets/covers/thumb/SPIKE-JOURNAL-0021.jpg" data-display-src="../assets/covers/display/SPIKE-JOURNAL-0021.jpg" alt="Spike! Journal #21 cover" loading="lazy" decoding="async"></button><span class="cover-review-badge warning">Cover check</span></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Third Season Edition</span>
@@ -533,12 +538,14 @@
     const filterStorageKey = 'gothamViewerFiltersOpen';
     const stateStorageKey = `gothamViewerState:${location.pathname}`;
     let currentPreviewButton = null;
+    let lightboxReturnFocus = null;
     let selectedCard = null;
     let browseMode = false;
     let storiesVisible = false;
     let touchStartX = 0;
     let swipedPreview = false;
     let savedViewState = {};
+    let helpReturnFocus = null;
 
     function safeStore(key, value) { try { localStorage.setItem(key, value); } catch (error) {} }
     function safeRead(key) { try { return localStorage.getItem(key); } catch (error) { return null; } }
@@ -704,7 +711,7 @@
     }
     function visibleCards() { return cards.filter(card => !card.classList.contains('hidden')); }
     function visibleCoverButtons() { return visibleCards().map(card => card.querySelector('.cover-button')).filter(Boolean); }
-    function openLightbox(button) { currentPreviewButton = button; renderPreview(button); lightbox.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function openLightbox(button) { lightboxReturnFocus = button; currentPreviewButton = button; renderPreview(button); lightbox.classList.add('open'); document.body.style.overflow = 'hidden'; document.querySelector('[data-lightbox-close]').focus(); }
     function renderPreview(button) {
       if (!button) return;
       currentPreviewButton = button;
@@ -740,9 +747,10 @@
       lightboxImage.removeAttribute('alt');
       lightboxTitle.textContent = '';
       lightboxDetail.textContent = '';
-      const returnCard = currentPreviewButton?.closest('.comic-card');
+      const returnButton = lightboxReturnFocus;
       currentPreviewButton = null;
-      if (returnCard) returnCard.focus({ preventScroll: true });
+      lightboxReturnFocus = null;
+      if (returnButton) returnButton.focus({ preventScroll: true });
     }
     function toggleDensity() {
       document.body.classList.toggle('compact-view');
@@ -773,8 +781,17 @@
       const candidates = available.filter(card => card !== selectedCard).map(card => { const rect = card.getBoundingClientRect(); const dx = rect.left + rect.width / 2 - sx, dy = rect.top + rect.height / 2 - sy; const forward = direction === 'left' ? dx < -2 : direction === 'right' ? dx > 2 : direction === 'up' ? dy < -2 : dy > 2; return { card, forward, score: Math.abs(horizontal ? dx : dy) + Math.abs(horizontal ? dy : dx) * 3 }; }).filter(item => item.forward).sort((a, b) => a.score - b.score);
       if (candidates.length) selectCard(candidates[0].card);
     }
-    function openHelp() { help.classList.add('open'); }
-    function closeHelp() { help.classList.remove('open'); }
+    function openHelp() { helpReturnFocus = document.activeElement; help.classList.add('open'); document.querySelector('[data-close-help]').focus(); }
+    function closeHelp() { help.classList.remove('open'); if (helpReturnFocus instanceof HTMLElement) helpReturnFocus.focus({ preventScroll: true }); helpReturnFocus = null; }
+    function trapFocus(event, modal) {
+      if (event.key !== 'Tab') return false;
+      const focusable = [...modal.querySelectorAll('button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), [tabindex]:not([tabindex="-1"])')].filter(item => item.getClientRects().length);
+      if (!focusable.length) return false;
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); return true; }
+      if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); return true; }
+      return false;
+    }
     function resetFilters() { search.value = ''; state.query = ''; ['scope', 'project', 'status', 'decade'].forEach(key => setFilter(key, 'all')); state.year = 'all'; document.querySelector('.year-filter').value = 'all'; }
     sectionJump?.addEventListener('change', () => { const target = visibleCards().find(card => card.dataset.section.split('|').includes(sectionJump.value) || card.dataset.work === sectionJump.value); if (target) target.scrollIntoView({ block: 'center', behavior: 'smooth' }); sectionJump.value = ''; });
     document.querySelector('[data-mobile-search]').addEventListener('click', () => { controls.classList.add('open'); filterToggle.setAttribute('aria-expanded', 'true'); search.focus(); });
@@ -785,8 +802,8 @@
     document.addEventListener('keydown', event => {
       const typing = event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLTextAreaElement;
       if (event.metaKey || event.ctrlKey || event.altKey) return;
-      if (help.classList.contains('open')) { if (event.key === 'Escape' || event.key === '?') { event.preventDefault(); closeHelp(); } return; }
-      if (lightbox.classList.contains('open')) { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); movePreview(event.key === 'ArrowLeft' ? -1 : 1); } else if (event.key === 'Escape' || event.code === 'Space') { event.preventDefault(); closeLightbox(); } return; }
+      if (help.classList.contains('open')) { if (trapFocus(event, help)) return; if (event.key === 'Escape' || event.key === '?') { event.preventDefault(); closeHelp(); } return; }
+      if (lightbox.classList.contains('open')) { if (trapFocus(event, lightbox)) return; if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); movePreview(event.key === 'ArrowLeft' ? -1 : 1); } else if (event.key === 'Escape' || event.code === 'Space') { event.preventDefault(); closeLightbox(); } return; }
       if (event.key === 'Escape' && typing) { search.value = ''; state.query = ''; applyFilters(); search.blur(); return; }
       if (typing) return;
       if (browseMode && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); moveCardSelection(event.key.replace('Arrow', '').toLowerCase()); return; }

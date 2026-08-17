@@ -112,6 +112,11 @@
     .shortcut-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 12px; align-items: center; }
     kbd { min-width: 34px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 3px 7px; background: #f4f6f8; text-align: center; font: 700 12px ui-monospace, monospace; }
     .mobile-tools { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .comic-card.keyboard-selected { transform: none; }
+    }
     @media (max-width: 700px) {
       header, .summary, .project-progress, main { padding-left: 14px; padding-right: 14px; }
       header { padding-top: 18px; }
@@ -193,7 +198,7 @@
     <section class="grid">
       <article class="comic-card owned cover-needs_review" tabindex="-1" data-publication-id="PUB-BATGIRL-YEAR-ONE-HC" data-work="Batgirl: Year One" data-section="Batgirl: Year One" data-search="batgirl: year one pub-batgirl-year-one-hc batgirl: year one dc comics graphic novel collection volume 32; isbn 978-2-01-205437-5; physical front and back covers verified. hardcover" data-order="issue" data-scope="Hardcover" data-project="" data-status="owned" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000001" data-publication-date="2017" data-publication-year="2017" data-publication-decade="2010s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BATGIRL-YEAR-ONE-HC.jpg" data-full-title="Batgirl: Year One" data-full-detail="Published 2017 | PUB-BATGIRL-YEAR-ONE-HC | Seq 000001 | Collected Edition | DC Comics Graphic Novel Collection Volume 32; ISBN 978-2-01-205437-5; physical front and back covers verified. | physical-cover | missing_source_url; missing_source_page; title_not_in_source | No image source URL recorded. | No source page URL found in SourceNotes. | Image/source URL text does not clearly match the expected canonical title."><img src="../assets/covers/thumb/PUB-BATGIRL-YEAR-ONE-HC.jpg" data-display-src="../assets/covers/display/PUB-BATGIRL-YEAR-ONE-HC.jpg" alt="Batgirl: Year One cover" loading="lazy" decoding="async"></button><span class="cover-review-badge warning">Cover check</span></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Batgirl: Year One cover" data-full-src="../assets/covers/display/PUB-BATGIRL-YEAR-ONE-HC.jpg" data-full-title="Batgirl: Year One" data-full-detail="Published 2017 | PUB-BATGIRL-YEAR-ONE-HC | Seq 000001 | Collected Edition | DC Comics Graphic Novel Collection Volume 32; ISBN 978-2-01-205437-5; physical front and back covers verified. | physical-cover | missing_source_url; missing_source_page; title_not_in_source | No image source URL recorded. | No source page URL found in SourceNotes. | Image/source URL text does not clearly match the expected canonical title."><img src="../assets/covers/thumb/PUB-BATGIRL-YEAR-ONE-HC.jpg" data-display-src="../assets/covers/display/PUB-BATGIRL-YEAR-ONE-HC.jpg" alt="Batgirl: Year One cover" loading="lazy" decoding="async"></button><span class="cover-review-badge warning">Cover check</span></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Hardcover</span>
@@ -207,7 +212,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-JUDGE-DREDD-JUDGEMENT-GOTHAM" data-work="Batman/Judge Dredd: Judgment on Gotham" data-section="Batman/Judge Dredd: Judgment on Gotham" data-search="batman/judge dredd: judgment on gotham pub-bat-judge-dredd-judgement-gotham batman/judge dredd: judgment on gotham owned graphic novel added from user note; contents/edition details to confirm. original graphic novel" data-order="issue" data-scope="Original Graphic Novel" data-project="" data-status="owned" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000002" data-publication-date="1991-12" data-publication-year="1991" data-publication-decade="1990s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-JUDGE-DREDD-JUDGEMENT-GOTHAM.jpg" data-full-title="Batman/Judge Dredd: Judgment on Gotham" data-full-detail="Published 1991-12 | PUB-BAT-JUDGE-DREDD-JUDGEMENT-GOTHAM | Seq 000002 | Original Graphic Novel | Owned graphic novel added from user note; contents/edition details to confirm. | https://dc.fandom.com/wiki/Batman/Judge_Dredd:_Judgment_on_Gotham | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-JUDGE-DREDD-JUDGEMENT-GOTHAM.jpg" data-display-src="../assets/covers/display/PUB-BAT-JUDGE-DREDD-JUDGEMENT-GOTHAM.jpg" alt="Batman/Judge Dredd: Judgment on Gotham cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Batman/Judge Dredd: Judgment on Gotham cover" data-full-src="../assets/covers/display/PUB-BAT-JUDGE-DREDD-JUDGEMENT-GOTHAM.jpg" data-full-title="Batman/Judge Dredd: Judgment on Gotham" data-full-detail="Published 1991-12 | PUB-BAT-JUDGE-DREDD-JUDGEMENT-GOTHAM | Seq 000002 | Original Graphic Novel | Owned graphic novel added from user note; contents/edition details to confirm. | https://dc.fandom.com/wiki/Batman/Judge_Dredd:_Judgment_on_Gotham | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-JUDGE-DREDD-JUDGEMENT-GOTHAM.jpg" data-display-src="../assets/covers/display/PUB-BAT-JUDGE-DREDD-JUDGEMENT-GOTHAM.jpg" alt="Batman/Judge Dredd: Judgment on Gotham cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Original Graphic Novel</span>
@@ -221,7 +226,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-LONELY-PLACE-DYING" data-work="Batman: A Lonely Place of Dying" data-section="Batman: A Lonely Place of Dying" data-search="batman: a lonely place of dying pub-bat-lonely-place-dying batman: a lonely place of dying collected edition containing batman #440-442 and new titans #60-61. trade paperback" data-order="issue" data-scope="Trade Paperback" data-project="" data-status="owned" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000003" data-publication-date="1990-02" data-publication-year="1990" data-publication-decade="1990s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-LONELY-PLACE-DYING.jpg" data-full-title="Batman: A Lonely Place of Dying" data-full-detail="Published 1990-02 | PUB-BAT-LONELY-PLACE-DYING | Seq 000003 | Collected Edition | Collected edition containing Batman #440-442 and New Titans #60-61. | https://dc.fandom.com/wiki/Batman:_A_Lonely_Place_of_Dying_(Collected) | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-LONELY-PLACE-DYING.jpg" data-display-src="../assets/covers/display/PUB-BAT-LONELY-PLACE-DYING.jpg" alt="Batman: A Lonely Place of Dying cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Batman: A Lonely Place of Dying cover" data-full-src="../assets/covers/display/PUB-BAT-LONELY-PLACE-DYING.jpg" data-full-title="Batman: A Lonely Place of Dying" data-full-detail="Published 1990-02 | PUB-BAT-LONELY-PLACE-DYING | Seq 000003 | Collected Edition | Collected edition containing Batman #440-442 and New Titans #60-61. | https://dc.fandom.com/wiki/Batman:_A_Lonely_Place_of_Dying_(Collected) | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-LONELY-PLACE-DYING.jpg" data-display-src="../assets/covers/display/PUB-BAT-LONELY-PLACE-DYING.jpg" alt="Batman: A Lonely Place of Dying cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Trade Paperback</span>
@@ -235,7 +240,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-JOKER-DEVILS-ADVOCATE" data-work="Batman: Joker - Devil&#x27;s Advocate" data-section="Batman: Joker - Devil&#x27;s Advocate" data-search="batman: joker - devil&#x27;s advocate pub-bat-joker-devils-advocate batman: joker - devil&#x27;s advocate owned seed; treat as first-published publication unless publication_contents.csv later records contained issues. original graphic novel" data-order="issue" data-scope="Original Graphic Novel" data-project="" data-status="owned" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000004" data-publication-date="1995-12-20" data-publication-year="1995" data-publication-decade="1990s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-JOKER-DEVILS-ADVOCATE.jpg" data-full-title="Batman: Joker - Devil&#x27;s Advocate" data-full-detail="Published 1995-12-20 | PUB-BAT-JOKER-DEVILS-ADVOCATE | Seq 000004 | Original Graphic Novel | Owned seed; treat as first-published publication unless publication_contents.csv later records contained issues. | https://dc.fandom.com/wiki/Joker:_Devil%27s_Advocate | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-JOKER-DEVILS-ADVOCATE.jpg" data-display-src="../assets/covers/display/PUB-BAT-JOKER-DEVILS-ADVOCATE.jpg" alt="Batman: Joker - Devil&#x27;s Advocate cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Batman: Joker - Devil&#x27;s Advocate cover" data-full-src="../assets/covers/display/PUB-BAT-JOKER-DEVILS-ADVOCATE.jpg" data-full-title="Batman: Joker - Devil&#x27;s Advocate" data-full-detail="Published 1995-12-20 | PUB-BAT-JOKER-DEVILS-ADVOCATE | Seq 000004 | Original Graphic Novel | Owned seed; treat as first-published publication unless publication_contents.csv later records contained issues. | https://dc.fandom.com/wiki/Joker:_Devil%27s_Advocate | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-JOKER-DEVILS-ADVOCATE.jpg" data-display-src="../assets/covers/display/PUB-BAT-JOKER-DEVILS-ADVOCATE.jpg" alt="Batman: Joker - Devil&#x27;s Advocate cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Original Graphic Novel</span>
@@ -249,7 +254,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-SCOTTISH-CONNECTION" data-work="Batman: Scottish Connection" data-section="Batman: Scottish Connection" data-search="batman: scottish connection pub-bat-scottish-connection batman: scottish connection owned seed; treat as first-published publication unless publication_contents.csv later records contained issues. original graphic novel" data-order="issue" data-scope="Original Graphic Novel" data-project="" data-status="owned" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000005" data-publication-date="1998" data-publication-year="1998" data-publication-decade="1990s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-SCOTTISH-CONNECTION.jpg" data-full-title="Batman: Scottish Connection" data-full-detail="Published 1998 | PUB-BAT-SCOTTISH-CONNECTION | Seq 000005 | Original Graphic Novel | Owned seed; treat as first-published publication unless publication_contents.csv later records contained issues. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-SCOTTISH-CONNECTION.jpg" data-display-src="../assets/covers/display/PUB-BAT-SCOTTISH-CONNECTION.jpg" alt="Batman: Scottish Connection cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Batman: Scottish Connection cover" data-full-src="../assets/covers/display/PUB-BAT-SCOTTISH-CONNECTION.jpg" data-full-title="Batman: Scottish Connection" data-full-detail="Published 1998 | PUB-BAT-SCOTTISH-CONNECTION | Seq 000005 | Original Graphic Novel | Owned seed; treat as first-published publication unless publication_contents.csv later records contained issues. | https://en.wikipedia.org/wiki/List_of_Batman_comics | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-SCOTTISH-CONNECTION.jpg" data-display-src="../assets/covers/display/PUB-BAT-SCOTTISH-CONNECTION.jpg" alt="Batman: Scottish Connection cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Original Graphic Novel</span>
@@ -263,7 +268,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-CHALICE" data-work="Batman: The Chalice" data-section="Batman: The Chalice" data-search="batman: the chalice pub-bat-chalice batman: the chalice owned seed; treat as first-published publication unless publication_contents.csv later records contained issues. original graphic novel" data-order="issue" data-scope="Original Graphic Novel" data-project="" data-status="owned" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000006" data-publication-date="1999-10" data-publication-year="1999" data-publication-decade="1990s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-CHALICE.jpg" data-full-title="Batman: The Chalice" data-full-detail="Published 1999-10 | PUB-BAT-CHALICE | Seq 000006 | Original Graphic Novel | Owned seed; treat as first-published publication unless publication_contents.csv later records contained issues. | https://dc.fandom.com/wiki/Batman:_The_Chalice | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-CHALICE.jpg" data-display-src="../assets/covers/display/PUB-BAT-CHALICE.jpg" alt="Batman: The Chalice cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Batman: The Chalice cover" data-full-src="../assets/covers/display/PUB-BAT-CHALICE.jpg" data-full-title="Batman: The Chalice" data-full-detail="Published 1999-10 | PUB-BAT-CHALICE | Seq 000006 | Original Graphic Novel | Owned seed; treat as first-published publication unless publication_contents.csv later records contained issues. | https://dc.fandom.com/wiki/Batman:_The_Chalice | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-CHALICE.jpg" data-display-src="../assets/covers/display/PUB-BAT-CHALICE.jpg" alt="Batman: The Chalice cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Original Graphic Novel</span>
@@ -277,7 +282,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-KILLING-JOKE-DELUXE-HC" data-work="Batman: The Killing Joke Deluxe Edition" data-section="Batman: The Killing Joke Deluxe Edition" data-search="batman: the killing joke deluxe edition pub-bat-killing-joke-deluxe-hc batman: the killing joke deluxe edition owned hardback added from user note; deluxe contents to confirm before counting contained issue coverage. hardcover" data-order="issue" data-scope="Hardcover" data-project="" data-status="owned" data-sequence="000007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000007" data-publication-date="2008-03" data-publication-year="2008" data-publication-decade="2000s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-KILLING-JOKE-DELUXE-HC.jpg" data-full-title="Batman: The Killing Joke Deluxe Edition" data-full-detail="Published 2008-03 | PUB-BAT-KILLING-JOKE-DELUXE-HC | Seq 000007 | Collected Edition | Owned hardback added from user note; deluxe contents to confirm before counting contained issue coverage. | https://dc.fandom.com/wiki/Batman:_The_Killing_Joke_Deluxe_Edition_(Collected) | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-KILLING-JOKE-DELUXE-HC.jpg" data-display-src="../assets/covers/display/PUB-BAT-KILLING-JOKE-DELUXE-HC.jpg" alt="Batman: The Killing Joke Deluxe Edition cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Batman: The Killing Joke Deluxe Edition cover" data-full-src="../assets/covers/display/PUB-BAT-KILLING-JOKE-DELUXE-HC.jpg" data-full-title="Batman: The Killing Joke Deluxe Edition" data-full-detail="Published 2008-03 | PUB-BAT-KILLING-JOKE-DELUXE-HC | Seq 000007 | Collected Edition | Owned hardback added from user note; deluxe contents to confirm before counting contained issue coverage. | https://dc.fandom.com/wiki/Batman:_The_Killing_Joke_Deluxe_Edition_(Collected) | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-KILLING-JOKE-DELUXE-HC.jpg" data-display-src="../assets/covers/display/PUB-BAT-KILLING-JOKE-DELUXE-HC.jpg" alt="Batman: The Killing Joke Deluxe Edition cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Hardcover</span>
@@ -291,7 +296,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-MAN-WHO-LAUGHS" data-work="Batman: The Man Who Laughs" data-section="Batman: The Man Who Laughs" data-search="batman: the man who laughs pub-bat-man-who-laughs batman: the man who laughs owned graphic novel added from user note; contained stories/issues to confirm before counting original issue coverage. collection" data-order="issue" data-scope="Collection" data-project="" data-status="owned" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000008" data-publication-date="2005-02-09" data-publication-year="2005" data-publication-decade="2000s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-MAN-WHO-LAUGHS.jpg" data-full-title="Batman: The Man Who Laughs" data-full-detail="Published 2005-02-09 | PUB-BAT-MAN-WHO-LAUGHS | Seq 000008 | Collected Edition | Owned graphic novel added from user note; contained stories/issues to confirm before counting original issue coverage. | https://dc.fandom.com/wiki/Batman:_The_Man_Who_Laughs | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-MAN-WHO-LAUGHS.jpg" data-display-src="../assets/covers/display/PUB-BAT-MAN-WHO-LAUGHS.jpg" alt="Batman: The Man Who Laughs cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Batman: The Man Who Laughs cover" data-full-src="../assets/covers/display/PUB-BAT-MAN-WHO-LAUGHS.jpg" data-full-title="Batman: The Man Who Laughs" data-full-detail="Published 2005-02-09 | PUB-BAT-MAN-WHO-LAUGHS | Seq 000008 | Collected Edition | Owned graphic novel added from user note; contained stories/issues to confirm before counting original issue coverage. | https://dc.fandom.com/wiki/Batman:_The_Man_Who_Laughs | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-MAN-WHO-LAUGHS.jpg" data-display-src="../assets/covers/display/PUB-BAT-MAN-WHO-LAUGHS.jpg" alt="Batman: The Man Who Laughs cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Collection</span>
@@ -305,7 +310,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-YEAR-TWO" data-work="Batman: Year Two" data-section="Batman: Year Two" data-search="batman: year two pub-bat-year-two batman: year two collected edition containing detective comics #575-578. trade paperback" data-order="issue" data-scope="Trade Paperback" data-project="" data-status="owned" data-sequence="000009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000009" data-publication-date="1990-01-04" data-publication-year="1990" data-publication-decade="1990s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-YEAR-TWO.jpg" data-full-title="Batman: Year Two" data-full-detail="Published 1990-01-04 | PUB-BAT-YEAR-TWO | Seq 000009 | Collected Edition | Collected edition containing Detective Comics #575-578. | https://www.comics.org/issue/315458/ | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-YEAR-TWO.jpg" data-display-src="../assets/covers/display/PUB-BAT-YEAR-TWO.jpg" alt="Batman: Year Two cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Batman: Year Two cover" data-full-src="../assets/covers/display/PUB-BAT-YEAR-TWO.jpg" data-full-title="Batman: Year Two" data-full-detail="Published 1990-01-04 | PUB-BAT-YEAR-TWO | Seq 000009 | Collected Edition | Collected edition containing Detective Comics #575-578. | https://www.comics.org/issue/315458/ | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-YEAR-TWO.jpg" data-display-src="../assets/covers/display/PUB-BAT-YEAR-TWO.jpg" alt="Batman: Year Two cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Trade Paperback</span>
@@ -319,7 +324,7 @@
 
       <article class="comic-card owned cover-needs_review" tabindex="-1" data-publication-id="PUB-GRIFTER-MIDNIGHTER" data-work="Grifter/Midnighter" data-section="Grifter/Midnighter" data-search="grifter/midnighter pub-grifter-midnighter grifter/midnighter first-edition 144-page trade; isbn 978-1-4012-1627-6; collects grifter/midnighter #1-6. trade paperback" data-order="issue" data-scope="Trade Paperback" data-project="" data-status="owned" data-sequence="000010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000010" data-publication-date="2008-01-09" data-publication-year="2008" data-publication-decade="2000s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-GRIFTER-MIDNIGHTER.jpg" data-full-title="Grifter/Midnighter" data-full-detail="Published 2008-01-09 | PUB-GRIFTER-MIDNIGHTER | Seq 000010 | Collected Edition | First-edition 144-page trade; ISBN 978-1-4012-1627-6; collects Grifter/Midnighter #1-6. | https://www.campusbooks.com/books/9781401216276-grifter-midnighter | missing_source_url; missing_source_page; title_not_in_source | No image source URL recorded. | No source page URL found in SourceNotes. | Image/source URL text does not clearly match the expected canonical title."><img src="../assets/covers/thumb/PUB-GRIFTER-MIDNIGHTER.jpg" data-display-src="../assets/covers/display/PUB-GRIFTER-MIDNIGHTER.jpg" alt="Grifter/Midnighter cover" loading="lazy" decoding="async"></button><span class="cover-review-badge warning">Cover check</span></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Grifter/Midnighter cover" data-full-src="../assets/covers/display/PUB-GRIFTER-MIDNIGHTER.jpg" data-full-title="Grifter/Midnighter" data-full-detail="Published 2008-01-09 | PUB-GRIFTER-MIDNIGHTER | Seq 000010 | Collected Edition | First-edition 144-page trade; ISBN 978-1-4012-1627-6; collects Grifter/Midnighter #1-6. | https://www.campusbooks.com/books/9781401216276-grifter-midnighter | missing_source_url; missing_source_page; title_not_in_source | No image source URL recorded. | No source page URL found in SourceNotes. | Image/source URL text does not clearly match the expected canonical title."><img src="../assets/covers/thumb/PUB-GRIFTER-MIDNIGHTER.jpg" data-display-src="../assets/covers/display/PUB-GRIFTER-MIDNIGHTER.jpg" alt="Grifter/Midnighter cover" loading="lazy" decoding="async"></button><span class="cover-review-badge warning">Cover check</span></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Trade Paperback</span>
@@ -333,7 +338,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-JOKER-CLOWN-PRINCE-CRIME" data-work="The Joker: The Clown Prince of Crime" data-section="The Joker: The Clown Prince of Crime" data-search="the joker: the clown prince of crime pub-joker-clown-prince-crime the joker: the clown prince of crime owned graphic novel added from user note; contained issues to confirm before counting original issue coverage. collection" data-order="issue" data-scope="Collection" data-project="" data-status="owned" data-sequence="000011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="issue:000011" data-publication-date="2013-11-27" data-publication-year="2013" data-publication-decade="2010s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-JOKER-CLOWN-PRINCE-CRIME.jpg" data-full-title="The Joker: The Clown Prince of Crime" data-full-detail="Published 2013-11-27 | PUB-JOKER-CLOWN-PRINCE-CRIME | Seq 000011 | Collected Edition | Owned graphic novel added from user note; contained issues to confirm before counting original issue coverage. | https://dc.fandom.com/wiki/The_Joker:_The_Clown_Prince_of_Crime_(Collected) | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-JOKER-CLOWN-PRINCE-CRIME.jpg" data-display-src="../assets/covers/display/PUB-JOKER-CLOWN-PRINCE-CRIME.jpg" alt="The Joker: The Clown Prince of Crime cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open The Joker: The Clown Prince of Crime cover" data-full-src="../assets/covers/display/PUB-JOKER-CLOWN-PRINCE-CRIME.jpg" data-full-title="The Joker: The Clown Prince of Crime" data-full-detail="Published 2013-11-27 | PUB-JOKER-CLOWN-PRINCE-CRIME | Seq 000011 | Collected Edition | Owned graphic novel added from user note; contained issues to confirm before counting original issue coverage. | https://dc.fandom.com/wiki/The_Joker:_The_Clown_Prince_of_Crime_(Collected) | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-JOKER-CLOWN-PRINCE-CRIME.jpg" data-display-src="../assets/covers/display/PUB-JOKER-CLOWN-PRINCE-CRIME.jpg" alt="The Joker: The Clown Prince of Crime cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Collection</span>
@@ -394,12 +399,14 @@
     const filterStorageKey = 'gothamViewerFiltersOpen';
     const stateStorageKey = `gothamViewerState:${location.pathname}`;
     let currentPreviewButton = null;
+    let lightboxReturnFocus = null;
     let selectedCard = null;
     let browseMode = false;
     let storiesVisible = false;
     let touchStartX = 0;
     let swipedPreview = false;
     let savedViewState = {};
+    let helpReturnFocus = null;
 
     function safeStore(key, value) { try { localStorage.setItem(key, value); } catch (error) {} }
     function safeRead(key) { try { return localStorage.getItem(key); } catch (error) { return null; } }
@@ -565,7 +572,7 @@
     }
     function visibleCards() { return cards.filter(card => !card.classList.contains('hidden')); }
     function visibleCoverButtons() { return visibleCards().map(card => card.querySelector('.cover-button')).filter(Boolean); }
-    function openLightbox(button) { currentPreviewButton = button; renderPreview(button); lightbox.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function openLightbox(button) { lightboxReturnFocus = button; currentPreviewButton = button; renderPreview(button); lightbox.classList.add('open'); document.body.style.overflow = 'hidden'; document.querySelector('[data-lightbox-close]').focus(); }
     function renderPreview(button) {
       if (!button) return;
       currentPreviewButton = button;
@@ -601,9 +608,10 @@
       lightboxImage.removeAttribute('alt');
       lightboxTitle.textContent = '';
       lightboxDetail.textContent = '';
-      const returnCard = currentPreviewButton?.closest('.comic-card');
+      const returnButton = lightboxReturnFocus;
       currentPreviewButton = null;
-      if (returnCard) returnCard.focus({ preventScroll: true });
+      lightboxReturnFocus = null;
+      if (returnButton) returnButton.focus({ preventScroll: true });
     }
     function toggleDensity() {
       document.body.classList.toggle('compact-view');
@@ -634,8 +642,17 @@
       const candidates = available.filter(card => card !== selectedCard).map(card => { const rect = card.getBoundingClientRect(); const dx = rect.left + rect.width / 2 - sx, dy = rect.top + rect.height / 2 - sy; const forward = direction === 'left' ? dx < -2 : direction === 'right' ? dx > 2 : direction === 'up' ? dy < -2 : dy > 2; return { card, forward, score: Math.abs(horizontal ? dx : dy) + Math.abs(horizontal ? dy : dx) * 3 }; }).filter(item => item.forward).sort((a, b) => a.score - b.score);
       if (candidates.length) selectCard(candidates[0].card);
     }
-    function openHelp() { help.classList.add('open'); }
-    function closeHelp() { help.classList.remove('open'); }
+    function openHelp() { helpReturnFocus = document.activeElement; help.classList.add('open'); document.querySelector('[data-close-help]').focus(); }
+    function closeHelp() { help.classList.remove('open'); if (helpReturnFocus instanceof HTMLElement) helpReturnFocus.focus({ preventScroll: true }); helpReturnFocus = null; }
+    function trapFocus(event, modal) {
+      if (event.key !== 'Tab') return false;
+      const focusable = [...modal.querySelectorAll('button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), [tabindex]:not([tabindex="-1"])')].filter(item => item.getClientRects().length);
+      if (!focusable.length) return false;
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); return true; }
+      if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); return true; }
+      return false;
+    }
     function resetFilters() { search.value = ''; state.query = ''; ['scope', 'project', 'status', 'decade'].forEach(key => setFilter(key, 'all')); state.year = 'all'; document.querySelector('.year-filter').value = 'all'; }
     sectionJump?.addEventListener('change', () => { const target = visibleCards().find(card => card.dataset.section.split('|').includes(sectionJump.value) || card.dataset.work === sectionJump.value); if (target) target.scrollIntoView({ block: 'center', behavior: 'smooth' }); sectionJump.value = ''; });
     document.querySelector('[data-mobile-search]').addEventListener('click', () => { controls.classList.add('open'); filterToggle.setAttribute('aria-expanded', 'true'); search.focus(); });
@@ -646,8 +663,8 @@
     document.addEventListener('keydown', event => {
       const typing = event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLTextAreaElement;
       if (event.metaKey || event.ctrlKey || event.altKey) return;
-      if (help.classList.contains('open')) { if (event.key === 'Escape' || event.key === '?') { event.preventDefault(); closeHelp(); } return; }
-      if (lightbox.classList.contains('open')) { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); movePreview(event.key === 'ArrowLeft' ? -1 : 1); } else if (event.key === 'Escape' || event.code === 'Space') { event.preventDefault(); closeLightbox(); } return; }
+      if (help.classList.contains('open')) { if (trapFocus(event, help)) return; if (event.key === 'Escape' || event.key === '?') { event.preventDefault(); closeHelp(); } return; }
+      if (lightbox.classList.contains('open')) { if (trapFocus(event, lightbox)) return; if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); movePreview(event.key === 'ArrowLeft' ? -1 : 1); } else if (event.key === 'Escape' || event.code === 'Space') { event.preventDefault(); closeLightbox(); } return; }
       if (event.key === 'Escape' && typing) { search.value = ''; state.query = ''; applyFilters(); search.blur(); return; }
       if (typing) return;
       if (browseMode && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); moveCardSelection(event.key.replace('Arrow', '').toLowerCase()); return; }

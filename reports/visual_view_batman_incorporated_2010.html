@@ -112,6 +112,11 @@
     .shortcut-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 12px; align-items: center; }
     kbd { min-width: 34px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 3px 7px; background: #f4f6f8; text-align: center; font: 700 12px ui-monospace, monospace; }
     .mobile-tools { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .comic-card.keyboard-selected { transform: none; }
+    }
     @media (max-width: 700px) {
       header, .summary, .project-progress, main { padding-left: 14px; padding-right: 14px; }
       header { padding-top: 18px; }
@@ -190,7 +195,7 @@
     <section class="grid">
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-INC-2010-0001" data-work="Batman Incorporated (2010)" data-section="Batman Incorporated (2010)" data-search="batman incorporated (2010) #1 pub-bat-inc-2010-0001 batman incorporated (2010) 1 dc | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-1 | first issue of the 2010 series. complete_2010_run batman incorporated (2010)" data-order="reading" data-scope="complete_2010_run" data-project="Batman Incorporated (2010)" data-status="owned" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000001" data-publication-date="2010-11-17" data-publication-year="2010" data-publication-decade="2010s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-INC-2010-0001.jpg" data-full-title="Batman Incorporated (2010) #1" data-full-detail="Published 2010-11-17 | PUB-BAT-INC-2010-0001 | Seq 000001 | reading | DC | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-1 | First issue of the 2010 series. | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-INC-2010-0001.jpg" data-display-src="../assets/covers/display/PUB-BAT-INC-2010-0001.jpg" alt="Batman Incorporated (2010) #1 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Batman Incorporated (2010) #1 cover" data-full-src="../assets/covers/display/PUB-BAT-INC-2010-0001.jpg" data-full-title="Batman Incorporated (2010) #1" data-full-detail="Published 2010-11-17 | PUB-BAT-INC-2010-0001 | Seq 000001 | reading | DC | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-1 | First issue of the 2010 series. | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-INC-2010-0001.jpg" data-display-src="../assets/covers/display/PUB-BAT-INC-2010-0001.jpg" alt="Batman Incorporated (2010) #1 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">complete 2010 run</span>
@@ -204,7 +209,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-INC-2010-0002" data-work="Batman Incorporated (2010)" data-section="Batman Incorporated (2010)" data-search="batman incorporated (2010) #2 pub-bat-inc-2010-0002 batman incorporated (2010) 2 dc | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-2 | second issue of the 2010 series. complete_2010_run batman incorporated (2010)" data-order="reading" data-scope="complete_2010_run" data-project="Batman Incorporated (2010)" data-status="owned" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000002" data-publication-date="2010-12-22" data-publication-year="2010" data-publication-decade="2010s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-INC-2010-0002.jpg" data-full-title="Batman Incorporated (2010) #2" data-full-detail="Published 2010-12-22 | PUB-BAT-INC-2010-0002 | Seq 000002 | reading | DC | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-2 | Second issue of the 2010 series. | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-INC-2010-0002.jpg" data-display-src="../assets/covers/display/PUB-BAT-INC-2010-0002.jpg" alt="Batman Incorporated (2010) #2 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Batman Incorporated (2010) #2 cover" data-full-src="../assets/covers/display/PUB-BAT-INC-2010-0002.jpg" data-full-title="Batman Incorporated (2010) #2" data-full-detail="Published 2010-12-22 | PUB-BAT-INC-2010-0002 | Seq 000002 | reading | DC | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-2 | Second issue of the 2010 series. | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-INC-2010-0002.jpg" data-display-src="../assets/covers/display/PUB-BAT-INC-2010-0002.jpg" alt="Batman Incorporated (2010) #2 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">complete 2010 run</span>
@@ -218,7 +223,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-INC-2010-0003" data-work="Batman Incorporated (2010)" data-section="Batman Incorporated (2010)" data-search="batman incorporated (2010) #3 pub-bat-inc-2010-0003 batman incorporated (2010) 3 dc | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-3 | third issue of the 2010 series. complete_2010_run batman incorporated (2010)" data-order="reading" data-scope="complete_2010_run" data-project="Batman Incorporated (2010)" data-status="owned" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000003" data-publication-date="2011-03-09" data-publication-year="2011" data-publication-decade="2010s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-INC-2010-0003.jpg" data-full-title="Batman Incorporated (2010) #3" data-full-detail="Published 2011-03-09 | PUB-BAT-INC-2010-0003 | Seq 000003 | reading | DC | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-3 | Third issue of the 2010 series. | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-3 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-INC-2010-0003.jpg" data-display-src="../assets/covers/display/PUB-BAT-INC-2010-0003.jpg" alt="Batman Incorporated (2010) #3 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Batman Incorporated (2010) #3 cover" data-full-src="../assets/covers/display/PUB-BAT-INC-2010-0003.jpg" data-full-title="Batman Incorporated (2010) #3" data-full-detail="Published 2011-03-09 | PUB-BAT-INC-2010-0003 | Seq 000003 | reading | DC | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-3 | Third issue of the 2010 series. | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-3 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-INC-2010-0003.jpg" data-display-src="../assets/covers/display/PUB-BAT-INC-2010-0003.jpg" alt="Batman Incorporated (2010) #3 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">complete 2010 run</span>
@@ -232,7 +237,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-INC-2010-0004" data-work="Batman Incorporated (2010)" data-section="Batman Incorporated (2010)" data-search="batman incorporated (2010) #4 pub-bat-inc-2010-0004 batman incorporated (2010) 4 dc | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-4 | fourth issue of the 2010 series. complete_2010_run batman incorporated (2010)" data-order="reading" data-scope="complete_2010_run" data-project="Batman Incorporated (2010)" data-status="owned" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000004" data-publication-date="2011-03-23" data-publication-year="2011" data-publication-decade="2010s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-INC-2010-0004.jpg" data-full-title="Batman Incorporated (2010) #4" data-full-detail="Published 2011-03-23 | PUB-BAT-INC-2010-0004 | Seq 000004 | reading | DC | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-4 | Fourth issue of the 2010 series. | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-4 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-INC-2010-0004.jpg" data-display-src="../assets/covers/display/PUB-BAT-INC-2010-0004.jpg" alt="Batman Incorporated (2010) #4 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Batman Incorporated (2010) #4 cover" data-full-src="../assets/covers/display/PUB-BAT-INC-2010-0004.jpg" data-full-title="Batman Incorporated (2010) #4" data-full-detail="Published 2011-03-23 | PUB-BAT-INC-2010-0004 | Seq 000004 | reading | DC | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-4 | Fourth issue of the 2010 series. | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-4 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-INC-2010-0004.jpg" data-display-src="../assets/covers/display/PUB-BAT-INC-2010-0004.jpg" alt="Batman Incorporated (2010) #4 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">complete 2010 run</span>
@@ -246,7 +251,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-INC-2010-0005" data-work="Batman Incorporated (2010)" data-section="Batman Incorporated (2010)" data-search="batman incorporated (2010) #5 pub-bat-inc-2010-0005 batman incorporated (2010) 5 dc | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-5 | fifth issue of the 2010 series. complete_2010_run batman incorporated (2010)" data-order="reading" data-scope="complete_2010_run" data-project="Batman Incorporated (2010)" data-status="owned" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000005" data-publication-date="2011-04-27" data-publication-year="2011" data-publication-decade="2010s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-INC-2010-0005.jpg" data-full-title="Batman Incorporated (2010) #5" data-full-detail="Published 2011-04-27 | PUB-BAT-INC-2010-0005 | Seq 000005 | reading | DC | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-5 | Fifth issue of the 2010 series. | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-5 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-INC-2010-0005.jpg" data-display-src="../assets/covers/display/PUB-BAT-INC-2010-0005.jpg" alt="Batman Incorporated (2010) #5 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Batman Incorporated (2010) #5 cover" data-full-src="../assets/covers/display/PUB-BAT-INC-2010-0005.jpg" data-full-title="Batman Incorporated (2010) #5" data-full-detail="Published 2011-04-27 | PUB-BAT-INC-2010-0005 | Seq 000005 | reading | DC | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-5 | Fifth issue of the 2010 series. | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-5 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-INC-2010-0005.jpg" data-display-src="../assets/covers/display/PUB-BAT-INC-2010-0005.jpg" alt="Batman Incorporated (2010) #5 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">complete 2010 run</span>
@@ -260,7 +265,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-INC-2010-0006" data-work="Batman Incorporated (2010)" data-section="Batman Incorporated (2010)" data-search="batman incorporated (2010) #6 pub-bat-inc-2010-0006 batman incorporated (2010) 6 dc | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-6 | sixth issue of the 2010 series. complete_2010_run batman incorporated (2010)" data-order="reading" data-scope="complete_2010_run" data-project="Batman Incorporated (2010)" data-status="owned" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000006" data-publication-date="2011-05-11" data-publication-year="2011" data-publication-decade="2010s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-INC-2010-0006.jpg" data-full-title="Batman Incorporated (2010) #6" data-full-detail="Published 2011-05-11 | PUB-BAT-INC-2010-0006 | Seq 000006 | reading | DC | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-6 | Sixth issue of the 2010 series. | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-6 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-INC-2010-0006.jpg" data-display-src="../assets/covers/display/PUB-BAT-INC-2010-0006.jpg" alt="Batman Incorporated (2010) #6 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Batman Incorporated (2010) #6 cover" data-full-src="../assets/covers/display/PUB-BAT-INC-2010-0006.jpg" data-full-title="Batman Incorporated (2010) #6" data-full-detail="Published 2011-05-11 | PUB-BAT-INC-2010-0006 | Seq 000006 | reading | DC | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-6 | Sixth issue of the 2010 series. | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-6 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-INC-2010-0006.jpg" data-display-src="../assets/covers/display/PUB-BAT-INC-2010-0006.jpg" alt="Batman Incorporated (2010) #6 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">complete 2010 run</span>
@@ -274,7 +279,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-INC-2010-0007" data-work="Batman Incorporated (2010)" data-section="Batman Incorporated (2010)" data-search="batman incorporated (2010) #7 pub-bat-inc-2010-0007 batman incorporated (2010) 7 dc | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-2010-7 | seventh issue of the 2010 series. complete_2010_run batman incorporated (2010)" data-order="reading" data-scope="complete_2010_run" data-project="Batman Incorporated (2010)" data-status="owned" data-sequence="000007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000007" data-publication-date="2011-06-29" data-publication-year="2011" data-publication-decade="2010s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-INC-2010-0007.jpg" data-full-title="Batman Incorporated (2010) #7" data-full-detail="Published 2011-06-29 | PUB-BAT-INC-2010-0007 | Seq 000007 | reading | DC | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-2010-7 | Seventh issue of the 2010 series. | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-2010-7 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-INC-2010-0007.jpg" data-display-src="../assets/covers/display/PUB-BAT-INC-2010-0007.jpg" alt="Batman Incorporated (2010) #7 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Batman Incorporated (2010) #7 cover" data-full-src="../assets/covers/display/PUB-BAT-INC-2010-0007.jpg" data-full-title="Batman Incorporated (2010) #7" data-full-detail="Published 2011-06-29 | PUB-BAT-INC-2010-0007 | Seq 000007 | reading | DC | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-2010-7 | Seventh issue of the 2010 series. | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-2010-7 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-INC-2010-0007.jpg" data-display-src="../assets/covers/display/PUB-BAT-INC-2010-0007.jpg" alt="Batman Incorporated (2010) #7 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">complete 2010 run</span>
@@ -288,7 +293,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-INC-2010-0008" data-work="Batman Incorporated (2010)" data-section="Batman Incorporated (2010)" data-search="batman incorporated (2010) #8 pub-bat-inc-2010-0008 batman incorporated (2010) 8 dc | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-8-2010 | eighth issue of the 2010 series. complete_2010_run batman incorporated (2010)" data-order="reading" data-scope="complete_2010_run" data-project="Batman Incorporated (2010)" data-status="owned" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000008" data-publication-date="2011-08-24" data-publication-year="2011" data-publication-decade="2010s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-INC-2010-0008.jpg" data-full-title="Batman Incorporated (2010) #8" data-full-detail="Published 2011-08-24 | PUB-BAT-INC-2010-0008 | Seq 000008 | reading | DC | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-8-2010 | Eighth issue of the 2010 series. | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-8-2010 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-INC-2010-0008.jpg" data-display-src="../assets/covers/display/PUB-BAT-INC-2010-0008.jpg" alt="Batman Incorporated (2010) #8 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Batman Incorporated (2010) #8 cover" data-full-src="../assets/covers/display/PUB-BAT-INC-2010-0008.jpg" data-full-title="Batman Incorporated (2010) #8" data-full-detail="Published 2011-08-24 | PUB-BAT-INC-2010-0008 | Seq 000008 | reading | DC | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-8-2010 | Eighth issue of the 2010 series. | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-8-2010 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-INC-2010-0008.jpg" data-display-src="../assets/covers/display/PUB-BAT-INC-2010-0008.jpg" alt="Batman Incorporated (2010) #8 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">complete 2010 run</span>
@@ -302,7 +307,7 @@
 
       <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-INC-LEVIATHAN-STRIKES-0001" data-work="Batman Incorporated: Leviathan Strikes" data-section="Batman Incorporated: Leviathan Strikes" data-search="batman incorporated: leviathan strikes #1 pub-bat-inc-leviathan-strikes-0001 batman incorporated: leviathan strikes 1 dc | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-leviathan-strikes-1 | conclusion to the 2010 run; not part of the ordered #1-8 lot. complete_2010_run batman incorporated: leviathan strikes" data-order="reading" data-scope="complete_2010_run" data-project="Batman Incorporated: Leviathan Strikes" data-status="missing" data-sequence="000009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000009" data-publication-date="2011-12-21" data-publication-year="2011" data-publication-decade="2010s">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/PUB-BAT-INC-LEVIATHAN-STRIKES-0001.jpg" data-full-title="Batman Incorporated: Leviathan Strikes #1" data-full-detail="Published 2011-12-21 | PUB-BAT-INC-LEVIATHAN-STRIKES-0001 | Seq 000009 | reading | DC | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-leviathan-strikes-1 | Conclusion to the 2010 run; not part of the ordered #1-8 lot. | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-leviathan-strikes-1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-INC-LEVIATHAN-STRIKES-0001.jpg" data-display-src="../assets/covers/display/PUB-BAT-INC-LEVIATHAN-STRIKES-0001.jpg" alt="Batman Incorporated: Leviathan Strikes #1 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Batman Incorporated: Leviathan Strikes #1 cover" data-full-src="../assets/covers/display/PUB-BAT-INC-LEVIATHAN-STRIKES-0001.jpg" data-full-title="Batman Incorporated: Leviathan Strikes #1" data-full-detail="Published 2011-12-21 | PUB-BAT-INC-LEVIATHAN-STRIKES-0001 | Seq 000009 | reading | DC | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-leviathan-strikes-1 | Conclusion to the 2010 run; not part of the ordered #1-8 lot. | https://www.dc.com/comics/batman-incorporated-2010/batman-incorporated-leviathan-strikes-1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-INC-LEVIATHAN-STRIKES-0001.jpg" data-display-src="../assets/covers/display/PUB-BAT-INC-LEVIATHAN-STRIKES-0001.jpg" alt="Batman Incorporated: Leviathan Strikes #1 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">complete 2010 run</span>
@@ -363,12 +368,14 @@
     const filterStorageKey = 'gothamViewerFiltersOpen';
     const stateStorageKey = `gothamViewerState:${location.pathname}`;
     let currentPreviewButton = null;
+    let lightboxReturnFocus = null;
     let selectedCard = null;
     let browseMode = false;
     let storiesVisible = false;
     let touchStartX = 0;
     let swipedPreview = false;
     let savedViewState = {};
+    let helpReturnFocus = null;
 
     function safeStore(key, value) { try { localStorage.setItem(key, value); } catch (error) {} }
     function safeRead(key) { try { return localStorage.getItem(key); } catch (error) { return null; } }
@@ -534,7 +541,7 @@
     }
     function visibleCards() { return cards.filter(card => !card.classList.contains('hidden')); }
     function visibleCoverButtons() { return visibleCards().map(card => card.querySelector('.cover-button')).filter(Boolean); }
-    function openLightbox(button) { currentPreviewButton = button; renderPreview(button); lightbox.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function openLightbox(button) { lightboxReturnFocus = button; currentPreviewButton = button; renderPreview(button); lightbox.classList.add('open'); document.body.style.overflow = 'hidden'; document.querySelector('[data-lightbox-close]').focus(); }
     function renderPreview(button) {
       if (!button) return;
       currentPreviewButton = button;
@@ -570,9 +577,10 @@
       lightboxImage.removeAttribute('alt');
       lightboxTitle.textContent = '';
       lightboxDetail.textContent = '';
-      const returnCard = currentPreviewButton?.closest('.comic-card');
+      const returnButton = lightboxReturnFocus;
       currentPreviewButton = null;
-      if (returnCard) returnCard.focus({ preventScroll: true });
+      lightboxReturnFocus = null;
+      if (returnButton) returnButton.focus({ preventScroll: true });
     }
     function toggleDensity() {
       document.body.classList.toggle('compact-view');
@@ -603,8 +611,17 @@
       const candidates = available.filter(card => card !== selectedCard).map(card => { const rect = card.getBoundingClientRect(); const dx = rect.left + rect.width / 2 - sx, dy = rect.top + rect.height / 2 - sy; const forward = direction === 'left' ? dx < -2 : direction === 'right' ? dx > 2 : direction === 'up' ? dy < -2 : dy > 2; return { card, forward, score: Math.abs(horizontal ? dx : dy) + Math.abs(horizontal ? dy : dx) * 3 }; }).filter(item => item.forward).sort((a, b) => a.score - b.score);
       if (candidates.length) selectCard(candidates[0].card);
     }
-    function openHelp() { help.classList.add('open'); }
-    function closeHelp() { help.classList.remove('open'); }
+    function openHelp() { helpReturnFocus = document.activeElement; help.classList.add('open'); document.querySelector('[data-close-help]').focus(); }
+    function closeHelp() { help.classList.remove('open'); if (helpReturnFocus instanceof HTMLElement) helpReturnFocus.focus({ preventScroll: true }); helpReturnFocus = null; }
+    function trapFocus(event, modal) {
+      if (event.key !== 'Tab') return false;
+      const focusable = [...modal.querySelectorAll('button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), [tabindex]:not([tabindex="-1"])')].filter(item => item.getClientRects().length);
+      if (!focusable.length) return false;
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); return true; }
+      if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); return true; }
+      return false;
+    }
     function resetFilters() { search.value = ''; state.query = ''; ['scope', 'project', 'status', 'decade'].forEach(key => setFilter(key, 'all')); state.year = 'all'; document.querySelector('.year-filter').value = 'all'; }
     sectionJump?.addEventListener('change', () => { const target = visibleCards().find(card => card.dataset.section.split('|').includes(sectionJump.value) || card.dataset.work === sectionJump.value); if (target) target.scrollIntoView({ block: 'center', behavior: 'smooth' }); sectionJump.value = ''; });
     document.querySelector('[data-mobile-search]').addEventListener('click', () => { controls.classList.add('open'); filterToggle.setAttribute('aria-expanded', 'true'); search.focus(); });
@@ -615,8 +632,8 @@
     document.addEventListener('keydown', event => {
       const typing = event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLTextAreaElement;
       if (event.metaKey || event.ctrlKey || event.altKey) return;
-      if (help.classList.contains('open')) { if (event.key === 'Escape' || event.key === '?') { event.preventDefault(); closeHelp(); } return; }
-      if (lightbox.classList.contains('open')) { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); movePreview(event.key === 'ArrowLeft' ? -1 : 1); } else if (event.key === 'Escape' || event.code === 'Space') { event.preventDefault(); closeLightbox(); } return; }
+      if (help.classList.contains('open')) { if (trapFocus(event, help)) return; if (event.key === 'Escape' || event.key === '?') { event.preventDefault(); closeHelp(); } return; }
+      if (lightbox.classList.contains('open')) { if (trapFocus(event, lightbox)) return; if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); movePreview(event.key === 'ArrowLeft' ? -1 : 1); } else if (event.key === 'Escape' || event.code === 'Space') { event.preventDefault(); closeLightbox(); } return; }
       if (event.key === 'Escape' && typing) { search.value = ''; state.query = ''; applyFilters(); search.blur(); return; }
       if (typing) return;
       if (browseMode && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); moveCardSelection(event.key.replace('Arrow', '').toLowerCase()); return; }

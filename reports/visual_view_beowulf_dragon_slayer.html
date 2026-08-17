@@ -112,6 +112,11 @@
     .shortcut-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 12px; align-items: center; }
     kbd { min-width: 34px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 3px 7px; background: #f4f6f8; text-align: center; font: 700 12px ui-monospace, monospace; }
     .mobile-tools { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .comic-card.keyboard-selected { transform: none; }
+    }
     @media (max-width: 700px) {
       header, .summary, .project-progress, main { padding-left: 14px; padding-right: 14px; }
       header { padding-top: 18px; }
@@ -189,7 +194,7 @@
     <section class="grid">
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-beowulf-dragon-slayer-1" data-work="Beowulf: Dragon Slayer" data-section="Beowulf: Dragon Slayer" data-search="beowulf: dragon slayer #1 view-beowulf-dragon-slayer-1 beowulf: dragon slayer 1 beowulf_dragon_slayer_1_6 beowulf: dragon slayer" data-order="series" data-scope="beowulf_dragon_slayer_1_6" data-project="Beowulf: Dragon Slayer" data-status="owned" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000001" data-publication-date="1975-03" data-publication-year="1975" data-publication-decade="1970s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-1.jpg" data-full-title="Beowulf: Dragon Slayer #1" data-full-detail="Published 1975-03 | VIEW-beowulf-dragon-slayer-1 | Seq 000001 | https://dc.fandom.com/wiki/Beowulf_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-beowulf-dragon-slayer-1.jpg" data-display-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-1.jpg" alt="Beowulf: Dragon Slayer #1 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Beowulf: Dragon Slayer #1 cover" data-full-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-1.jpg" data-full-title="Beowulf: Dragon Slayer #1" data-full-detail="Published 1975-03 | VIEW-beowulf-dragon-slayer-1 | Seq 000001 | https://dc.fandom.com/wiki/Beowulf_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-beowulf-dragon-slayer-1.jpg" data-display-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-1.jpg" alt="Beowulf: Dragon Slayer #1 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">beowulf dragon slayer 1 6</span>
@@ -203,7 +208,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-beowulf-dragon-slayer-2" data-work="Beowulf: Dragon Slayer" data-section="Beowulf: Dragon Slayer" data-search="beowulf: dragon slayer #2 view-beowulf-dragon-slayer-2 beowulf: dragon slayer 2 beowulf_dragon_slayer_1_6 beowulf: dragon slayer" data-order="series" data-scope="beowulf_dragon_slayer_1_6" data-project="Beowulf: Dragon Slayer" data-status="owned" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000002" data-publication-date="1975-03-19" data-publication-year="1975" data-publication-decade="1970s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-2.jpg" data-full-title="Beowulf: Dragon Slayer #2" data-full-detail="Published 1975-03-19 | VIEW-beowulf-dragon-slayer-2 | Seq 000002 | https://dc.fandom.com/wiki/Beowulf_Vol_1_2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-beowulf-dragon-slayer-2.jpg" data-display-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-2.jpg" alt="Beowulf: Dragon Slayer #2 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Beowulf: Dragon Slayer #2 cover" data-full-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-2.jpg" data-full-title="Beowulf: Dragon Slayer #2" data-full-detail="Published 1975-03-19 | VIEW-beowulf-dragon-slayer-2 | Seq 000002 | https://dc.fandom.com/wiki/Beowulf_Vol_1_2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-beowulf-dragon-slayer-2.jpg" data-display-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-2.jpg" alt="Beowulf: Dragon Slayer #2 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">beowulf dragon slayer 1 6</span>
@@ -217,7 +222,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-beowulf-dragon-slayer-3" data-work="Beowulf: Dragon Slayer" data-section="Beowulf: Dragon Slayer" data-search="beowulf: dragon slayer #3 view-beowulf-dragon-slayer-3 beowulf: dragon slayer 3 beowulf_dragon_slayer_1_6 beowulf: dragon slayer" data-order="series" data-scope="beowulf_dragon_slayer_1_6" data-project="Beowulf: Dragon Slayer" data-status="owned" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000003" data-publication-date="1975-07" data-publication-year="1975" data-publication-decade="1970s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-3.jpg" data-full-title="Beowulf: Dragon Slayer #3" data-full-detail="Published 1975-07 | VIEW-beowulf-dragon-slayer-3 | Seq 000003 | https://dc.fandom.com/wiki/Beowulf_Vol_1_3 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-beowulf-dragon-slayer-3.jpg" data-display-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-3.jpg" alt="Beowulf: Dragon Slayer #3 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Beowulf: Dragon Slayer #3 cover" data-full-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-3.jpg" data-full-title="Beowulf: Dragon Slayer #3" data-full-detail="Published 1975-07 | VIEW-beowulf-dragon-slayer-3 | Seq 000003 | https://dc.fandom.com/wiki/Beowulf_Vol_1_3 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-beowulf-dragon-slayer-3.jpg" data-display-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-3.jpg" alt="Beowulf: Dragon Slayer #3 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">beowulf dragon slayer 1 6</span>
@@ -231,7 +236,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-beowulf-dragon-slayer-4" data-work="Beowulf: Dragon Slayer" data-section="Beowulf: Dragon Slayer" data-search="beowulf: dragon slayer #4 view-beowulf-dragon-slayer-4 beowulf: dragon slayer 4 beowulf_dragon_slayer_1_6 beowulf: dragon slayer" data-order="series" data-scope="beowulf_dragon_slayer_1_6" data-project="Beowulf: Dragon Slayer" data-status="owned" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000004" data-publication-date="1975-09" data-publication-year="1975" data-publication-decade="1970s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-4.jpg" data-full-title="Beowulf: Dragon Slayer #4" data-full-detail="Published 1975-09 | VIEW-beowulf-dragon-slayer-4 | Seq 000004 | https://dc.fandom.com/wiki/Beowulf_Vol_1_4 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-beowulf-dragon-slayer-4.jpg" data-display-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-4.jpg" alt="Beowulf: Dragon Slayer #4 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Beowulf: Dragon Slayer #4 cover" data-full-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-4.jpg" data-full-title="Beowulf: Dragon Slayer #4" data-full-detail="Published 1975-09 | VIEW-beowulf-dragon-slayer-4 | Seq 000004 | https://dc.fandom.com/wiki/Beowulf_Vol_1_4 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-beowulf-dragon-slayer-4.jpg" data-display-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-4.jpg" alt="Beowulf: Dragon Slayer #4 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">beowulf dragon slayer 1 6</span>
@@ -245,7 +250,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-beowulf-dragon-slayer-5" data-work="Beowulf: Dragon Slayer" data-section="Beowulf: Dragon Slayer" data-search="beowulf: dragon slayer #5 view-beowulf-dragon-slayer-5 beowulf: dragon slayer 5 beowulf_dragon_slayer_1_6 beowulf: dragon slayer" data-order="series" data-scope="beowulf_dragon_slayer_1_6" data-project="Beowulf: Dragon Slayer" data-status="owned" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000005" data-publication-date="1975-11" data-publication-year="1975" data-publication-decade="1970s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-5.jpg" data-full-title="Beowulf: Dragon Slayer #5" data-full-detail="Published 1975-11 | VIEW-beowulf-dragon-slayer-5 | Seq 000005 | https://dc.fandom.com/wiki/Beowulf_Vol_1_5 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-beowulf-dragon-slayer-5.jpg" data-display-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-5.jpg" alt="Beowulf: Dragon Slayer #5 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Beowulf: Dragon Slayer #5 cover" data-full-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-5.jpg" data-full-title="Beowulf: Dragon Slayer #5" data-full-detail="Published 1975-11 | VIEW-beowulf-dragon-slayer-5 | Seq 000005 | https://dc.fandom.com/wiki/Beowulf_Vol_1_5 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-beowulf-dragon-slayer-5.jpg" data-display-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-5.jpg" alt="Beowulf: Dragon Slayer #5 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">beowulf dragon slayer 1 6</span>
@@ -259,7 +264,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-beowulf-dragon-slayer-6" data-work="Beowulf: Dragon Slayer" data-section="Beowulf: Dragon Slayer" data-search="beowulf: dragon slayer #6 view-beowulf-dragon-slayer-6 beowulf: dragon slayer 6 beowulf_dragon_slayer_1_6 beowulf: dragon slayer" data-order="series" data-scope="beowulf_dragon_slayer_1_6" data-project="Beowulf: Dragon Slayer" data-status="owned" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000006" data-publication-date="1976-01" data-publication-year="1976" data-publication-decade="1970s">
         <div class="status-strip">Original</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-6.jpg" data-full-title="Beowulf: Dragon Slayer #6" data-full-detail="Published 1976-01 | VIEW-beowulf-dragon-slayer-6 | Seq 000006 | https://dc.fandom.com/wiki/Beowulf_Vol_1_6 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-beowulf-dragon-slayer-6.jpg" data-display-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-6.jpg" alt="Beowulf: Dragon Slayer #6 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Beowulf: Dragon Slayer #6 cover" data-full-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-6.jpg" data-full-title="Beowulf: Dragon Slayer #6" data-full-detail="Published 1976-01 | VIEW-beowulf-dragon-slayer-6 | Seq 000006 | https://dc.fandom.com/wiki/Beowulf_Vol_1_6 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-beowulf-dragon-slayer-6.jpg" data-display-src="../assets/covers/display/VIEW-beowulf-dragon-slayer-6.jpg" alt="Beowulf: Dragon Slayer #6 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">beowulf dragon slayer 1 6</span>
@@ -320,12 +325,14 @@
     const filterStorageKey = 'gothamViewerFiltersOpen';
     const stateStorageKey = `gothamViewerState:${location.pathname}`;
     let currentPreviewButton = null;
+    let lightboxReturnFocus = null;
     let selectedCard = null;
     let browseMode = false;
     let storiesVisible = false;
     let touchStartX = 0;
     let swipedPreview = false;
     let savedViewState = {};
+    let helpReturnFocus = null;
 
     function safeStore(key, value) { try { localStorage.setItem(key, value); } catch (error) {} }
     function safeRead(key) { try { return localStorage.getItem(key); } catch (error) { return null; } }
@@ -491,7 +498,7 @@
     }
     function visibleCards() { return cards.filter(card => !card.classList.contains('hidden')); }
     function visibleCoverButtons() { return visibleCards().map(card => card.querySelector('.cover-button')).filter(Boolean); }
-    function openLightbox(button) { currentPreviewButton = button; renderPreview(button); lightbox.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function openLightbox(button) { lightboxReturnFocus = button; currentPreviewButton = button; renderPreview(button); lightbox.classList.add('open'); document.body.style.overflow = 'hidden'; document.querySelector('[data-lightbox-close]').focus(); }
     function renderPreview(button) {
       if (!button) return;
       currentPreviewButton = button;
@@ -527,9 +534,10 @@
       lightboxImage.removeAttribute('alt');
       lightboxTitle.textContent = '';
       lightboxDetail.textContent = '';
-      const returnCard = currentPreviewButton?.closest('.comic-card');
+      const returnButton = lightboxReturnFocus;
       currentPreviewButton = null;
-      if (returnCard) returnCard.focus({ preventScroll: true });
+      lightboxReturnFocus = null;
+      if (returnButton) returnButton.focus({ preventScroll: true });
     }
     function toggleDensity() {
       document.body.classList.toggle('compact-view');
@@ -560,8 +568,17 @@
       const candidates = available.filter(card => card !== selectedCard).map(card => { const rect = card.getBoundingClientRect(); const dx = rect.left + rect.width / 2 - sx, dy = rect.top + rect.height / 2 - sy; const forward = direction === 'left' ? dx < -2 : direction === 'right' ? dx > 2 : direction === 'up' ? dy < -2 : dy > 2; return { card, forward, score: Math.abs(horizontal ? dx : dy) + Math.abs(horizontal ? dy : dx) * 3 }; }).filter(item => item.forward).sort((a, b) => a.score - b.score);
       if (candidates.length) selectCard(candidates[0].card);
     }
-    function openHelp() { help.classList.add('open'); }
-    function closeHelp() { help.classList.remove('open'); }
+    function openHelp() { helpReturnFocus = document.activeElement; help.classList.add('open'); document.querySelector('[data-close-help]').focus(); }
+    function closeHelp() { help.classList.remove('open'); if (helpReturnFocus instanceof HTMLElement) helpReturnFocus.focus({ preventScroll: true }); helpReturnFocus = null; }
+    function trapFocus(event, modal) {
+      if (event.key !== 'Tab') return false;
+      const focusable = [...modal.querySelectorAll('button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), [tabindex]:not([tabindex="-1"])')].filter(item => item.getClientRects().length);
+      if (!focusable.length) return false;
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); return true; }
+      if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); return true; }
+      return false;
+    }
     function resetFilters() { search.value = ''; state.query = ''; ['scope', 'project', 'status', 'decade'].forEach(key => setFilter(key, 'all')); state.year = 'all'; document.querySelector('.year-filter').value = 'all'; }
     sectionJump?.addEventListener('change', () => { const target = visibleCards().find(card => card.dataset.section.split('|').includes(sectionJump.value) || card.dataset.work === sectionJump.value); if (target) target.scrollIntoView({ block: 'center', behavior: 'smooth' }); sectionJump.value = ''; });
     document.querySelector('[data-mobile-search]').addEventListener('click', () => { controls.classList.add('open'); filterToggle.setAttribute('aria-expanded', 'true'); search.focus(); });
@@ -572,8 +589,8 @@
     document.addEventListener('keydown', event => {
       const typing = event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLTextAreaElement;
       if (event.metaKey || event.ctrlKey || event.altKey) return;
-      if (help.classList.contains('open')) { if (event.key === 'Escape' || event.key === '?') { event.preventDefault(); closeHelp(); } return; }
-      if (lightbox.classList.contains('open')) { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); movePreview(event.key === 'ArrowLeft' ? -1 : 1); } else if (event.key === 'Escape' || event.code === 'Space') { event.preventDefault(); closeLightbox(); } return; }
+      if (help.classList.contains('open')) { if (trapFocus(event, help)) return; if (event.key === 'Escape' || event.key === '?') { event.preventDefault(); closeHelp(); } return; }
+      if (lightbox.classList.contains('open')) { if (trapFocus(event, lightbox)) return; if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); movePreview(event.key === 'ArrowLeft' ? -1 : 1); } else if (event.key === 'Escape' || event.code === 'Space') { event.preventDefault(); closeLightbox(); } return; }
       if (event.key === 'Escape' && typing) { search.value = ''; state.query = ''; applyFilters(); search.blur(); return; }
       if (typing) return;
       if (browseMode && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); moveCardSelection(event.key.replace('Arrow', '').toLowerCase()); return; }

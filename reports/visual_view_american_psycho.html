@@ -112,6 +112,11 @@
     .shortcut-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 12px; align-items: center; }
     kbd { min-width: 34px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 3px 7px; background: #f4f6f8; text-align: center; font: 700 12px ui-monospace, monospace; }
     .mobile-tools { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .comic-card.keyboard-selected { transform: none; }
+    }
     @media (max-width: 700px) {
       header, .summary, .project-progress, main { padding-left: 14px; padding-right: 14px; }
       header { padding-top: 18px; }
@@ -189,7 +194,7 @@
     <section class="grid">
       <article class="comic-card missing cover-approved_manual" tabindex="-1" data-publication-id="VIEW-american-psycho-1" data-work="American Psycho" data-section="American Psycho" data-search="american psycho #1 view-american-psycho-1 american psycho 1 american_psycho_1_5 american psycho" data-order="series" data-scope="american_psycho_1_5" data-project="American Psycho" data-status="missing" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000001" data-publication-date="2023-10-11" data-publication-year="2023" data-publication-decade="2020s">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-american-psycho-1.jpg" data-full-title="American Psycho #1" data-full-detail="Published 2023-10-11 | VIEW-american-psycho-1 | Seq 000001 | https://www.midtowncomics.com/product/2243652 | Collector confirmed the detected black edge is acceptable."><img src="../assets/covers/thumb/VIEW-american-psycho-1.jpg" data-display-src="../assets/covers/display/VIEW-american-psycho-1.jpg" alt="American Psycho #1 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open American Psycho #1 cover" data-full-src="../assets/covers/display/VIEW-american-psycho-1.jpg" data-full-title="American Psycho #1" data-full-detail="Published 2023-10-11 | VIEW-american-psycho-1 | Seq 000001 | https://www.midtowncomics.com/product/2243652 | Collector confirmed the detected black edge is acceptable."><img src="../assets/covers/thumb/VIEW-american-psycho-1.jpg" data-display-src="../assets/covers/display/VIEW-american-psycho-1.jpg" alt="American Psycho #1 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">american psycho 1 5</span>
@@ -203,7 +208,7 @@
 
       <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-american-psycho-2" data-work="American Psycho" data-section="American Psycho" data-search="american psycho #2 view-american-psycho-2 american psycho 2 american_psycho_1_5 american psycho" data-order="series" data-scope="american_psycho_1_5" data-project="American Psycho" data-status="missing" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000002" data-publication-date="2023-11-15" data-publication-year="2023" data-publication-decade="2020s">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-american-psycho-2.jpg" data-full-title="American Psycho #2" data-full-detail="Published 2023-11-15 | VIEW-american-psycho-2 | Seq 000002 | https://www.guildstore.com/comics/pre_code/202309.pdf | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-american-psycho-2.jpg" data-display-src="../assets/covers/display/VIEW-american-psycho-2.jpg" alt="American Psycho #2 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open American Psycho #2 cover" data-full-src="../assets/covers/display/VIEW-american-psycho-2.jpg" data-full-title="American Psycho #2" data-full-detail="Published 2023-11-15 | VIEW-american-psycho-2 | Seq 000002 | https://www.guildstore.com/comics/pre_code/202309.pdf | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-american-psycho-2.jpg" data-display-src="../assets/covers/display/VIEW-american-psycho-2.jpg" alt="American Psycho #2 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">american psycho 1 5</span>
@@ -217,7 +222,7 @@
 
       <article class="comic-card missing cover-approved_manual" tabindex="-1" data-publication-id="VIEW-american-psycho-3" data-work="American Psycho" data-section="American Psycho" data-search="american psycho #3 view-american-psycho-3 american psycho 3 american_psycho_1_5 american psycho" data-order="series" data-scope="american_psycho_1_5" data-project="American Psycho" data-status="missing" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000003" data-publication-date="2024-01-31" data-publication-year="2024" data-publication-decade="2020s">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-american-psycho-3.jpg" data-full-title="American Psycho #3" data-full-detail="Published 2024-01-31 | VIEW-american-psycho-3 | Seq 000003 | https://comicvine.gamespot.com/american-psycho-3/4000-1043352/ | Publisher product page confirms American Psycho #3 Cover A by Andrea Milana; CDN filename does not encode the issue."><img src="../assets/covers/thumb/VIEW-american-psycho-3.jpg" data-display-src="../assets/covers/display/VIEW-american-psycho-3.jpg" alt="American Psycho #3 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open American Psycho #3 cover" data-full-src="../assets/covers/display/VIEW-american-psycho-3.jpg" data-full-title="American Psycho #3" data-full-detail="Published 2024-01-31 | VIEW-american-psycho-3 | Seq 000003 | https://comicvine.gamespot.com/american-psycho-3/4000-1043352/ | Publisher product page confirms American Psycho #3 Cover A by Andrea Milana; CDN filename does not encode the issue."><img src="../assets/covers/thumb/VIEW-american-psycho-3.jpg" data-display-src="../assets/covers/display/VIEW-american-psycho-3.jpg" alt="American Psycho #3 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">american psycho 1 5</span>
@@ -231,7 +236,7 @@
 
       <article class="comic-card missing cover-approved_auto" tabindex="-1" data-publication-id="VIEW-american-psycho-4" data-work="American Psycho" data-section="American Psycho" data-search="american psycho #4 view-american-psycho-4 american psycho 4 american_psycho_1_5 american psycho" data-order="series" data-scope="american_psycho_1_5" data-project="American Psycho" data-status="missing" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000004" data-publication-date="2024-04-24" data-publication-year="2024" data-publication-decade="2020s">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-american-psycho-4.jpg" data-full-title="American Psycho #4" data-full-detail="Published 2024-04-24 | VIEW-american-psycho-4 | Seq 000004 | https://www.pricecharting.com/game/comic-books-american-psycho/american-psycho-4-2024 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-american-psycho-4.jpg" data-display-src="../assets/covers/display/VIEW-american-psycho-4.jpg" alt="American Psycho #4 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open American Psycho #4 cover" data-full-src="../assets/covers/display/VIEW-american-psycho-4.jpg" data-full-title="American Psycho #4" data-full-detail="Published 2024-04-24 | VIEW-american-psycho-4 | Seq 000004 | https://www.pricecharting.com/game/comic-books-american-psycho/american-psycho-4-2024 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-american-psycho-4.jpg" data-display-src="../assets/covers/display/VIEW-american-psycho-4.jpg" alt="American Psycho #4 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">american psycho 1 5</span>
@@ -245,7 +250,7 @@
 
       <article class="comic-card missing cover-approved_manual" tabindex="-1" data-publication-id="VIEW-american-psycho-5" data-work="American Psycho" data-section="American Psycho" data-search="american psycho #5 view-american-psycho-5 american psycho 5 american_psycho_1_5 american psycho" data-order="series" data-scope="american_psycho_1_5" data-project="American Psycho" data-status="missing" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000005" data-publication-date="2024-08-14" data-publication-year="2024" data-publication-decade="2020s">
         <div class="status-strip">Missing</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-american-psycho-5.jpg" data-full-title="American Psycho #5" data-full-detail="Published 2024-08-14 | VIEW-american-psycho-5 | Seq 000005 | https://sumerian.ink/products/american-psycho-5 | Cover visibly identifies American Psycho issue five and matches the cited Cover A product listing."><img src="../assets/covers/thumb/VIEW-american-psycho-5.jpg" data-display-src="../assets/covers/display/VIEW-american-psycho-5.jpg" alt="American Psycho #5 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open American Psycho #5 cover" data-full-src="../assets/covers/display/VIEW-american-psycho-5.jpg" data-full-title="American Psycho #5" data-full-detail="Published 2024-08-14 | VIEW-american-psycho-5 | Seq 000005 | https://sumerian.ink/products/american-psycho-5 | Cover visibly identifies American Psycho issue five and matches the cited Cover A product listing."><img src="../assets/covers/thumb/VIEW-american-psycho-5.jpg" data-display-src="../assets/covers/display/VIEW-american-psycho-5.jpg" alt="American Psycho #5 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">american psycho 1 5</span>
@@ -306,12 +311,14 @@
     const filterStorageKey = 'gothamViewerFiltersOpen';
     const stateStorageKey = `gothamViewerState:${location.pathname}`;
     let currentPreviewButton = null;
+    let lightboxReturnFocus = null;
     let selectedCard = null;
     let browseMode = false;
     let storiesVisible = false;
     let touchStartX = 0;
     let swipedPreview = false;
     let savedViewState = {};
+    let helpReturnFocus = null;
 
     function safeStore(key, value) { try { localStorage.setItem(key, value); } catch (error) {} }
     function safeRead(key) { try { return localStorage.getItem(key); } catch (error) { return null; } }
@@ -477,7 +484,7 @@
     }
     function visibleCards() { return cards.filter(card => !card.classList.contains('hidden')); }
     function visibleCoverButtons() { return visibleCards().map(card => card.querySelector('.cover-button')).filter(Boolean); }
-    function openLightbox(button) { currentPreviewButton = button; renderPreview(button); lightbox.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function openLightbox(button) { lightboxReturnFocus = button; currentPreviewButton = button; renderPreview(button); lightbox.classList.add('open'); document.body.style.overflow = 'hidden'; document.querySelector('[data-lightbox-close]').focus(); }
     function renderPreview(button) {
       if (!button) return;
       currentPreviewButton = button;
@@ -513,9 +520,10 @@
       lightboxImage.removeAttribute('alt');
       lightboxTitle.textContent = '';
       lightboxDetail.textContent = '';
-      const returnCard = currentPreviewButton?.closest('.comic-card');
+      const returnButton = lightboxReturnFocus;
       currentPreviewButton = null;
-      if (returnCard) returnCard.focus({ preventScroll: true });
+      lightboxReturnFocus = null;
+      if (returnButton) returnButton.focus({ preventScroll: true });
     }
     function toggleDensity() {
       document.body.classList.toggle('compact-view');
@@ -546,8 +554,17 @@
       const candidates = available.filter(card => card !== selectedCard).map(card => { const rect = card.getBoundingClientRect(); const dx = rect.left + rect.width / 2 - sx, dy = rect.top + rect.height / 2 - sy; const forward = direction === 'left' ? dx < -2 : direction === 'right' ? dx > 2 : direction === 'up' ? dy < -2 : dy > 2; return { card, forward, score: Math.abs(horizontal ? dx : dy) + Math.abs(horizontal ? dy : dx) * 3 }; }).filter(item => item.forward).sort((a, b) => a.score - b.score);
       if (candidates.length) selectCard(candidates[0].card);
     }
-    function openHelp() { help.classList.add('open'); }
-    function closeHelp() { help.classList.remove('open'); }
+    function openHelp() { helpReturnFocus = document.activeElement; help.classList.add('open'); document.querySelector('[data-close-help]').focus(); }
+    function closeHelp() { help.classList.remove('open'); if (helpReturnFocus instanceof HTMLElement) helpReturnFocus.focus({ preventScroll: true }); helpReturnFocus = null; }
+    function trapFocus(event, modal) {
+      if (event.key !== 'Tab') return false;
+      const focusable = [...modal.querySelectorAll('button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), [tabindex]:not([tabindex="-1"])')].filter(item => item.getClientRects().length);
+      if (!focusable.length) return false;
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); return true; }
+      if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); return true; }
+      return false;
+    }
     function resetFilters() { search.value = ''; state.query = ''; ['scope', 'project', 'status', 'decade'].forEach(key => setFilter(key, 'all')); state.year = 'all'; document.querySelector('.year-filter').value = 'all'; }
     sectionJump?.addEventListener('change', () => { const target = visibleCards().find(card => card.dataset.section.split('|').includes(sectionJump.value) || card.dataset.work === sectionJump.value); if (target) target.scrollIntoView({ block: 'center', behavior: 'smooth' }); sectionJump.value = ''; });
     document.querySelector('[data-mobile-search]').addEventListener('click', () => { controls.classList.add('open'); filterToggle.setAttribute('aria-expanded', 'true'); search.focus(); });
@@ -558,8 +575,8 @@
     document.addEventListener('keydown', event => {
       const typing = event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLTextAreaElement;
       if (event.metaKey || event.ctrlKey || event.altKey) return;
-      if (help.classList.contains('open')) { if (event.key === 'Escape' || event.key === '?') { event.preventDefault(); closeHelp(); } return; }
-      if (lightbox.classList.contains('open')) { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); movePreview(event.key === 'ArrowLeft' ? -1 : 1); } else if (event.key === 'Escape' || event.code === 'Space') { event.preventDefault(); closeLightbox(); } return; }
+      if (help.classList.contains('open')) { if (trapFocus(event, help)) return; if (event.key === 'Escape' || event.key === '?') { event.preventDefault(); closeHelp(); } return; }
+      if (lightbox.classList.contains('open')) { if (trapFocus(event, lightbox)) return; if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); movePreview(event.key === 'ArrowLeft' ? -1 : 1); } else if (event.key === 'Escape' || event.code === 'Space') { event.preventDefault(); closeLightbox(); } return; }
       if (event.key === 'Escape' && typing) { search.value = ''; state.query = ''; applyFilters(); search.blur(); return; }
       if (typing) return;
       if (browseMode && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); moveCardSelection(event.key.replace('Arrow', '').toLowerCase()); return; }

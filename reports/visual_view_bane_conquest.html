@@ -112,6 +112,11 @@
     .shortcut-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 12px; align-items: center; }
     kbd { min-width: 34px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 3px 7px; background: #f4f6f8; text-align: center; font: 700 12px ui-monospace, monospace; }
     .mobile-tools { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .comic-card.keyboard-selected { transform: none; }
+    }
     @media (max-width: 700px) {
       header, .summary, .project-progress, main { padding-left: 14px; padding-right: 14px; }
       header { padding-top: 18px; }
@@ -189,7 +194,7 @@
     <section class="grid">
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-bane-conquest-1" data-work="Bane: Conquest" data-section="bane_conquest" data-search="bane: conquest #1 view-bane-conquest-1 bane: conquest 1 complete source-owned twelve-issue miniseries. bane: conquest bane_conquest" data-order="reading" data-scope="Bane: Conquest" data-project="bane_conquest" data-status="owned" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000001" data-publication-date="2017-05-03" data-publication-year="2017" data-publication-decade="2010s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-bane-conquest-1.jpg" data-full-title="Bane: Conquest #1" data-full-detail="Published 2017-05-03 | VIEW-bane-conquest-1 | Seq 000001 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-1.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-1.jpg" alt="Bane: Conquest #1 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Bane: Conquest #1 cover" data-full-src="../assets/covers/display/VIEW-bane-conquest-1.jpg" data-full-title="Bane: Conquest #1" data-full-detail="Published 2017-05-03 | VIEW-bane-conquest-1 | Seq 000001 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-1.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-1.jpg" alt="Bane: Conquest #1 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Bane: Conquest</span>
@@ -203,7 +208,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-bane-conquest-2" data-work="Bane: Conquest" data-section="bane_conquest" data-search="bane: conquest #2 view-bane-conquest-2 bane: conquest 2 complete source-owned twelve-issue miniseries. bane: conquest bane_conquest" data-order="reading" data-scope="Bane: Conquest" data-project="bane_conquest" data-status="owned" data-sequence="000002" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000002" data-publication-date="2017-06-07" data-publication-year="2017" data-publication-decade="2010s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-bane-conquest-2.jpg" data-full-title="Bane: Conquest #2" data-full-detail="Published 2017-06-07 | VIEW-bane-conquest-2 | Seq 000002 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-2.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-2.jpg" alt="Bane: Conquest #2 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Bane: Conquest #2 cover" data-full-src="../assets/covers/display/VIEW-bane-conquest-2.jpg" data-full-title="Bane: Conquest #2" data-full-detail="Published 2017-06-07 | VIEW-bane-conquest-2 | Seq 000002 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_2 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-2.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-2.jpg" alt="Bane: Conquest #2 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Bane: Conquest</span>
@@ -217,7 +222,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-bane-conquest-3" data-work="Bane: Conquest" data-section="bane_conquest" data-search="bane: conquest #3 view-bane-conquest-3 bane: conquest 3 complete source-owned twelve-issue miniseries. bane: conquest bane_conquest" data-order="reading" data-scope="Bane: Conquest" data-project="bane_conquest" data-status="owned" data-sequence="000003" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000003" data-publication-date="2017-07-05" data-publication-year="2017" data-publication-decade="2010s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-bane-conquest-3.jpg" data-full-title="Bane: Conquest #3" data-full-detail="Published 2017-07-05 | VIEW-bane-conquest-3 | Seq 000003 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_3 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-3.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-3.jpg" alt="Bane: Conquest #3 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Bane: Conquest #3 cover" data-full-src="../assets/covers/display/VIEW-bane-conquest-3.jpg" data-full-title="Bane: Conquest #3" data-full-detail="Published 2017-07-05 | VIEW-bane-conquest-3 | Seq 000003 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_3 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-3.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-3.jpg" alt="Bane: Conquest #3 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Bane: Conquest</span>
@@ -231,7 +236,7 @@
 
       <article class="comic-card owned cover-approved_manual" tabindex="-1" data-publication-id="VIEW-bane-conquest-4" data-work="Bane: Conquest" data-section="bane_conquest" data-search="bane: conquest #4 view-bane-conquest-4 bane: conquest 4 complete source-owned twelve-issue miniseries. bane: conquest bane_conquest" data-order="reading" data-scope="Bane: Conquest" data-project="bane_conquest" data-status="owned" data-sequence="000004" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000004" data-publication-date="2017-08-02" data-publication-year="2017" data-publication-decade="2010s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-bane-conquest-4.jpg" data-full-title="Bane: Conquest #4" data-full-detail="Published 2017-08-02 | VIEW-bane-conquest-4 | Seq 000004 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_4 | Collector confirmed this perspective-style detection is acceptable."><img src="../assets/covers/thumb/VIEW-bane-conquest-4.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-4.jpg" alt="Bane: Conquest #4 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Bane: Conquest #4 cover" data-full-src="../assets/covers/display/VIEW-bane-conquest-4.jpg" data-full-title="Bane: Conquest #4" data-full-detail="Published 2017-08-02 | VIEW-bane-conquest-4 | Seq 000004 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_4 | Collector confirmed this perspective-style detection is acceptable."><img src="../assets/covers/thumb/VIEW-bane-conquest-4.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-4.jpg" alt="Bane: Conquest #4 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Bane: Conquest</span>
@@ -245,7 +250,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-bane-conquest-5" data-work="Bane: Conquest" data-section="bane_conquest" data-search="bane: conquest #5 view-bane-conquest-5 bane: conquest 5 complete source-owned twelve-issue miniseries. bane: conquest bane_conquest" data-order="reading" data-scope="Bane: Conquest" data-project="bane_conquest" data-status="owned" data-sequence="000005" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000005" data-publication-date="2017-09-06" data-publication-year="2017" data-publication-decade="2010s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-bane-conquest-5.jpg" data-full-title="Bane: Conquest #5" data-full-detail="Published 2017-09-06 | VIEW-bane-conquest-5 | Seq 000005 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_5 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-5.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-5.jpg" alt="Bane: Conquest #5 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Bane: Conquest #5 cover" data-full-src="../assets/covers/display/VIEW-bane-conquest-5.jpg" data-full-title="Bane: Conquest #5" data-full-detail="Published 2017-09-06 | VIEW-bane-conquest-5 | Seq 000005 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_5 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-5.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-5.jpg" alt="Bane: Conquest #5 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Bane: Conquest</span>
@@ -259,7 +264,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-bane-conquest-6" data-work="Bane: Conquest" data-section="bane_conquest" data-search="bane: conquest #6 view-bane-conquest-6 bane: conquest 6 complete source-owned twelve-issue miniseries. bane: conquest bane_conquest" data-order="reading" data-scope="Bane: Conquest" data-project="bane_conquest" data-status="owned" data-sequence="000006" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000006" data-publication-date="2017-10-04" data-publication-year="2017" data-publication-decade="2010s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-bane-conquest-6.jpg" data-full-title="Bane: Conquest #6" data-full-detail="Published 2017-10-04 | VIEW-bane-conquest-6 | Seq 000006 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_6 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-6.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-6.jpg" alt="Bane: Conquest #6 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Bane: Conquest #6 cover" data-full-src="../assets/covers/display/VIEW-bane-conquest-6.jpg" data-full-title="Bane: Conquest #6" data-full-detail="Published 2017-10-04 | VIEW-bane-conquest-6 | Seq 000006 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_6 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-6.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-6.jpg" alt="Bane: Conquest #6 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Bane: Conquest</span>
@@ -273,7 +278,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-bane-conquest-7" data-work="Bane: Conquest" data-section="bane_conquest" data-search="bane: conquest #7 view-bane-conquest-7 bane: conquest 7 complete source-owned twelve-issue miniseries. bane: conquest bane_conquest" data-order="reading" data-scope="Bane: Conquest" data-project="bane_conquest" data-status="owned" data-sequence="000007" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000007" data-publication-date="2017-11-01" data-publication-year="2017" data-publication-decade="2010s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-bane-conquest-7.jpg" data-full-title="Bane: Conquest #7" data-full-detail="Published 2017-11-01 | VIEW-bane-conquest-7 | Seq 000007 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_7 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-7.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-7.jpg" alt="Bane: Conquest #7 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Bane: Conquest #7 cover" data-full-src="../assets/covers/display/VIEW-bane-conquest-7.jpg" data-full-title="Bane: Conquest #7" data-full-detail="Published 2017-11-01 | VIEW-bane-conquest-7 | Seq 000007 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_7 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-7.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-7.jpg" alt="Bane: Conquest #7 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Bane: Conquest</span>
@@ -287,7 +292,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-bane-conquest-8" data-work="Bane: Conquest" data-section="bane_conquest" data-search="bane: conquest #8 view-bane-conquest-8 bane: conquest 8 complete source-owned twelve-issue miniseries. bane: conquest bane_conquest" data-order="reading" data-scope="Bane: Conquest" data-project="bane_conquest" data-status="owned" data-sequence="000008" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000008" data-publication-date="2017-12-06" data-publication-year="2017" data-publication-decade="2010s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-bane-conquest-8.jpg" data-full-title="Bane: Conquest #8" data-full-detail="Published 2017-12-06 | VIEW-bane-conquest-8 | Seq 000008 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_8 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-8.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-8.jpg" alt="Bane: Conquest #8 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Bane: Conquest #8 cover" data-full-src="../assets/covers/display/VIEW-bane-conquest-8.jpg" data-full-title="Bane: Conquest #8" data-full-detail="Published 2017-12-06 | VIEW-bane-conquest-8 | Seq 000008 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_8 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-8.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-8.jpg" alt="Bane: Conquest #8 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Bane: Conquest</span>
@@ -301,7 +306,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-bane-conquest-9" data-work="Bane: Conquest" data-section="bane_conquest" data-search="bane: conquest #9 view-bane-conquest-9 bane: conquest 9 complete source-owned twelve-issue miniseries. bane: conquest bane_conquest" data-order="reading" data-scope="Bane: Conquest" data-project="bane_conquest" data-status="owned" data-sequence="000009" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000009" data-publication-date="2018-02-07" data-publication-year="2018" data-publication-decade="2010s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-bane-conquest-9.jpg" data-full-title="Bane: Conquest #9" data-full-detail="Published 2018-02-07 | VIEW-bane-conquest-9 | Seq 000009 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_9 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-9.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-9.jpg" alt="Bane: Conquest #9 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Bane: Conquest #9 cover" data-full-src="../assets/covers/display/VIEW-bane-conquest-9.jpg" data-full-title="Bane: Conquest #9" data-full-detail="Published 2018-02-07 | VIEW-bane-conquest-9 | Seq 000009 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_9 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-9.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-9.jpg" alt="Bane: Conquest #9 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Bane: Conquest</span>
@@ -315,7 +320,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-bane-conquest-10" data-work="Bane: Conquest" data-section="bane_conquest" data-search="bane: conquest #10 view-bane-conquest-10 bane: conquest 10 complete source-owned twelve-issue miniseries. bane: conquest bane_conquest" data-order="reading" data-scope="Bane: Conquest" data-project="bane_conquest" data-status="owned" data-sequence="000010" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000010" data-publication-date="2018-03-07" data-publication-year="2018" data-publication-decade="2010s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-bane-conquest-10.jpg" data-full-title="Bane: Conquest #10" data-full-detail="Published 2018-03-07 | VIEW-bane-conquest-10 | Seq 000010 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_10 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-10.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-10.jpg" alt="Bane: Conquest #10 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Bane: Conquest #10 cover" data-full-src="../assets/covers/display/VIEW-bane-conquest-10.jpg" data-full-title="Bane: Conquest #10" data-full-detail="Published 2018-03-07 | VIEW-bane-conquest-10 | Seq 000010 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_10 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-10.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-10.jpg" alt="Bane: Conquest #10 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Bane: Conquest</span>
@@ -329,7 +334,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-bane-conquest-11" data-work="Bane: Conquest" data-section="bane_conquest" data-search="bane: conquest #11 view-bane-conquest-11 bane: conquest 11 complete source-owned twelve-issue miniseries. bane: conquest bane_conquest" data-order="reading" data-scope="Bane: Conquest" data-project="bane_conquest" data-status="owned" data-sequence="000011" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000011" data-publication-date="2018-05-30" data-publication-year="2018" data-publication-decade="2010s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-bane-conquest-11.jpg" data-full-title="Bane: Conquest #11" data-full-detail="Published 2018-05-30 | VIEW-bane-conquest-11 | Seq 000011 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_11 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-11.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-11.jpg" alt="Bane: Conquest #11 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Bane: Conquest #11 cover" data-full-src="../assets/covers/display/VIEW-bane-conquest-11.jpg" data-full-title="Bane: Conquest #11" data-full-detail="Published 2018-05-30 | VIEW-bane-conquest-11 | Seq 000011 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_11 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-11.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-11.jpg" alt="Bane: Conquest #11 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Bane: Conquest</span>
@@ -343,7 +348,7 @@
 
       <article class="comic-card owned cover-approved_auto" tabindex="-1" data-publication-id="VIEW-bane-conquest-12" data-work="Bane: Conquest" data-section="bane_conquest" data-search="bane: conquest #12 view-bane-conquest-12 bane: conquest 12 complete source-owned twelve-issue miniseries. bane: conquest bane_conquest" data-order="reading" data-scope="Bane: Conquest" data-project="bane_conquest" data-status="owned" data-sequence="000012" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="reading:000012" data-publication-date="2018-06-27" data-publication-year="2018" data-publication-decade="2010s">
         <div class="status-strip">Owned</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" data-full-src="../assets/covers/display/VIEW-bane-conquest-12.jpg" data-full-title="Bane: Conquest #12" data-full-detail="Published 2018-06-27 | VIEW-bane-conquest-12 | Seq 000012 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_12 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-12.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-12.jpg" alt="Bane: Conquest #12 cover" loading="lazy" decoding="async"></button></div>
+        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Bane: Conquest #12 cover" data-full-src="../assets/covers/display/VIEW-bane-conquest-12.jpg" data-full-title="Bane: Conquest #12" data-full-detail="Published 2018-06-27 | VIEW-bane-conquest-12 | Seq 000012 | core | Complete source-owned twelve-issue miniseries. | https://dc.fandom.com/wiki/Bane:_Conquest_Vol_1_12 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/VIEW-bane-conquest-12.jpg" data-display-src="../assets/covers/display/VIEW-bane-conquest-12.jpg" alt="Bane: Conquest #12 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
           <div class="badges">
             <span class="badge">Bane: Conquest</span>
@@ -404,12 +409,14 @@
     const filterStorageKey = 'gothamViewerFiltersOpen';
     const stateStorageKey = `gothamViewerState:${location.pathname}`;
     let currentPreviewButton = null;
+    let lightboxReturnFocus = null;
     let selectedCard = null;
     let browseMode = false;
     let storiesVisible = false;
     let touchStartX = 0;
     let swipedPreview = false;
     let savedViewState = {};
+    let helpReturnFocus = null;
 
     function safeStore(key, value) { try { localStorage.setItem(key, value); } catch (error) {} }
     function safeRead(key) { try { return localStorage.getItem(key); } catch (error) { return null; } }
@@ -575,7 +582,7 @@
     }
     function visibleCards() { return cards.filter(card => !card.classList.contains('hidden')); }
     function visibleCoverButtons() { return visibleCards().map(card => card.querySelector('.cover-button')).filter(Boolean); }
-    function openLightbox(button) { currentPreviewButton = button; renderPreview(button); lightbox.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function openLightbox(button) { lightboxReturnFocus = button; currentPreviewButton = button; renderPreview(button); lightbox.classList.add('open'); document.body.style.overflow = 'hidden'; document.querySelector('[data-lightbox-close]').focus(); }
     function renderPreview(button) {
       if (!button) return;
       currentPreviewButton = button;
@@ -611,9 +618,10 @@
       lightboxImage.removeAttribute('alt');
       lightboxTitle.textContent = '';
       lightboxDetail.textContent = '';
-      const returnCard = currentPreviewButton?.closest('.comic-card');
+      const returnButton = lightboxReturnFocus;
       currentPreviewButton = null;
-      if (returnCard) returnCard.focus({ preventScroll: true });
+      lightboxReturnFocus = null;
+      if (returnButton) returnButton.focus({ preventScroll: true });
     }
     function toggleDensity() {
       document.body.classList.toggle('compact-view');
@@ -644,8 +652,17 @@
       const candidates = available.filter(card => card !== selectedCard).map(card => { const rect = card.getBoundingClientRect(); const dx = rect.left + rect.width / 2 - sx, dy = rect.top + rect.height / 2 - sy; const forward = direction === 'left' ? dx < -2 : direction === 'right' ? dx > 2 : direction === 'up' ? dy < -2 : dy > 2; return { card, forward, score: Math.abs(horizontal ? dx : dy) + Math.abs(horizontal ? dy : dx) * 3 }; }).filter(item => item.forward).sort((a, b) => a.score - b.score);
       if (candidates.length) selectCard(candidates[0].card);
     }
-    function openHelp() { help.classList.add('open'); }
-    function closeHelp() { help.classList.remove('open'); }
+    function openHelp() { helpReturnFocus = document.activeElement; help.classList.add('open'); document.querySelector('[data-close-help]').focus(); }
+    function closeHelp() { help.classList.remove('open'); if (helpReturnFocus instanceof HTMLElement) helpReturnFocus.focus({ preventScroll: true }); helpReturnFocus = null; }
+    function trapFocus(event, modal) {
+      if (event.key !== 'Tab') return false;
+      const focusable = [...modal.querySelectorAll('button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), [tabindex]:not([tabindex="-1"])')].filter(item => item.getClientRects().length);
+      if (!focusable.length) return false;
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); return true; }
+      if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); return true; }
+      return false;
+    }
     function resetFilters() { search.value = ''; state.query = ''; ['scope', 'project', 'status', 'decade'].forEach(key => setFilter(key, 'all')); state.year = 'all'; document.querySelector('.year-filter').value = 'all'; }
     sectionJump?.addEventListener('change', () => { const target = visibleCards().find(card => card.dataset.section.split('|').includes(sectionJump.value) || card.dataset.work === sectionJump.value); if (target) target.scrollIntoView({ block: 'center', behavior: 'smooth' }); sectionJump.value = ''; });
     document.querySelector('[data-mobile-search]').addEventListener('click', () => { controls.classList.add('open'); filterToggle.setAttribute('aria-expanded', 'true'); search.focus(); });
@@ -656,8 +673,8 @@
     document.addEventListener('keydown', event => {
       const typing = event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLTextAreaElement;
       if (event.metaKey || event.ctrlKey || event.altKey) return;
-      if (help.classList.contains('open')) { if (event.key === 'Escape' || event.key === '?') { event.preventDefault(); closeHelp(); } return; }
-      if (lightbox.classList.contains('open')) { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); movePreview(event.key === 'ArrowLeft' ? -1 : 1); } else if (event.key === 'Escape' || event.code === 'Space') { event.preventDefault(); closeLightbox(); } return; }
+      if (help.classList.contains('open')) { if (trapFocus(event, help)) return; if (event.key === 'Escape' || event.key === '?') { event.preventDefault(); closeHelp(); } return; }
+      if (lightbox.classList.contains('open')) { if (trapFocus(event, lightbox)) return; if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); movePreview(event.key === 'ArrowLeft' ? -1 : 1); } else if (event.key === 'Escape' || event.code === 'Space') { event.preventDefault(); closeLightbox(); } return; }
       if (event.key === 'Escape' && typing) { search.value = ''; state.query = ''; applyFilters(); search.blur(); return; }
       if (typing) return;
       if (browseMode && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); moveCardSelection(event.key.replace('Arrow', '').toLowerCase()); return; }
