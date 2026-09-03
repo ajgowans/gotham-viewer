@@ -1,146 +1,6 @@
 {
   "files": [
     {
-      "bytes": 21,
-      "path": ".git/HEAD",
-      "sha256": "28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80"
-    },
-    {
-      "bytes": 307,
-      "path": ".git/config",
-      "sha256": "4a80e008f70e3d6f722f07f6524f35b8172919b84e7e5aa22746e9a69f325a2b"
-    },
-    {
-      "bytes": 73,
-      "path": ".git/description",
-      "sha256": "85ab6c163d43a17ea9cf7788308bca1466f1b0a8d1cc92e26e9bf63da4062aee"
-    },
-    {
-      "bytes": 478,
-      "path": ".git/hooks/applypatch-msg.sample",
-      "sha256": "0223497a0b8b033aa58a3a521b8629869386cf7ab0e2f101963d328aa62193f7"
-    },
-    {
-      "bytes": 896,
-      "path": ".git/hooks/commit-msg.sample",
-      "sha256": "1f74d5e9292979b573ebd59741d46cb93ff391acdd083d340b94370753d92437"
-    },
-    {
-      "bytes": 4726,
-      "path": ".git/hooks/fsmonitor-watchman.sample",
-      "sha256": "e0549964e93897b519bd8e333c037e51fff0f88ba13e086a331592bf801fa1d0"
-    },
-    {
-      "bytes": 189,
-      "path": ".git/hooks/post-update.sample",
-      "sha256": "81765af2daef323061dcbc5e61fc16481cb74b3bac9ad8a174b186523586f6c5"
-    },
-    {
-      "bytes": 424,
-      "path": ".git/hooks/pre-applypatch.sample",
-      "sha256": "e15c5b469ea3e0a695bea6f2c82bcf8e62821074939ddd85b77e0007ff165475"
-    },
-    {
-      "bytes": 1649,
-      "path": ".git/hooks/pre-commit.sample",
-      "sha256": "57185b7b9f05239d7ab52db045f5b89eb31348d7b2177eab214f5eb872e1971b"
-    },
-    {
-      "bytes": 416,
-      "path": ".git/hooks/pre-merge-commit.sample",
-      "sha256": "d3825a70337940ebbd0a5c072984e13245920cdf8898bd225c8d27a6dfc9cb53"
-    },
-    {
-      "bytes": 1374,
-      "path": ".git/hooks/pre-push.sample",
-      "sha256": "ecce9c7e04d3f5dd9d8ada81753dd1d549a9634b26770042b58dda00217d086a"
-    },
-    {
-      "bytes": 4898,
-      "path": ".git/hooks/pre-rebase.sample",
-      "sha256": "4febce867790052338076f4e66cc47efb14879d18097d1d61c8261859eaaa7b3"
-    },
-    {
-      "bytes": 544,
-      "path": ".git/hooks/pre-receive.sample",
-      "sha256": "a4c3d2b9c7bb3fd8d1441c31bd4ee71a595d66b44fcf49ddb310252320169989"
-    },
-    {
-      "bytes": 1492,
-      "path": ".git/hooks/prepare-commit-msg.sample",
-      "sha256": "e9ddcaa4189fddd25ed97fc8c789eca7b6ca16390b2392ae3276f0c8e1aa4619"
-    },
-    {
-      "bytes": 2783,
-      "path": ".git/hooks/push-to-checkout.sample",
-      "sha256": "a53d0741798b287c6dd7afa64aee473f305e65d3f49463bb9d7408ec3b12bf5f"
-    },
-    {
-      "bytes": 2308,
-      "path": ".git/hooks/sendemail-validate.sample",
-      "sha256": "44ebfc923dc5466bc009602f0ecf067b9c65459abfe8868ddc49b78e6ced7a92"
-    },
-    {
-      "bytes": 3650,
-      "path": ".git/hooks/update.sample",
-      "sha256": "8d5f2fa83e103cf08b57eaa67521df9194f45cbdbcb37da52ad586097a14d106"
-    },
-    {
-      "bytes": 1149197,
-      "path": ".git/index",
-      "sha256": "bb25204d56c2600f9fb49fd0d87ddee2317d6e543c6c75192db1a5c3fbee069a"
-    },
-    {
-      "bytes": 240,
-      "path": ".git/info/exclude",
-      "sha256": "6671fe83b7a07c8932ee89164d1f2793b2318058eb8b98dc5c06ee0a5a3b0ec1"
-    },
-    {
-      "bytes": 195,
-      "path": ".git/logs/HEAD",
-      "sha256": "1ff9c0ea049cafc75d1532b927c083863e1b82f51644b80a980e94f4f0e747e2"
-    },
-    {
-      "bytes": 195,
-      "path": ".git/logs/refs/heads/main",
-      "sha256": "1ff9c0ea049cafc75d1532b927c083863e1b82f51644b80a980e94f4f0e747e2"
-    },
-    {
-      "bytes": 195,
-      "path": ".git/logs/refs/remotes/origin/HEAD",
-      "sha256": "1ff9c0ea049cafc75d1532b927c083863e1b82f51644b80a980e94f4f0e747e2"
-    },
-    {
-      "bytes": 329708,
-      "path": ".git/objects/pack/pack-5a7ece1329155eaaeb1c3c638d874831a61bfb2f.idx",
-      "sha256": "4c13c18ff8134957b6fed6428f479609b12545097fdc9fcf707a84fa3102bfc4"
-    },
-    {
-      "bytes": 836276592,
-      "path": ".git/objects/pack/pack-5a7ece1329155eaaeb1c3c638d874831a61bfb2f.pack",
-      "sha256": "4d96db235634685e78850bbcea00cb381236a83552577511165de47f03639aa9"
-    },
-    {
-      "bytes": 47000,
-      "path": ".git/objects/pack/pack-5a7ece1329155eaaeb1c3c638d874831a61bfb2f.rev",
-      "sha256": "676b5afeccd245619e05e6737f587d8d5221bc6d55291d57c6d1435fae26c447"
-    },
-    {
-      "bytes": 112,
-      "path": ".git/packed-refs",
-      "sha256": "fc61e5ea6de96b80df02bd6b69b64a427219c3e8b71e18d071e2bcc83f1f43e6"
-    },
-    {
-      "bytes": 41,
-      "path": ".git/refs/heads/main",
-      "sha256": "853c0b052227d24b8731e94a0354396b627397c7f112798d0fda31079d20224f"
-    },
-    {
-      "bytes": 30,
-      "path": ".git/refs/remotes/origin/HEAD",
-      "sha256": "2bb6a24aa0fc6c484100f5d51a29bbad841cd2c755f5d93faa204e5dbb4eb2b4"
-    },
-    {
       "bytes": 0,
       "path": ".nojekyll",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2514,6 +2374,31 @@
       "bytes": 74600,
       "path": "assets/covers/display/OWNED-OTHER-9.jpg",
       "sha256": "6020ca271445a493cb8fa29b53d688e7abfcb6015b9763049710fb833f6928e4"
+    },
+    {
+      "bytes": 201417,
+      "path": "assets/covers/display/PUB-ABSOLUTE-BATMAN-0024.jpg",
+      "sha256": "66088593709b32c38be2409aa470ac92216e195be57db4a03a410c93fece7441"
+    },
+    {
+      "bytes": 147518,
+      "path": "assets/covers/display/PUB-ABSOLUTE-BATMAN-0025.jpg",
+      "sha256": "a29f1d900b94befea5268676f7688316313736094e2befb6228d61efd635b75d"
+    },
+    {
+      "bytes": 159854,
+      "path": "assets/covers/display/PUB-ABSOLUTE-CASSANDRA-CAIN-SHADOWS-HAND-0001.jpg",
+      "sha256": "ab2cde5561f338666c0065274694839eb26610fa3221ee66d39869b24e898844"
+    },
+    {
+      "bytes": 175346,
+      "path": "assets/covers/display/PUB-ABSOLUTE-CATWOMAN-0004.jpg",
+      "sha256": "0285f993de887004cf967f37038870dd5b97b46dfd973640589e0293321fc74a"
+    },
+    {
+      "bytes": 187135,
+      "path": "assets/covers/display/PUB-ABSOLUTE-CATWOMAN-0005.jpg",
+      "sha256": "2547c469175db08a7d054bea5198d80ce696eabcb2807a27171c21c83a41260d"
     },
     {
       "bytes": 69817,
@@ -27786,6 +27671,31 @@
       "sha256": "ce6904bca8565437358215545245fc4ceef7c292d03b1456febb2acfadfce36d"
     },
     {
+      "bytes": 28052,
+      "path": "assets/covers/thumb/PUB-ABSOLUTE-BATMAN-0024.jpg",
+      "sha256": "8d206fdc271bfe7411f5bb603a5f4c407c93395b966685c65f69dbe0991fa0a1"
+    },
+    {
+      "bytes": 97798,
+      "path": "assets/covers/thumb/PUB-ABSOLUTE-BATMAN-0025.jpg",
+      "sha256": "adc85dbad27e6d82ef00c0aeb36ab4b9ff09317d9f41c6749598cba811c94f82"
+    },
+    {
+      "bytes": 20942,
+      "path": "assets/covers/thumb/PUB-ABSOLUTE-CASSANDRA-CAIN-SHADOWS-HAND-0001.jpg",
+      "sha256": "a61b3b110ef6f7878061176c243802f77a8c2e45024ce67040c1f1aaff9fd7c8"
+    },
+    {
+      "bytes": 22136,
+      "path": "assets/covers/thumb/PUB-ABSOLUTE-CATWOMAN-0004.jpg",
+      "sha256": "2a73d8861e165f3a1ae7024ca3c74be7ef88d5618225c710ddd8a69e47e9b750"
+    },
+    {
+      "bytes": 25143,
+      "path": "assets/covers/thumb/PUB-ABSOLUTE-CATWOMAN-0005.jpg",
+      "sha256": "4a02905527f07215cb777faccd5501842a964392b3f8ffc9ce1f21d8c126c03e"
+    },
+    {
       "bytes": 32480,
       "path": "assets/covers/thumb/PUB-ACTION-COMICS-0703.jpg",
       "sha256": "ee4cd2e4bc14d95c0188fdfa918366840361e815c4ba6cfddd6b12e9fc67b61e"
@@ -50703,7 +50613,7 @@
     {
       "bytes": 119391,
       "path": "reports/cover_quality_review.html",
-      "sha256": "b02e15ecc823d92c4cd6d588900491a84e8b3c6045cf3ce9e586e385ac42df1b"
+      "sha256": "218d2b4e1eb2098d6052f0fba3548a0dbe4a43b3dc048ebbc59fd908be2482e1"
     },
     {
       "bytes": 12082251,
@@ -50731,14 +50641,14 @@
       "sha256": "d1011bb2612021792cc2e4f7f95611e69591095e4aa9b966d2fa78b966440c3e"
     },
     {
-      "bytes": 35706,
+      "bytes": 35703,
       "path": "reports/visual_collection_viewer.html",
-      "sha256": "8809c2ca04b1f15df34e3701783b1cbc99721d9f15efa717c07d22d1cc5750e0"
+      "sha256": "9ad3f35418ae7e86a91d07ed8d838f41524ca0ad8c20fa00489c7dd2e57d159f"
     },
     {
-      "bytes": 96137,
+      "bytes": 106905,
       "path": "reports/visual_view_absolute_batman.html",
-      "sha256": "acb4f48ba207f4077105efad1a922fedd3ef804bb4d628585587ffa1528f7a3a"
+      "sha256": "b3d82b01b6e6f4b13487b182041db04f10152a130e274cdc7fb2c55ea51a4430"
     },
     {
       "bytes": 73904,
@@ -51132,5 +51042,5 @@
     }
   ],
   "schema_version": "gotham_public_release_v1",
-  "source_revision": "533a8b0a89c2578d9974711ae8e2c542da4e49b2"
+  "source_revision": "b9c38f9a56bff4c73c588090f00d756db2b344a4"
 }
