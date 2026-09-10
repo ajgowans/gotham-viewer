@@ -2386,6 +2386,11 @@
       "sha256": "a29f1d900b94befea5268676f7688316313736094e2befb6228d61efd635b75d"
     },
     {
+      "bytes": 236665,
+      "path": "assets/covers/display/PUB-ABSOLUTE-BATMAN-BEYOND-ARK-M-0001.jpg",
+      "sha256": "a8580d39c7d32b37e97f44555a59a07500eb5fe96c85320a3dceb29ac5872eb9"
+    },
+    {
       "bytes": 159854,
       "path": "assets/covers/display/PUB-ABSOLUTE-CASSANDRA-CAIN-SHADOWS-HAND-0001.jpg",
       "sha256": "ab2cde5561f338666c0065274694839eb26610fa3221ee66d39869b24e898844"
@@ -27681,6 +27686,11 @@
       "sha256": "adc85dbad27e6d82ef00c0aeb36ab4b9ff09317d9f41c6749598cba811c94f82"
     },
     {
+      "bytes": 30888,
+      "path": "assets/covers/thumb/PUB-ABSOLUTE-BATMAN-BEYOND-ARK-M-0001.jpg",
+      "sha256": "0eda96b2614b08b7fe8acb5a3b5b4893fe448ecc3ebb2de23e70ce1791c756ed"
+    },
+    {
       "bytes": 20942,
       "path": "assets/covers/thumb/PUB-ABSOLUTE-CASSANDRA-CAIN-SHADOWS-HAND-0001.jpg",
       "sha256": "a61b3b110ef6f7878061176c243802f77a8c2e45024ce67040c1f1aaff9fd7c8"
@@ -50613,7 +50623,7 @@
     {
       "bytes": 119391,
       "path": "reports/cover_quality_review.html",
-      "sha256": "218d2b4e1eb2098d6052f0fba3548a0dbe4a43b3dc048ebbc59fd908be2482e1"
+      "sha256": "f646b4165a5b70f291454025644f101590a08fbe9a08340126e6eb10ae3e7a64"
     },
     {
       "bytes": 12082251,
@@ -50643,12 +50653,12 @@
     {
       "bytes": 35703,
       "path": "reports/visual_collection_viewer.html",
-      "sha256": "9ad3f35418ae7e86a91d07ed8d838f41524ca0ad8c20fa00489c7dd2e57d159f"
+      "sha256": "0515d6103943bf8fac9a8d400e422431810f6f052664a85f00c1f092b7f450b9"
     },
     {
-      "bytes": 106905,
+      "bytes": 109149,
       "path": "reports/visual_view_absolute_batman.html",
-      "sha256": "b3d82b01b6e6f4b13487b182041db04f10152a130e274cdc7fb2c55ea51a4430"
+      "sha256": "3057223566527e1003c0c809c69c558fff63a187d5e36a8e12885ebb2fd4b500"
     },
     {
       "bytes": 73904,
@@ -51042,5 +51052,5 @@
     }
   ],
   "schema_version": "gotham_public_release_v1",
-  "source_revision": "b9c38f9a56bff4c73c588090f00d756db2b344a4"
+  "source_revision": "c42c026b4d21c667969891e9868728b7d2e1fbd6"
 }
