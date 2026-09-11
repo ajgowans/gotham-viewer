@@ -153,15 +153,15 @@
     <p>Comics ordered but not yet recorded as arrived or owned.</p>
   </header>
   <section class="summary">
-    <button class="metric" type="button" data-status="all"><strong>1</strong><span>publications</span></button>
+    <button class="metric" type="button" data-status="all"><strong>0</strong><span>publications</span></button>
     <button class="metric" type="button" data-status="owned"><strong>0</strong><span>owned originals</span></button>
     <button class="metric" type="button" data-status="facsimile"><strong>0</strong><span>facsimiles</span></button>
-    <button class="metric" type="button" data-status="ordered"><strong>1</strong><span>ordered</span></button>
+    <button class="metric" type="button" data-status="ordered"><strong>0</strong><span>ordered</span></button>
     <button class="metric" type="button" data-status="missing"><strong>0</strong><span>missing</span></button>
   </section>
   <nav class="project-progress" aria-label="Story completion"></nav>
   <section class="controls">
-    <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="viewer-filters"><span>Filters &amp; order</span><small class="filter-summary">series</small></button>
+    <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="viewer-filters"><span>Filters &amp; order</span><small class="filter-summary">All</small></button>
     <div class="control-content" id="viewer-filters">
       <div class="viewer-tools">
         <div class="search-wrap"><input class="viewer-search" type="search" placeholder="Search title, issue or story" aria-label="Search comics"><button class="search-clear" type="button" title="Clear search" aria-label="Clear search">&times;</button></div>
@@ -169,15 +169,13 @@
         <button class="tool-button" type="button" data-toggle-density>Covers</button>
         <button class="tool-button" type="button" data-toggle-stories>Stories</button>
         <button class="tool-button keyboard-only" type="button" data-toggle-browse>Browse</button>
-        <span class="visible-count">1 of 1</span>
+        <span class="visible-count">0 of 0</span>
         <button class="tool-button keyboard-only" type="button" data-open-help aria-label="Keyboard shortcuts">Shortcuts</button>
       </div>
-      <div class="control-row"><b>Order</b><button class="chip" data-filter="order" data-value="all">All orders</button>
-<button class="chip active" data-filter="order" data-value="series">series</button></div>
+      <div class="control-row"><b>Order</b><button class="chip active" data-filter="order" data-value="all">All orders</button></div>
       <div class="control-row"><b>Sort</b><button class="chip active" data-filter="sort" data-value="curated">curated</button><button class="chip" data-filter="sort" data-value="date">date</button><button class="chip" data-filter="sort" data-value="title">title</button></div>
-      <div class="control-row"><b>Decade</b><button class="chip active" data-filter="decade" data-value="all">All decades</button>
-<button class="chip" data-filter="decade" data-value="1970s">1970s</button></div>
-      <div class="control-row"><b>Year</b><select class="section-jump year-filter" aria-label="Filter by publication year"><option value="all">All years</option><option value="1973">1973</option></select></div>
+      <div class="control-row"><b>Decade</b><button class="chip active" data-filter="decade" data-value="all">All decades</button></div>
+      <div class="control-row"><b>Year</b><select class="section-jump year-filter" aria-label="Filter by publication year"><option value="all">All years</option></select></div>
       <div class="control-row"><b>Scope</b><button class="chip active" data-filter="scope" data-value="all">All scopes</button></div>
       <div class="control-row"><b>Status</b><button class="chip active" data-filter="status" data-value="all">All statuses</button>
 <button class="chip" data-filter="status" data-value="owned">owned</button>
@@ -189,20 +187,7 @@
     </div>
   </section>
   <main>
-    <section class="grid">
-      <article class="comic-card ordered cover-approved_auto" tabindex="-1" data-publication-id="PUB-BAT-0251" data-work="Batman" data-section="Batman" data-search="batman #251 pub-bat-0251 batman 251 processing; forbidden planet; cover a; facsimile edition; price not captured.; facsimile ordered, not yet owned." data-order="series" data-scope="" data-project="" data-status="ordered" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000001" data-publication-date="1973-07-25" data-publication-year="1973" data-publication-decade="1970s">
-        <div class="status-strip">Ordered</div>
-        <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Batman #251 cover" data-full-src="../assets/covers/display/PUB-BAT-0251.jpg" data-full-title="Batman #251" data-full-detail="Published 1973-07-25 | PUB-BAT-0251 | Seq 000001 | Processing; Forbidden Planet; Cover A; Facsimile Edition; price not captured.; Facsimile ordered, not yet owned. | https://dc.fandom.com/wiki/Batman_Vol_1_251 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/PUB-BAT-0251.jpg" data-display-src="../assets/covers/display/PUB-BAT-0251.jpg" alt="Batman #251 cover" loading="lazy" decoding="async"></button></div>
-        <div class="card-body">
-          <div class="badges">
-            <span class="badge"></span>
-            
-          </div>
-          <h3 title="Batman #251">Batman #251</h3>
-          <p class="publication-date">Published 1973-07-25</p>
-        </div>
-      </article>
-    </section>
+    <section class="grid"></section>
   </main>
   <div class="lightbox" aria-modal="true" role="dialog" aria-label="Cover preview">
     <div class="lightbox-panel">
@@ -228,7 +213,7 @@
   </div>
   <nav class="mobile-tools" aria-label="Viewer tools"><button type="button" data-mobile-search title="Search" aria-label="Search">S</button><button type="button" data-mobile-filter title="Filters" aria-label="Filters">F</button><button type="button" data-mobile-density title="Cover density" aria-label="Cover density">C</button><button type="button" data-mobile-help title="Keyboard shortcuts" aria-label="Keyboard shortcuts">?</button><button type="button" data-mobile-top title="Back to top" aria-label="Back to top">&uarr;</button></nav>
   <script>
-    const state = { order: 'series', scope: 'all', project: 'all', status: 'all', sort: 'curated', decade: 'all', year: 'all', query: '' };
+    const state = { order: 'all', scope: 'all', project: 'all', status: 'all', sort: 'curated', decade: 'all', year: 'all', query: '' };
     const grid = document.querySelector('.grid');
     const cards = [...document.querySelectorAll('.comic-card')];
     const lightbox = document.querySelector('.lightbox');
@@ -389,7 +374,7 @@
       });
     }
     function sequenceForCard(card) {
-      const order = state.order === 'all' ? 'series' : state.order;
+      const order = state.order === 'all' ? 'all' : state.order;
       if (order === 'publication') {
         return scopedSequence(card, 'publicationSequence');
       }

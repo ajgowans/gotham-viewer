@@ -50653,7 +50653,7 @@
     {
       "bytes": 35703,
       "path": "reports/visual_collection_viewer.html",
-      "sha256": "0515d6103943bf8fac9a8d400e422431810f6f052664a85f00c1f092b7f450b9"
+      "sha256": "30232d7a662182ea1e85078dd6acb044f2f824fe72abea1e0c58ae97229e2a3c"
     },
     {
       "bytes": 109149,
@@ -50696,9 +50696,9 @@
       "sha256": "bc97d76eaeacd48e5f064f2438900b4bce25d16179d3362d1c429a32ef0d49bf"
     },
     {
-      "bytes": 216930,
+      "bytes": 216896,
       "path": "reports/visual_view_batman_200_299.html",
-      "sha256": "eae8a4fbe486b6fcb047f90a67431033c5f61e00947f545d06b2247850370aae"
+      "sha256": "582252640b78dd846286be0570e19057c66fee9c1bf52f349a6384f4cc2cf69b"
     },
     {
       "bytes": 215848,
@@ -50906,9 +50906,9 @@
       "sha256": "1afd618f00a59de730282a22fbccab5093f729b60a9cbb9e61fe614997f48139"
     },
     {
-      "bytes": 98378,
+      "bytes": 98392,
       "path": "reports/visual_view_facsimiles.html",
-      "sha256": "0dd5530e325e88c27361bc30a7df65f543cb8b16d6620dd58cfbbb038f33d1bf"
+      "sha256": "5deada794d7bd96880149919119d973e2c1752143749bee2494114c179006ce5"
     },
     {
       "bytes": 169920,
@@ -50976,9 +50976,9 @@
       "sha256": "69dbc900721f171d6950b8e0d24e7b8b00b11201eee4b330a5f8c0db22ea0c1c"
     },
     {
-      "bytes": 43326,
+      "bytes": 41449,
       "path": "reports/visual_view_ordered_comics.html",
-      "sha256": "8b416f6ba2529d68af36e7caa5f6d11cc5cfcd13442812af0c0dfd303000bde6"
+      "sha256": "9cce5027d6efe6401681cba0e6b43c5fb937d17527743ebccce2e4872a94249a"
     },
     {
       "bytes": 431344,
@@ -51052,5 +51052,5 @@
     }
   ],
   "schema_version": "gotham_public_release_v1",
-  "source_revision": "c42c026b4d21c667969891e9868728b7d2e1fbd6"
+  "source_revision": "7f19f1088b8f28a8b9453c688aa514581270e3a8"
 }
