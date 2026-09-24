@@ -2406,6 +2406,11 @@
       "sha256": "2547c469175db08a7d054bea5198d80ce696eabcb2807a27171c21c83a41260d"
     },
     {
+      "bytes": 212180,
+      "path": "assets/covers/display/PUB-ABSOLUTE-CATWOMAN-0006.jpg",
+      "sha256": "49230d0cb45d15eec40137761e5e1537a897e7768c9e8cbc2ba7b53c685e7867"
+    },
+    {
       "bytes": 69817,
       "path": "assets/covers/display/PUB-ACTION-COMICS-0703.jpg",
       "sha256": "2fa093653302b4750877211964573fddc70811a23cd13954713e3ca5ba1ee081"
@@ -27706,6 +27711,11 @@
       "sha256": "4a02905527f07215cb777faccd5501842a964392b3f8ffc9ce1f21d8c126c03e"
     },
     {
+      "bytes": 29769,
+      "path": "assets/covers/thumb/PUB-ABSOLUTE-CATWOMAN-0006.jpg",
+      "sha256": "ddc5f3ee562e37be925a594e49cdb7b90e6ad02844fc5c41ce03abfca699570c"
+    },
+    {
       "bytes": 32480,
       "path": "assets/covers/thumb/PUB-ACTION-COMICS-0703.jpg",
       "sha256": "ee4cd2e4bc14d95c0188fdfa918366840361e815c4ba6cfddd6b12e9fc67b61e"
@@ -50623,7 +50633,7 @@
     {
       "bytes": 119391,
       "path": "reports/cover_quality_review.html",
-      "sha256": "f646b4165a5b70f291454025644f101590a08fbe9a08340126e6eb10ae3e7a64"
+      "sha256": "55b90090538ea8db2f2666359125db3e659b076a2230c560c2a0101b3a1a0c18"
     },
     {
       "bytes": 12082251,
@@ -50653,12 +50663,12 @@
     {
       "bytes": 35703,
       "path": "reports/visual_collection_viewer.html",
-      "sha256": "30232d7a662182ea1e85078dd6acb044f2f824fe72abea1e0c58ae97229e2a3c"
+      "sha256": "1182a291f0b0c37f5bd045c5c8c6baa062e7868eebcf57003cec90747771793d"
     },
     {
-      "bytes": 109149,
+      "bytes": 111043,
       "path": "reports/visual_view_absolute_batman.html",
-      "sha256": "3057223566527e1003c0c809c69c558fff63a187d5e36a8e12885ebb2fd4b500"
+      "sha256": "440ffbe4870ad330c30381a436b69bb50a10ec11d8a0ef65c315e0840e3e48ff"
     },
     {
       "bytes": 73904,
@@ -51052,5 +51062,5 @@
     }
   ],
   "schema_version": "gotham_public_release_v1",
-  "source_revision": "7f19f1088b8f28a8b9453c688aa514581270e3a8"
+  "source_revision": "39ef573be4755357ec6a02728b0233d8c91e82f9"
 }
