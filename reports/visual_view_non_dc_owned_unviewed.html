@@ -190,7 +190,7 @@
   </section>
   <main>
     <section class="grid">
-      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="OWNED-OTHER-51" data-work="Wolverine" data-section="Wolverine" data-search="wolverine #01 owned-other-51 wolverine 1 owned facsimile: facsimile.; marvel publications." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000001" data-publication-date="1982-06" data-publication-year="1982" data-publication-decade="1980s">
+      <article class="comic-card facsimile cover-approved_auto" tabindex="-1" data-publication-id="OWNED-OTHER-51" data-work="Wolverine" data-issue-number="1" data-section="Wolverine" data-search="wolverine #01 owned-other-51 wolverine 1 owned facsimile: facsimile.; marvel publications." data-order="series" data-scope="" data-project="" data-status="facsimile" data-sequence="000001" data-publication-sequence="999999" data-chronological-sequence="999999" data-publication-sequences="" data-chronological-sequences="" data-order-sequences="series:000001" data-publication-date="1982-06" data-publication-year="1982" data-publication-decade="1980s">
         <div class="status-strip">Facsimile</div>
         <div class="cover-wrap"><button class="cover-button" type="button" aria-label="Open Wolverine #01 cover" data-full-src="../assets/covers/display/OWNED-OTHER-51.jpg" data-full-title="Wolverine #01" data-full-detail="Published 1982-06 | OWNED-OTHER-51 | Seq 000001 | Owned facsimile: facsimile.; Marvel publications. | https://marvel.fandom.com/wiki/Wolverine_Vol_1_1 | Automatic checks found no obvious source/image problems."><img src="../assets/covers/thumb/OWNED-OTHER-51.jpg" data-display-src="../assets/covers/display/OWNED-OTHER-51.jpg" alt="Wolverine #01 cover" loading="lazy" decoding="async"></button></div>
         <div class="card-body">
@@ -325,6 +325,50 @@
     function updateFilterSummary() {
       const selected = ['order', 'scope', 'project', 'status', 'sort', 'decade', 'year'].map(key => state[key]).filter(value => value && value !== 'all' && value !== 'curated').map(humanize);
       filterSummary.textContent = selected.length ? selected.join(' · ') : 'All';
+    }
+    function normalizedStatusTitle(value) {
+      return String(value || '').normalize('NFKD').replace(/[̀-ͯ]/g, '').toLocaleLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' ');
+    }
+    function normalizedStatusIssue(value) {
+      const issue = String(value || '').trim().replace(/^#/, '').toLocaleLowerCase();
+      return /^\d+$/.test(issue) ? String(Number(issue)) : issue.replace(/\s+/g, '');
+    }
+    function refreshStatusMetrics() {
+      document.querySelectorAll('.metric[data-status]').forEach(metric => {
+        const status = metric.dataset.status;
+        const count = status === 'all' ? cards.length : cards.filter(card => card.dataset.status === status).length;
+        const value = metric.querySelector('strong');
+        if (value) value.textContent = String(count);
+      });
+    }
+    function applyLiveStatuses(payload) {
+      const byId = payload?.by_publication_id || {};
+      const byTitleIssue = payload?.by_title_issue || {};
+      const labels = { owned: 'Original', facsimile: 'Facsimile', ordered: 'Ordered', readable: 'Readable', missing: 'Missing' };
+      const statusClasses = Object.keys(labels);
+      cards.forEach(card => {
+        const fallbackKey = `${normalizedStatusTitle(card.dataset.work)}|${normalizedStatusIssue(card.dataset.issueNumber)}`;
+        const record = byId[card.dataset.publicationId] || byTitleIssue[fallbackKey];
+        if (!record || !statusClasses.includes(record.status)) return;
+        card.classList.remove(...statusClasses);
+        card.classList.add(record.status);
+        card.dataset.status = record.status;
+        const strip = card.querySelector('.status-strip');
+        if (strip) strip.textContent = labels[record.status];
+      });
+      refreshStatusMetrics();
+      applyFilters();
+    }
+    async function refreshLiveStatuses() {
+      if (location.hostname !== 'ajgowans.github.io') return;
+      try {
+        const url = `https://raw.githubusercontent.com/ajgowans/gotham-viewer/main/viewer_live_status.json?ts=${Date.now()}`;
+        const response = await fetch(url, { cache: 'no-store' });
+        if (!response.ok) throw new Error(`status ${response.status}`);
+        applyLiveStatuses(await response.json());
+      } catch (error) {
+        console.warn('Live collection status unavailable; using the embedded viewer status.', error);
+      }
     }
     function applyFilters() {
       cards.forEach(card => {
@@ -540,6 +584,7 @@
     storiesButton.textContent = storiesVisible ? 'Grid' : 'Stories';
     applyFilters();
     updateFilterSummary();
+    refreshLiveStatuses();
     window.addEventListener('pagehide', saveState);
     if (savedViewState.scrollY) requestAnimationFrame(() => scrollTo({ top: savedViewState.scrollY }));
     </script>
