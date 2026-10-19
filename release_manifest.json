@@ -50633,7 +50633,7 @@
     {
       "bytes": 119391,
       "path": "reports/cover_quality_review.html",
-      "sha256": "55b90090538ea8db2f2666359125db3e659b076a2230c560c2a0101b3a1a0c18"
+      "sha256": "587ca93709b899939cdd55d094ea67f56177a1ca0039628233378605c53c155a"
     },
     {
       "bytes": 12082251,
@@ -50656,19 +50656,19 @@
       "sha256": "41764f630e2d179a14583140a249e494086288d7c1c3acc0cc4b3b6241e88f83"
     },
     {
-      "bytes": 4349,
+      "bytes": 4833,
       "path": "reports/viewer_cover_validation.html",
-      "sha256": "d1011bb2612021792cc2e4f7f95611e69591095e4aa9b966d2fa78b966440c3e"
+      "sha256": "4deb1eb66516cda12b9c662496b73dcc61b6b3f1eaf7f0da017be02610f3ff23"
     },
     {
       "bytes": 35703,
       "path": "reports/visual_collection_viewer.html",
-      "sha256": "1182a291f0b0c37f5bd045c5c8c6baa062e7868eebcf57003cec90747771793d"
+      "sha256": "3d89e15ce4a7d57e954bd2000131427416eb3e57845f01240630e7b3a59ce4d8"
     },
     {
       "bytes": 111043,
       "path": "reports/visual_view_absolute_batman.html",
-      "sha256": "440ffbe4870ad330c30381a436b69bb50a10ec11d8a0ef65c315e0840e3e48ff"
+      "sha256": "ee12113f756eb73271743c8ba7b28a4186bbe1f5ab422c2b6defb0daa6858ad0"
     },
     {
       "bytes": 73904,
@@ -50706,9 +50706,9 @@
       "sha256": "bc97d76eaeacd48e5f064f2438900b4bce25d16179d3362d1c429a32ef0d49bf"
     },
     {
-      "bytes": 216896,
+      "bytes": 217205,
       "path": "reports/visual_view_batman_200_299.html",
-      "sha256": "582252640b78dd846286be0570e19057c66fee9c1bf52f349a6384f4cc2cf69b"
+      "sha256": "1328d951b63c10b0bb9f819d85220c3d99ec1c9e3bb99f6feddad3b8cdfe27ff"
     },
     {
       "bytes": 215848,
@@ -50916,9 +50916,9 @@
       "sha256": "1afd618f00a59de730282a22fbccab5093f729b60a9cbb9e61fe614997f48139"
     },
     {
-      "bytes": 98392,
+      "bytes": 101864,
       "path": "reports/visual_view_facsimiles.html",
-      "sha256": "5deada794d7bd96880149919119d973e2c1752143749bee2494114c179006ce5"
+      "sha256": "d917106f81d8bcb0aff076fcabf081483cd0f06f1abdb80079b8b1e41bd85f67"
     },
     {
       "bytes": 169920,
@@ -50986,9 +50986,9 @@
       "sha256": "69dbc900721f171d6950b8e0d24e7b8b00b11201eee4b330a5f8c0db22ea0c1c"
     },
     {
-      "bytes": 41449,
+      "bytes": 56155,
       "path": "reports/visual_view_ordered_comics.html",
-      "sha256": "9cce5027d6efe6401681cba0e6b43c5fb937d17527743ebccce2e4872a94249a"
+      "sha256": "e5fd4f50dd8e35abfd0155f380a0dfbed46581ae55ed0a687f118e2e0e30f890"
     },
     {
       "bytes": 431344,
@@ -51062,5 +51062,5 @@
     }
   ],
   "schema_version": "gotham_public_release_v1",
-  "source_revision": "39ef573be4755357ec6a02728b0233d8c91e82f9"
+  "source_revision": "1152de01bae72df5e1f8f42246129462fcfc93a0"
 }
