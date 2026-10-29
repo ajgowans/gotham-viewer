@@ -2386,6 +2386,11 @@
       "sha256": "a29f1d900b94befea5268676f7688316313736094e2befb6228d61efd635b75d"
     },
     {
+      "bytes": 305142,
+      "path": "assets/covers/display/PUB-ABSOLUTE-BATMAN-0026.jpg",
+      "sha256": "636817b1279264c6f79a2893f29f6c2c09bd2a49f4e4bd80497c7152da646282"
+    },
+    {
       "bytes": 236665,
       "path": "assets/covers/display/PUB-ABSOLUTE-BATMAN-BEYOND-ARK-M-0001.jpg",
       "sha256": "a8580d39c7d32b37e97f44555a59a07500eb5fe96c85320a3dceb29ac5872eb9"
@@ -27691,6 +27696,11 @@
       "sha256": "adc85dbad27e6d82ef00c0aeb36ab4b9ff09317d9f41c6749598cba811c94f82"
     },
     {
+      "bytes": 39059,
+      "path": "assets/covers/thumb/PUB-ABSOLUTE-BATMAN-0026.jpg",
+      "sha256": "fd0fd0fd16ff9b184439c8ed08bdd79c5e2aeb6abacd3c40ff70030622b1c64c"
+    },
+    {
       "bytes": 30888,
       "path": "assets/covers/thumb/PUB-ABSOLUTE-BATMAN-BEYOND-ARK-M-0001.jpg",
       "sha256": "0eda96b2614b08b7fe8acb5a3b5b4893fe448ecc3ebb2de23e70ce1791c756ed"
@@ -50633,7 +50643,7 @@
     {
       "bytes": 119391,
       "path": "reports/cover_quality_review.html",
-      "sha256": "587ca93709b899939cdd55d094ea67f56177a1ca0039628233378605c53c155a"
+      "sha256": "0bdb13a65d54036b3229d279a9a331339655c8d68df3f0699bc3a24f0f74aebe"
     },
     {
       "bytes": 12082251,
@@ -50656,19 +50666,19 @@
       "sha256": "41764f630e2d179a14583140a249e494086288d7c1c3acc0cc4b3b6241e88f83"
     },
     {
-      "bytes": 4833,
+      "bytes": 4595,
       "path": "reports/viewer_cover_validation.html",
-      "sha256": "4deb1eb66516cda12b9c662496b73dcc61b6b3f1eaf7f0da017be02610f3ff23"
+      "sha256": "ff998dce0c732bec3522b5d05bb9a2d44bb8e9536e20fbd88a3ff8932c59c1a8"
     },
     {
-      "bytes": 35712,
+      "bytes": 35703,
       "path": "reports/visual_collection_viewer.html",
-      "sha256": "9e56e8adc17b9a2d36cd5fb0c7cb4dfec6055ec37acd751151f111fca67453db"
+      "sha256": "1f8f30468bb9da19d7da791440184acddd3fab69d559b1e7c6a0c8d4d1fbdc65"
     },
     {
-      "bytes": 114268,
+      "bytes": 116328,
       "path": "reports/visual_view_absolute_batman.html",
-      "sha256": "df575f956c0bcd490c1206d8762034274073af64b7073cc8370a09f2c25f8ce4"
+      "sha256": "5f94888d35b1e957607ffc9fed6b0d6ab05522440cb593cd12986dbb20d10ac8"
     },
     {
       "bytes": 76682,
@@ -51063,7 +51073,7 @@
     {
       "bytes": 685970,
       "path": "viewer_live_status.json",
-      "sha256": "2ee29495f2c898ef3b12b3eec7dbdb83d1991888f423baadf088d7d429159b55"
+      "sha256": "8f3b71e577d6f42ba712e134019f973a646944bf4da5458f7c99e63ac61e43bd"
     }
   ],
   "schema_version": "gotham_public_release_v1",
