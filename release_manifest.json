@@ -50676,9 +50676,9 @@
       "sha256": "1f8f30468bb9da19d7da791440184acddd3fab69d559b1e7c6a0c8d4d1fbdc65"
     },
     {
-      "bytes": 116328,
+      "bytes": 116921,
       "path": "reports/visual_view_absolute_batman.html",
-      "sha256": "5f94888d35b1e957607ffc9fed6b0d6ab05522440cb593cd12986dbb20d10ac8"
+      "sha256": "45c5b0890f6d218fff28a5cf7f1bd5e0d7d89643126d7e2460ac5ea73d009f1e"
     },
     {
       "bytes": 76682,
@@ -51073,9 +51073,9 @@
     {
       "bytes": 685970,
       "path": "viewer_live_status.json",
-      "sha256": "8f3b71e577d6f42ba712e134019f973a646944bf4da5458f7c99e63ac61e43bd"
+      "sha256": "159c95cb5cd856e7537c50f3745ea191df29825e2a739448d8339869cbe1dc44"
     }
   ],
   "schema_version": "gotham_public_release_v1",
-  "source_revision": "2e75662082d7034f3a7eedbf2203cb9784913616"
+  "source_revision": "ba57c952989fa38505ac2c346b333fe41fc1f3b9"
 }
