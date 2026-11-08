@@ -50673,12 +50673,12 @@
     {
       "bytes": 35703,
       "path": "reports/visual_collection_viewer.html",
-      "sha256": "1f8f30468bb9da19d7da791440184acddd3fab69d559b1e7c6a0c8d4d1fbdc65"
+      "sha256": "8f157068e3f2ad25ccbdadc523fc3012f02a593dc9e7118fca48747d9c6221c2"
     },
     {
-      "bytes": 116921,
+      "bytes": 116918,
       "path": "reports/visual_view_absolute_batman.html",
-      "sha256": "45c5b0890f6d218fff28a5cf7f1bd5e0d7d89643126d7e2460ac5ea73d009f1e"
+      "sha256": "5320f53e04c0492b2feb763733d77b8d02f6e6da494ea0ebd2145085ecd86c86"
     },
     {
       "bytes": 76682,
@@ -50996,9 +50996,9 @@
       "sha256": "5dc53a9eac3b86878ab5017e81eb7680e762f184c889290031dca82dbad76ed7"
     },
     {
-      "bytes": 46206,
+      "bytes": 43843,
       "path": "reports/visual_view_ordered_comics.html",
-      "sha256": "8cfc06754da7ffe698f0b74df69bdb3401bcaaaa0e0e8a0a89559a2f67b9c470"
+      "sha256": "f9d3e4b00fc4ca8b60ca9c03886057e955584a9d9f8726c90f1fd60eeb23cccb"
     },
     {
       "bytes": 438525,
@@ -51071,11 +51071,11 @@
       "sha256": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1"
     },
     {
-      "bytes": 685970,
+      "bytes": 685966,
       "path": "viewer_live_status.json",
-      "sha256": "159c95cb5cd856e7537c50f3745ea191df29825e2a739448d8339869cbe1dc44"
+      "sha256": "6585c78e9471f2992666e9504f834b6ddbd711d9e177883c3b93e51bf3d549aa"
     }
   ],
   "schema_version": "gotham_public_release_v1",
-  "source_revision": "ba57c952989fa38505ac2c346b333fe41fc1f3b9"
+  "source_revision": "c129b6f4c6d6b9892a283954f162ea5198054bb9"
 }
