@@ -50671,9 +50671,9 @@
       "sha256": "ff998dce0c732bec3522b5d05bb9a2d44bb8e9536e20fbd88a3ff8932c59c1a8"
     },
     {
-      "bytes": 35703,
+      "bytes": 35706,
       "path": "reports/visual_collection_viewer.html",
-      "sha256": "8f157068e3f2ad25ccbdadc523fc3012f02a593dc9e7118fca48747d9c6221c2"
+      "sha256": "b4de4362d6c85c40a71c041e61e66824dc639f86b5c32975e61ebd21957cece8"
     },
     {
       "bytes": 116918,
@@ -51071,11 +51071,11 @@
       "sha256": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1"
     },
     {
-      "bytes": 685966,
+      "bytes": 686144,
       "path": "viewer_live_status.json",
-      "sha256": "6585c78e9471f2992666e9504f834b6ddbd711d9e177883c3b93e51bf3d549aa"
+      "sha256": "98593fb64e5f864239bdc5aab102c960a85cf33faa182d643aa77d8c4080e5bd"
     }
   ],
   "schema_version": "gotham_public_release_v1",
-  "source_revision": "c129b6f4c6d6b9892a283954f162ea5198054bb9"
+  "source_revision": "5b736fdbfa0a21b3218f3ee089fe12bd4c604092"
 }
