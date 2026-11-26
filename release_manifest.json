@@ -2391,6 +2391,11 @@
       "sha256": "636817b1279264c6f79a2893f29f6c2c09bd2a49f4e4bd80497c7152da646282"
     },
     {
+      "bytes": 167833,
+      "path": "assets/covers/display/PUB-ABSOLUTE-BATMAN-0027.jpg",
+      "sha256": "7d9f5230f2c4e307ab7ae8bf409964213109ae12c977c6c4cc0a88d2842a9426"
+    },
+    {
       "bytes": 236665,
       "path": "assets/covers/display/PUB-ABSOLUTE-BATMAN-BEYOND-ARK-M-0001.jpg",
       "sha256": "a8580d39c7d32b37e97f44555a59a07500eb5fe96c85320a3dceb29ac5872eb9"
@@ -27701,6 +27706,11 @@
       "sha256": "fd0fd0fd16ff9b184439c8ed08bdd79c5e2aeb6abacd3c40ff70030622b1c64c"
     },
     {
+      "bytes": 28410,
+      "path": "assets/covers/thumb/PUB-ABSOLUTE-BATMAN-0027.jpg",
+      "sha256": "f7ed2f4c3d55d107af1a75b8c661b88dec2f1b37585c24326d9594cc4a157e78"
+    },
+    {
       "bytes": 30888,
       "path": "assets/covers/thumb/PUB-ABSOLUTE-BATMAN-BEYOND-ARK-M-0001.jpg",
       "sha256": "0eda96b2614b08b7fe8acb5a3b5b4893fe448ecc3ebb2de23e70ce1791c756ed"
@@ -50643,7 +50653,7 @@
     {
       "bytes": 119391,
       "path": "reports/cover_quality_review.html",
-      "sha256": "0bdb13a65d54036b3229d279a9a331339655c8d68df3f0699bc3a24f0f74aebe"
+      "sha256": "bd3fedaa568b65bdfbf896f9274dcbcab12473052f99aa71aaea0b97fd26a9ac"
     },
     {
       "bytes": 12082251,
@@ -50671,14 +50681,14 @@
       "sha256": "ff998dce0c732bec3522b5d05bb9a2d44bb8e9536e20fbd88a3ff8932c59c1a8"
     },
     {
-      "bytes": 35706,
+      "bytes": 35703,
       "path": "reports/visual_collection_viewer.html",
-      "sha256": "b4de4362d6c85c40a71c041e61e66824dc639f86b5c32975e61ebd21957cece8"
+      "sha256": "90503cfac61c74560309555a1340da03291f6df6c8f8fe1bd22a248e124af6aa"
     },
     {
-      "bytes": 116918,
+      "bytes": 118833,
       "path": "reports/visual_view_absolute_batman.html",
-      "sha256": "5320f53e04c0492b2feb763733d77b8d02f6e6da494ea0ebd2145085ecd86c86"
+      "sha256": "59e0ed2f4a35d1821d8867b6c2b1fb3f7718334ad2d77dbe6b24df052806b939"
     },
     {
       "bytes": 76682,
@@ -51073,9 +51083,9 @@
     {
       "bytes": 686144,
       "path": "viewer_live_status.json",
-      "sha256": "98593fb64e5f864239bdc5aab102c960a85cf33faa182d643aa77d8c4080e5bd"
+      "sha256": "301a86a6ea60dcbbfae16a7c8c1293d6d539fb1a557d6d029eebd436681d2b1b"
     }
   ],
   "schema_version": "gotham_public_release_v1",
-  "source_revision": "5b736fdbfa0a21b3218f3ee089fe12bd4c604092"
+  "source_revision": "4bf4847d298b56e2e988fa6a00286fa443bf8548"
 }
